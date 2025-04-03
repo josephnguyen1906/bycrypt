@@ -1,0 +1,138 @@
+footer {
+    width: 100%;
+    background-color: var(--theme-top-nav-bg);
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+    border-top: 1px solid #353d50;
+    bottom: 0;
+}
+
+.list-menu {
+    width: 100%;
+    padding-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: auto;
+    padding-top: 50px;
+    gap: 30px;
+}
+
+.menu-1 {
+    width: 50%;
+
+
+}
+
+.menu-1 a img {
+    width: 150px;
+    height: 150px;
+}
+
+.menu-2 h3,
+.menu-3 h3 {
+    padding-bottom: 10px;
+    font-size: 16px;
+    color: #a9adab;
+}
+
+.list-menu ul li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.list-menu ul li a:hover {
+    color: greenyellow;
+    cursor: pointer;
+}
+
+.list-menu ul li a svg {
+    padding-right: 5px;
+    font-size: 20px;
+    padding-top: 5px;
+}
+
+.title-1,
+.title-2 {
+    width: 80%;
+    color: var(--theme-text-color-lighten);
+    text-align: center;
+    margin: auto;
+}
+
+p {
+    color: #a9adab;
+    font-size: 0.8rem;
+    line-height: 1.66;
+    word-break: break-word;
+}
+
+.list-img {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin: auto;
+    padding: 20px;
+}
+
+img {
+    height: 100%;
+    object-fit: cover;
+}
+
+.title-1 {
+    padding: 10px 0px;
+    border-top: .03rem solid var(--theme-color-line);
+    border-bottom: .03rem solid var(--theme-color-line);
+}
+
+.title-2 {
+    width: 100%;
+    padding: 10px;
+    border-top: 1px solid #353d50;
+}
+
+.menu-2 ul li,
+.menu-3 ul li {
+    list-style: none;
+}
+
+.menu-2 ul li a,
+.menu-3 ul li a {
+    color: white;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+@media(max-width: 900px) {
+    .list-menu {
+        width: 100%;
+    }
+
+    .list-img {
+        gap: 20px;
+    }
+
+    footer {
+        display: none;
+        padding-bottom: 80px;
+    }
+}
+
+@media(max-width: 500px) {
+    .list-menu {
+        width: 100%;
+    }
+
+    .list-img {
+        gap: 20px;
+    }
+
+    footer {
+        display: none;
+        padding-bottom: 80px;
+    }
+}

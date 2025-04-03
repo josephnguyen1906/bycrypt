@@ -1,0 +1,111 @@
+.list-casio {
+    width: 80%;
+    margin: auto;
+}
+
+
+.casio-menu {
+    height: 393px;
+    max-width: 1190px;
+    position: relative;
+}
+
+
+.list-casio-left {
+    height: 238px;
+    width: 610px;
+    position: absolute;
+    top: 32px;
+    z-index: 2;
+}
+
+.list-casio-left-item .card {
+    width: 250px;
+    height: 280px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: 0.2s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.list-casio-left-item .card .img {
+    width: 250px;
+    height: 280px;
+    object-fit: cover;
+}
+
+.list-casio-left h2 {
+    color: #fbc815;
+    height: 80px;
+    line-height: 80px;
+    font-size: 40px;
+}
+
+.list-casio-right {
+    height: 90%;
+    position: absolute;
+    transform: translateX(15%);
+    width: 100%;
+
+}
+
+@media(max-width: 600px) {
+    .list-casio {
+        /* display: none; */
+    }
+
+    .list-casio-left {
+        width: 80%;
+        top: -15px;
+        left: 100px;
+    }
+
+    .casio-menu {
+        max-width: 100%;
+        height: 240px;
+    }
+
+    .list-casio-right {
+        height: 100%;
+        left: 0;
+        transform: translateX(-50%);
+    }
+
+    .list-casio-left h2 {
+        font-size: 20px;
+        margin-left: -50px;
+        height: 50px;
+    }
+
+    .list-casio-left-item {
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    .list-casio-left-item .card {
+        width: 100px;
+        height: 110px;
+        border-radius: 10px;
+
+    }
+
+    .list-casio-left-item .card .img {
+        width: 100px;
+        height: 110px;
+        object-fit: cover;
+    }
+
+    .list-casio-right img {
+        width: 266px;
+        height: 143px;
+    }
+
+    .profile-m {
+        width: 100%;
+    }
+}

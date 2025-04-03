@@ -1,0 +1,155 @@
+.hot-game {
+    width: 80%;
+    margin: auto;
+}
+
+.hot-game .title {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.hot-game .title h1 {
+    color: white;
+}
+
+.list-item {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.card {
+    width: 180px;
+    height: 240px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: 0.2s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.img {
+    height: 240px;
+    position: absolute;
+    transition: 0.2s ease-in-out;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.textBox-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    /* Đảm bảo lớp nội dung luôn trên lớp mờ */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    /* Ngăn chặn hover vào container (chỉ áp dụng cho con) */
+}
+
+.textBox {
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    transition: 0.2s ease-in-out;
+    pointer-events: auto;
+    /* Cho phép tương tác với nút bên trong */
+}
+
+.card:hover>.textBox-container>.textBox,
+.textBox:hover {
+    opacity: 1;
+}
+
+.card:hover>.img {
+    filter: blur(3px);
+    /* Hiệu ứng mờ chỉ áp dụng cho ảnh */
+}
+
+.textBox-btn {
+    background: green;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 3;
+    /* Đảm bảo nút không bị ảnh hưởng */
+}
+
+.card:hover {
+    transform: scale(1.04) rotate(-1deg);
+}
+
+.card-img {
+    width: 376px;
+    height: 239px;
+    position: relative;
+}
+
+.card-img .title-card {
+    position: absolute;
+    bottom: 5px;
+    left: 50px;
+    font-family: Martian Mono, monospace;
+    font-weight: 700;
+    color: yellow;
+    font-size: 40px;
+}
+
+.mobile {
+    display: none;
+}
+
+
+
+@media(max-width: 600px) {
+    .hot-game {
+        width: 95%;
+    }
+
+    .list-item {
+        gap: 5px;
+        margin-bottom: 5px;
+    }
+
+    .website {
+        display: none;
+    }
+
+    .mobile {
+        display: block;
+    }
+
+
+    .card {
+        width: 90px;
+        height: 114px;
+        border-radius: 5px;
+    }
+
+
+    .card-img {
+        display: none;
+    }
+
+    .img {
+        height: 114px;
+    }
+}
