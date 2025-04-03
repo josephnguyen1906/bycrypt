@@ -14,13 +14,23 @@ export default function FooterPage() {
     <footer>
       <div className="list-menu">
         <div className="menu-1">
-          <Link href={"/"} prefetch={false}>
-            <Image
+          <Link
+            href={"/"}
+            prefetch={false}
+            style={{
+              textDecoration: "none",
+              color: "#fff",
+              fontFamily: "sans-serif",
+              fontStyle: "italic",
+            }}
+          >
+            {/* <Image
               src="/images/openart-1bd95ea5-a202-4491-b723-436d1d59311f.png"
               width={100}
               height={40}
               alt=""
-            />
+            /> */}
+            <h2>Reddy232</h2>
           </Link>
           <p>
             Reddy232 is the leading reputable bookmaker in the Americas. Game
