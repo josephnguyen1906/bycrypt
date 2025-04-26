@@ -4,7 +4,7 @@ import swal from "sweetalert";
 
 // API instance for login and register
 const authInstance = axios.create({
-  baseURL: "http://www.choi88.com",
+  baseURL: "https://www.68bet.win",
   timeout: 10000,
 });
 
@@ -37,7 +37,7 @@ authInstance.interceptors.response.use(
 
 // API instance for content
 const contentInstance = axios.create({
-  baseURL: "http://api1.choi88.com",
+  baseURL: "https://api1.68bet.win",
   timeout: 10000,
 });
 
