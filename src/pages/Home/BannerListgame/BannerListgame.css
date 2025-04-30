@@ -3,6 +3,7 @@
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .casino .title-casino {
@@ -25,4 +26,15 @@
     font-size: 20px;
     color: white;
     font-weight: 600;
+}
+
+@media(max-width: 500px) {
+    .casino .title-casino {
+        width: 120px;
+
+    }
+
+    .casino .title-casino p {
+        font-size: 15px;
+    }
 }

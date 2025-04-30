@@ -90,6 +90,33 @@ export const slideImg = [
     img: "/images/ban-ca-hoan-3-phantram_1742203198.webp",
   },
 ];
+export const slideMBImg = [
+  {
+    id: 1,
+    img: "/images/background-mb.webp",
+    number: 1520222200221,
+  },
+  {
+    id: 2,
+    img: "/images/2.MB_banner_Sports_1731311225.webp",
+  },
+  {
+    id: 3,
+    img: "/images/MB_Da304_1745752000.webp",
+  },
+  {
+    id: 4,
+    img: "/images/Deposit_p2p_MB_1742202193.webp",
+  },
+  {
+    id: 5,
+    img: "/images/live-casino_1737106640.webp",
+  },
+  {
+    id: 6,
+    img: "/images/MB_Hero_BanCa_1742182085.webp",
+  },
+];
 
 export const slideImgPromotion = [
   {

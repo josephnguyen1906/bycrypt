@@ -17,7 +17,7 @@ export const ListGameHome = [
     id: "3",
     images: "type-bet-table-games.webp",
     link: "",
-    numberC: 1002200220,
+    numberC: 31220022,
     nameGame: "Table Games",
   },
   {
@@ -52,7 +52,7 @@ export const ListGameHome = [
     id: "8",
     images: "type-bet-fish.webp",
     link: "",
-    numberC: 5132552222,
+    numberC: 51325522,
     nameGame: "Bắn cá",
   },
   {
@@ -155,6 +155,12 @@ export const ListGamesHot = [
     images: "/images/B52 - xóc đĩa_1736672134.webp",
     gameId: "PG",
     codeGame: "PG0130",
+  },
+  {
+    id: "15",
+    images: "/images/Rikvip - game nhanh - Aviator_1727968876.webp",
+    gameId: "PG",
+    codeGame: "PG0002",
   },
 ];
 

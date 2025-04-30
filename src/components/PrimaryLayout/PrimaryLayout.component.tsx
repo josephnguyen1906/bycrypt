@@ -25,6 +25,12 @@ import { getWalletGameByUser, walletTransfer } from "@/services/Wallet.service";
 import MenuPopupComponent from "../popup/MenuPopup.component";
 import SupportPopupComponent from "../popup/SupportPopup.component";
 import "./PrimaryLayout.css";
+import {
+  CasioIcon,
+  DPGameIcon,
+  SearchIcon,
+  SportsIcon,
+} from "@/shared/Svgs/Svg.component";
 // Lazy load các component ít ưu tiên
 const SidebarPage = dynamic(() => import("../../pages/Sidebar/Sidebar.page"), {
   ssr: false,
@@ -59,7 +65,7 @@ export default function PrimaryLayoutComponent({
         window.open("https://t.me/HitJuwa", "_blank", "noopener,noreferrer");
         break;
       case 2:
-        router.replace("/event");
+        router.replace("#");
         break;
       case 3:
         if (user) {
@@ -134,75 +140,55 @@ export default function PrimaryLayoutComponent({
             <ul>
               <li>
                 <button type="button" onClick={() => hanldMenu(5)}>
-                  <Menu
-                    width="25px"
-                    height="25px"
-                    className="moblie-icon"
+                  <Image
+                    src={"/images/khuyenmai.webp"}
+                    width={25}
+                    height={25}
                     style={
                       menu === 5 ? { color: "#d7ca63" } : { color: "white" }
                     }
+                    alt=""
+                    className="moblie-icon"
                   />
+
                   <p className={menu === 5 ? "mobile-active" : "mobile-p"}>
-                    Menu
+                    Khuyến mãi
                   </p>
                 </button>
               </li>
               <li>
                 <button type="button" onClick={() => hanldMenu(2)}>
-                  <Event
+                  <SearchIcon
                     width="25px"
                     height="25px"
                     className="moblie-icon"
-                    style={
-                      menu === 2 ? { color: "#d7ca63" } : { color: "white" }
-                    }
                   />
                   <p className={menu === 2 ? "mobile-active" : "mobile-p"}>
-                    Event
+                    Tìm kiếm
                   </p>
                 </button>
               </li>
               <li>
                 <button type="button" onClick={() => hanldMenu(1)}>
-                  <Image
-                    className="img-nap"
-                    src={"/images/icon-deposit.svg"}
-                    width={50}
-                    height={50}
-                    alt=""
-                  />
+                  <SportsIcon className="moblie-icon" />
                   <p className={menu === 1 ? "mobile-active" : "mobile-p"}>
-                    Recharge
+                    Thể thao
                   </p>
                 </button>
               </li>
               <li>
                 <button type="button" onClick={() => hanldMenu(3)}>
-                  <History
-                    width="25px"
-                    height="25px"
-                    className="moblie-icon"
-                    style={
-                      menu === 3 ? { color: "#d7ca63" } : { color: "white" }
-                    }
-                  />
+                  <CasioIcon className="moblie-icon" />
                   <p className={menu === 3 ? "mobile-active" : "mobile-p"}>
-                    History
+                    Live casino
                   </p>
                 </button>
               </li>
               <li>
                 <button type="button" onClick={() => hanldMenu(4)}>
-                  <Support
-                    width="25px"
-                    height="25px"
-                    className="moblie-icon"
-                    style={
-                      menu === 4 ? { color: "#d7ca63" } : { color: "white" }
-                    }
-                  />
+                  <DPGameIcon className="moblie-icon" />
                   <p className={menu === 4 ? "mobile-active" : "mobile-p"}>
-                    Support
+                    DA Games
                   </p>
                 </button>
               </li>

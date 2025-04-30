@@ -43,11 +43,11 @@ export default function BannerListgamePage() {
 
   const commonCardStyles = {
     width: {
-      xs: "130px",
+      xs: "100px",
       sm: "240px",
     },
     height: {
-      xs: "190px",
+      xs: "130px",
       sm: "300px",
     },
     borderRadius: "20px",
@@ -71,11 +71,18 @@ export default function BannerListgamePage() {
     backgroundImage:
       "url(https://staticda88.com/images/button/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
     color: "white",
-    padding: "10px 20px",
+    padding: {
+      xs: "3px 5px",
+      sm: "10px 20px",
+    },
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
     zIndex: 3,
+    fontSize: {
+      xs: "10px",
+      sm: "16px",
+    },
     pointerEvents: "auto",
     opacity: 0,
     transition: "opacity 0.2s ease-in-out",

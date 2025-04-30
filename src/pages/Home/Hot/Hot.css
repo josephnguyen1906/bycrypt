@@ -1,5 +1,5 @@
 .hot-game {
-    width: 80%;
+    width: 90%;
     margin: auto;
 }
 
@@ -13,10 +13,9 @@
 }
 
 .list-item {
-    display: grid;
+    display: flex;
     gap: 15px;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    flex-wrap: wrap;
     margin-bottom: 20px;
     margin-top: 10px;
     justify-content: center;
@@ -80,10 +79,10 @@
     bottom: 11px;
     color: #fff;
     display: flex;
-    font-size: 20px !important;
-    font-weight: 700 !important;
+    font-size: 20px;
+    font-weight: 700;
     justify-content: center;
-    line-height: 28px !important;
+    line-height: 28px;
     margin: auto;
     position: absolute;
     text-transform: capitalize;
@@ -120,7 +119,7 @@
 
 @media(max-width: 600px) {
     .hot-game {
-        width: 95%;
+        width: 98%;
     }
 
     .list-item {
@@ -138,8 +137,8 @@
 
 
     .card {
-        width: 90px;
-        height: 114px;
+        width: 110px;
+        height: 110px;
         border-radius: 5px;
     }
 
@@ -148,7 +147,19 @@
         display: none;
     }
 
-    .img {
-        height: 114px;
+    .card .img {
+        width: 110px;
+        height: 110px;
+        object-fit: cover;
+    }
+
+    .card .number-card {
+        font-size: 10px;
+        top: -5px;
+    }
+
+    .card .title-card {
+        font-size: 12px;
+        bottom: 1px;
     }
 }

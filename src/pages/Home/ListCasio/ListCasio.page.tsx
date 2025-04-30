@@ -38,11 +38,11 @@ export default function ListCasioPage() {
 
   const commonCardStyles = {
     width: {
-      xs: "130px",
+      xs: "110px",
       sm: "237px",
     },
     height: {
-      xs: "190px",
+      xs: "110px",
       sm: "240px",
     },
     borderRadius: "20px",
@@ -50,6 +50,7 @@ export default function ListCasioPage() {
     flexDirection: "column",
     alignItems: "center",
     // justifyContent: "center",
+    objectFit: "cover",
     color: "white",
     transition: "0.2s ease-in-out",
     position: "relative",
@@ -66,7 +67,14 @@ export default function ListCasioPage() {
     backgroundImage:
       "url(https://staticda88.com/images/button/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
     color: "white",
-    padding: "10px 20px",
+    padding: {
+      xs: "3px 5px",
+      sm: "10px 20px",
+    },
+    fontSize: {
+      xs: "10px",
+      sm: "16px",
+    },
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",

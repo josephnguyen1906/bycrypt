@@ -150,18 +150,13 @@ export default function HeaderPage(props: propUser) {
       </div>
 
       <div className="main-header-mobile">
-        <div className="header-top">
+        <div className="header-mobile">
           <div
             className={device === "Android" ? "header-left" : "header-left-ios"}
           >
             <div className="logo">
               <Link href={"/"} prefetch={false}>
-                <Image
-                  src="/images/openart-1bd95ea5-a202-4491-b723-436d1d59311f.png"
-                  width={100}
-                  height={40}
-                  alt=""
-                />
+                <Image src="/images/logo.svg" width={100} height={40} alt="" />
               </Link>
             </div>
           </div>
@@ -202,36 +197,6 @@ export default function HeaderPage(props: propUser) {
             )}
           </div>
         </div>
-        {loading ? (
-          <>
-            <SimpleBackdrop />
-            <nav className="header-bottom-mobile">
-              <ul>
-                {MenuMobile.map((item) => (
-                  <li key={item.id}>
-                    <Link href={item.link}>
-                      {item.icon}
-                      {item.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </>
-        ) : (
-          <nav className="header-bottom-mobile">
-            <ul>
-              {MenuMobile.map((item) => (
-                <li key={item.id}>
-                  <Link href={item.link}>
-                    {item.icon}
-                    {item.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        )}
       </div>
     </header>
   );

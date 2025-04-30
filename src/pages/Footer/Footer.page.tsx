@@ -34,7 +34,27 @@ export default function FooterPage() {
               <Link href={"#"}>Lịch thi đấu</Link>
             </li>
             <li>
-              <Link href={"#"}> Cược thể thao</Link>
+              <Link href={"#"}>Cược thể thao</Link>
+            </li>
+          </ul>
+        </div>
+        <div className="menu-1">
+          <h3>Về chúng tôi</h3>
+          <ul>
+            <li>
+              <Link href={"#"}>Giới thiệu</Link>
+            </li>
+            <li>
+              <Link href={"#"}>Điều kiện - Điều khoản</Link>
+            </li>
+            <li>
+              <Link href={"#"}>Bảo mật</Link>
+            </li>
+            <li>
+              <Link href={"#"}>Chơi game có trách nhiệm</Link>
+            </li>
+            <li>
+              <Link href={"#"}>Quy định chung</Link>
             </li>
           </ul>
         </div>
@@ -42,54 +62,64 @@ export default function FooterPage() {
           <h3>Trò chơi</h3>
           <ul>
             <li>
-              <Link href={"#"}>Lịch thi đấu</Link>
+              <Link href={"#"}>Bắn cá</Link>
             </li>
             <li>
-              <Link href={"#"}> Cược thể thao</Link>
+              <Link href={"#"}>Slots</Link>
+            </li>
+            <li>
+              <Link href={"#"}>Nổ hũ</Link>
+            </li>
+            <li>
+              <Link href={"#"}>Game bài</Link>
+            </li>
+            <li>
+              <Link href={"#"}>Lô đề</Link>
             </li>
           </ul>
         </div>
-        <div className="menu-2">
-          <h3>Trò chơi</h3>
+        <div className="menu-1">
+          <h3>Hỗ trợ 24/7</h3>
           <ul>
             <li>
-              <Link href={"#"}>
-                <Telegram /> Telegram support
-              </Link>
+              <Link href={"#"}>Trực tuyến 24/7</Link>
             </li>
             <li>
-              <Link href={"#"}>
-                {" "}
-                <Newspaper />
-                Blog
-              </Link>
+              <Link href={"#"}>Cộng đồng</Link>
             </li>
             <li>
-              <Link href={"#"}>
-                <YouTube /> Youtube
-              </Link>
+              <Link href={"#"}>Hướng dẫn nạp rút</Link>
             </li>
           </ul>
         </div>
-        <div className="menu-3">
-          <h3>Payment Partners</h3>
+        <div className="menu-1">
+          <h3>Thông tin</h3>
           <ul>
-            {PaymentMenuFooter.map((item) => (
-              <li key={item.id}>
-                <Link
-                  href={item.link}
-                  style={{ height: "50px", alignItems: "center" }}
-                >
-                  {item.icon}
-                  <span>{item.title}</span>
-                </Link>
-              </li>
-            ))}
+            <li>
+              <Link href={"#"}>Khuyến mãi / Sự kiện</Link>
+            </li>
+            <li>
+              <Link href={"#"}>Tin tức</Link>
+            </li>
           </ul>
         </div>
       </div>
       <div className="title-2">
-        <p>Copyright © Reddy232 2010-2026 All rights reserved</p>
+        <p>Copyright © 2024 Powered By DA88 All Rights Reserved.</p>
+        <div className="title-img2">
+          <Image
+            src={"/images/copyright-logo.png"}
+            alt=""
+            width={120}
+            height={30}
+          />
+          <Image
+            src={"/images/DMCA_logo-grn-btn100w.png"}
+            alt=""
+            width={100}
+            height={30}
+          />
+        </div>
       </div>
     </footer>
   );
