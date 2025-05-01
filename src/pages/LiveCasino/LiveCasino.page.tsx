@@ -12,7 +12,7 @@ export default function LiveCasinoPage() {
   const { loading, playGame } = usePlayGame();
   const commonImgStyles = {
     height: {
-      xs: "190px",
+      xs: "110px",
       sm: "240px",
     },
     position: "absolute",
@@ -45,7 +45,7 @@ export default function LiveCasinoPage() {
       sm: "180px",
     },
     height: {
-      xs: "190px",
+      xs: "110px",
       sm: "240px",
     },
     borderRadius: "20px",

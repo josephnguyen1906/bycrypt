@@ -365,7 +365,6 @@ export default function BettingHistory() {
                 </Grid>
 
                 {/* sort session*/}
-                
               </Grid>
               <Grid container width={"100%"} marginTop={3.5}>
                 <TableContainer
@@ -668,8 +667,6 @@ export default function BettingHistory() {
                   </FormControl>
                 </Grid>
               </Grid>
-
-              
             </Grid>
             <Grid container width={"100%"} marginTop={3.5}>
               <TableContainer
@@ -684,7 +681,7 @@ export default function BettingHistory() {
                 }}
                 component={Paper}
               >
-                <Table sx={{ width: "1190px" }} aria-label="simple table">
+                <Table sx={{ width: "1110px" }} aria-label="simple table">
                   <TableHead sx={{ backgroundColor: "#283145" }}>
                     <TableRow sx={{ height: "40px", width: "100%" }}>
                       <TableCell

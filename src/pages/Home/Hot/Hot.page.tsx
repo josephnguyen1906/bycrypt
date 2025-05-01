@@ -23,7 +23,7 @@ export default function HotPage() {
           <div className="list-item">
             {ListGameHome.map((item) => {
               return (
-                <div className="card" key={item.id}>
+                <div className={"card it-" + item.id} key={item.id}>
                   <Link href={item.link}>
                     {item.numberC > 0 && (
                       <NumberCount

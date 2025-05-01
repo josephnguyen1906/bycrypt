@@ -9,7 +9,7 @@ export default function ListCasioPage() {
   const { loading, playGame } = usePlayGame();
   const commonImgStyles = {
     height: {
-      xs: "190px",
+      xs: "110px",
       sm: "240px",
     },
     position: "absolute",

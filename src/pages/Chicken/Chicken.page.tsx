@@ -12,7 +12,7 @@ export default function ChickenPage() {
   const { loading, playGame } = usePlayGame();
   const commonImgStyles = {
     height: {
-      xs: "190px",
+      xs: "110px",
       sm: "240px",
     },
     position: "absolute",
@@ -45,7 +45,7 @@ export default function ChickenPage() {
       sm: "180px",
     },
     height: {
-      xs: "190px",
+      xs: "110px",
       sm: "240px",
     },
     borderRadius: "20px",
@@ -66,9 +66,9 @@ export default function ChickenPage() {
   };
 
   const buttonStyles = {
-      backgroundImage:
+    backgroundImage:
       "url(/images/button/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
-    
+
     color: "white",
     padding: "10px 20px",
     border: "none",
@@ -79,9 +79,9 @@ export default function ChickenPage() {
     opacity: 0,
     transition: "opacity 0.2s ease-in-out",
     "&:hover": {
-        backgroundImage:
-      "url(/images/button/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
-    
+      backgroundImage:
+        "url(/images/button/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+
       opacity: 1,
       filter: "none",
     },
@@ -175,7 +175,7 @@ export default function ChickenPage() {
                     sx={buttonStyles}
                     onClick={() => playGame(item.codeGame, item.gameId)}
                   >
-                Chơi ngay
+                    Chơi ngay
                   </Button>
                 </Box>
               </Box>
