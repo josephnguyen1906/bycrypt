@@ -31,7 +31,7 @@ export const ListGameHome = [
     id: "5",
     images: "type-bet-no-hu.webp",
     link: "",
-    numberC: 354025522,
+    numberC: 35402552,
     nameGame: "Nổ hủ",
   },
   {
