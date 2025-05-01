@@ -480,18 +480,22 @@ header {
 
     .header-right-ios .header-right-menu .login {
         width: 80px;
+        font-size: 12px;
     }
 
     .header-right-ios .header-right-menu .register {
         width: 80px;
+        font-size: 12px;
     }
 
     .header-right .header-right-menu .login {
         width: 80px;
+        font-size: 12px;
     }
 
     .header-right .header-right-menu .register {
         width: 80px;
+        font-size: 12px;
     }
 
 
