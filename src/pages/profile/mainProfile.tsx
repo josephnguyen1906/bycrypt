@@ -120,7 +120,7 @@ export default function MainProfile() {
     <Box
       sx={{
         paddingTop: "100px",
-        paddingBottom: "100px",
+        paddingBottom: "10px",
       }}
     >
       <Box
@@ -129,8 +129,8 @@ export default function MainProfile() {
           padding: 2,
           borderRadius: 2,
           height: {
-            xs: "700px",
-            sm: "500px",
+            xs: "auto",
+            sm: "auto",
           },
           width: "93%",
           margin: "auto",
@@ -203,8 +203,8 @@ export default function MainProfile() {
             padding: 2,
             borderRadius: 2,
             height: {
-              xs: "700px",
-              sm: "500px",
+              xs: "auto",
+              sm: "auto",
             },
             width: "100%",
             margin: "auto",
@@ -399,7 +399,10 @@ export default function MainProfile() {
                       height: "68px",
                       justifyContent: "space-between",
                       padding: "12px",
-                      width: "30%",
+                      width: {
+                        xs: "90%",
+                        sm: "30%",
+                      },
                       margin: "auto",
                       marginTop: "20px",
                     }}
@@ -419,7 +422,9 @@ export default function MainProfile() {
                             variant="body2"
                             sx={{ color: "white", display: "inline" }}
                           >
-                            {bankUser.bankNumber}
+                            {bankUser?.bankNumber !== ""
+                              ? bankUser?.bankNumber
+                              : "012145522112"}
                           </Typography>
                         </React.Fragment>
                       }
