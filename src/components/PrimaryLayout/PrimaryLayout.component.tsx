@@ -64,7 +64,7 @@ export default function PrimaryLayoutComponent({
         router.replace("/sport");
         break;
       case 2:
-        router.replace("#");
+        router.replace("/");
         break;
       case 3:
         router.replace("/livecasino");
@@ -151,23 +151,31 @@ export default function PrimaryLayoutComponent({
                   </p>
                 </button>
               </li>
-              <li>
-                <button type="button" onClick={() => hanldMenu(2)}>
-                  <SearchIcon
-                    width="25px"
-                    height="25px"
-                    className="moblie-icon"
-                  />
-                  <p className={menu === 2 ? "mobile-active" : "mobile-p"}>
-                    Tìm kiếm
-                  </p>
-                </button>
-              </li>
+
               <li>
                 <button type="button" onClick={() => hanldMenu(1)}>
                   <SportsIcon className="moblie-icon" />
                   <p className={menu === 1 ? "mobile-active" : "mobile-p"}>
                     Thể thao
+                  </p>
+                </button>
+              </li>
+              <li>
+                <button type="button" onClick={() => hanldMenu(2)}>
+                  {/* <SearchIcon
+                    width="25px"
+                    height="25px"
+                    className="moblie-icon"
+                  /> */}
+                  <Image
+                    src={"/images/home.png"}
+                    width={34}
+                    height={34}
+                    alt=""
+                    style={{ objectFit: "cover" }}
+                  />
+                  <p className={menu === 2 ? "mobile-active" : "mobile-p"}>
+                    Trang chủ
                   </p>
                 </button>
               </li>
