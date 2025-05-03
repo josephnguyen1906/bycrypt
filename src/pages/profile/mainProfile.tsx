@@ -70,7 +70,7 @@ export default function MainProfile() {
     try {
       const response = await getListUserBank();
       const availableBanks = response.data;
-      setBankUser(null);
+      setBankUser(availableBanks[0]);
     } catch (error) {
       console.error("availableBankList is error", error);
     }

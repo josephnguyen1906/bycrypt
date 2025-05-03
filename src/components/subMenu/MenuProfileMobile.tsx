@@ -79,7 +79,7 @@ export default function MenuProfileMobile(data: userProps) {
     {
       text: "Quản lý tài khoản",
       icon: <ProfileIcon />,
-      onClick: () => route.push("/profile/personal-detail"),
+      onClick: () => route.push("/profile"),
     },
     {
       text: "Giao dịch P2P",
