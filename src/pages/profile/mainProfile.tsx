@@ -128,7 +128,10 @@ export default function MainProfile() {
           color: "white",
           padding: 2,
           borderRadius: 2,
-          height: "500px",
+          height: {
+            xs: "700px",
+            sm: "500px",
+          },
           width: "93%",
           margin: "auto",
         }}
@@ -141,7 +144,10 @@ export default function MainProfile() {
               "url(https://staticda88.com/images/account/layout/account-info.webp)",
             backgroundSize: "100% 100%",
             borderRadius: "8px",
-            display: "flex",
+            display: {
+              xs: "none",
+              sm: "flex",
+            },
             gap: "10px",
             height: "66px",
             minWidth: "400px",
@@ -196,7 +202,10 @@ export default function MainProfile() {
             color: "white",
             padding: 2,
             borderRadius: 2,
-            height: "500px",
+            height: {
+              xs: "700px",
+              sm: "500px",
+            },
             width: "100%",
             margin: "auto",
           }}
@@ -242,7 +251,7 @@ export default function MainProfile() {
           {activeTab === "account" ? (
             // Tab Quản lý tài khoản
             <Grid container spacing={2}>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <Typography variant="body1" sx={{ mb: 1, color: "white" }}>
                   Tên đăng nhập
                 </Typography>
@@ -267,7 +276,7 @@ export default function MainProfile() {
                   }}
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <Typography variant="body1" sx={{ mb: 1, color: "white" }}>
                   Email
                 </Typography>
@@ -289,7 +298,7 @@ export default function MainProfile() {
                   }}
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <Typography variant="body1" sx={{ mb: 1, color: "white" }}>
                   Tên hiển thị
                 </Typography>
@@ -310,7 +319,7 @@ export default function MainProfile() {
                   }}
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <Typography variant="body1" sx={{ mb: 1, color: "white" }}>
                   Mật khẩu
                 </Typography>
@@ -332,7 +341,7 @@ export default function MainProfile() {
                   }}
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <Typography variant="body1" sx={{ mb: 1, color: "white" }}>
                   Số điện thoại
                 </Typography>
@@ -354,7 +363,7 @@ export default function MainProfile() {
                   }}
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <Button
                   variant="contained"
                   sx={{
@@ -433,7 +442,7 @@ export default function MainProfile() {
                       Thêm tài khoản ngân hàng
                     </Typography>
                     <Grid container spacing={2}>
-                      <Grid item xs={6}>
+                      <Grid item xs={6} sm={12}>
                         <Typography
                           variant="body1"
                           sx={{ mb: 1, color: "white" }}
@@ -454,7 +463,7 @@ export default function MainProfile() {
                           // Add onChange handler and state for bank name
                         />
                       </Grid>
-                      <Grid item xs={6}>
+                      <Grid item xs={6} sm={12}>
                         <Typography
                           variant="body1"
                           sx={{ mb: 1, color: "white" }}
