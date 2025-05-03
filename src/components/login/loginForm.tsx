@@ -168,9 +168,10 @@ const DialogLogin = (props: propPopup) => {
 
                   <div className="forgot">Quên mật khẩu?</div>
                   <button
-                    className="submit-btn"
+                    className={`submit-btn ${
+                      userName && password ? "active" : ""
+                    }`}
                     onClick={login}
-                    disabled={loadding}
                   >
                     Đăng nhập
                   </button>
@@ -231,9 +232,10 @@ const DialogLogin = (props: propPopup) => {
                   </div>
 
                   <button
-                    className="submit-btn"
+                    className={`submit-btn ${
+                      userName && password && email && phone ? "active" : ""
+                    }`}
                     onClick={signup}
-                    disabled={loadding}
                   >
                     Đăng ký
                   </button>

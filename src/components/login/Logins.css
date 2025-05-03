@@ -89,6 +89,13 @@ input[type="email"] {
     font-size: 18px;
 }
 
+.submit-btn.active {
+    background-image:
+        url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn);
+
+    cursor: pointer;
+}
+
 
 @media(max-width: 500px) {
     .auth-box {
