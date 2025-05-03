@@ -34,7 +34,7 @@ header {
 }
 
 .header-bottom {
-    max-width: 40%;
+    min-width: 37%;
 }
 
 .header-bottom ul {
