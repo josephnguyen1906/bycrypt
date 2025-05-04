@@ -3,42 +3,24 @@ import LoadingComponent from "@/components/Loading";
 import useAuth from "@/hook/useAuth";
 import "./profile.css";
 import {
-  ProfileBettingHistory,
-  ProfileDeposit,
-  ProfileDepositStep1,
-  ProfileDepositStep2,
-  ProfileDepositStep3,
-  ProfileDiscount,
-  ProfileEmptyIcon,
-  ProfileGeneral,
-  ProfileTransHistory,
-  ProfileUserInfo,
-  ProfileWBankAccount,
-  ProfileWithdraw,
+  BankIcon,
+  BankMenuIcon,
+  CopyIcon,
+  NapMenuIcon,
+  ProfileBankIcon,
+  RutMenuIcon,
 } from "@/shared/Svgs/Svg.component";
 import {
-  Avatar,
   Box,
   Button,
-  Card,
-  CardContent,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControl,
-  FormControlLabel,
   Grid,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  Select,
-  Step,
-  Stepper,
+  Stack,
+  Tab,
+  Tabs,
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { createQRBank, getListBankPayment } from "@/services/Bank.service";
 import swal from "sweetalert";
@@ -48,8 +30,41 @@ import DepostQRBankComponent from "@/components/popup/DepostQRBank.component";
 import SimpleBackdrop from "@/components/Loading/LoaddingPage";
 import "./profile.css";
 import NavigationGame from "@/hook/NavigationGame";
-import { formatCurrency } from "@/utils/formatMoney";
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
+const formatCurrency = (value: any) => {
+  if (!value && value !== 0) return "";
+  // Format as integer with comma separators
+  return Number(value).toLocaleString("vi-VN", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+};
 export default function Deposit() {
   const { user, loading } = useAuth();
   const [load, setLoad] = useState<boolean>(false);
@@ -57,7 +72,63 @@ export default function Deposit() {
   const router = useRouter();
   const [qrData, setQrData] = useState<any | null>(null);
   const [openPopup, setOpenPopup] = useState(false);
-  // handle steps
+  const [timeLeft, setTimeLeft] = useState(30 * 60); // 30 minutes in seconds
+  const [value, setValue] = React.useState(0);
+  const [amount, setAmount] = useState<number | null>(null);
+  const [inputValue, setInputValue] = useState<string>(""); // Track raw input
+  const instructionsRef = useRef<HTMLDivElement>(null); // Ref for Instructions Grid
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  useEffect(() => {
+    // Reset timer when the dialog is opened
+    if (qrData) {
+      setTimeLeft(30 * 60); // Reset to 30 minutes
+    }
+
+    let timer: NodeJS.Timeout;
+
+    if (qrData) {
+      timer = setInterval(() => {
+        setTimeLeft((prevTime) => {
+          if (prevTime <= 0) {
+            clearInterval(timer); // Stop timer when timeLeft reaches 0
+            return 0;
+          }
+          return prevTime - 1;
+        });
+      }, 1000);
+    }
+
+    return () => clearInterval(timer); // Cleanup timer when component unmounts or dialog closes
+  }, [qrData]);
+
+  // Scroll to Instructions Grid on mobile when qrData is set
+  useEffect(() => {
+    if (qrData && instructionsRef.current && window.innerWidth < 600) {
+      // xs breakpoint ~600px
+      instructionsRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center", // Center the Instructions Grid in the viewport
+      });
+    }
+  }, [qrData]);
+
+  // Format timeLeft into MM:SS
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes.toString().padStart(2, "0")}:${secs
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  const copyToClipboard = (text: any) => {
+    navigator.clipboard.writeText(text);
+    alert(`sao chép: ${text}`);
+  };
   useEffect(() => {
     getListBankPayment().then((res) => {
       if (res.data.length > 0) {
@@ -65,90 +136,47 @@ export default function Deposit() {
       }
     });
   }, []);
-  const steps = [
-    {
-      icon: <ProfileGeneral height="24px" width="24px" />, // Replace with actual icon components
-      title: "General",
-      link: "/profile/",
-    },
-    {
-      icon: <ProfileUserInfo height="24px" width="24px" />,
-      title: "Personal Details",
-      link: "/profile/personal-detail",
-    },
-    {
-      icon: <ProfileDeposit fill="green" height="24px" width="24px" />,
-      title: "Deposit Money",
-      link: "/profile/account-deposit",
-    },
-    {
-      icon: <ProfileWithdraw height="24px" width="24px" />,
-      title: "Withdraw Money",
-      link: "/profile/account-withdraw",
-    },
-    {
-      icon: <ProfileWBankAccount height="24px" width="24px" />,
-      title: "Bank Account",
-      link: "/profile/bank-account",
-    },
-    {
-      icon: <ProfileDiscount height="24px" width="24px" />,
-      title: "Promotion",
-      link: "/profile/account-promotion",
-    },
-    {
-      icon: <ProfileBettingHistory height="24px" width="24px" />,
-      title: "Betting History",
-      link: "/profile/betting-history",
-    },
-    {
-      icon: <ProfileTransHistory height="24px" width="24px" />,
-      title: "Transaction History",
-      link: "/profile/transaction-history",
-    },
-  ];
 
-  const [activeStep, setActiveStep] = useState<number>(2);
-
-  const [amount, setAmount] = React.useState<string>();
   const quickOptions = [
-    "50000",
-    "100000",
-    "200000",
-    "300000",
-    "400000",
-    "500000",
-    "1000000",
-    "2000000",
+    50000, 100000, 200000, 300000, 400000, 500000, 1000000, 2000000,
   ];
-
-  const handleQuickSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(event.target.value);
-  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(event.target.value);
+    // Allow only numbers (strip commas, decimals, and other characters)
+    const rawValue = event.target.value.replace(/[^0-9]/g, "");
+    const numericValue = rawValue ? parseInt(rawValue, 10) : null;
+
+    // Update input value for display (with commas)
+    setInputValue(numericValue ? formatCurrency(numericValue) : "");
+
+    // Validate: only allow values > 50,000
+    if (numericValue === null || numericValue > 50000) {
+      setAmount(numericValue);
+    } else {
+      setAmount(null);
+    }
   };
 
   const deposit = () => {
-    if (bankAdmin) {
+    if (bankAdmin && amount) {
       setLoad(true);
-      createQRBank(bankAdmin?.bankProvide, Number(amount)).then((res: any) => {
-        if (res.status === true) {
-          console.log(res);
-
-          setQrData(res);
-          setOpenPopup(true);
-          setLoad(false);
-        } else {
-          swal("Depost", res.msg, "error");
-          setLoad(false);
+      // Send integer value to backend
+      createQRBank(bankAdmin?.bankProvide, Math.floor(Number(amount))).then(
+        (res: any) => {
+          if (res.status === true) {
+            console.log(res);
+            setQrData(res);
+            setLoad(false);
+          } else {
+            swal("Nạp tiền", res.msg, "error");
+            setLoad(false);
+          }
         }
-      });
+      );
     } else {
       swal(
-        "Depost",
-        "Unable to recharge at this time, Please recharge at another time",
+        "Nạp Tiền",
+        "Không thể nạp tiền vào lúc này, Vui lòng nạp tiền vào thời điểm khác",
         "error"
       );
     }
@@ -160,725 +188,424 @@ export default function Deposit() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        // backgroundColor: "#020D24",
-        width: { xs: "90%", sm: "80%" },
-        height: { xs: "1000px", sm: "800px" },
-        paddingTop: { xs: 75, sm: 20 },
-        // paddingBottom: { xs: 60, sm: 0 },
+        width: { xs: "97%", sm: "80%" },
+        height: "auto",
+        paddingTop: { xs: 9, sm: 12 },
+        paddingBottom: { xs: 1, sm: "20px" },
         margin: "auto",
         gap: 2,
       }}
     >
-      <Grid
-        className="profile-main"
-        sx={{
-          backgroundColor: "#0F192F",
-          borderRadius: 3,
-          width: "90%",
-          maxWidth: 272,
-          textAlign: "center",
-        }}
-      >
-        <Grid sx={{ borderBottom: "1px solid #020d24" }}>
-          <Box
-            sx={{
-              position: "relative",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: -10,
-            }}
-          >
-            <Avatar
-              alt="Remy Sharp"
-              src="/images/avatar-4.webp"
-              sx={{
-                width: 132,
-                height: 132,
-              }}
-            />
-          </Box>
-          <Typography
-            variant="h6"
-            gutterBottom
-            sx={{
-              textAlign: "center",
-              backgroundColor: "transparent",
-              color: "white",
-            }}
-          >
-            {" "}
-            {user?.name}
-          </Typography>
-          <Typography
-            variant="body2"
-            gutterBottom
-            sx={{ color: "yellow", textAlign: "center" }}
-          >
-            {" "}
-            {formatCurrency(user?.coin ?? 0)}USD
-          </Typography>
-        </Grid>
-
-        <Stepper
-          connector={<></>}
-          orientation="vertical"
-          activeStep={activeStep}
-          sx={{
-            backgroundColor: "#0F192F",
-            borderRadius: 3,
-            width: "100%",
-            maxWidth: "360px",
-            maxHeight: "384px",
-            height: "384px",
-            textAlign: "center",
-            position: "relative",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            marginTop: 2,
-          }}
-        >
-          {steps.map((step, index) => (
-            <Step key={index} onClick={() => setActiveStep(index)}>
-              <div
-                className={
-                  activeStep === index ? "step-label-active" : "step-label"
-                }
-                style={{ height: "48px", cursor: "pointer" }}
-                onClick={() => {
-                  if (step.title === "Deposit Money") {
-                    window.open(
-                      "https://t.me/HitJuwa",
-                      "_blank",
-                      "noopener,noreferrer"
-                    );
-                  } else {
-                    router.replace(step.link);
-                  }
-                }}
-              >
-                <div
-                  style={{
-                    alignItems: "center",
-                    display: "flex",
-                    fontSize: "16px",
-                    gap: "10px",
-                    fontWeight: 600,
-                    lineHeight: "24px",
-                    padding: "12px 24px",
-                  }}
-                >
-                  {step.icon} {/* Render the icon */}
-                  <Typography
-                    className={
-                      activeStep === index ? "step-title-active" : "step-title"
-                    }
-                  >
-                    {step.title}
-                  </Typography>
-                </div>
-              </div>
-            </Step>
-          ))}
-        </Stepper>
-      </Grid>
-
       <Box
         sx={{
           width: "100%",
           borderRadius: 6.5,
-          pt: (theme) => `${theme.spacing(6)} !important`,
-          backgroundColor: "#0F192F",
-          padding: 6,
+          backgroundColor: "#232B4F",
         }}
       >
-        {loading || load ? (
-          <>
-            <SimpleBackdrop />
-            <Grid
-              container
-              spacing={3}
-              sx={{
-                justifyContent: { xs: "center", sm: "left" },
-              }}
-            >
-              <Typography
-                variant="h6"
-                sx={{
+        <Box
+          sx={{
+            borderBottom: 1,
+            borderColor: "divider",
+            backgroundColor: "#020D24",
+          }}
+        >
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            sx={{
+              "& .MuiTab-root": {
+                color: "white",
+                "&.Mui-selected": {
+                  backgroundColor: "#232B4F",
                   color: "white",
-                  marginBottom: 2,
-                }}
-              >
-                Withdraw money
-              </Typography>
-            </Grid>
-            {/* Input Field */}
+                  borderRadius: "10px 10px 0px 0px",
+                },
+              },
+              "& .MuiTabs-indicator": {
+                backgroundColor: "#232B4F",
+              },
+            }}
+          >
+            <Tab
+              label="Nạp Tiền"
+              icon={<NapMenuIcon />}
+              iconPosition="start"
+              {...a11yProps(0)}
+            />
+            <Tab
+              label="Rút Tiền"
+              icon={<RutMenuIcon />}
+              iconPosition="start"
+              {...a11yProps(1)}
+            />
+          </Tabs>
+        </Box>
+        <CustomTabPanel value={value} index={0}>
+          <Grid
+            container
+            sx={{
+              backgroundColor: "#232B4F",
+              width: "100%",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexDirection: { xs: "column", sm: "row" },
+              padding: 2,
+            }}
+          >
             <Grid
               container
               sx={{
-                backgroundColor: "#0F192F",
-                width: "100%",
-                borderRadius: "8px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                flexDirection: { xs: "column", sm: "row" },
+                width: { xs: "100%", sm: "51%" },
+                spacing: 1,
               }}
             >
-              <Grid
-                container
-                sx={{
-                  width: { xs: "100%", sm: "51%" },
-                  spacing: 1,
-                }}
-              >
-                <Box sx={{ marginBottom: 2, width: "100%" }}>
-                  <Grid display={"flex"} justifyContent={"space-between"}>
-                    <Typography
-                      sx={{ color: "#808687", marginBottom: 2 }}
-                      variant="body2"
-                      gutterBottom
-                    >
-                      Enter the deposit amount
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{
-                        textAlign: "right",
-                        marginTop: 1,
-                        color: "green",
-                      }}
-                    >
-                      = {Number(amount ?? 0).toLocaleString("en-US")}USD
-                    </Typography>
-                  </Grid>
-                  <TextField
-                    sx={{
-                      backgroundColor: "#2A3144",
-                      borderRadius: "8px",
-                      "& .MuiInputBase-input": {
-                        color: "white",
-                      },
-                    }}
-                    fullWidth
-                    variant="outlined"
-                    value={amount ?? 0}
-                    onChange={handleInputChange}
-                    placeholder="From 50USD - 1,000,000USD"
-                    InputProps={{
-                      startAdornment: (
-                        <Typography sx={{ marginRight: 1, color: "white" }}>
-                          $
-                        </Typography>
-                      ),
-                    }}
-                  />
-                </Box>
-
-                {/* Quick Select Options */}
-                <Box sx={{ marginBottom: 2, width: "100%" }}>
+              <Box sx={{ marginBottom: 8, display: "flex", gap: "10px" }}>
+                <Button
+                  sx={{
+                    display: "flex",
+                    backgroundImage:
+                      "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+                    color: "white",
+                    borderRadius: "5px",
+                    textTransform: "none",
+                    fontSize: "14px",
+                    width: "150px",
+                    height: "38px",
+                    border: "none",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    justifyItems: "center",
+                    cursor: "pointer",
+                    fontWeight: 600,
+                    margin: "auto",
+                  }}
+                >
+                  <BankIcon /> Ví điện tử
+                </Button>
+                <Button
+                  sx={{
+                    display: "flex",
+                    background: "#384375",
+                    color: "white",
+                    borderRadius: "5px",
+                    textTransform: "none",
+                    fontSize: "14px",
+                    width: "150px",
+                    height: "38px",
+                    border: "none",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    justifyItems: "center",
+                    cursor: "pointer",
+                    fontWeight: 600,
+                    margin: "auto",
+                  }}
+                >
+                  <Image
+                    src={"/images/icon-crypto.webp"}
+                    width={25}
+                    height={25}
+                    alt=""
+                  />{" "}
+                  Tiền ảo
+                </Button>
+              </Box>
+              <Box sx={{ marginBottom: 2, width: "100%" }}>
+                <Grid display={"flex"} justifyContent={"space-between"}>
                   <Typography
+                    sx={{ color: "white", marginBottom: 2, fontWeight: 600 }}
                     variant="body2"
-                    sx={{ marginTop: 3, marginBottom: 1, color: "#808687" }}
                     gutterBottom
                   >
-                    Quick Pick
+                    Nhập số tiền cần nạp (K)
                   </Typography>
-                  <Grid container spacing={2} sx={{ flexWrap: "wrap", gap: 1 }}>
-                    {quickOptions.map((option) => (
-                      <Grid item key={option}>
-                        <Button
-                          variant="contained"
-                          sx={{
-                            minWidth: "70px",
-                            padding: "6px 12px",
-                            border: "1px solid",
-                            borderColor:
-                              amount === option ? "green" : "#2A3144",
-                            backgroundColor:
-                              amount === option ? "#1B2735" : "#2A3144",
-                            color: amount === option ? "green" : "#fff",
-                            fontWeight: "bold",
-                            borderRadius: "8px",
-                            cursor: "pointer",
-                            transition: "all 0.3s",
-                            "&:hover": {
-                              borderColor: "green",
-                            },
-                          }}
-                          onClick={() => setAmount(option)}
-                        >
-                          {Number(option).toLocaleString("en-US")}
-                        </Button>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Box>
-
-                {/* Generate QR Code Button */}
-                <Box sx={{ marginBottom: 2, width: "100%" }}>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    color="success"
-                    href="https://t.me/HitJuwa"
-                    sx={{
-                      marginTop: 4,
-                      borderRadius: "8px",
-                      padding: "10px 20px",
-                    }}
-                  >
-                    Create a QR code
-                  </Button>
-                </Box>
-              </Grid>
-              {/* Instructions */}
-              <Grid
-                container
-                sx={{
-                  width: { xs: "100%", sm: "47%" },
-                  spacing: 2,
-                  borderRadius: 5,
-                  padding: 3,
-                  backgroundColor: "#0D1322",
-                  height: { xs: "auto", sm: "350px" },
-                  gap: { xs: 5, sm: 0 },
-                  // flexDirection: "column",
-                }}
-              >
-                <Grid width={"100%"} spacing={2}>
-                  <h6 style={{ color: "#808691", fontSize: 10 }}>
-                    QR code scanning instructions
-                  </h6>
                 </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Card
-                    sx={{
-                      backgroundColor: "#272B32",
-                      width: "95%",
-                      height: "170px",
-                    }}
-                  >
-                    <CardContent
-                      sx={{
-                        width: "100%",
-                        display: "block",
-                        justifyItems: "center",
-                      }}
-                    >
-                      <ProfileDepositStep1 width="36px" height="36px" />
-                      <Typography
-                        sx={{
-                          color: "white",
-                          fontSize: 14,
-                          textAlign: "center",
-                        }}
-                        variant="h6"
-                        gutterBottom
-                      >
-                        Step 1
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{ fontSize: 10, textAlign: "center" }}
-                      >
-                        Enter the amount and tap generate QR code.
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Card
-                    sx={{
-                      backgroundColor: "#272B32",
-                      width: "95%",
-                      height: "170px",
-                    }}
-                  >
-                    <CardContent
-                      sx={{
-                        width: "100%",
-                        display: "block",
-                        justifyItems: "center",
-                      }}
-                    >
-                      <ProfileDepositStep2 width={"36px"} height="36px" />
-                      <Typography
-                        sx={{
-                          color: "white",
-                          fontSize: 14,
-                          textAlign: "center",
-                        }}
-                        variant="h6"
-                        gutterBottom
-                      >
-                        Step 2
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{ fontSize: 10, textAlign: "center" }}
-                      >
-                        Log in to the banking app and scan the QR code.
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Card
-                    sx={{
-                      backgroundColor: "#272B32",
-                      width: "95%",
-                      height: "170px",
-                    }}
-                  >
-                    <CardContent
-                      sx={{
-                        width: "100%",
-                        display: "block",
-                        justifyItems: "center",
-                      }}
-                    >
-                      <ProfileDepositStep3 height="36px" width="36px" />
-                      <Typography
-                        sx={{
-                          color: "white",
-                          fontSize: 14,
-                          textAlign: "center",
-                        }}
-                        variant="h6"
-                        gutterBottom
-                      >
-                        Step 3
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{ fontSize: 10, textAlign: "center" }}
-                      >
-                        Make money transfers with the content provided by the
-                        system level.
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid
-                  justifyContent={"space-between"}
-                  direction={"column"}
-                  spacing={3}
-                >
-                  <h6 style={{ color: "yellow", padding: 5 }}>*Note:</h6>
-
-                  <h6 style={{ color: "#808691", fontSize: 10, padding: 3 }}>
-                    - This code can only{" "}
-                    <strong style={{ fontWeight: 600, color: "white" }}>
-                      be USED 1 TIME.
-                    </strong>
-                  </h6>
-
-                  <h6 style={{ color: "#808691", fontSize: 10, padding: 3 }}>
-                    - Applicable to cashback promotions only.
-                  </h6>
-                </Grid>
-              </Grid>
-            </Grid>
-          </>
-        ) : (
-          <>
-            <Grid
-              container
-              spacing={3}
-              sx={{
-                justifyContent: { xs: "center", sm: "left" },
-              }}
-            >
-              <Typography
-                variant="h6"
-                sx={{
-                  color: "white",
-                  marginBottom: 2,
-                }}
-              >
-                Withdraw money
-              </Typography>
-            </Grid>
-            {/* Input Field */}
-            <Grid
-              container
-              sx={{
-                backgroundColor: "#0F192F",
-                width: "100%",
-                borderRadius: "8px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                flexDirection: { xs: "column", sm: "row" },
-              }}
-            >
-              <Grid
-                container
-                sx={{
-                  width: { xs: "100%", sm: "51%" },
-                  spacing: 1,
-                }}
-              >
-                <Box sx={{ marginBottom: 2, width: "100%" }}>
-                  <Grid display={"flex"} justifyContent={"space-between"}>
-                    <Typography
-                      sx={{ color: "#808687", marginBottom: 2 }}
-                      variant="body2"
-                      gutterBottom
-                    >
-                      Enter the deposit amount
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{
-                        textAlign: "right",
-                        marginTop: 1,
-                        color: "green",
-                      }}
-                    >
-                      = {Number(amount ?? 0).toLocaleString("en-US")}USD
-                    </Typography>
-                  </Grid>
-                  <TextField
-                    sx={{
-                      backgroundColor: "#2A3144",
-                      borderRadius: "8px",
-                      "& .MuiInputBase-input": {
-                        color: "white",
+                <TextField
+                  sx={{
+                    backgroundColor: "#2A3144",
+                    borderRadius: "8px",
+                    "& .MuiInputBase-input": {
+                      color: "white",
+                    },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        border: "none",
                       },
-                    }}
-                    fullWidth
-                    variant="outlined"
-                    value={amount ?? 0}
-                    onChange={handleInputChange}
-                    placeholder="From 50USD - 1,000,000USD"
-                    InputProps={{
-                      startAdornment: (
-                        <Typography sx={{ marginRight: 1, color: "white" }}>
-                          $
-                        </Typography>
-                      ),
-                    }}
-                  />
-                </Box>
+                      "&:hover fieldset": {
+                        border: "none",
+                      },
+                      "&.Mui-focused fieldset": {
+                        border: "none",
+                      },
+                    },
+                  }}
+                  fullWidth
+                  value={inputValue} // Display formatted input with commas
+                  onChange={handleInputChange}
+                  placeholder="Từ 50,000đ trở lên"
+                  inputProps={{
+                    inputMode: "numeric", // Optimize for numeric input on mobile
+                  }}
+                  type="text"
+                />
+              </Box>
 
-                {/* Quick Select Options */}
-                <Box sx={{ marginBottom: 2, width: "100%" }}>
-                  <Typography
-                    variant="body2"
-                    sx={{ marginTop: 3, marginBottom: 1, color: "#808687" }}
-                    gutterBottom
-                  >
-                    Quick Pick
-                  </Typography>
-                  <Grid container spacing={2} sx={{ flexWrap: "wrap", gap: 1 }}>
-                    {quickOptions.map((option) => (
-                      <Grid item key={option}>
-                        <Button
-                          variant="contained"
-                          sx={{
-                            minWidth: "70px",
-                            padding: "6px 12px",
-                            border: "1px solid",
-                            borderColor:
-                              amount === option ? "green" : "#2A3144",
-                            backgroundColor:
-                              amount === option ? "#1B2735" : "#2A3144",
-                            color: amount === option ? "green" : "#fff",
-                            fontWeight: "bold",
-                            borderRadius: "8px",
-                            cursor: "pointer",
-                            transition: "all 0.3s",
-                            "&:hover": {
-                              borderColor: "green",
-                            },
-                          }}
-                          onClick={() => setAmount(option)}
-                        >
-                          {Number(option).toLocaleString("en-US")}
-                        </Button>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Box>
+              {/* Quick Select Options */}
+              <Box sx={{ marginBottom: 2, width: "100%" }}>
+                <Grid
+                  container
+                  sx={{ flexWrap: "wrap", gap: "10px", width: "100%" }}
+                >
+                  {quickOptions.map((option) => (
+                    <Grid item key={option}>
+                      <Button
+                        sx={{
+                          minWidth: "135px",
+                          backgroundColor:
+                            amount === option ? "#008AFF" : "#59638d",
+                          color: amount === option ? "#fff" : "#fff",
+                          fontWeight: "bold",
+                          borderRadius: "8px",
+                          cursor: "pointer",
+                          transition: "all 0.3s",
+                          "&:hover": {
+                            backgroundColor: "#008AFF",
+                          },
+                        }}
+                        onClick={() => {
+                          setAmount(option);
+                          setInputValue(formatCurrency(option)); // Update input display with commas
+                        }}
+                      >
+                        {Number(option).toLocaleString("en-US")} K
+                      </Button>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
 
-                {/* Generate QR Code Button */}
-                <Box sx={{ marginBottom: 2, width: "100%" }}>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    color="success"
-                    onClick={() => NavigationGame("https://t.me/HitJuwa")}
-                    sx={{
-                      marginTop: 4,
-                      borderRadius: "8px",
-                      padding: "10px 20px",
-                    }}
-                  >
-                    Create a QR code
-                  </Button>
-                </Box>
-              </Grid>
-              {/* Instructions */}
-              <Grid
-                container
+              {/* Generate QR Code Button */}
+              <Box sx={{ marginTop: 2, width: "100%" }}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="success"
+                  onClick={() => deposit()}
+                  sx={{
+                    display: "flex",
+                    backgroundImage:
+                      "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+                    color: "white",
+                    borderRadius: "20px",
+                    textTransform: "none",
+                    fontSize: "14px",
+                    width: "250px",
+                    height: "38px",
+                    border: "none",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    cursor: "pointer",
+                    margin: "auto",
+                  }}
+                >
+                  Tạo Mã QR nạp
+                </Button>
+              </Box>
+              <Box
                 sx={{
-                  width: { xs: "100%", sm: "47%" },
-                  spacing: 2,
-                  borderRadius: 5,
-                  padding: 3,
-                  backgroundColor: "#0D1322",
-                  height: { xs: "auto", sm: "350px" },
-                  gap: { xs: 5, sm: 0 },
-                  // flexDirection: "column",
+                  width: "100%",
+                  color: "white",
+                  padding: 2,
+                  borderRadius: "8px",
+                  marginTop: 5,
+                  border: "1px dashed #384375",
                 }}
               >
-                <Grid width={"100%"} spacing={2}>
-                  <h6 style={{ color: "#808691", fontSize: 10 }}>
-                    QR code scanning instructions
-                  </h6>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Card
-                    sx={{
-                      backgroundColor: "#272B32",
-                      width: "95%",
-                      height: "170px",
-                    }}
-                  >
-                    <CardContent
-                      sx={{
-                        width: "100%",
-                        display: "block",
-                        justifyItems: "center",
-                      }}
-                    >
-                      <ProfileDepositStep1 width="36px" height="36px" />
-                      <Typography
-                        sx={{
-                          color: "white",
-                          fontSize: 14,
-                          textAlign: "center",
-                        }}
-                        variant="h6"
-                        gutterBottom
-                      >
-                        Step 1
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{ fontSize: 10, textAlign: "center" }}
-                      >
-                        Enter the amount and tap generate QR code.
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Card
-                    sx={{
-                      backgroundColor: "#272B32",
-                      width: "95%",
-                      height: "170px",
-                    }}
-                  >
-                    <CardContent
-                      sx={{
-                        width: "100%",
-                        display: "block",
-                        justifyItems: "center",
-                      }}
-                    >
-                      <ProfileDepositStep2 width={"36px"} height="36px" />
-                      <Typography
-                        sx={{
-                          color: "white",
-                          fontSize: 14,
-                          textAlign: "center",
-                        }}
-                        variant="h6"
-                        gutterBottom
-                      >
-                        Step 2
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{ fontSize: 10, textAlign: "center" }}
-                      >
-                        Log in to the banking app and scan the QR code.
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Card
-                    sx={{
-                      backgroundColor: "#272B32",
-                      width: "95%",
-                      height: "170px",
-                    }}
-                  >
-                    <CardContent
-                      sx={{
-                        width: "100%",
-                        display: "block",
-                        justifyItems: "center",
-                      }}
-                    >
-                      <ProfileDepositStep3 height="36px" width="36px" />
-                      <Typography
-                        sx={{
-                          color: "white",
-                          fontSize: 14,
-                          textAlign: "center",
-                        }}
-                        variant="h6"
-                        gutterBottom
-                      >
-                        Step 3
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{ fontSize: 10, textAlign: "center" }}
-                      >
-                        Make money transfers with the content provided by the
-                        system level.
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid
-                  justifyContent={"space-between"}
-                  direction={"column"}
-                  spacing={3}
+                <Typography
+                  variant="body2"
+                  sx={{ color: "#fbc16c", fontWeight: "bold", marginBottom: 1 }}
                 >
-                  <h6 style={{ color: "yellow", padding: 5 }}>*Note:</h6>
-
-                  <h6 style={{ color: "#808691", fontSize: 10, padding: 3 }}>
-                    - This code can only{" "}
-                    <strong style={{ fontWeight: 600, color: "white" }}>
-                      be USED 1 TIME.
-                    </strong>
-                  </h6>
-
-                  <h6 style={{ color: "#808691", fontSize: 10, padding: 3 }}>
-                    - Applicable to cashback promotions only.
-                  </h6>
-                </Grid>
-              </Grid>
+                  Lưu ý:
+                </Typography>
+                <ul style={{ paddingLeft: 20, margin: 0 }}>
+                  <li style={{ listStyle: "outside" }}>
+                    <Typography variant="body2" sx={{ color: "white" }}>
+                      Nạp/Rút tiền tại tài khoản chính chủ.
+                    </Typography>
+                  </li>
+                  <li style={{ listStyle: "outside" }}>
+                    <Typography variant="body2" sx={{ color: "white" }}>
+                      Nạp tiền vào tài khoản bên cạnh.
+                    </Typography>
+                  </li>
+                </ul>
+              </Box>
             </Grid>
-          </>
-        )}
+
+            {/* Instructions */}
+            <Grid
+              container
+              ref={instructionsRef} // Attach ref to Instructions Grid
+              sx={{
+                width: { xs: "100%", sm: "47%" },
+                spacing: 2,
+                borderRadius: 5,
+                padding: 1,
+                backgroundColor: "#2D355D",
+                height: { xs: "auto", sm: "auto" },
+                marginTop: { xs: 2, sm: 0 },
+                gap: { xs: 2, sm: 0 },
+              }}
+            >
+              <Box
+                sx={{
+                  padding: { xs: "5px", sm: "10px" },
+                  textAlign: "center",
+                  width: { xs: "90%", sm: "100%" },
+                  margin: "auto",
+                }}
+              >
+                {/* QR Code */}
+                <Image
+                  width={80}
+                  height={80}
+                  src={qrData?.qrCodeUrl ?? "/images/deposit-qr.webp"}
+                  alt="QR Code"
+                  style={{
+                    width: "auto",
+                    height: "150px",
+                    borderRadius: "8px",
+                    marginBottom: "15px",
+                  }}
+                />
+
+                {/* Timer */}
+                <Typography
+                  variant="h5"
+                  sx={{
+                    color: "#ff4d4f",
+                    fontWeight: "bold",
+                    marginBottom: "15px",
+                  }}
+                >
+                  {qrData ? formatTime(timeLeft) : ""}
+                </Typography>
+
+                {/* Details */}
+                <Stack spacing={2}>
+                  {[
+                    {
+                      label: "Ngân hàng",
+                      value: qrData?.inforPayment.bankProvide,
+                    },
+                    {
+                      label: "Số tài khoản",
+                      value: qrData?.inforPayment.bankNumber,
+                    },
+                    {
+                      label: "Chủ tài khoản",
+                      value: qrData?.inforPayment.bankName,
+                    },
+                    {
+                      label: "Số tiền nạp",
+                      value: qrData?.inforPayment.amount
+                        ? formatCurrency(qrData?.inforPayment.amount)
+                        : "...",
+                    },
+                    {
+                      label: "Mã chuyển tiền",
+                      value: qrData?.inforPayment.fullContent,
+                    },
+                  ].map((item, index) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        fontSize: "12px",
+                        lineHeight: "10px",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontWeight: "bold",
+                          fontSize: "12px",
+                        }}
+                      >
+                        {item.label ?? "..."}
+                      </Typography>
+                      <Stack direction="row" spacing={1}>
+                        <Typography
+                          sx={{
+                            fontWeight: "bold",
+                            color: "white",
+                            fontSize: "12px",
+                            textAlign: "right",
+                          }}
+                        >
+                          {item.value ?? "..."}
+                        </Typography>
+                        {qrData ? (
+                          <Button
+                            size="small"
+                            onClick={() => copyToClipboard(item.value)}
+                          >
+                            <CopyIcon />
+                          </Button>
+                        ) : (
+                          ""
+                        )}
+                      </Stack>
+                    </Box>
+                  ))}
+                </Stack>
+                {qrData ? (
+                  <button
+                    style={{
+                      display: "flex",
+                      backgroundImage:
+                        "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+                      color: "white",
+                      borderRadius: "20px",
+                      textTransform: "none",
+                      fontSize: "14px",
+                      width: "200px",
+                      height: "38px",
+                      border: "none",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      justifyItems: "center",
+                      cursor: "pointer",
+                      fontWeight: 600,
+                      margin: "auto",
+                      marginTop: "15px",
+                    }}
+                    onClick={() => {
+                      swal(
+                        "Nạp tiền",
+                        "Hệ thống sẽ tự động kiểm tra và thêm điểm cho bạn",
+                        "success"
+                      );
+                      setQrData(null);
+                      setAmount(null);
+                      setInputValue(""); // Reset input
+                    }}
+                  >
+                    Xác nhận đã nạp tiền
+                  </button>
+                ) : (
+                  ""
+                )}
+              </Box>
+            </Grid>
+          </Grid>
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}></CustomTabPanel>
       </Box>
-
-      <DepostQRBankComponent
-        open={openPopup}
-        data={qrData}
-        onClose={() => setOpenPopup(false)}
-      />
     </Box>
   );
 }

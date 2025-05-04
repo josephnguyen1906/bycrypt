@@ -84,8 +84,7 @@ export default function MenuProfileMobile(data: userProps) {
     {
       text: "Giao dịch P2P",
       icon: <P2PMenuIcon />,
-      onClick: () =>
-        window.open("https://t.me/HitJuwa", "_blank", "noopener,noreferrer"),
+      onClick: () => route.push("/profile/account-deposit"),
     },
     {
       text: "Quản lý ngân hàng",
@@ -183,15 +182,7 @@ export default function MenuProfileMobile(data: userProps) {
           RÚT
         </Button>
         <Button
-          onClick={() =>
-            handleMenuItemClick(() =>
-              window.open(
-                "https://t.me/HitJuwa",
-                "_blank",
-                "noopener,noreferrer"
-              )
-            )
-          }
+          onClick={() => route.replace("/profile/account-deposit")}
           sx={{
             flex: 1,
             backgroundImage:
@@ -303,7 +294,7 @@ export default function MenuProfileMobile(data: userProps) {
           {formatCurrency(data.user?.coin ?? 0)}
         </Button>
         <Button
-          onClick={() => route.push("https://t.me/HitJuwa")}
+          onClick={() => route.replace("/profile/account-deposit")}
           sx={{
             backgroundImage:
               "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #d61f57 0deg, #ff0250 89.73deg, #af0036 180.18deg, #d61f57 1turn)",

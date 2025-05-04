@@ -52,6 +52,7 @@ export default function MenuProfile({ user }: UserProps) {
   const menuItemStyles = {
     minWidth: "200px",
     color: "white",
+
     "&:hover": {
       background:
         "linear-gradient(90deg, rgba(0, 104, 230, 0.1) 0%, rgba(12, 0, 230, 0) 100%)",
@@ -69,8 +70,7 @@ export default function MenuProfile({ user }: UserProps) {
     {
       text: "Nạp Tiền",
       icon: <NapIcon />,
-      onClick: () =>
-        window.open("https://t.me/HitJuwa", "_blank", "noopener,noreferrer"),
+      onClick: () => router.push("/profile/deposit"),
     },
     {
       text: "Rút Tiền",
@@ -159,6 +159,7 @@ export default function MenuProfile({ user }: UserProps) {
               border: "none",
               alignItems: "center",
               justifyContent: "center",
+              cursor: "pointer",
             }}
           >
             <RutMenuIcon />
@@ -167,13 +168,7 @@ export default function MenuProfile({ user }: UserProps) {
 
           {/* Nút Nạp */}
           <button
-            onClick={() =>
-              window.open(
-                "https://t.me/HitJuwa",
-                "_blank",
-                "noopener,noreferrer"
-              )
-            }
+            onClick={() => router.push("/profile/account-deposit")}
             style={{
               display: "flex",
               backgroundImage:
@@ -187,6 +182,7 @@ export default function MenuProfile({ user }: UserProps) {
               height: "38px",
               alignItems: "center",
               justifyContent: "center",
+              cursor: "pointer",
             }}
           >
             <NapMenuIcon />

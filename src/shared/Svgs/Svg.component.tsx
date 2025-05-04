@@ -4381,3 +4381,109 @@ export const QuaySoMenuIcon = ({
     />
   </svg>
 );
+
+export const CopyIcon = ({
+  className,
+  width,
+  height,
+  fill,
+}: IIconPropsComponent) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+  >
+    <path
+      d="M14 0.874323C13.9292 0.874323 7.14285 0.856598 7.14285 0.856598C5.9337 0.856598 4.85715 1.96575 4.85715 3.14233L4.19658 3.15775C2.988 3.15775 2 4.25145 2 5.42803V16.8566C2 18.0332 3.07658 19.1423 4.28573 19.1423H12.8572C14.0663 19.1423 15.1429 18.0332 15.1429 16.8566H15.7143C16.9234 16.8566 18 15.7475 18 14.5709V5.44175L14 0.874323ZM12.8572 17.9995H4.28573C3.68573 17.9995 3.14288 17.4389 3.14288 16.8566V5.42803C3.14288 4.57775 3.8423 4.28518 4.85715 4.28518V14.5709C4.85715 15.7475 5.9337 16.8566 7.14285 16.8566C7.14285 16.8566 13.3383 16.8503 14.0051 16.8503C14.0051 17.5441 13.5503 17.9995 12.8572 17.9995ZM14 12.8629H8.85716C8.54173 12.8629 8.28573 12.6075 8.28573 12.292C8.28573 11.9766 8.54173 11.7212 8.85716 11.7212H14C14.3154 11.7212 14.5714 11.9766 14.5714 12.292C14.5714 12.6075 14.3154 12.8629 14 12.8629ZM14 10.0086H8.85716C8.54173 10.0086 8.28573 9.75315 8.28573 9.43776C8.28573 9.12233 8.54173 8.86691 8.85716 8.86691H14C14.3154 8.86691 14.5714 9.12233 14.5714 9.43776C14.5714 9.75261 14.3154 10.0086 14 10.0086ZM15.1429 5.42803C14.5343 5.42803 14 4.8789 14 4.28518C14 4.28518 14 3.12745 14 2.01717V2.01602L16.8572 5.42803H15.1429Z"
+      fill="#8B92B5"
+    />
+  </svg>
+);
+
+export const BankIcon = ({
+  className,
+  width,
+  height,
+  fill,
+}: IIconPropsComponent) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="25px"
+    height="25px"
+    fill="none"
+    viewBox="0 0 28 31"
+  >
+    <rect width="24" height="24" x="2" y="2" fill="url(#a)" rx="4" />
+    <rect
+      width="25"
+      height="25"
+      x="1"
+      y="1"
+      stroke="url(#b)"
+      stroke-opacity=".2"
+      stroke-width="2"
+      rx="5"
+    />
+    <g filter="url(#c)">
+      <path
+        fill="#fff"
+        d="M7.671 13.893v3.342c0 .694.56 1.254 1.254 1.254.693 0 1.253-.56 1.253-1.254v-3.342c0-.694-.56-1.254-1.253-1.254-.694 0-1.254.56-1.254 1.254Zm5.014 0v3.342c0 .694.56 1.254 1.254 1.254.693 0 1.253-.56 1.253-1.254v-3.342c0-.694-.56-1.254-1.253-1.254-.694 0-1.254.56-1.254 1.254Zm-5.432 8.774h13.37c.694 0 1.254-.56 1.254-1.254 0-.693-.56-1.253-1.253-1.253H7.254C6.56 20.16 6 20.72 6 21.413c0 .694.56 1.254 1.253 1.254ZM17.7 13.893v3.342c0 .694.56 1.254 1.253 1.254.694 0 1.254-.56 1.254-1.254v-3.342c0-.694-.56-1.254-1.253-1.254-.694 0-1.254.56-1.254 1.254ZM6.56 9.004l6.602-3.476c.484-.26 1.07-.26 1.554 0l6.601 3.476c.343.176.56.535.56.92 0 .576-.468 1.044-1.036 1.044H7.045A1.045 1.045 0 0 1 6 9.923c0-.384.217-.743.56-.919Z"
+      />
+    </g>
+    <defs>
+      <linearGradient
+        id="a"
+        x1="5.25"
+        x2="22"
+        y1="2"
+        y2="26"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop offset=".26" stop-color="#40D3F4" />
+        <stop offset="1" stop-color="#37A0FF" />
+      </linearGradient>
+      <linearGradient
+        id="b"
+        x1="14"
+        x2="14"
+        y1="2"
+        y2="26"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop offset=".125" stop-color="#3ED1F5" />
+        <stop offset="1" stop-color="#0070AF" />
+      </linearGradient>
+      <filter
+        id="c"
+        width="29.333"
+        height="29.334"
+        x="-.667"
+        y="3.333"
+        color-interpolation-filters="sRGB"
+        filterUnits="userSpaceOnUse"
+      >
+        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feColorMatrix
+          in="SourceAlpha"
+          result="hardAlpha"
+          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+        />
+        <feOffset dy="4" />
+        <feGaussianBlur stdDeviation="2" />
+        <feComposite in2="hardAlpha" operator="out" />
+        <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
+        <feBlend
+          in2="BackgroundImageFix"
+          result="effect1_dropShadow_1691_11094"
+        />
+        <feBlend
+          in="SourceGraphic"
+          in2="effect1_dropShadow_1691_11094"
+          result="shape"
+        />
+      </filter>
+    </defs>
+  </svg>
+);
