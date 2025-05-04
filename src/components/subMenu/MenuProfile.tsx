@@ -70,12 +70,12 @@ export default function MenuProfile({ user }: UserProps) {
     {
       text: "Nạp Tiền",
       icon: <NapIcon />,
-      onClick: () => router.push("/profile/deposit"),
+      onClick: () => router.push("/profile/account-deposit"),
     },
     {
       text: "Rút Tiền",
       icon: <RutIcon />,
-      onClick: () => router.push("/profile/bank-account"),
+      onClick: () => router.push("/profile/account-withdraw"),
     },
     {
       text: "Tiền thưởng",

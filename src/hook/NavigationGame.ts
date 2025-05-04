@@ -10,6 +10,8 @@ export default function NavigationGame(url: string) {
   if (typeof window !== "undefined" && document.readyState === "complete") {
     document.body.addEventListener("click", openNewTab, { once: true });
   } else {
-    toast.error("This function must be triggered by a user interaction.");
+    toast.error(
+      "Chức năng này phải được kích hoạt bởi một tương tác của người dùng."
+    );
   }
 }

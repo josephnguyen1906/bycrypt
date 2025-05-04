@@ -2,6 +2,7 @@
 import LoadingComponent from "@/components/Loading";
 import useAuth from "@/hook/useAuth";
 import {
+  BankIcon,
   ProfileBettingHistory,
   ProfileDeposit,
   ProfileDiscount,
@@ -27,6 +28,7 @@ import {
   Step,
   Stepper,
   Tabs,
+  TextField,
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -40,6 +42,7 @@ import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import "./profile.css";
 import swal from "sweetalert";
 import { formatCurrency } from "@/utils/formatMoney";
+import Image from "next/image";
 
 export default function Withdraw() {
   const { user, loading } = useAuth();
@@ -48,49 +51,7 @@ export default function Withdraw() {
   const [load, setLoad] = useState<boolean>(false);
   const [amountMoney, setAmountMoney] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  // handle steps
-  const steps = [
-    {
-      icon: <ProfileGeneral height="24px" width="24px" />, // Replace with actual icon components
-      title: "General",
-      link: "/profile/",
-    },
-    {
-      icon: <ProfileUserInfo height="24px" width="24px" />,
-      title: "Personal Details",
-      link: "/profile/personal-detail",
-    },
-    {
-      icon: <ProfileDeposit height="24px" width="24px" />,
-      title: "Deposit Money",
-      link: "/profile/account-deposit",
-    },
-    {
-      icon: <ProfileWithdraw fill="green" height="24px" width="24px" />,
-      title: "Withdraw Money",
-      link: "/profile/account-withdraw",
-    },
-    {
-      icon: <ProfileWBankAccount height="24px" width="24px" />,
-      title: "Bank Account",
-      link: "/profile/bank-account",
-    },
-    {
-      icon: <ProfileDiscount height="24px" width="24px" />,
-      title: "Promotion",
-      link: "/profile/account-promotion",
-    },
-    {
-      icon: <ProfileBettingHistory height="24px" width="24px" />,
-      title: "Betting History",
-      link: "/profile/betting-history",
-    },
-    {
-      icon: <ProfileTransHistory height="24px" width="24px" />,
-      title: "Transaction History",
-      link: "/profile/transaction-history",
-    },
-  ];
+
   useEffect(() => {
     fetchBankListByUser();
   }, []);
@@ -137,501 +98,261 @@ export default function Withdraw() {
         if (res.status === true) {
           setLoad(false);
           swal(
-            "Withdraw",
-            "Withdrawal Order Creation Successful. The system will automatically transfer funds to your account",
+            "Rút tiền",
+            "Tạo lệnh rút tiền thành công. Hệ thống sẽ tự động chuyển tiền vào tài khoản của bạn",
             "Success"
           );
         } else {
           setLoad(false);
-          swal("Withdraw", res.msg, "error");
+          swal("Rút tiền", res.msg, "error");
         }
       });
     } else {
-      swal("Withdraw", "Please, fill in the information", "warning");
+      swal("Rút tiền", "Vui lòng điền đẩy đủ thông tin", "warning");
     }
   };
   return (
-    <Box
+    <Grid
+      container
       sx={{
+        backgroundColor: "#232B4F",
+        width: "100%",
+        borderRadius: "8px",
         display: "flex",
+        justifyContent: "space-between",
         alignItems: "center",
-        justifyContent: "center",
-        // backgroundColor: "#020D24",
-        width: { xs: "95%", sm: "80%" },
-        height: { xs: "1000px", sm: "800px" },
-        paddingTop: { xs: 15, sm: 20 },
-        // paddingBottom: { xs: 60, sm: 0 },
-        margin: "auto",
-        gap: 2,
+        flexDirection: { xs: "column", sm: "row" },
+        padding: 2,
       }}
     >
       <Grid
-        className="profile-main"
+        container
         sx={{
-          backgroundColor: "#0F192F",
-          borderRadius: 3,
-          width: "30%",
-          maxWidth: 272,
-          textAlign: "center",
+          width: { xs: "100%", sm: "51%" },
+          spacing: 1,
         }}
       >
-        <Grid sx={{ borderBottom: "1px solid #020d24" }}>
-          <Box
+        <Box
+          sx={{
+            width: "100%",
+            marginBottom: 8,
+            display: "flex",
+            gap: "10px",
+            justifyItems: "left",
+            justifyContent: "left",
+            borderBottom: "1px solid rgba(56, 67, 117, .3)",
+          }}
+        >
+          <Button
             sx={{
-              position: "relative",
               display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              // marginTop: -10,
-            }}
-          >
-            <Avatar
-              alt="Remy Sharp"
-              src="/images/avatar-4.webp"
-              sx={{
-                width: 132,
-                height: 132,
-              }}
-            />
-          </Box>
-          <Typography
-            variant="h6"
-            gutterBottom
-            sx={{
-              textAlign: "center",
-              backgroundColor: "transparent",
+              backgroundImage:
+                "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
               color: "white",
+              borderRadius: "5px",
+              textTransform: "none",
+              fontSize: "14px",
+              width: "150px",
+              height: "38px",
+              border: "none",
+              alignItems: "center",
+              justifyContent: "center",
+              justifyItems: "center",
+              cursor: "pointer",
+              fontWeight: 600,
+              margin: "auto",
             }}
           >
-            {" "}
-            {user?.name}
-          </Typography>
+            <BankIcon /> Ví điện tử
+          </Button>
+        </Box>
+        <Box sx={{ marginBottom: 2, width: "100%" }}>
+          {bankUser ? (
+            <Box sx={{ marginBottom: "15px" }}>
+              <Typography>Ngân Hàng</Typography>
+              <ListItem
+                sx={{
+                  backgroundColor: "#2D355D",
+                  width: "90%",
+                  borderRadius: 5,
+                  color: "white",
+                }}
+              >
+                <ListItemAvatar>
+                  <Avatar>
+                    <AccountBalanceIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  color="white"
+                  primary={bankUser?.bankName}
+                  secondary={
+                    <React.Fragment>
+                      <Typography
+                        component="span"
+                        variant="body2"
+                        sx={{ color: "white", display: "inline" }}
+                      >
+                        {bankUser?.bankNumber}
+                      </Typography>
+                    </React.Fragment>
+                  }
+                />
+              </ListItem>
+            </Box>
+          ) : (
+            <Box sx={{ marginBottom: "15px" }}></Box>
+          )}
+          <Grid item xs={24} md={12} sx={{ marginBottom: "15px" }}>
+            <FormControl fullWidth sx={{ margin: "auto" }}>
+              <Typography sx={{ color: "#73879a", fontSize: 14 }}>
+                {" "}
+                Nhập Số Tiền Cần Rút
+                <span style={{ color: "red" }}>*</span>
+              </Typography>
+              <TextField
+                sx={{
+                  backgroundColor: "#2A3144",
+                  borderRadius: "8px",
+                  "& .MuiInputBase-input": {
+                    color: "white",
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      border: "none",
+                    },
+                    "&:hover fieldset": {
+                      border: "none",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "none",
+                    },
+                  },
+                }}
+                fullWidth
+                value={amountMoney} // Display formatted input with commas
+                onChange={handleAmountMoney}
+                placeholder="Từ 50,000đ trở lên"
+                inputProps={{
+                  inputMode: "numeric", // Optimize for numeric input on mobile
+                }}
+                type="text"
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={24} md={12}>
+            <FormControl fullWidth>
+              <Typography sx={{ color: "#808691", fontSize: 14 }}>
+                Nhập Mật Khẩu <span style={{ color: "red" }}>*</span>
+              </Typography>
+              <TextField
+                sx={{
+                  backgroundColor: "#2A3144",
+                  borderRadius: "8px",
+                  "& .MuiInputBase-input": {
+                    color: "white",
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      border: "none",
+                    },
+                    "&:hover fieldset": {
+                      border: "none",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "none",
+                    },
+                  },
+                }}
+                fullWidth
+                value={password} // Display formatted input with commas
+                onChange={handlePassword}
+                placeholder="Nhập mật khẩu"
+                type="password"
+              />
+            </FormControl>
+          </Grid>
+        </Box>
+
+        {/* Generate QR Code Button */}
+        <Box sx={{ marginTop: 2, width: "100%" }}>
+          <Button
+            fullWidth
+            variant="contained"
+            color="success"
+            onClick={() => WithdrawUser()}
+            sx={{
+              display: "flex",
+              backgroundImage:
+                "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+              color: "white",
+              borderRadius: "20px",
+              textTransform: "none",
+              fontSize: "14px",
+              width: "250px",
+              height: "38px",
+              border: "none",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              margin: "auto",
+            }}
+          >
+            Rút Tiền
+          </Button>
+        </Box>
+
+        <Box
+          sx={{
+            width: "100%",
+            color: "white",
+            padding: 2,
+            borderRadius: "8px",
+            marginTop: 5,
+            border: "1px dashed #384375",
+          }}
+        >
           <Typography
             variant="body2"
-            gutterBottom
-            sx={{ color: "yellow", textAlign: "center" }}
+            sx={{ color: "#fbc16c", fontWeight: "bold", marginBottom: 1 }}
           >
-            {" "}
-            {formatCurrency(user?.coin ?? 0)} USD
+            Lưu ý:
           </Typography>
-        </Grid>
-
-        <Stepper
-          connector={<></>}
-          orientation="vertical"
-          activeStep={activeStep}
-          sx={{
-            backgroundColor: "#0F192F",
-            borderRadius: 3,
-            width: "100%",
-            maxWidth: "360px",
-            maxHeight: "384px",
-            height: "384px",
-            textAlign: "center",
-            position: "relative",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            marginTop: 2,
-          }}
-        >
-          {steps.map((step, index) => (
-            <Step key={index} onClick={() => setActiveStep(index)}>
-              <div
-                className={
-                  activeStep === index ? "step-label-active" : "step-label"
-                }
-                style={{ height: "48px", cursor: "pointer" }}
-                onClick={() => {
-                  if (step.title === "Deposit Money") {
-                    window.open(
-                      "https://t.me/HitJuwa",
-                      "_blank",
-                      "noopener,noreferrer"
-                    );
-                  } else {
-                    router.replace(step.link);
-                  }
-                }}
-              >
-                <div
-                  style={{
-                    alignItems: "center",
-                    display: "flex",
-                    fontSize: "16px",
-                    gap: "10px",
-                    fontWeight: 600,
-                    lineHeight: "24px",
-                    padding: "12px 24px",
-                  }}
-                >
-                  {step.icon} {/* Render the icon */}
-                  <Typography
-                    className={
-                      activeStep === index ? "step-title-active" : "step-title"
-                    }
-                  >
-                    {step.title}
-                  </Typography>
-                </div>
-              </div>
-            </Step>
-          ))}
-        </Stepper>
+          <ul style={{ paddingLeft: 20, margin: 0 }}>
+            <li style={{ listStyle: "outside" }}>
+              <Typography variant="body2" sx={{ color: "white" }}>
+                Nạp/Rút tiền tại tài khoản chính chủ.
+              </Typography>
+            </li>
+            <li style={{ listStyle: "outside" }}>
+              <Typography variant="body2" sx={{ color: "white" }}>
+                Nạp tiền vào tài khoản bên cạnh.
+              </Typography>
+            </li>
+          </ul>
+        </Box>
       </Grid>
 
-      <CardContent
+      {/* Instructions */}
+      <Grid
+        container
         sx={{
-          width: "100%",
-          marginTop: -6,
-          borderRadius: 10,
-          pt: (theme) => `${theme.spacing(6)} !important`,
+          width: { xs: "100%", sm: "47%" },
+          spacing: 2,
+          borderRadius: 5,
+          padding: 1,
+          height: { xs: "auto", sm: "auto" },
+          marginTop: { xs: 2, sm: 0 },
+          gap: { xs: 2, sm: 0 },
         }}
       >
-        <Grid
-          container
-          sx={{
-            backgroundColor: "#0F192F",
-            width: "100%",
-            padding: { xs: 2, sm: 4.5 },
-            borderRadius: "8px",
-          }}
-        >
-          <Grid container width={"100%"}>
-            <Grid container item xs={8} md={4}>
-              <Typography variant="h6" sx={{ color: "white", padding: 2 }}>
-                Withdraw money
-              </Typography>
-            </Grid>
-            <CardContent
-              sx={{
-                width: "100%",
-                borderRadius: 10,
-                pt: (theme) => `${theme.spacing(1)} !important`,
-              }}
-            >
-              <Grid
-                container
-                sx={{
-                  backgroundColor: "#0F192F",
-                  width: "100%",
-                  borderRadius: "8px",
-                  display: {
-                    xs: "block",
-                    sm: "flex",
-                  },
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                {loading || load ? (
-                  <>
-                    <SimpleBackdrop />
-                    <Grid
-                      container
-                      sx={{
-                        width: {
-                          xs: "100%",
-                          sm: "51%",
-                        },
-                      }}
-                      spacing={3}
-                    >
-                      <Grid container item xs={24} md={12}>
-                        <Typography variant="body2" sx={{ color: "white" }}>
-                          You need to link at least one bank account to be able
-                          to deposit and withdraw money
-                        </Typography>
-                      </Grid>
-
-                      <Grid item xs={24} md={12}>
-                        <FormControl fullWidth sx={{ margin: "auto" }}>
-                          <Typography sx={{ color: "#73879a", fontSize: 14 }}>
-                            {" "}
-                            Amount money
-                            <span style={{ color: "red" }}>*</span>
-                          </Typography>
-                          <input
-                            style={{
-                              color: "white",
-                              borderRadius: "7px",
-                              height: "35px",
-                              backgroundColor: "#283145",
-                              outline: "none",
-                              border: "none",
-                              paddingLeft: 10,
-                            }}
-                            onChange={handleAmountMoney}
-                          />
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={24} md={12}>
-                        <FormControl fullWidth>
-                          <Typography sx={{ color: "#808691", fontSize: 14 }}>
-                            Type password{" "}
-                            <span style={{ color: "red" }}>*</span>
-                          </Typography>
-                          <input
-                            style={{
-                              color: "white",
-                              borderRadius: "7px",
-                              height: "35px",
-                              backgroundColor: "#283145",
-                              outline: "none",
-                              border: "none",
-                              paddingLeft: 10,
-                            }}
-                            type="password"
-                            onChange={handlePassword}
-                          />
-                        </FormControl>
-                      </Grid>
-                      <Grid
-                        container
-                        justifyContent={"center"}
-                        alignItems={"center"}
-                        width={"100%"}
-                      >
-                        <Button
-                          variant="contained"
-                          sx={{
-                            backgroundColor: "green",
-                            marginTop: 5,
-                            padding: "10px 25px",
-                          }}
-                          onClick={() => WithdrawUser()}
-                        >
-                          Withdraw
-                        </Button>
-                      </Grid>
-                    </Grid>
-                    <Grid
-                      container
-                      sx={{
-                        width: {
-                          xs: "100%",
-                          sm: "47%",
-                        },
-                        marginTop: {
-                          xs: 5,
-                          sm: 0,
-                        },
-                        margin: "auto",
-                      }}
-                    >
-                      <Grid
-                        width="100%"
-                        container
-                        sx={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          height: "320px",
-                          backgroundColor: "#020D24",
-                          borderRadius: "8px",
-                        }}
-                      >
-                        {bankUser ? (
-                          <>
-                            <ListItem
-                              sx={{
-                                background: "#283145",
-                                width: "90%",
-                                borderRadius: 5,
-                                color: "white",
-                              }}
-                            >
-                              <ListItemAvatar>
-                                <Avatar>
-                                  <AccountBalanceIcon />
-                                </Avatar>
-                              </ListItemAvatar>
-                              <ListItemText
-                                color="white"
-                                primary={bankUser.bankName}
-                                secondary={
-                                  <React.Fragment>
-                                    <Typography
-                                      component="span"
-                                      variant="body2"
-                                      sx={{ color: "white", display: "inline" }}
-                                    >
-                                      {bankUser.bankNumber}
-                                    </Typography>
-                                  </React.Fragment>
-                                }
-                              />
-                            </ListItem>
-                          </>
-                        ) : (
-                          <>
-                            <ProfileEmptyIcon height="78px" width="96px" />
-
-                            <Typography marginBottom={3} variant="body2">
-                              The beneficiary account is empty
-                            </Typography>
-                          </>
-                        )}
-                      </Grid>
-                    </Grid>
-                  </>
-                ) : (
-                  <>
-                    <Grid
-                      container
-                      sx={{
-                        width: {
-                          xs: "100%",
-                          sm: "51%",
-                        },
-                      }}
-                      spacing={3}
-                    >
-                      <Grid container item xs={24} md={12}>
-                        <Typography variant="body2" sx={{ color: "white" }}>
-                          You need to link at least one bank account to be able
-                          to deposit and withdraw money
-                        </Typography>
-                      </Grid>
-
-                      <Grid item xs={24} md={12}>
-                        <FormControl fullWidth sx={{ margin: "auto" }}>
-                          <Typography sx={{ color: "#73879a", fontSize: 14 }}>
-                            {" "}
-                            Amount money
-                            <span style={{ color: "red" }}>*</span>
-                          </Typography>
-                          <input
-                            style={{
-                              color: "white",
-                              borderRadius: "7px",
-                              height: "35px",
-                              backgroundColor: "#283145",
-                              outline: "none",
-                              border: "none",
-                              paddingLeft: 10,
-                            }}
-                            onChange={handleAmountMoney}
-                          />
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={24} md={12}>
-                        <FormControl fullWidth>
-                          <Typography sx={{ color: "#808691", fontSize: 14 }}>
-                            Type password{" "}
-                            <span style={{ color: "red" }}>*</span>
-                          </Typography>
-                          <input
-                            style={{
-                              color: "white",
-                              borderRadius: "7px",
-                              height: "35px",
-                              backgroundColor: "#283145",
-                              outline: "none",
-                              border: "none",
-                              paddingLeft: 10,
-                            }}
-                            type="password"
-                            onChange={handlePassword}
-                          />
-                        </FormControl>
-                      </Grid>
-                      <Grid
-                        container
-                        justifyContent={"center"}
-                        alignItems={"center"}
-                        width={"100%"}
-                      >
-                        <Button
-                          variant="contained"
-                          sx={{
-                            backgroundColor: "green",
-                            marginTop: 5,
-                            padding: "10px 25px",
-                          }}
-                          onClick={() => WithdrawUser()}
-                        >
-                          Withdraw
-                        </Button>
-                      </Grid>
-                    </Grid>
-                    <Grid
-                      container
-                      sx={{
-                        width: {
-                          xs: "100%",
-                          sm: "47%",
-                        },
-                        marginTop: {
-                          xs: 5,
-                          sm: 0,
-                        },
-                        margin: "auto",
-                      }}
-                    >
-                      <Grid
-                        width="100%"
-                        container
-                        sx={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          height: "320px",
-                          backgroundColor: "#020D24",
-                          borderRadius: "8px",
-                        }}
-                      >
-                        {bankUser ? (
-                          <>
-                            <ListItem
-                              sx={{
-                                background: "#283145",
-                                width: "90%",
-                                borderRadius: 5,
-                                color: "white",
-                              }}
-                            >
-                              <ListItemAvatar>
-                                <Avatar>
-                                  <AccountBalanceIcon />
-                                </Avatar>
-                              </ListItemAvatar>
-                              <ListItemText
-                                color="white"
-                                primary={bankUser.bankName}
-                                secondary={
-                                  <React.Fragment>
-                                    <Typography
-                                      component="span"
-                                      variant="body2"
-                                      sx={{ color: "white", display: "inline" }}
-                                    >
-                                      {bankUser.bankNumber}
-                                    </Typography>
-                                  </React.Fragment>
-                                }
-                              />
-                            </ListItem>
-                          </>
-                        ) : (
-                          <>
-                            <ProfileEmptyIcon height="78px" width="96px" />
-
-                            <Typography marginBottom={3} variant="body2">
-                              The beneficiary account is empty
-                            </Typography>
-                          </>
-                        )}
-                      </Grid>
-                    </Grid>
-                  </>
-                )}
-              </Grid>
-            </CardContent>
-          </Grid>
-        </Grid>
-      </CardContent>
-    </Box>
+        <Image
+          src={"/images/banner-crypto.webp"}
+          width={500}
+          height={500}
+          alt=""
+        />
+      </Grid>
+    </Grid>
   );
 }

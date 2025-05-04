@@ -30,10 +30,14 @@ import DepostQRBankComponent from "@/components/popup/DepostQRBank.component";
 import SimpleBackdrop from "@/components/Loading/LoaddingPage";
 import "./profile.css";
 import NavigationGame from "@/hook/NavigationGame";
+import Withdraw from "./withdraw";
 
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
+  value: number;
+}
+interface TabPProps {
   value: number;
 }
 function a11yProps(index: number) {
@@ -65,7 +69,7 @@ const formatCurrency = (value: any) => {
     maximumFractionDigits: 0,
   });
 };
-export default function Deposit() {
+export default function Deposit(props: TabPProps) {
   const { user, loading } = useAuth();
   const [load, setLoad] = useState<boolean>(false);
   const [bankAdmin, setBankAdmin] = useState<any>();
@@ -73,7 +77,7 @@ export default function Deposit() {
   const [qrData, setQrData] = useState<any | null>(null);
   const [openPopup, setOpenPopup] = useState(false);
   const [timeLeft, setTimeLeft] = useState(30 * 60); // 30 minutes in seconds
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(props.value);
   const [amount, setAmount] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState<string>(""); // Track raw input
   const instructionsRef = useRef<HTMLDivElement>(null); // Ref for Instructions Grid
@@ -604,7 +608,9 @@ export default function Deposit() {
             </Grid>
           </Grid>
         </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}></CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <Withdraw />
+        </CustomTabPanel>
       </Box>
     </Box>
   );

@@ -67,7 +67,11 @@ const DialogLogin = (props: propPopup) => {
           setLoadding(false);
         });
     } else {
-      swal("Login", "Please, username or password is not exist", "error");
+      swal(
+        "Đăng nhập",
+        "Tên đăng nhập và mật khẩu không được để trống",
+        "error"
+      );
     }
   };
 
@@ -78,7 +82,7 @@ const DialogLogin = (props: propPopup) => {
       await signupUser(name, email, userName, password, phone)
         .then((res: any) => {
           if (res?.msg === "Success") {
-            toast.success("Create a new account successfully");
+            toast.success("Tạo tài khoản thành công");
             setActiveTab(0);
           } else {
             toast.error(res?.msg);
@@ -88,7 +92,7 @@ const DialogLogin = (props: propPopup) => {
           setLoadding(false);
         });
     } else {
-      swal("Sign Up", "Please, Do not leave blank field", "error");
+      swal("Đăng ký", "Phải điền đầy đủ hết các trường", "error");
     }
   };
 

@@ -21,8 +21,8 @@ export default function usePlayGame() {
     // const res: any = await getPlayGameById(code, id);
     if (!tempWindow) {
       swal(
-        "Failed fund transfer",
-        "Popup blocked by browser. Please allow popups.",
+        "Chuyển tiền không thành công",
+        "Cửa sổ bật lên bị chặn bởi trình duyệt. Vui lòng cho phép cửa sổ bật lên.",
         "error"
       );
       setLoading(false); // Dừng trạng thái loading
@@ -41,7 +41,7 @@ export default function usePlayGame() {
 
       if (res.status === false) {
         tempWindow.close(); // Đóng tab nếu không có URL
-        swal("Error", res.msg, "error");
+        swal("Lỗi", res.msg, "error");
         setLoading(false); // Dừng trạng thái loading
         return null;
       }
@@ -51,7 +51,7 @@ export default function usePlayGame() {
         return res.data.playUrl; // Trả về URL nếu có
       } else {
         tempWindow.close(); // Đóng tab nếu không có URL
-        swal("Error", res.msg, "error");
+        swal("Lỗi", res.msg, "error");
         setLoading(false); // Dừng trạng thái loading
         return null;
       }
@@ -59,7 +59,7 @@ export default function usePlayGame() {
       tempWindow.close();
       console.log("error", error);
 
-      swal("Error", "Please login to play the game", "error");
+      swal("Lỗi", "Bạn chưa đăng nhập", "error");
       setLoading(false);
       if (onError) onError(error);
       return null;

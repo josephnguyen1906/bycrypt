@@ -12,6 +12,7 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Autocomplete,
 } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
 import EmailIcon from "@mui/icons-material/Email";
@@ -28,7 +29,12 @@ import {
   WalletIcon,
 } from "@/shared/Svgs/Svg.component";
 import { formatCurrency } from "@/utils/formatMoney";
-import { getListAllBank, getListUserBank } from "@/services/Bank.service";
+import {
+  addBankUser,
+  getListAllBank,
+  getListUserBank,
+} from "@/services/Bank.service";
+import BankSelect from "@/components/Input/BankSelect.component";
 type bank = {
   name: string;
   code: string;
@@ -36,17 +42,18 @@ type bank = {
 export default function MainProfile() {
   const { user, loading } = useAuth();
   const [activeTab, setActiveTab] = useState("account"); // Quản lý tab: "account" hoặc "bank"
-  const [bankUser, setBankUser] = useState<any>();
+  const [bankUser, setBankUser] = useState<any>(null);
+  const [load, setLoad] = useState<boolean>(false);
+  const [bank, setBank] = useState<bank | null>();
   // State cho tab Quản lý tài khoản
   const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("********");
-
+  const [bankNumber, setBankNumber] = useState<string>("");
   const [availableBankList, setAvailableBankList] = useState<bank[]>([]);
 
-  // Cập nhật state khi user thay đổi
   useEffect(() => {
     if (user) {
       setUsername(user.username || "");
@@ -70,6 +77,7 @@ export default function MainProfile() {
     try {
       const response = await getListUserBank();
       const availableBanks = response.data;
+      // setBankUser(null);
       setBankUser(availableBanks[0]);
     } catch (error) {
       console.error("availableBankList is error", error);
@@ -108,8 +116,24 @@ export default function MainProfile() {
     }
   };
 
-  const handleAddBank = () => {
-    alert("Thêm ngân hàng mới!");
+  const addbankNewUser = async () => {
+    if (bank) {
+      setLoad(true);
+      addBankUser(bank.code, bank.code, bankNumber, bank.name).then(
+        (res: any) => {
+          console.log(res.data.length);
+          if (res.data.length > 0) {
+            setLoad(false);
+            swal("Thêm ngân hàng", "Thêm ngân hàng mới thành công", "Success");
+          } else {
+            setLoad(false);
+            swal("Thêm ngân hàng", res.msg, "error");
+          }
+        }
+      );
+    } else {
+      swal("Thêm ngân hàng", "Vui lòng điền đầy đủ thông tin", "warning");
+    }
   };
 
   if (loading) {
@@ -454,18 +478,10 @@ export default function MainProfile() {
                         >
                           Tên ngân hàng
                         </Typography>
-                        <TextField
-                          fullWidth
-                          variant="outlined"
-                          placeholder="Nhập tên ngân hàng"
-                          InputProps={{
-                            sx: {
-                              backgroundColor: "#3B4D7A",
-                              color: "white",
-                              borderRadius: 1,
-                            },
-                          }}
-                          // Add onChange handler and state for bank name
+                        <BankSelect
+                          options={availableBankList}
+                          value={bank ?? null}
+                          onChange={setBank}
                         />
                       </Grid>
                       <Grid item xs={6} sm={12}>
@@ -479,6 +495,8 @@ export default function MainProfile() {
                           fullWidth
                           variant="outlined"
                           placeholder="Nhập số tài khoản"
+                          value={bankNumber}
+                          onChange={(e) => setBankNumber(e.target.value)}
                           InputProps={{
                             sx: {
                               backgroundColor: "#3B4D7A",
@@ -489,31 +507,11 @@ export default function MainProfile() {
                           // Add onChange handler and state for bank number
                         />
                       </Grid>
-                      <Grid item xs={12}>
-                        <Typography
-                          variant="body1"
-                          sx={{ mb: 1, color: "white" }}
-                        >
-                          Tên chủ tài khoản
-                        </Typography>
-                        <TextField
-                          fullWidth
-                          variant="outlined"
-                          placeholder="Nhập tên chủ tài khoản"
-                          InputProps={{
-                            sx: {
-                              backgroundColor: "#3B4D7A",
-                              color: "white",
-                              borderRadius: 1,
-                            },
-                          }}
-                          // Add onChange handler and state for account holder name
-                        />
-                      </Grid>
+
                       <Grid item xs={12}>
                         <Button
                           variant="contained"
-                          onClick={handleAddBank}
+                          onClick={addbankNewUser}
                           sx={{
                             mt: 2,
                             width: "100%",
