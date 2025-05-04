@@ -1,6 +1,7 @@
 import React from "react";
-import BettingHistory from "@/pages/profile/bettingHistory";
+import BettingHistory from "@/pages/profile/History";
+import Deposit from "@/pages/profile/deposit";
 
 export default function page() {
-  return <BettingHistory />;
+  return <Deposit value={2} history={"bet"} />;
 }

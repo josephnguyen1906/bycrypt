@@ -28,6 +28,7 @@ import {
   RutMenuIcon,
 } from "@/shared/Svgs/Svg.component";
 import Image from "next/image";
+import NavigationGame from "@/hook/NavigationGame";
 
 export interface UserProps {
   user: {
@@ -80,7 +81,7 @@ export default function MenuProfile({ user }: UserProps) {
     {
       text: "Tiền thưởng",
       icon: <GiftMenuIcon />,
-      onClick: () => router.push("/profile/account-promotion"),
+      onClick: () => router.push("/promotion"),
     },
     {
       text: "Lịch sử giao dịch",
@@ -91,7 +92,7 @@ export default function MenuProfile({ user }: UserProps) {
     {
       text: "Live chat 24/7",
       icon: <LiveChatMenuIcon />,
-      onClick: () => router.push("/profile/live-chat"),
+      onClick: () => NavigationGame("https://t.me/HitJuwa"),
     },
     {
       text: "Đăng xuất",

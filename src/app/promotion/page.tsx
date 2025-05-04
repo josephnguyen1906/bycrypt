@@ -1,7 +1,7 @@
 import React from "react";
-import Withdraw from "@/pages/profile/withdraw";
+import BettingHistory from "@/pages/profile/History";
 import Deposit from "@/pages/profile/deposit";
 
 export default function page() {
-  return <Deposit value={1} history={"transaction"} />;
+  return <Deposit value={3} history={null} />;
 }

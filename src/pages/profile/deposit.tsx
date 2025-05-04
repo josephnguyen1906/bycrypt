@@ -6,8 +6,13 @@ import {
   BankIcon,
   BankMenuIcon,
   CopyIcon,
+  EventMoblieIcon,
+  GiftMenuIcon,
+  HistoryMenuIcon,
+  NapIcon,
   NapMenuIcon,
   ProfileBankIcon,
+  RutIcon,
   RutMenuIcon,
 } from "@/shared/Svgs/Svg.component";
 import {
@@ -31,6 +36,8 @@ import SimpleBackdrop from "@/components/Loading/LoaddingPage";
 import "./profile.css";
 import NavigationGame from "@/hook/NavigationGame";
 import Withdraw from "./withdraw";
+import TransactionHistory from "./History";
+import Promotion from "./promotion";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -39,6 +46,7 @@ interface TabPanelProps {
 }
 interface TabPProps {
   value: number;
+  history: string | null;
 }
 function a11yProps(index: number) {
   return {
@@ -77,11 +85,14 @@ export default function Deposit(props: TabPProps) {
   const [qrData, setQrData] = useState<any | null>(null);
   const [openPopup, setOpenPopup] = useState(false);
   const [timeLeft, setTimeLeft] = useState(30 * 60); // 30 minutes in seconds
-  const [value, setValue] = React.useState(props.value);
+  const [value, setValue] = useState(props.value ?? 0);
   const [amount, setAmount] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState<string>(""); // Track raw input
   const instructionsRef = useRef<HTMLDivElement>(null); // Ref for Instructions Grid
 
+  useEffect(() => {
+    setValue(props.value);
+  }, [props.value]);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -217,6 +228,7 @@ export default function Deposit(props: TabPProps) {
           <Tabs
             value={value}
             onChange={handleChange}
+            variant="scrollable"
             sx={{
               "& .MuiTab-root": {
                 color: "white",
@@ -233,15 +245,51 @@ export default function Deposit(props: TabPProps) {
           >
             <Tab
               label="Nạp Tiền"
-              icon={<NapMenuIcon />}
+              icon={
+                <RutIcon
+                  width="25px"
+                  height="25px"
+                  fill={value === 0 ? "white" : undefined}
+                />
+              }
               iconPosition="start"
               {...a11yProps(0)}
             />
             <Tab
               label="Rút Tiền"
-              icon={<RutMenuIcon />}
+              icon={
+                <NapIcon
+                  width="25px"
+                  height="25px"
+                  fill={value === 1 ? "white" : undefined}
+                />
+              }
               iconPosition="start"
               {...a11yProps(1)}
+            />
+            <Tab
+              label="Lịch sử"
+              icon={
+                <HistoryMenuIcon
+                  width="25px"
+                  height="25px"
+                  fill={value === 2 ? "white" : undefined}
+                />
+              }
+              iconPosition="start"
+              {...a11yProps(2)}
+            />
+            <Tab
+              label="Tiền thưởng"
+              icon={
+                <GiftMenuIcon
+                  width="23px"
+                  height="23px"
+                  fill={value === 3 ? "white" : undefined}
+                />
+              }
+              iconPosition="start"
+              {...a11yProps(3)}
             />
           </Tabs>
         </Box>
@@ -610,6 +658,18 @@ export default function Deposit(props: TabPProps) {
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <Withdraw />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={2}>
+          <TransactionHistory value={props.history ?? "transaction"} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={3}>
+          <Typography
+            variant="h5"
+            sx={{ fontWeight: 600, color: "white", mb: 1 }}
+          >
+            Khuyến mãi đang tham gia
+          </Typography>
+          <Promotion />
         </CustomTabPanel>
       </Box>
     </Box>

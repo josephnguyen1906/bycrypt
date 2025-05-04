@@ -41,6 +41,7 @@ import {
   ProfileIcon,
   RutMenuIcon,
 } from "@/shared/Svgs/Svg.component";
+import NavigationGame from "@/hook/NavigationGame";
 
 export interface userProps {
   user: userResponse;
@@ -81,20 +82,20 @@ export default function MenuProfileMobile(data: userProps) {
       icon: <ProfileIcon />,
       onClick: () => route.push("/profile"),
     },
-    {
-      text: "Giao dịch P2P",
-      icon: <P2PMenuIcon />,
-      onClick: () => route.push("/profile/account-deposit"),
-    },
+    // {
+    //   text: "Giao dịch P2P",
+    //   icon: <P2PMenuIcon />,
+    //   onClick: () => route.push("/profile/account-deposit"),
+    // },
     {
       text: "Quản lý ngân hàng",
       icon: <BankMenuIcon />,
-      onClick: () => route.push("/profile/bank-account"),
+      onClick: () => route.push("/profile"),
     },
     {
       text: "Tiền thưởng",
       icon: <GiftMenuIcon />,
-      onClick: () => route.push("/profile/account-promotion"),
+      onClick: () => route.push("/promotion"),
     },
     {
       text: "Lịch sử giao dịch",
@@ -109,7 +110,7 @@ export default function MenuProfileMobile(data: userProps) {
     {
       text: "Live chat 24/7",
       icon: <LiveChatMenuIcon />,
-      onClick: () => route.push("/profile/live-chat"),
+      onClick: () => NavigationGame("https://t.me/HitJuwa"),
     },
   ];
 

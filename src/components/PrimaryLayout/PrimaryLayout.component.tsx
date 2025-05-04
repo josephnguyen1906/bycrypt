@@ -191,7 +191,7 @@ export default function PrimaryLayoutComponent({
                 <button type="button" onClick={() => hanldMenu(4)}>
                   <DPGameIcon className="moblie-icon" />
                   <p className={menu === 4 ? "mobile-active" : "mobile-p"}>
-                    DA Games
+                    Games
                   </p>
                 </button>
               </li>

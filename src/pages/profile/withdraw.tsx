@@ -169,11 +169,11 @@ export default function Withdraw() {
         <Box sx={{ marginBottom: 2, width: "100%" }}>
           {bankUser ? (
             <Box sx={{ marginBottom: "15px" }}>
-              <Typography>Ngân Hàng</Typography>
+              <Typography sx={{ marginBottom: 1 }}>Ngân Hàng</Typography>
               <ListItem
                 sx={{
                   backgroundColor: "#2D355D",
-                  width: "90%",
+                  width: "100%",
                   borderRadius: 5,
                   color: "white",
                 }}
@@ -193,7 +193,7 @@ export default function Withdraw() {
                         variant="body2"
                         sx={{ color: "white", display: "inline" }}
                       >
-                        {bankUser?.bankNumber}
+                        {bankUser?.bankNumber || "0155784205502"}
                       </Typography>
                     </React.Fragment>
                   }
@@ -205,7 +205,7 @@ export default function Withdraw() {
           )}
           <Grid item xs={24} md={12} sx={{ marginBottom: "15px" }}>
             <FormControl fullWidth sx={{ margin: "auto" }}>
-              <Typography sx={{ color: "#73879a", fontSize: 14 }}>
+              <Typography sx={{ color: "#73879a", fontSize: 14, mb: 1 }}>
                 {" "}
                 Nhập Số Tiền Cần Rút
                 <span style={{ color: "red" }}>*</span>
@@ -242,7 +242,7 @@ export default function Withdraw() {
           </Grid>
           <Grid item xs={24} md={12}>
             <FormControl fullWidth>
-              <Typography sx={{ color: "#808691", fontSize: 14 }}>
+              <Typography sx={{ color: "#808691", fontSize: 14, mb: 1 }}>
                 Nhập Mật Khẩu <span style={{ color: "red" }}>*</span>
               </Typography>
               <TextField
@@ -351,6 +351,7 @@ export default function Withdraw() {
           width={500}
           height={500}
           alt=""
+          style={{ width: "100%", objectFit: "contain" }}
         />
       </Grid>
     </Grid>

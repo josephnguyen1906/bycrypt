@@ -1,48 +1,26 @@
-"use client";
+import { useEffect, useState } from "react";
 import {
-  Avatar,
   Box,
   Button,
-  CardContent,
-  FormControl,
-  Grid,
-  Input,
-  MenuItem,
-  Pagination,
-  Select,
-  SelectChangeEvent,
-  Step,
-  Stepper,
-  TextField,
   Typography,
+  ToggleButtonGroup,
+  Select,
+  MenuItem,
+  Card,
+  CardContent,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import useAuth from "@/hook/useAuth";
-import { useRouter } from "next/navigation";
 import {
-  ProfileBettingHistory,
-  ProfileDeposit,
-  ProfileDiscount,
-  ProfileEmptyIcon,
-  ProfileGeneral,
-  ProfileTransHistory,
-  ProfileUserInfo,
-  ProfileWBankAccount,
-  ProfileWithdraw,
+  BetsHistoryIcon,
+  EmptyIcon,
+  TransactionHistoryIcon,
 } from "@/shared/Svgs/Svg.component";
-import LoadingComponent from "@/components/Loading";
+import {
+  getBettingHistory,
+  getTransactionHistory,
+} from "@/services/Bank.service";
+import { TransactionHistoryItem } from "@/interface/TransactionHistory.interface";
+import TransactionHistoryPage from "./transactionHistory";
 import { BetHistoryItem } from "@/interface/BetHistory.interface";
-import { getBettingHistory } from "@/services/Bank.service";
-import SimpleBackdrop from "@/components/Loading/LoaddingPage";
-import "./profile.css";
-import { formatCurrency } from "@/utils/formatMoney";
 
 const formatDate = (date: Date): string => {
   const year = date.getFullYear();
@@ -51,65 +29,9 @@ const formatDate = (date: Date): string => {
   // return `${year}-${month}-${day}`;
   return `${day}/${month}-${year};`;
 };
-export default function BettingHistory() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  // handle steps
-  const steps = [
-    {
-      icon: <ProfileGeneral height="24px" width="24px" />, // Replace with actual icon components
-      title: "General",
-      link: "/profile/",
-    },
-    {
-      icon: <ProfileUserInfo height="24px" width="24px" />,
-      title: "Personal Details",
-      link: "/profile/personal-detail",
-    },
-    {
-      icon: <ProfileDeposit height="24px" width="24px" />,
-      title: "Deposit Money",
-      link: "/profile/account-deposit",
-    },
-    {
-      icon: <ProfileWithdraw height="24px" width="24px" />,
-      title: "Withdraw Money",
-      link: "/profile/account-withdraw",
-    },
-    {
-      icon: <ProfileWBankAccount height="24px" width="24px" />,
-      title: "Bank Account",
-      link: "/profile/bank-account",
-    },
-    {
-      icon: <ProfileDiscount height="24px" width="24px" />,
-      title: "Promotion",
-      link: "/profile/account-promotion",
-    },
-    {
-      icon: <ProfileBettingHistory fill="green" height="24px" width="24px" />,
-      title: "Betting History",
-      link: "/profile/betting-history",
-    },
-    {
-      icon: <ProfileTransHistory height="24px" width="24px" />,
-      title: "Transaction History",
-      link: "/profile/transaction-history",
-    },
-  ];
-
-  const [activeStep, setActiveStep] = useState<number>(6);
-
-  const [transType, setTransType] = React.useState("both");
-  const handleSetTransType = (event: SelectChangeEvent) => {
-    setTransType(event.target.value as string);
-  };
-
-  // type of status handler
-  const [statusType, setStatusType] = React.useState("all");
-  const handleSetStatusType = (event: SelectChangeEvent) => {
-    setTransType(event.target.value as string);
-  };
+export default function BettingHistoryPage() {
+  const [category, setCategory] = useState("");
+  const [status, setStatus] = useState("");
 
   const [rows, setRows] = useState<BetHistoryItem[]>([]);
   const [page, setPage] = useState(1);
@@ -144,744 +66,192 @@ export default function BettingHistory() {
   const handleChangePage = (_: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#020D24",
-        width: { xs: "100%", sm: "80%" },
-        margin: "auto",
-        height: "800px",
-        paddingTop: { xs: 15, sm: 20 },
-        gap: 2,
-      }}
-    >
-      <Grid
-        className="profile-main"
+    <Box>
+      <Box
         sx={{
-          backgroundColor: "#0F192F",
-          borderRadius: 3,
-          width: { xs: "100%", sm: "65%" },
-          maxWidth: 272,
-          textAlign: "center",
+          width: "100%",
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "20px",
+          justifyContent: "space-between",
+          mb: 1,
         }}
       >
-        <Grid sx={{ borderBottom: "1px solid #020d24" }}>
+        <Typography color="#ccc" mb={2}>
+          Lịch sử cá cược của bạn trong vòng 7 ngày gần nhất.
+        </Typography>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            gap: "10px",
+            mb: 1,
+          }}
+        >
+          <Select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            displayEmpty
+            sx={{
+              backgroundColor: "#29345c",
+              color: "#fff",
+              width: {
+                xs: "50%",
+                sm: "180px",
+              },
+              height: "35px",
+              borderRadius: "5px",
+            }}
+          >
+            <MenuItem value="">Thể loại</MenuItem>
+            <MenuItem value="bongda">Bóng đá</MenuItem>
+            <MenuItem value="casino">Casino</MenuItem>
+          </Select>
+          <Select
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            displayEmpty
+            sx={{
+              backgroundColor: "#29345c",
+              color: "#fff",
+              width: {
+                xs: "50%",
+                sm: "180px",
+              },
+              height: "35px",
+              borderRadius: "5px",
+            }}
+          >
+            <MenuItem value="">Trạng thái</MenuItem>
+            <MenuItem value="win">Thắng</MenuItem>
+            <MenuItem value="lose">Thua</MenuItem>
+          </Select>
+        </Box>
+      </Box>
+
+      <>
+        {rows.length > 0 ? (
           <Box
             sx={{
-              position: "relative",
+              width: "100%",
+              overflowX: "auto", // scroll chỉ tại đây
+              background: "#141b36",
+              borderRadius: "10px",
+            }}
+          >
+            <Box sx={{ minWidth: 800 }}>
+              {/* Header */}
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                px={1}
+                mb={2}
+                color="#ccc"
+                sx={{
+                  background: "#1c2340",
+                  p: 2,
+                }}
+              >
+                <Typography sx={{ flex: "1 1 20%", whiteSpace: "nowrap" }}>
+                  Tên game
+                </Typography>
+                <Typography sx={{ flex: "1 1 10%", whiteSpace: "nowrap" }}>
+                  Thời gian giao dịch
+                </Typography>
+                <Typography sx={{ flex: "1 1 10%", whiteSpace: "nowrap" }}>
+                  Số tiền cược
+                </Typography>
+                <Typography sx={{ flex: "1 1 25%", whiteSpace: "nowrap" }}>
+                  Số tiền cược hợp lệ
+                </Typography>
+                <Typography sx={{ flex: "1 1 20%", whiteSpace: "nowrap" }}>
+                  Số tiền thắng
+                </Typography>
+                <Typography sx={{ flex: "1 1 20%", whiteSpace: "nowrap" }}>
+                  Thời gian đặt cược
+                </Typography>
+                <Typography sx={{ flex: "1 1 20%", whiteSpace: "nowrap" }}>
+                  Đơn vị tiền tệ
+                </Typography>
+              </Box>
+
+              {/* Rows */}
+              {rows?.map((t, i) => (
+                <Card
+                  key={i}
+                  sx={{
+                    background: "#141b36",
+                    borderBottom: "1px solid rgba(56,67,117,.35)",
+                    boxShadow: "none",
+                  }}
+                >
+                  <CardContent
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      px: 2,
+                      py: 1,
+                    }}
+                  >
+                    <Typography sx={{ flex: "1 1 20%", whiteSpace: "nowrap" }}>
+                      {t.gameName}
+                    </Typography>
+                    <Typography sx={{ flex: "1 1 10%", whiteSpace: "nowrap" }}>
+                      {formatDate(t.transactionTime)}
+                    </Typography>
+                    <Typography sx={{ flex: "1 1 10%", whiteSpace: "nowrap" }}>
+                      {t.betAmount}
+                    </Typography>
+                    <Typography sx={{ flex: "1 1 25%", whiteSpace: "nowrap" }}>
+                      {t.validBetAmount}
+                    </Typography>
+                    <Typography
+                      fontWeight="bold"
+                      color="success.main"
+                      sx={{ flex: "1 1 20%", whiteSpace: "nowrap" }}
+                    >
+                      {t.winAmount}
+                    </Typography>
+                    <Typography
+                      fontWeight="bold"
+                      color="success.main"
+                      sx={{ flex: "1 1 20%", whiteSpace: "nowrap" }}
+                    >
+                      {t.betTime}
+                    </Typography>
+                    <Typography
+                      fontWeight="bold"
+                      color="success.main"
+                      sx={{ flex: "1 1 20%", whiteSpace: "nowrap" }}
+                    >
+                      {t.currency}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ))}
+            </Box>
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              backgroundColor: "#0f1a35",
+              borderRadius: 2,
+              py: 15,
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              marginTop: -10,
+              color: "#aaa",
             }}
           >
-            <Avatar
-              alt="Remy Sharp"
-              src="/images/avatar-4.webp"
-              sx={{
-                width: 132,
-                height: 132,
-              }}
-            />
+            <Box textAlign="center">
+              <EmptyIcon />
+              <Typography>Không tìm thấy kết quả Giao dịch gần đây</Typography>
+            </Box>
           </Box>
-          <Typography
-            variant="h6"
-            gutterBottom
-            sx={{
-              textAlign: "center",
-              backgroundColor: "transparent",
-              color: "white",
-            }}
-          >
-            {" "}
-            {user?.name}
-          </Typography>
-          <Typography
-            variant="body2"
-            gutterBottom
-            sx={{ color: "yellow", textAlign: "center" }}
-          >
-            {" "}
-            {formatCurrency(user?.coin ?? 0)} USD
-          </Typography>
-        </Grid>
-
-        <Stepper
-          connector={<></>}
-          orientation="vertical"
-          activeStep={activeStep}
-          sx={{
-            backgroundColor: "#0F192F",
-            borderRadius: 3,
-            width: "100%",
-            maxWidth: "360px",
-            maxHeight: "384px",
-            height: "384px",
-            textAlign: "center",
-            position: "relative",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            marginTop: 2,
-          }}
-        >
-          {steps.map((step, index) => (
-            <Step key={index} onClick={() => setActiveStep(index)}>
-              <div
-                className={
-                  activeStep === index ? "step-label-active" : "step-label"
-                }
-                style={{ height: "48px", cursor: "pointer" }}
-                onClick={() => {
-                  if (step.title === "Deposit Money") {
-                    window.open(
-                      "https://t.me/HitJuwa",
-                      "_blank",
-                      "noopener,noreferrer"
-                    );
-                  } else {
-                    router.replace(step.link);
-                  }
-                }}
-              >
-                <div
-                  style={{
-                    alignItems: "center",
-                    display: "flex",
-                    fontSize: "16px",
-                    gap: "10px",
-                    fontWeight: 600,
-                    lineHeight: "24px",
-                    padding: "12px 24px",
-                  }}
-                >
-                  {step.icon} {/* Render the icon */}
-                  <Typography
-                    className={
-                      activeStep === index ? "step-title-active" : "step-title"
-                    }
-                  >
-                    {step.title}
-                  </Typography>
-                </div>
-              </div>
-            </Step>
-          ))}
-        </Stepper>
-      </Grid>
-      {loading ? (
-        <>
-          <SimpleBackdrop />
-          <CardContent
-            sx={{
-              width: { xs: "100%", sm: "65%" },
-              marginTop: 9,
-              borderRadius: 10,
-              pt: (theme) => `${theme.spacing(6)} !important`,
-            }}
-          >
-            <Grid
-              container
-              sx={{
-                backgroundColor: "#0F192F",
-                width: "100%",
-                // padding: 4.5,
-                borderRadius: "8px",
-              }}
-            >
-              <Grid
-                container
-                item
-                xs={12}
-                md={6}
-                spacing={3.5}
-                sx={{ paddingLeft: 4.5, paddingTop: 4.5 }}
-              >
-                {/* <Grid container item xs={24} md={12}> */}
-                <Typography variant="h6" sx={{ color: "white", padding: 2 }}>
-                  Betting History
-                </Typography>
-                {/* </Grid> */}
-              </Grid>
-
-              <Grid
-                width={"100%"}
-                display={"flex"}
-                justifyContent={"space-between"}
-                alignItems={"center"}
-              >
-                {/* <Grid width={"100%"}> */}
-                <Grid
-                  container
-                  spacing={2}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                >
-                  <Grid item xs={8} md={4}>
-                    <FormControl fullWidth>
-                      <Typography sx={{ color: "#73879a" }}>
-                        From date
-                      </Typography>
-                      <Input
-                        type="date"
-                        value={fromDate}
-                        onChange={(e) => setFromDate(e.target.value)}
-                        sx={{
-                          width: { xs: "200px", sm: "100%" },
-                          paddingLeft: 2,
-                          color: "white",
-                          borderRadius: "7px",
-                          height: "35px",
-                          backgroundColor: "#283145",
-                          border: "none",
-                          outline: "none",
-                        }}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={8} md={4}>
-                    <FormControl fullWidth>
-                      <Typography sx={{ color: "#73879a" }}>To date</Typography>
-                      <Input
-                        type="date"
-                        value={toDate}
-                        onChange={(e) => setToDate(e.target.value)}
-                        sx={{
-                          width: { xs: "200px", sm: "100%" },
-                          color: "white",
-                          paddingLeft: 2,
-                          borderRadius: "7px",
-                          height: "35px",
-                          backgroundColor: "#283145",
-                          border: "none",
-                          outline: "none",
-                        }}
-                      />
-                    </FormControl>
-                  </Grid>
-                </Grid>
-
-                {/* sort session*/}
-              </Grid>
-              <Grid container width={"100%"} marginTop={3.5}>
-                <TableContainer
-                  sx={{
-                    width: "100%",
-                    backgroundColor: "#0F192F",
-                    overflowX: "auto", // Để scroll ngang
-                    scrollbarWidth: "none", // Ẩn scrollbar ngang
-                    "&::-webkit-scrollbar": {
-                      display: "none", // Ẩn scrollbar ngang (Webkit)
-                    },
-                  }}
-                  component={Paper}
-                >
-                  <Table sx={{ width: "550px" }} aria-label="simple table">
-                    <TableHead sx={{ backgroundColor: "#283145" }}>
-                      <TableRow sx={{ height: "40px", width: "100%" }}>
-                        <TableCell
-                          align="left"
-                          sx={{
-                            color: "#73879a",
-                            height: "40px",
-                            width: "120px",
-                          }}
-                        >
-                          Trans Time
-                        </TableCell>
-                        <TableCell
-                          align="left"
-                          sx={{
-                            color: "#73879a",
-                            height: "40px",
-                            width: "120px",
-                          }}
-                        >
-                          Bet Tim
-                        </TableCell>
-                        <TableCell
-                          align="left"
-                          sx={{
-                            color: "#73879a",
-                            height: "40px",
-                            width: "100px",
-                          }}
-                        >
-                          Valid Bet Amount
-                        </TableCell>
-                        <TableCell
-                          align="left"
-                          sx={{
-                            color: "#73879a",
-                            height: "40px",
-                            width: "80px",
-                          }}
-                        >
-                          Bet Amount
-                        </TableCell>
-                        <TableCell
-                          align="left"
-                          sx={{
-                            color: "#73879a",
-                            height: "40px",
-                            width: "80px",
-                          }}
-                        >
-                          Win Amount
-                        </TableCell>
-                        <TableCell
-                          align="left"
-                          sx={{
-                            color: "#73879a",
-                            height: "40px",
-                            width: "80px",
-                          }}
-                        >
-                          Win/Lose
-                        </TableCell>
-                        <TableCell
-                          align="left"
-                          sx={{
-                            color: "#73879a",
-                            height: "40px",
-                            width: "100px",
-                          }}
-                        >
-                          Product Type
-                        </TableCell>
-                        <TableCell
-                          align="left"
-                          sx={{
-                            color: "#73879a",
-                            height: "40px",
-                            width: "100px",
-                          }}
-                        >
-                          Game Category
-                        </TableCell>
-                        <TableCell
-                          align="left"
-                          sx={{
-                            color: "#73879a",
-                            height: "40px",
-                            width: "100px",
-                          }}
-                        >
-                          Game Name
-                        </TableCell>
-                        <TableCell
-                          align="left"
-                          sx={{
-                            color: "#73879a",
-                            height: "40px",
-                            width: "40px",
-                          }}
-                        >
-                          Status
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {rows.length === 0 ? (
-                        <TableRow>
-                          <TableCell
-                            colSpan={9}
-                            align="left"
-                            sx={{ color: "white", marginLeft: 20 }}
-                          >
-                            <Grid
-                              width="100%"
-                              container
-                              sx={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                                height: "320px",
-                                paddingRight: { xs: 90, sm: 50 },
-                              }}
-                            >
-                              <ProfileEmptyIcon height="78px" width="96px" />
-                              <h1
-                                style={{
-                                  color: "white",
-                                  marginBottom: 3,
-                                }}
-                              >
-                                Bet History is empty
-                              </h1>
-                              <Typography variant="body2">
-                                You have not placed any bets in the system.
-                              </Typography>
-                              <Typography marginBottom={3} variant="body2">
-                                Please deposit money to participate in betting
-                                right.
-                              </Typography>
-                              <Button
-                                variant="contained"
-                                sx={{ backgroundColor: "green" }}
-                              >
-                                Deposit Now!
-                              </Button>
-                            </Grid>
-                          </TableCell>
-                        </TableRow>
-                      ) : (
-                        rows.map((row) => (
-                          <TableRow
-                            key={row.id}
-                            sx={{ backgroundColor: "#0F192F" }}
-                          >
-                            <TableCell sx={{ color: "white" }}>
-                              {new Date(row.transactionTime).toLocaleString()}
-                            </TableCell>
-                            <TableCell sx={{ color: "white" }}>
-                              {row.betTime}
-                            </TableCell>
-                            <TableCell sx={{ color: "white" }}>
-                              {row.validBetAmount}
-                            </TableCell>
-                            <TableCell sx={{ color: "white" }}>
-                              {row.betAmount}
-                            </TableCell>
-                            <TableCell sx={{ color: "white" }}>
-                              {row.winAmount}
-                            </TableCell>
-                            <TableCell sx={{ color: "white" }}>
-                              {row.productType}
-                            </TableCell>
-                            <TableCell sx={{ color: "white" }}>
-                              {row.gameCategory}
-                            </TableCell>
-                            <TableCell sx={{ color: "white" }}>
-                              {row.gameName}
-                            </TableCell>
-                            <TableCell sx={{ color: "white" }}>
-                              {row.status.defaultValue}
-                            </TableCell>
-                          </TableRow>
-                        ))
-                      )}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-                <Grid container justifyContent="center" sx={{ marginTop: 2 }}>
-                  <Pagination
-                    count={Math.ceil(total / limit)}
-                    page={page}
-                    onChange={handleChangePage}
-                    color="primary"
-                    sx={{ color: "white" }}
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-          </CardContent>
-        </>
-      ) : (
-        <CardContent
-          sx={{
-            width: { xs: "100%", sm: "65%" },
-            marginTop: 9,
-            borderRadius: 10,
-            pt: (theme) => `${theme.spacing(6)} !important`,
-          }}
-        >
-          <Grid
-            container
-            sx={{
-              backgroundColor: "#0F192F",
-              width: "100%",
-              // padding: 4.5,
-              borderRadius: "8px",
-            }}
-          >
-            <Grid
-              container
-              item
-              xs={12}
-              md={6}
-              spacing={3.5}
-              sx={{ paddingLeft: 4.5, paddingTop: 4.5 }}
-            >
-              {/* <Grid container item xs={24} md={12}> */}
-              <Typography variant="h6" sx={{ color: "white", padding: 2 }}>
-                Betting History
-              </Typography>
-              {/* </Grid> */}
-            </Grid>
-
-            <Grid
-              width={"100%"}
-              display={"flex"}
-              justifyContent={"space-between"}
-              alignItems={"center"}
-            >
-              {/* <Grid width={"100%"}> */}
-              <Grid
-                container
-                spacing={2}
-                justifyContent={"center"}
-                alignItems={"center"}
-              >
-                <Grid item xs={8} md={4}>
-                  <FormControl fullWidth>
-                    <Typography sx={{ color: "#73879a" }}>From date</Typography>
-                    <Input
-                      type="date"
-                      value={fromDate}
-                      onChange={(e) => setFromDate(e.target.value)}
-                      sx={{
-                        width: { xs: "200px", sm: "100%" },
-                        paddingLeft: 2,
-                        color: "white",
-                        borderRadius: "7px",
-                        height: "35px",
-                        backgroundColor: "#283145",
-                        border: "none",
-                        outline: "none",
-                      }}
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={8} md={4}>
-                  <FormControl fullWidth>
-                    <Typography sx={{ color: "#73879a" }}>To date</Typography>
-                    <Input
-                      type="date"
-                      value={toDate}
-                      onChange={(e) => setToDate(e.target.value)}
-                      sx={{
-                        width: { xs: "200px", sm: "100%" },
-                        color: "white",
-                        paddingLeft: 2,
-                        borderRadius: "7px",
-                        height: "35px",
-                        backgroundColor: "#283145",
-                        border: "none",
-                        outline: "none",
-                      }}
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid container width={"100%"} marginTop={3.5}>
-              <TableContainer
-                sx={{
-                  width: "100%",
-                  backgroundColor: "#0F192F",
-                  overflowX: "auto", // Để scroll ngang
-                  scrollbarWidth: "none", // Ẩn scrollbar ngang
-                  "&::-webkit-scrollbar": {
-                    display: "none", // Ẩn scrollbar ngang (Webkit)
-                  },
-                }}
-                component={Paper}
-              >
-                <Table sx={{ width: "1110px" }} aria-label="simple table">
-                  <TableHead sx={{ backgroundColor: "#283145" }}>
-                    <TableRow sx={{ height: "40px", width: "100%" }}>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          color: "#73879a",
-                          height: "40px",
-                          width: "140px",
-                        }}
-                      >
-                        Transaction Time
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          color: "#73879a",
-                          height: "40px",
-                          width: "120px",
-                        }}
-                      >
-                        Bet Time
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          color: "#73879a",
-                          height: "40px",
-                          width: "140px",
-                        }}
-                      >
-                        Valid Bet Amount
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          color: "#73879a",
-                          height: "40px",
-                          width: "110px",
-                        }}
-                      >
-                        Bet Amount
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          color: "#73879a",
-                          height: "40px",
-                          width: "110px",
-                        }}
-                      >
-                        Win Amount
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          color: "#73879a",
-                          height: "40px",
-                          width: "60px",
-                        }}
-                      >
-                        Win/Lose
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          color: "#73879a",
-                          height: "40px",
-                          width: "120px",
-                        }}
-                      >
-                        Product Type
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          color: "#73879a",
-                          height: "40px",
-                          width: "140px",
-                        }}
-                      >
-                        Game Category
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          color: "#73879a",
-                          height: "40px",
-                          width: "130px",
-                        }}
-                      >
-                        Game Name
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          color: "#73879a",
-                          height: "40px",
-                          width: "40px",
-                        }}
-                      >
-                        Status
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {rows.length === 0 ? (
-                      <TableRow>
-                        <TableCell
-                          colSpan={9}
-                          align="left"
-                          sx={{ color: "white", marginLeft: 20 }}
-                        >
-                          <Grid
-                            width="100%"
-                            container
-                            sx={{
-                              display: "flex",
-                              flexDirection: "column",
-                              alignItems: "center",
-                              height: "320px",
-                              paddingRight: { xs: 90, sm: 50 },
-                            }}
-                          >
-                            <ProfileEmptyIcon height="78px" width="96px" />
-                            <h1
-                              style={{
-                                color: "white",
-                                marginBottom: 3,
-                              }}
-                            >
-                              Bet History is empty
-                            </h1>
-                            <Typography variant="body2">
-                              You have not placed any bets in the system.
-                            </Typography>
-                            <Typography marginBottom={3} variant="body2">
-                              Please deposit money to participate in betting
-                              right.
-                            </Typography>
-                            <Button
-                              variant="contained"
-                              sx={{ backgroundColor: "green" }}
-                            >
-                              Deposit Now!
-                            </Button>
-                          </Grid>
-                        </TableCell>
-                      </TableRow>
-                    ) : (
-                      rows.map((row) => (
-                        <TableRow
-                          key={row.id}
-                          sx={{ backgroundColor: "#0F192F" }}
-                        >
-                          <TableCell sx={{ color: "white" }}>
-                            {new Date(row.transactionTime).toLocaleString()}
-                          </TableCell>
-                          <TableCell sx={{ color: "white" }}>
-                            {row.betTime}
-                          </TableCell>
-                          <TableCell sx={{ color: "white" }}>
-                            {row.validBetAmount}
-                          </TableCell>
-                          <TableCell sx={{ color: "white" }}>
-                            {row.betAmount}
-                          </TableCell>
-                          <TableCell sx={{ color: "white" }}>
-                            {row.winAmount}
-                          </TableCell>
-                          <TableCell sx={{ color: "white" }}>
-                            {row.productType}
-                          </TableCell>
-                          <TableCell sx={{ color: "white" }}>
-                            {row.gameCategory}
-                          </TableCell>
-                          <TableCell sx={{ color: "white" }}>
-                            {row.gameName}
-                          </TableCell>
-                          <TableCell sx={{ color: "white" }}>
-                            {row.status.defaultValue}
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    )}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <Grid container justifyContent="center" sx={{ marginTop: 2 }}>
-                <Pagination
-                  count={Math.ceil(total / limit)}
-                  page={page}
-                  onChange={handleChangePage}
-                  color="primary"
-                  sx={{ color: "white" }}
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-        </CardContent>
-      )}
+        )}
+      </>
     </Box>
   );
 }
