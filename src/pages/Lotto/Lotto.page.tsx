@@ -1,5 +1,5 @@
 "use client";
-import React, { cloneElement, useEffect, useState } from "react";
+import React, { cloneElement, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import usePlayGame from "@/hook/usePlayGame";
 import SimpleBackdrop from "@/components/Loading/LoaddingPage";
@@ -10,6 +10,7 @@ import {
   Pagination,
   Tooltip,
   IconButton,
+  useMediaQuery,
 } from "@mui/material";
 import { getListGame } from "@/services/GameApi.service";
 import { GameLotto } from "@/datafake/ListGame";
@@ -45,7 +46,7 @@ const commonTextBoxStyles = {
 };
 const commonCardStyles = {
   width: {
-    xs: "130px",
+    xs: "160px",
     sm: "200px",
   },
   height: {
@@ -92,27 +93,51 @@ const buttonStyles = {
 
 export default function LottoPage() {
   const { loading, playGame } = usePlayGame();
-  const [load, setLoad] = useState<boolean>(false);
-  const [isPageLoading, setIsPageLoading] = useState<boolean>(false);
-
   const [acctiveMenu, setAcctiveMenu] = useState<string>("1");
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 18;
+  const listMenuRef = useRef<HTMLDivElement>(null);
+  const gameSlotsMenuRef = useRef<HTMLDivElement>(null);
+  // Sử dụng media query string thay vì theme.breakpoints
+  const isMobile = useMediaQuery("(max-width: 600px)"); // Breakpoint xs thường là 600px
 
-  const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
-    page: number
+  // Hàm cuộn item active vào giữa màn hình
+  const scrollToCenter = (
+    containerRef: React.RefObject<HTMLDivElement>,
+    itemId: string
   ) => {
-    setIsPageLoading(true);
-    setTimeout(() => {
-      setCurrentPage(page);
-      setIsPageLoading(false);
-    }, 1000);
+    if (containerRef.current) {
+      const activeItem = containerRef.current.querySelector(
+        `[data-id="${itemId}"]`
+      );
+      if (activeItem instanceof HTMLElement) {
+        const containerWidth = containerRef.current.offsetWidth;
+        const itemWidth = activeItem.offsetWidth;
+        const itemOffsetLeft = activeItem.offsetLeft;
+        const scrollPosition =
+          itemOffsetLeft - (containerWidth - itemWidth) / 2;
+
+        containerRef.current.scrollTo({
+          left: scrollPosition,
+          behavior: "smooth",
+        });
+      }
+    }
   };
+
+  // Cuộn menu active vào giữa khi activeMenu thay đổi hoặc component mount
+  useEffect(() => {
+    if (isMobile) {
+      // Chờ DOM render hoàn tất
+      const timer = setTimeout(() => {
+        scrollToCenter(listMenuRef, "6"); // Cuộn ListMenu đến id="4"
+        scrollToCenter(gameSlotsMenuRef, acctiveMenu); // Cuộn GameSlotsMenu
+      }, 100);
+      return () => clearTimeout(timer); // Dọn dẹp timer
+    }
+  }, [acctiveMenu, isMobile]);
 
   return (
     <>
-      {loading || load || isPageLoading ? (
+      {loading ? (
         <>
           <SimpleBackdrop />
           <Box
@@ -167,6 +192,7 @@ export default function LottoPage() {
             }}
           >
             <Box
+              ref={listMenuRef}
               sx={{
                 display: "flex",
                 alignItems: "center",
@@ -193,6 +219,7 @@ export default function LottoPage() {
             >
               {ListMenu.map((item) => (
                 <Button
+                  data-id={item.id}
                   onClick={() => {}}
                   sx={{
                     minWidth: "160px",
@@ -232,6 +259,7 @@ export default function LottoPage() {
               ))}
             </Box>
             <Box
+              ref={gameSlotsMenuRef}
               sx={{
                 display: "flex",
                 alignItems: "center",
@@ -251,6 +279,10 @@ export default function LottoPage() {
             >
               {GameSlotsMenu.map((item) => (
                 <Button
+                  data-id={item.id}
+                  onClick={() => {
+                    setAcctiveMenu(item.id);
+                  }}
                   sx={{
                     display: "flex",
                     minWidth: "164px",

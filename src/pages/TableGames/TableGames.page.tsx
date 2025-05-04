@@ -1,8 +1,6 @@
 "use client";
 import React, { cloneElement, useEffect, useState } from "react";
 import Image from "next/image";
-import usePlayGame from "@/hook/usePlayGame";
-import SimpleBackdrop from "@/components/Loading/LoaddingPage";
 import { Box, Typography, Button, Pagination } from "@mui/material";
 import { getListGame } from "@/services/GameApi.service";
 import SlotsGameItemPage from "../Slots/SlotsGameItem.page";

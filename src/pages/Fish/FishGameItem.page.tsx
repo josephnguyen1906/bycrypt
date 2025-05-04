@@ -132,7 +132,6 @@ export default function FishGameItemPage() {
     setGameTable((prev) => prev.filter((_, i) => i !== index));
   };
 
-  console.log(gameTable);
   return (
     <>
       {loading || load || isPageLoading ? (

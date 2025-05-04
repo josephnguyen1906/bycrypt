@@ -1,5 +1,5 @@
 "use client";
-import React, { cloneElement, useEffect, useState } from "react";
+import React, { cloneElement, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import usePlayGame from "@/hook/usePlayGame";
 import SimpleBackdrop from "@/components/Loading/LoaddingPage";
@@ -10,6 +10,7 @@ import {
   Pagination,
   Tooltip,
   IconButton,
+  useMediaQuery,
 } from "@mui/material";
 import { getListGame } from "@/services/GameApi.service";
 import { GameSlotsMenu, ListMenu } from "@/datafake/Menu";
@@ -19,7 +20,46 @@ export default function SlotsPage() {
   const [GameType, setGameType] = useState<string>("RNG");
   const [ProductType, setProductType] = useState<string>("JL");
   const [acctiveMenu, setAcctiveMenu] = useState<string>("1");
+  const listMenuRef = useRef<HTMLDivElement>(null);
+  const gameSlotsMenuRef = useRef<HTMLDivElement>(null);
+  // Sử dụng media query string thay vì theme.breakpoints
+  const isMobile = useMediaQuery("(max-width: 600px)"); // Breakpoint xs thường là 600px
 
+  // Hàm cuộn item active vào giữa màn hình
+  const scrollToCenter = (
+    containerRef: React.RefObject<HTMLDivElement>,
+    itemId: string
+  ) => {
+    if (containerRef.current) {
+      const activeItem = containerRef.current.querySelector(
+        `[data-id="${itemId}"]`
+      );
+      if (activeItem instanceof HTMLElement) {
+        const containerWidth = containerRef.current.offsetWidth;
+        const itemWidth = activeItem.offsetWidth;
+        const itemOffsetLeft = activeItem.offsetLeft;
+        const scrollPosition =
+          itemOffsetLeft - (containerWidth - itemWidth) / 2;
+
+        containerRef.current.scrollTo({
+          left: scrollPosition,
+          behavior: "smooth",
+        });
+      }
+    }
+  };
+
+  // Cuộn menu active vào giữa khi activeMenu thay đổi hoặc component mount
+  useEffect(() => {
+    if (isMobile) {
+      // Chờ DOM render hoàn tất
+      const timer = setTimeout(() => {
+        scrollToCenter(listMenuRef, "2"); // Cuộn ListMenu đến id="4"
+        scrollToCenter(gameSlotsMenuRef, acctiveMenu); // Cuộn GameSlotsMenu
+      }, 100);
+      return () => clearTimeout(timer); // Dọn dẹp timer
+    }
+  }, [acctiveMenu, isMobile]);
   return (
     <Box
       sx={{
@@ -58,6 +98,7 @@ export default function SlotsPage() {
         }}
       >
         <Box
+          ref={listMenuRef}
           sx={{
             display: "flex",
             alignItems: "center",
@@ -66,7 +107,10 @@ export default function SlotsPage() {
             overflowX: "auto",
             gap: "15px",
             paddingBottom: "20px",
-            marginTop: "-40px",
+            marginTop: {
+              xs: 0,
+              sm: "-40px",
+            },
             justifyContent: { xs: "flex-start", sm: "left" },
             WebkitOverflowScrolling: "touch",
             "&::-webkit-scrollbar": {
@@ -78,6 +122,7 @@ export default function SlotsPage() {
         >
           {ListMenu.map((item) => (
             <Button
+              data-id={item.id}
               onClick={() => {}}
               sx={{
                 minWidth: "160px",
@@ -117,6 +162,7 @@ export default function SlotsPage() {
           ))}
         </Box>
         <Box
+          ref={gameSlotsMenuRef}
           sx={{
             display: "flex",
             alignItems: "center",
@@ -136,6 +182,7 @@ export default function SlotsPage() {
         >
           {GameSlotsMenu.map((item) => (
             <Button
+              data-id={item.id} // Thêm data-id
               onClick={() => {
                 setGameType(item.gameType);
                 setProductType(item.productType);
