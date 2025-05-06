@@ -227,7 +227,7 @@ export default function PrimaryLayoutComponent({
             onClose={() => setOpenSupport(false)}
             title="Support"
           />
-          <Button
+          {/* <Button
             onClick={handleOpenMiniGame}
             sx={{
               position: "fixed",
@@ -254,7 +254,7 @@ export default function PrimaryLayoutComponent({
               alt="Mini Game Icon"
               style={{ width: "50px", height: "50px", objectFit: "cover" }}
             />
-          </Button>
+          </Button> */}
           <MiniGameComponent
             open={isMiniGameOpen}
             onClose={handleCloseMiniGame}

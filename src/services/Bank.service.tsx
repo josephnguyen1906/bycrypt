@@ -39,6 +39,10 @@ const getListAllBank = () => {
   return contentInstance.get("/api/payment/getListBankDeposit");
 };
 
+// Lấy tất cả danh sách Ngân hàng
+const checkSecurityPass = () => {
+  return contentInstance.get("api/auth/check-security-passwd");
+};
 // Tạo QR bank nộp tiền
 const createQRBank = (bank: string, amountDeposit: number) => {
   return contentInstance.post("/api/payment/createRequestQR", {
@@ -59,6 +63,18 @@ const addBankUser = (
     bankName,
     bankNumber,
     bankBranch,
+  });
+};
+
+const changePassSecurity = (
+  oldPassword: string,
+  newPassword: string,
+  newPasswordConfirm: string
+) => {
+  return contentInstance.post("/api/auth/change-password-security", {
+    oldPassword,
+    newPassword,
+    newPasswordConfirm,
   });
 };
 
@@ -87,4 +103,6 @@ export {
   getListAllBank,
   getListBankPayment,
   getListUserBank,
+  checkSecurityPass,
+  changePassSecurity,
 };

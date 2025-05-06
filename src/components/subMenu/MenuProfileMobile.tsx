@@ -277,23 +277,32 @@ export default function MenuProfileMobile(data: userProps) {
           justifyContent: "flex-end",
           background: "#1a263f",
           borderRadius: "20px",
+          marginLeft: "-20px",
         }}
       >
-        <Button
-          sx={{
-            background: "#1a263f",
-            color: "#fbc16c",
-            borderRadius: "16px",
-            padding: "4px 12px",
-            fontSize: "14px",
-            textTransform: "none",
-            "&:hover": {
-              background: "#2f3b56",
-            },
-          }}
-        >
-          {formatCurrency(data.user?.coin ?? 0)}
-        </Button>
+        <Tooltip title={formatCurrency(data.user?.coin ?? 0)}>
+          <Button
+            sx={{
+              background: "#1a263f",
+              color: "#fbc16c",
+              borderRadius: "16px",
+              padding: "4px 12px",
+              fontSize: "14px",
+              textTransform: "none",
+              maxWidth: "80px",
+              width: "100%",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              display: "block",
+              "&:hover": {
+                background: "#2f3b56",
+              },
+            }}
+          >
+            {formatCurrency(data.user?.coin ?? 0)}
+          </Button>
+        </Tooltip>
         <Button
           onClick={() => route.replace("/profile/account-deposit")}
           sx={{
@@ -341,108 +350,6 @@ export default function MenuProfileMobile(data: userProps) {
       >
         {drawerList()}
       </Drawer>
-      <Menu
-        anchorEl={anchorEl1}
-        id="account-menu"
-        open={open1}
-        onClose={handleClose1}
-        onClick={handleClose1}
-        sx={{
-          zIndex: 9999999,
-        }}
-        slotProps={{
-          paper: {
-            elevation: 0,
-            sx: {
-              overflow: "visible",
-              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-              border: "1px solid #353d50",
-              background: "#0f192f",
-              borderRadius: 6,
-              mt: 1.5,
-              color: "white",
-              "& .MuiAvatar-root": {
-                width: 32,
-                height: 32,
-                ml: -0.5,
-                mr: 1,
-                color: "#353d50",
-              },
-              "&::before": {
-                content: '""',
-                display: "block",
-                position: "absolute",
-                top: 0,
-                right: 14,
-                width: 10,
-                height: 10,
-                bgcolor: "#0f192f",
-                borderTop: "1px solid #353d50",
-                transform: "translateY(-50%) rotate(45deg)",
-                zIndex: 0,
-              },
-            },
-          },
-        }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      >
-        <MenuItem
-          sx={{
-            minWidth: "250px",
-          }}
-        >
-          <Box>
-            {data?.message?.length > 0 ? (
-              <Box>
-                <Typography variant="h6" sx={{ color: "white" }}>
-                  Notification
-                </Typography>
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "100px",
-                    textAlign: "center",
-                  }}
-                >
-                  <FolderIcon
-                    sx={{
-                      margin: "auto",
-                      marginTop: "10px",
-                      fontSize: "50px",
-                      color: "#353D50",
-                    }}
-                  />
-                  <Typography>{`You haven't announced yet!`}</Typography>
-                </Box>
-              </Box>
-            ) : (
-              <Box>
-                <Typography variant="h6" sx={{ color: "white" }}>
-                  Notification
-                </Typography>
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "100px",
-                    textAlign: "center",
-                  }}
-                >
-                  <FolderIcon
-                    sx={{
-                      margin: "auto",
-                      marginTop: "10px",
-                      fontSize: "50px",
-                      color: "#353D50",
-                    }}
-                  />
-                  <Typography>{`You haven't announced yet!`}</Typography>
-                </Box>
-              </Box>
-            )}
-          </Box>
-        </MenuItem>
-      </Menu>
     </React.Fragment>
   );
 }

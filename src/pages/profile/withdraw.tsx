@@ -37,7 +37,12 @@ import Tab from "@mui/material/Tab";
 import SimpleBackdrop from "@/components/Loading/LoaddingPage";
 import { contentInstance } from "@/configs/CustomizeAxios";
 import { error } from "console";
-import { getListUserBank, withdrawalsUser } from "@/services/Bank.service";
+import {
+  changePassSecurity,
+  checkSecurityPass,
+  getListUserBank,
+  withdrawalsUser,
+} from "@/services/Bank.service";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import "./profile.css";
 import swal from "sweetalert";
@@ -50,10 +55,13 @@ export default function Withdraw() {
   const [bankUser, setBankUser] = useState<any>();
   const [load, setLoad] = useState<boolean>(false);
   const [amountMoney, setAmountMoney] = useState<string>("");
+  const [checkpass, setCheckpass] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
+  const [rePassword, setRePassword] = useState<string>("");
 
   useEffect(() => {
     fetchBankListByUser();
+    CheckPass();
   }, []);
   const handleAmountMoney = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAmountMoney(event.target.value);
@@ -62,8 +70,9 @@ export default function Withdraw() {
   const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
-
-  const [activeStep, setActiveStep] = useState<number>(3);
+  const handleRePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRePassword(event.target.value);
+  };
 
   const [value, setValue] = React.useState(0);
 
@@ -81,13 +90,25 @@ export default function Withdraw() {
       console.error("availableBankList is error", error);
     }
   };
+  const CheckPass = async () => {
+    try {
+      const response: any = await checkSecurityPass();
+      console.log("response", response);
+
+      setCheckpass(response.isUpdated);
+    } catch (error) {
+      console.error("availableBankList is error", error);
+    }
+  };
   const WithdrawUser = async () => {
     if (!bankUser || bankUser === undefined || bankUser === "") {
-      swal("Bank", "You haven't added a bank account", "error");
+      swal("Ngân hàng", "Chưa thêm tài khoản ngân hàng", "error");
+    }
+    if (!bankUser.bankName || !bankUser.bankNumber || !bankUser.bankProvide) {
+      swal("Ngân hàng", "Chưa thêm tài khoản ngân hàng", "error");
     }
     if (bankUser && password !== "" && amountMoney !== "") {
       setLoad(true);
-
       withdrawalsUser(
         bankUser.bankName,
         bankUser.bankNumber,
@@ -111,6 +132,18 @@ export default function Withdraw() {
       swal("Rút tiền", "Vui lòng điền đẩy đủ thông tin", "warning");
     }
   };
+  const UpdatePassWithdraw = async () => {
+    setLoad(true);
+    changePassSecurity("", password, rePassword).then((res: any) => {
+      if (res.status === true) {
+        setLoad(false);
+        swal("Tạo mật khẩu", "Tạo mật khẩu rút tiền thành công", "Success");
+      } else {
+        setLoad(false);
+        swal("Tạo mật khẩu", res.msg, "error");
+      }
+    });
+  };
   return (
     <Grid
       container
@@ -125,214 +158,405 @@ export default function Withdraw() {
         padding: 2,
       }}
     >
-      <Grid
-        container
-        sx={{
-          width: { xs: "100%", sm: "51%" },
-          spacing: 1,
-        }}
-      >
-        <Box
+      {checkpass === true ? (
+        <Grid
+          container
           sx={{
-            width: "100%",
-            marginBottom: 8,
-            display: "flex",
-            gap: "10px",
-            justifyItems: "left",
-            justifyContent: "left",
-            borderBottom: "1px solid rgba(56, 67, 117, .3)",
+            width: { xs: "100%", sm: "51%" },
+            spacing: 1,
           }}
         >
-          <Button
+          <Box
             sx={{
+              width: "100%",
+              marginBottom: 8,
               display: "flex",
-              backgroundImage:
-                "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
-              color: "white",
-              borderRadius: "5px",
-              textTransform: "none",
-              fontSize: "14px",
-              width: "150px",
-              height: "38px",
-              border: "none",
-              alignItems: "center",
-              justifyContent: "center",
-              justifyItems: "center",
-              cursor: "pointer",
-              fontWeight: 600,
-              margin: "auto",
+              gap: "10px",
+              justifyItems: "left",
+              justifyContent: "left",
+              borderBottom: "1px solid rgba(56, 67, 117, .3)",
             }}
           >
-            <BankIcon /> Ví điện tử
-          </Button>
-        </Box>
-        <Box sx={{ marginBottom: 2, width: "100%" }}>
-          {bankUser ? (
-            <Box sx={{ marginBottom: "15px" }}>
-              <Typography sx={{ marginBottom: 1 }}>Ngân Hàng</Typography>
-              <ListItem
+            <Button
+              sx={{
+                display: "flex",
+                backgroundImage:
+                  "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+                color: "white",
+                borderRadius: "5px",
+                textTransform: "none",
+                fontSize: "14px",
+                width: "150px",
+                height: "38px",
+                border: "none",
+                alignItems: "center",
+                justifyContent: "center",
+                justifyItems: "center",
+                cursor: "pointer",
+                fontWeight: 600,
+                margin: "auto",
+              }}
+            >
+              <BankIcon /> Ví điện tử
+            </Button>
+          </Box>
+          <Box sx={{ marginBottom: 2, width: "100%" }}>
+            {bankUser ? (
+              <Box sx={{ marginBottom: "15px" }}>
+                <Typography sx={{ marginBottom: 1 }}>Ngân Hàng</Typography>
+                <ListItem
+                  sx={{
+                    backgroundColor: "#2D355D",
+                    width: "100%",
+                    borderRadius: 5,
+                    color: "white",
+                  }}
+                >
+                  <ListItemAvatar>
+                    <Avatar>
+                      <AccountBalanceIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    color="white"
+                    primary={bankUser?.bankName}
+                    secondary={
+                      <React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          sx={{ color: "white", display: "inline" }}
+                        >
+                          {bankUser?.bankNumber || "0155784205502"}
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+              </Box>
+            ) : (
+              <Box sx={{ marginBottom: "15px" }}></Box>
+            )}
+            <Grid item xs={24} md={12} sx={{ marginBottom: "15px" }}>
+              <FormControl fullWidth sx={{ margin: "auto" }}>
+                <Typography sx={{ color: "#73879a", fontSize: 14, mb: 1 }}>
+                  {" "}
+                  Nhập Số Tiền Cần Rút
+                  <span style={{ color: "red" }}>*</span>
+                </Typography>
+                <TextField
+                  sx={{
+                    backgroundColor: "#2A3144",
+                    borderRadius: "8px",
+                    "& .MuiInputBase-input": {
+                      color: "white",
+                    },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        border: "none",
+                      },
+                      "&:hover fieldset": {
+                        border: "none",
+                      },
+                      "&.Mui-focused fieldset": {
+                        border: "none",
+                      },
+                    },
+                  }}
+                  fullWidth
+                  value={amountMoney} // Display formatted input with commas
+                  onChange={handleAmountMoney}
+                  placeholder="Từ 50,000đ trở lên"
+                  inputProps={{
+                    inputMode: "numeric", // Optimize for numeric input on mobile
+                  }}
+                  type="text"
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={24} md={12}>
+              <FormControl fullWidth>
+                <Typography sx={{ color: "#808691", fontSize: 14, mb: 1 }}>
+                  Nhập Mật Khẩu <span style={{ color: "red" }}>*</span>
+                </Typography>
+                <TextField
+                  sx={{
+                    backgroundColor: "#2A3144",
+                    borderRadius: "8px",
+                    "& .MuiInputBase-input": {
+                      color: "white",
+                    },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        border: "none",
+                      },
+                      "&:hover fieldset": {
+                        border: "none",
+                      },
+                      "&.Mui-focused fieldset": {
+                        border: "none",
+                      },
+                    },
+                  }}
+                  fullWidth
+                  value={password} // Display formatted input with commas
+                  onChange={handlePassword}
+                  placeholder="Nhập mật khẩu"
+                  type="password"
+                />
+              </FormControl>
+            </Grid>
+          </Box>
+
+          {/* Generate QR Code Button */}
+          <Box sx={{ marginTop: 2, width: "100%" }}>
+            <Button
+              fullWidth
+              variant="contained"
+              color="success"
+              onClick={() => WithdrawUser()}
+              sx={{
+                display: "flex",
+                backgroundImage:
+                  "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+                color: "white",
+                borderRadius: "20px",
+                textTransform: "none",
+                fontSize: "14px",
+                width: "250px",
+                height: "38px",
+                border: "none",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                margin: "auto",
+              }}
+            >
+              Rút Tiền
+            </Button>
+          </Box>
+
+          <Box
+            sx={{
+              width: "100%",
+              color: "white",
+              padding: 2,
+              borderRadius: "8px",
+              marginTop: 5,
+              border: "1px dashed #384375",
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{ color: "#fbc16c", fontWeight: "bold", marginBottom: 1 }}
+            >
+              Lưu ý:
+            </Typography>
+            <ul style={{ paddingLeft: 20, margin: 0 }}>
+              <li style={{ listStyle: "outside" }}>
+                <Typography variant="body2" sx={{ color: "white" }}>
+                  Nạp/Rút tiền tại tài khoản chính chủ.
+                </Typography>
+              </li>
+              <li style={{ listStyle: "outside" }}>
+                <Typography variant="body2" sx={{ color: "white" }}>
+                  Nạp tiền vào tài khoản bên cạnh.
+                </Typography>
+              </li>
+            </ul>
+          </Box>
+        </Grid>
+      ) : (
+        <Grid
+          container
+          sx={{
+            width: { xs: "100%", sm: "51%" },
+            spacing: 1,
+          }}
+        >
+          {bankUser && checkpass && (
+            <Box
+              sx={{
+                width: "100%",
+                marginBottom: 8,
+                display: "flex",
+                gap: "10px",
+                justifyItems: "left",
+                justifyContent: "left",
+                borderBottom: "1px solid rgba(56, 67, 117, .3)",
+              }}
+            >
+              <Button
                 sx={{
-                  backgroundColor: "#2D355D",
-                  width: "100%",
-                  borderRadius: 5,
+                  display: "flex",
+                  backgroundImage:
+                    "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
                   color: "white",
+                  borderRadius: "5px",
+                  textTransform: "none",
+                  fontSize: "14px",
+                  width: "150px",
+                  height: "38px",
+                  border: "none",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  justifyItems: "center",
+                  cursor: "pointer",
+                  fontWeight: 600,
+                  margin: "auto",
+                  marginTop: "-20px",
                 }}
               >
-                <ListItemAvatar>
-                  <Avatar>
-                    <AccountBalanceIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  color="white"
-                  primary={bankUser?.bankName}
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        sx={{ color: "white", display: "inline" }}
-                      >
-                        {bankUser?.bankNumber || "0155784205502"}
-                      </Typography>
-                    </React.Fragment>
-                  }
-                />
-              </ListItem>
+                <BankIcon /> Ví điện tử
+              </Button>
             </Box>
-          ) : (
-            <Box sx={{ marginBottom: "15px" }}></Box>
           )}
-          <Grid item xs={24} md={12} sx={{ marginBottom: "15px" }}>
-            <FormControl fullWidth sx={{ margin: "auto" }}>
-              <Typography sx={{ color: "#73879a", fontSize: 14, mb: 1 }}>
-                {" "}
-                Nhập Số Tiền Cần Rút
-                <span style={{ color: "red" }}>*</span>
-              </Typography>
-              <TextField
-                sx={{
-                  backgroundColor: "#2A3144",
-                  borderRadius: "8px",
-                  "& .MuiInputBase-input": {
+          <Box sx={{ marginBottom: 1, width: "100%" }}>
+            {bankUser && checkpass && (
+              <Box sx={{ marginBottom: "15px" }}>
+                <Typography sx={{ marginBottom: 1 }}>Ngân Hàng</Typography>
+                <ListItem
+                  sx={{
+                    backgroundColor: "#2D355D",
+                    width: "100%",
+                    borderRadius: 5,
                     color: "white",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      border: "none",
-                    },
-                    "&:hover fieldset": {
-                      border: "none",
-                    },
-                    "&.Mui-focused fieldset": {
-                      border: "none",
-                    },
-                  },
-                }}
-                fullWidth
-                value={amountMoney} // Display formatted input with commas
-                onChange={handleAmountMoney}
-                placeholder="Từ 50,000đ trở lên"
-                inputProps={{
-                  inputMode: "numeric", // Optimize for numeric input on mobile
-                }}
-                type="text"
-              />
-            </FormControl>
-          </Grid>
-          <Grid item xs={24} md={12}>
-            <FormControl fullWidth>
-              <Typography sx={{ color: "#808691", fontSize: 14, mb: 1 }}>
-                Nhập Mật Khẩu <span style={{ color: "red" }}>*</span>
-              </Typography>
-              <TextField
+                  }}
+                >
+                  <ListItemAvatar>
+                    <Avatar>
+                      <AccountBalanceIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    color="white"
+                    primary={bankUser?.bankName}
+                    secondary={
+                      <React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          sx={{ color: "white", display: "inline" }}
+                        >
+                          {bankUser?.bankNumber || "0155784205502"}
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+              </Box>
+            )}
+
+            <Grid item xs={24} md={12}>
+              <Typography
+                variant="h3"
                 sx={{
-                  backgroundColor: "#2A3144",
-                  borderRadius: "8px",
-                  "& .MuiInputBase-input": {
-                    color: "white",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      border: "none",
-                    },
-                    "&:hover fieldset": {
-                      border: "none",
-                    },
-                    "&.Mui-focused fieldset": {
-                      border: "none",
-                    },
-                  },
+                  color: "white",
+                  fontSize: "25px",
+                  marginTop: "-150px",
+                  marginBottom: 4,
                 }}
-                fullWidth
-                value={password} // Display formatted input with commas
-                onChange={handlePassword}
-                placeholder="Nhập mật khẩu"
-                type="password"
-              />
-            </FormControl>
-          </Grid>
-        </Box>
-
-        {/* Generate QR Code Button */}
-        <Box sx={{ marginTop: 2, width: "100%" }}>
-          <Button
-            fullWidth
-            variant="contained"
-            color="success"
-            onClick={() => WithdrawUser()}
-            sx={{
-              display: "flex",
-              backgroundImage:
-                "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
-              color: "white",
-              borderRadius: "20px",
-              textTransform: "none",
-              fontSize: "14px",
-              width: "250px",
-              height: "38px",
-              border: "none",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              margin: "auto",
-            }}
-          >
-            Rút Tiền
-          </Button>
-        </Box>
-
-        <Box
-          sx={{
-            width: "100%",
-            color: "white",
-            padding: 2,
-            borderRadius: "8px",
-            marginTop: 5,
-            border: "1px dashed #384375",
-          }}
-        >
-          <Typography
-            variant="body2"
-            sx={{ color: "#fbc16c", fontWeight: "bold", marginBottom: 1 }}
-          >
-            Lưu ý:
-          </Typography>
-          <ul style={{ paddingLeft: 20, margin: 0 }}>
-            <li style={{ listStyle: "outside" }}>
-              <Typography variant="body2" sx={{ color: "white" }}>
-                Nạp/Rút tiền tại tài khoản chính chủ.
+              >
+                Thêm mật khẩu rút tiền
               </Typography>
-            </li>
-            <li style={{ listStyle: "outside" }}>
-              <Typography variant="body2" sx={{ color: "white" }}>
-                Nạp tiền vào tài khoản bên cạnh.
-              </Typography>
-            </li>
-          </ul>
-        </Box>
-      </Grid>
+              <FormControl fullWidth>
+                <Typography
+                  sx={{ color: "#808691", fontSize: 14, mb: 1, mt: 2 }}
+                >
+                  Nhập Mật Khẩu <span style={{ color: "red" }}>*</span>
+                </Typography>
+                <TextField
+                  sx={{
+                    backgroundColor: "#2A3144",
+                    borderRadius: "8px",
+                    "& .MuiInputBase-input": {
+                      color: "white",
+                    },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        border: "none",
+                      },
+                      "&:hover fieldset": {
+                        border: "none",
+                      },
+                      "&.Mui-focused fieldset": {
+                        border: "none",
+                      },
+                    },
+                  }}
+                  fullWidth
+                  value={password} // Display formatted input with commas
+                  onChange={handlePassword}
+                  placeholder="Nhập mật khẩu"
+                  type="password"
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={24} md={12}>
+              <FormControl fullWidth>
+                <Typography
+                  sx={{ color: "#808691", fontSize: 14, mb: 1, mt: 2 }}
+                >
+                  Nhập lại Mật Khẩu <span style={{ color: "red" }}>*</span>
+                </Typography>
+                <TextField
+                  sx={{
+                    backgroundColor: "#2A3144",
+                    borderRadius: "8px",
+                    "& .MuiInputBase-input": {
+                      color: "white",
+                    },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        border: "none",
+                      },
+                      "&:hover fieldset": {
+                        border: "none",
+                      },
+                      "&.Mui-focused fieldset": {
+                        border: "none",
+                      },
+                    },
+                  }}
+                  fullWidth
+                  value={rePassword} // Display formatted input with commas
+                  onChange={handleRePassword}
+                  placeholder="Nhập lại mật khẩu"
+                  type="password"
+                />
+              </FormControl>
+            </Grid>
+          </Box>
 
+          {/* Generate QR Code Button */}
+          <Box sx={{ marginTop: 2, width: "100%" }}>
+            <Button
+              fullWidth
+              variant="contained"
+              color="success"
+              onClick={() => UpdatePassWithdraw()}
+              sx={{
+                display: "flex",
+                backgroundImage:
+                  "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+                color: "white",
+                borderRadius: "20px",
+                textTransform: "none",
+                fontSize: "14px",
+                width: "250px",
+                height: "38px",
+                border: "none",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                margin: "auto",
+              }}
+            >
+              Thêm mật khẩu rút tiền
+            </Button>
+          </Box>
+        </Grid>
+      )}
       {/* Instructions */}
       <Grid
         container
