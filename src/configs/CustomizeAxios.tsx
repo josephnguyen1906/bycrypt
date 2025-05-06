@@ -4,6 +4,7 @@ import swal from "sweetalert";
 
 // Lấy baseURL từ environment
 const AUTH_API_URL = process.env.NEXT_PUBLIC_AUTH_API_URL as string;
+
 const CONTENT_API_URL = process.env.NEXT_PUBLIC_CONTENT_API_URL as string;
 
 // API instance for login and register
