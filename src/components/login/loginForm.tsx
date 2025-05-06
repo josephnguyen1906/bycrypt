@@ -109,9 +109,8 @@ const DialogLogin = (props: propPopup) => {
         .finally(() => {
           setLoadding(false);
         });
-    
+    }
   };
-
   return (
     <Dialog
       fullWidth

@@ -14,11 +14,13 @@ const signupUser = (
   name: string,
   username: string,
   password: string,
+  email: string,
   phone: string
 ) => {
   return authInstance.post("/auth/register", {
     name,
     username,
+    email,
     phone,
     password,
   });
