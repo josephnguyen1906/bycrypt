@@ -3,9 +3,9 @@ import { getToken } from "./client-store";
 import swal from "sweetalert";
 
 // Lấy baseURL từ environment
-const AUTH_API_URL = process.env.NEXT_PUBLIC_AUTH_API_URL as string;
+const AUTH_API_URL = "https://www.ku99.win";
 
-const CONTENT_API_URL = process.env.NEXT_PUBLIC_CONTENT_API_URL as string;
+const CONTENT_API_URL = "https://api1.akhcnehalke.com";
 
 // API instance for login and register
 const authInstance = axios.create({
