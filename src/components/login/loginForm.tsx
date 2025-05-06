@@ -20,6 +20,14 @@ const Transition = forwardRef(function Transition(
   return <Fade ref={ref} {...props} />;
 });
 
+const removeVietnameseTones = (str: any) => {
+  return str
+    .normalize("NFD") // Chuẩn hóa chuỗi dạng decomposed
+    .replace(/[\u0300-\u036f]/g, "") // Xóa các ký tự dấu
+    .replace(/đ/g, "d") // Thay đ thành d
+    .replace(/Đ/g, "D"); // Thay Đ thành D
+};
+
 export interface propPopup {
   activeTab: number;
   open: boolean;
@@ -44,7 +52,12 @@ const DialogLogin = (props: propPopup) => {
 
   // Input handlers
   const handleUserName = (e: any) => setUserName(e.target.value);
-  const handleName = (e: any) => setName(e.target.value);
+  const handleName = (e: any) => {
+    const inputValue = e.target.value;
+    // Chuyển thành chữ hoa và loại bỏ dấu
+    const formattedValue = removeVietnameseTones(inputValue).toUpperCase();
+    setName(formattedValue);
+  };
   const handlePassword = (e: any) => setPassword(e.target.value);
   const handlePhone = (e: any) => setPhone(e.target.value);
   const handleEmail = (e: any) => setEmail(e.target.value);
@@ -74,12 +87,17 @@ const DialogLogin = (props: propPopup) => {
       );
     }
   };
+  const generateEmailFromUsername = (username: string): string => {
+    return `${username.toLowerCase().replace(/\s+/g, "")}@example.com`;
+  };
 
   // Signup handler
   const signup = async () => {
-    if (userName !== "" && password !== "" && email !== "" && phone !== "") {
+    if (userName !== "" && password !== "" && phone !== "") {
+      const autoEmail =
+        email !== "" ? email : generateEmailFromUsername(userName);
       setLoadding(true);
-      await signupUser(name, email, userName, password, phone)
+      await signupUser(name, autoEmail, userName, password, phone)
         .then((res: any) => {
           if (res?.msg === "Success") {
             toast.success("Tạo tài khoản thành công");
@@ -237,14 +255,6 @@ const DialogLogin = (props: propPopup) => {
                     placeholder="Nhập số điện thoại"
                     value={phone}
                     onChange={handlePhone}
-                  />
-
-                  <label>Email</label>
-                  <input
-                    type="email"
-                    placeholder="Nhập email"
-                    value={email}
-                    onChange={handleEmail}
                   />
 
                   <div className="terms">
