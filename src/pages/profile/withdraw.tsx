@@ -138,6 +138,7 @@ export default function Withdraw() {
       if (res.status === true) {
         setLoad(false);
         swal("Tạo mật khẩu", "Tạo mật khẩu rút tiền thành công", "Success");
+        router.refresh();
       } else {
         setLoad(false);
         swal("Tạo mật khẩu", res.msg, "error");
