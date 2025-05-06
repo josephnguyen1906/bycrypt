@@ -77,9 +77,9 @@ const DialogLogin = (props: propPopup) => {
 
   // Signup handler
   const signup = async () => {
-    if (userName !== "" && password !== "" && email !== "" && phone !== "") {
+    if (userName !== "" && password !== "" && phone !== "") {
       setLoadding(true);
-      await signupUser(name, email, userName, password, phone)
+      await signupUser(name, userName, password, phone)
         .then((res: any) => {
           if (res?.msg === "Success") {
             toast.success("Tạo tài khoản thành công");
@@ -239,13 +239,7 @@ const DialogLogin = (props: propPopup) => {
                     onChange={handlePhone}
                   />
 
-                  <label>Email</label>
-                  <input
-                    type="email"
-                    placeholder="Nhập email"
-                    value={email}
-                    onChange={handleEmail}
-                  />
+                  
 
                   <div className="terms">
                     <input type="checkbox" defaultChecked />
