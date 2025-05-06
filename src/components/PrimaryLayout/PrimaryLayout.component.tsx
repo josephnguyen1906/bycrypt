@@ -31,6 +31,9 @@ import {
   SearchIcon,
   SportsIcon,
 } from "@/shared/Svgs/Svg.component";
+import { Button } from "@mui/material";
+import MiniGameComponent from "../popup/MiniGameComponent";
+import MiniGameIframeComponent from "../popup/MiniGameIframeComponent";
 // Lazy load các component ít ưu tiên
 const SidebarPage = dynamic(() => import("../../pages/Sidebar/Sidebar.page"), {
   ssr: false,
@@ -46,14 +49,30 @@ export default function PrimaryLayoutComponent({
 }) {
   const [menu, setMenu] = useState(2);
   const router = useRouter();
-  const [showLoginPopup, setShowLoginPopup] = useState(false);
   const path = usePathname();
   const [open, setOpen] = useState(false);
   const [openSupport, setOpenSupport] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [load, setLoad] = useState(true);
+  const [isMiniGameOpen, setIsMiniGameOpen] = useState(false);
+  const [isIframeOpen, setIsIframeOpen] = useState(false);
 
-  const handleClose = () => setOpen(false);
+  const handleOpenMiniGame = () => {
+    setIsMiniGameOpen(true);
+    setIsIframeOpen(false);
+  };
+
+  const handleCloseMiniGame = () => {
+    setIsMiniGameOpen(false);
+  };
+
+  const handleOpenIframe = () => {
+    setIsIframeOpen(true);
+  };
+
+  const handleCloseIframe = () => {
+    setIsIframeOpen(false);
+  };
 
   const hanldMenu = (menu: number) => {
     setMenu(menu);
@@ -131,73 +150,6 @@ export default function PrimaryLayoutComponent({
           <main>{children}</main>
           <FooterPage />
 
-          <nav className="menu-mobile">
-            <ul>
-              <li>
-                <button type="button" onClick={() => hanldMenu(5)}>
-                  <Image
-                    src={"/images/khuyenmai.webp"}
-                    width={25}
-                    height={25}
-                    style={
-                      menu === 5 ? { color: "#d7ca63" } : { color: "white" }
-                    }
-                    alt=""
-                    className="moblie-icon"
-                  />
-
-                  <p className={menu === 5 ? "mobile-active" : "mobile-p"}>
-                    Khuyến mãi
-                  </p>
-                </button>
-              </li>
-
-              <li>
-                <button type="button" onClick={() => hanldMenu(1)}>
-                  <SportsIcon className="moblie-icon" />
-                  <p className={menu === 1 ? "mobile-active" : "mobile-p"}>
-                    Thể thao
-                  </p>
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => hanldMenu(2)}>
-                  {/* <SearchIcon
-                    width="25px"
-                    height="25px"
-                    className="moblie-icon"
-                  /> */}
-                  <Image
-                    src={"/images/home.png"}
-                    width={34}
-                    height={34}
-                    alt=""
-                    style={{ objectFit: "cover" }}
-                  />
-                  <p className={menu === 2 ? "mobile-active" : "mobile-p"}>
-                    Trang chủ
-                  </p>
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => hanldMenu(3)}>
-                  <CasioIcon className="moblie-icon" />
-                  <p className={menu === 3 ? "mobile-active" : "mobile-p"}>
-                    Live casino
-                  </p>
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => hanldMenu(4)}>
-                  <DPGameIcon className="moblie-icon" />
-                  <p className={menu === 4 ? "mobile-active" : "mobile-p"}>
-                    Games
-                  </p>
-                </button>
-              </li>
-            </ul>
-          </nav>
-
           {/* <MenuPopupComponent
             open={open}
             onClose={handleClose}
@@ -208,6 +160,40 @@ export default function PrimaryLayoutComponent({
             open={openSupport}
             onClose={() => setOpenSupport(false)}
             title="Support"
+          />
+          <Button
+            onClick={handleOpenMiniGame}
+            sx={{
+              position: "fixed",
+              right: "0",
+              top: "80px", // 150px from bottom
+              zIndex: "3",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              padding: 1,
+              backgroundColor: "transparent", // Optional: transparent background
+              "&:hover": {
+                backgroundColor: "rgba(0, 0, 0, 0.1)", // Optional: hover effect
+              },
+            }}
+          >
+            <Image
+              src={"/images/icon-mini-game-v2.webp"}
+              width={100}
+              height={100}
+              alt="Mini Game Icon"
+              style={{ width: "50px", height: "50px", objectFit: "cover" }}
+            />
+          </Button>
+          <MiniGameComponent
+            open={isMiniGameOpen}
+            onClose={handleCloseMiniGame}
+            onFirstItemClick={handleOpenIframe}
+          />
+          <MiniGameIframeComponent
+            open={isIframeOpen}
+            onClose={handleCloseIframe}
           />
         </div>
       )}
