@@ -54,7 +54,8 @@ export default function Withdraw() {
   const router = useRouter();
   const [bankUser, setBankUser] = useState<any>();
   const [load, setLoad] = useState<boolean>(false);
-  const [amountMoney, setAmountMoney] = useState<string>("");
+  const [amountMoney, setAmountMoney] = useState<string>();
+  const [amount, setAmount] = useState<number | null>();
   const [checkpass, setCheckpass] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
   const [rePassword, setRePassword] = useState<string>("");
@@ -64,7 +65,17 @@ export default function Withdraw() {
     CheckPass();
   }, []);
   const handleAmountMoney = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmountMoney(event.target.value);
+    // setAmountMoney(event.target.value);
+    // Allow only numbers (strip commas, decimals, and other characters)
+    const rawValue = event.target.value.replace(/[^0-9]/g, "");
+    const numericValue = rawValue ? parseInt(rawValue, 10) : null;
+    setAmountMoney(numericValue ? formatCurrency(numericValue) : "");
+    // Validate: only allow values > 50,000
+    if (numericValue === null || numericValue > 50000) {
+      setAmount(numericValue);
+    } else {
+      setAmount(null);
+    }
   };
 
   const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,13 +118,13 @@ export default function Withdraw() {
     if (!bankUser.bankName || !bankUser.bankNumber || !bankUser.bankProvide) {
       swal("Ngân hàng", "Chưa thêm tài khoản ngân hàng", "error");
     }
-    if (bankUser && password !== "" && amountMoney !== "") {
+    if (bankUser && password !== "" && amount !== 0) {
       setLoad(true);
       withdrawalsUser(
         bankUser.bankName,
         bankUser.bankNumber,
         bankUser.bankProvide,
-        Number(amountMoney),
+        Number(amount),
         password
       ).then((res: any) => {
         if (res.status === true) {

@@ -27,7 +27,11 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { createQRBank, getListBankPayment } from "@/services/Bank.service";
+import {
+  createQRBank,
+  createRequestManualBank,
+  getListBankPayment,
+} from "@/services/Bank.service";
 import swal from "sweetalert";
 import { toast } from "react-toastify";
 import Image from "next/image";
@@ -194,6 +198,31 @@ export default function Deposit(props: TabPProps) {
         "Không thể nạp tiền vào lúc này, Vui lòng nạp tiền vào thời điểm khác",
         "error"
       );
+    }
+  };
+  const RequestDeposit = () => {
+    if (bankAdmin && amount) {
+      setLoad(true);
+      // Send integer value to backend
+      createRequestManualBank(
+        "nope",
+        qrData?.inforPayment.bankName,
+        qrData?.inforPayment.bankProvide,
+        qrData?.inforPayment.bankNumber,
+        qrData?.inforPayment.fullContent,
+        Number(amount)
+      ).then((res: any) => {
+        if (res.status === true) {
+          swal(
+            "Nạp tiền",
+            "Hệ thống sẽ tự động kiểm tra và thêm điểm cho bạn",
+            "success"
+          );
+          setQrData(null);
+          setAmount(null);
+          setInputValue("");
+        }
+      });
     }
   };
 
@@ -636,16 +665,7 @@ export default function Deposit(props: TabPProps) {
                       margin: "auto",
                       marginTop: "15px",
                     }}
-                    onClick={() => {
-                      swal(
-                        "Nạp tiền",
-                        "Hệ thống sẽ tự động kiểm tra và thêm điểm cho bạn",
-                        "success"
-                      );
-                      setQrData(null);
-                      setAmount(null);
-                      setInputValue(""); // Reset input
-                    }}
+                    onClick={RequestDeposit}
                   >
                     Xác nhận đã nạp tiền
                   </button>

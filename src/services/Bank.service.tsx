@@ -66,6 +66,24 @@ const addBankUser = (
   });
 };
 
+const createRequestManualBank = (
+  bank: string,
+  nameDeposit: string,
+  bankDeposit: string,
+  numberDeposit: string,
+  transIdDeposit: string,
+  amountDeposit: number
+) => {
+  return contentInstance.post("/api/payment/createRequestManualBank", {
+    bank,
+    nameDeposit,
+    bankDeposit,
+    numberDeposit,
+    transIdDeposit,
+    amountDeposit,
+  });
+};
+
 const changePassSecurity = (
   oldPassword: string,
   newPassword: string,
@@ -105,4 +123,5 @@ export {
   getListUserBank,
   checkSecurityPass,
   changePassSecurity,
+  createRequestManualBank,
 };
