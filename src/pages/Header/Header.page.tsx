@@ -1,54 +1,130 @@
 "use client";
 import Image from "next/image";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import "./Header.css";
 import dayjs from "dayjs";
 import DialogLogin from "@/components/login/loginForm";
 import Link from "next/link";
-import { IUser } from "@/shared/interfaces";
+import { userResponse } from "@/interface/user.interface";
 import { useRouter } from "next/navigation";
 import swal from "sweetalert";
 import { getMe, getMessage } from "@/services/User.service";
 import {
+  alpha,
   Avatar,
   Button,
   IconButton,
+  Menu,
+  MenuItem,
+  MenuProps,
   Skeleton,
+  styled,
   Tooltip,
   Typography,
 } from "@mui/material";
 import TranslateContextComponent from "../../components/GgTranstale/TranslateContext.component";
-import { userResponse } from "@/interface/user.interface";
 import MenuProfile from "@/components/subMenu/MenuProfile";
 import MenuProfileMobile from "@/components/subMenu/MenuProfileMobile";
 import { getToken } from "@/configs/client-store";
 import usePlayGame from "@/hook/usePlayGame";
 import LoadingComponent from "@/components/Loading";
 import SimpleBackdrop from "@/components/Loading/LoaddingPage";
-import { MenuMobile, MenuWebsite } from "@/datafake/Menu";
-import { GameConfig } from "@/configs/GameConfig";
-import { NoticationIconMobile } from "@/shared/Svgs/Svg.component";
+import { MenuWebsite } from "@/datafake/Menu";
+import Divider from "@mui/material/Divider";
+import ArchiveIcon from "@mui/icons-material/Archive";
+import FileCopyIcon from "@mui/icons-material/FileCopy";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 interface propUser {
   user: userResponse;
 }
+
+const StyledMenu = styled((props: MenuProps) => (
+  <Menu
+    elevation={0}
+    anchorOrigin={{
+      vertical: "bottom",
+      horizontal: "right",
+    }}
+    transformOrigin={{
+      vertical: "top",
+      horizontal: "right",
+    }}
+    {...props}
+  />
+))(({ theme }) => ({
+  "& .MuiPaper-root": {
+    borderRadius: 6,
+    marginTop: theme.spacing(1),
+    minWidth: 100, // Tăng chiều rộng để hiển thị nội dung dài
+    color: "rgb(55, 65, 81)",
+    boxShadow:
+      "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
+    "& .MuiMenu-list": {
+      padding: "4px 0",
+    },
+    "& .MuiMenuItem-root": {
+      "& .MuiSvgIcon-root": {
+        fontSize: "14px",
+        color: theme.palette.text.secondary,
+        marginRight: theme.spacing(1.5),
+      },
+      padding: theme.spacing(1.5, 2), // Tăng padding để đẹp hơn
+      "& p": {
+        margin: 0,
+        fontSize: "14px",
+        color: theme.palette.text.secondary,
+      },
+    },
+    ...theme.applyStyles("dark", {
+      color: theme.palette.grey[300],
+    }),
+  },
+}));
+
 export default function HeaderPage(props: propUser) {
   const { loading, playGame } = usePlayGame();
   const [show, setShow] = useState(false);
   const [activeTab, setActiveTab] = useState<number>(0);
   const [user, setUser] = useState<any>(props.user);
   const [message, setMessage] = React.useState<any>(null);
-  const handleClose = () => setShow(false);
-  const [anchorEl1, setAnchorEl1] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [menuId, setMenuId] = React.useState<null | string>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref để lưu timeout
 
-  const open = Boolean(anchorEl1);
+  const handleMouseEnter = (
+    event: React.MouseEvent<HTMLElement>,
+    id: string
+  ) => {
+    // Hủy timeout đóng menu nếu có
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    setAnchorEl(event.currentTarget);
+    setMenuId(id);
+  };
+
+  const handleMouseLeave = () => {
+    // Thêm độ trễ trước khi đóng menu
+    timeoutRef.current = setTimeout(() => {
+      setAnchorEl(null);
+      setMenuId(null);
+    }, 200); // Độ trễ 200ms
+  };
+
+  const handleMenuMouseEnter = () => {
+    // Hủy timeout khi chuột vào menu con
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  };
+
   const handleSetActiveTab = useCallback((tabIndex: number) => {
     setActiveTab(tabIndex);
     setShow(true);
   }, []);
-  const handleClick1 = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl1(event.currentTarget);
-  };
+
   const [device, setDevice] = useState("");
   useEffect(() => {
     const initialize = async () => {
@@ -56,13 +132,11 @@ export default function HeaderPage(props: propUser) {
         const res: any = await getMe();
         if (res?.user) {
           setUser(res.user);
-          const updatedRes: any = await getMe(); // Gọi lại API sau khi hoàn thành
+          const updatedRes: any = await getMe();
           setUser(updatedRes?.user);
         }
       } catch (error) {
         console.error("Error during initialization:", error);
-      } finally {
-        // setLoad(false);
       }
     };
     getMessage().then((res) => {
@@ -100,12 +174,7 @@ export default function HeaderPage(props: propUser) {
                   fontStyle: "italic",
                 }}
               >
-                <Image
-                  src="/images/logo_login.png"
-                  width={80}
-                  height={80}
-                  alt=""
-                />
+                <Image src="/images/logo.png" width={80} height={80} alt="" />
               </Link>
             </div>
           </div>
@@ -113,7 +182,102 @@ export default function HeaderPage(props: propUser) {
             <ul>
               {MenuWebsite.map((item) => (
                 <li key={item.id}>
-                  <Link href={item.link}>{item.title}</Link>
+                  <Button
+                    id={`menu-button-${item.id}`}
+                    aria-controls={
+                      anchorEl && menuId === item.id
+                        ? `menu-${item.id}`
+                        : undefined
+                    }
+                    aria-haspopup="true"
+                    aria-expanded={
+                      anchorEl && menuId === item.id ? "true" : undefined
+                    }
+                    disableElevation
+                    onMouseEnter={(e) => handleMouseEnter(e, item.id)}
+                    onMouseLeave={handleMouseLeave}
+                    href={item.link}
+                    endIcon={<KeyboardArrowDownIcon />}
+                  >
+                    {item.title}
+                  </Button>
+                  <StyledMenu
+                    id={`menu-${item.id}`}
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl) && menuId === item.id}
+                    onClose={handleMouseLeave}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center", // Căn giữa theo chiều ngang
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "center", // Căn giữa điểm gốc
+                    }}
+                    MenuListProps={{
+                      onMouseEnter: handleMenuMouseEnter,
+                      onMouseLeave: handleMouseLeave,
+                    }}
+                  >
+                    {item.item.map(
+                      (
+                        subItem: any,
+                        index // Sửa item.item thành item.items
+                      ) => (
+                        <MenuItem
+                          key={index}
+                          onClick={handleMouseLeave}
+                          sx={{
+                            width: 250,
+                            wordBreak: "break-word",
+                          }} // Đặt độ rộng tối thiểu và xuống dòng
+                        >
+                          <Link
+                            href={subItem.link}
+                            style={{
+                              textDecoration: "none",
+                              color: "inherit",
+                              display: "flex",
+                              width: "100%",
+                              alignItems: "center",
+                            }}
+                          >
+                            {subItem.icon}
+                            <div
+                              style={{
+                                marginLeft: 8,
+                                width: "calc(100% - 24px)",
+                              }}
+                            >
+                              <Typography
+                                variant="body1"
+                                sx={{
+                                  width: "100%",
+                                  wordBreak: "break-word",
+                                  overflowWrap: "break-word",
+                                }}
+                              >
+                                {subItem.title}
+                              </Typography>
+                              {subItem.note && (
+                                <Typography
+                                  variant="caption"
+                                  sx={{
+                                    width: "100%",
+                                    wordBreak: "break-word",
+                                    overflowWrap: "anywhere",
+                                    whiteSpace: "normal",
+                                  }}
+                                >
+                                  {subItem.note}
+                                </Typography>
+                              )}
+                            </div>
+                          </Link>
+                        </MenuItem>
+                      )
+                    )}
+                  </StyledMenu>
                 </li>
               ))}
             </ul>
@@ -126,81 +290,19 @@ export default function HeaderPage(props: propUser) {
               </div>
             ) : (
               <div className="header-right-menu">
-                {/* <button className="header-noti" type="button">
-                  <NoticationIconMobile width="24px" height="24px" />
-                </button> */}
-                <button
-                  className="login"
-                  onClick={() => handleSetActiveTab(0)} // Use memoized function
-                >
+                <button className="login" onClick={() => handleSetActiveTab(0)}>
                   Đăng Nhập
                 </button>
-
                 <button
                   className="register"
                   style={{ cursor: "pointer" }}
-                  onClick={() => handleSetActiveTab(1)} // Use memoized function
+                  onClick={() => handleSetActiveTab(1)}
                 >
                   Đăng ký
                 </button>
                 <DialogLogin
                   activeTab={activeTab}
-                  onClose={handleClose}
-                  open={show}
-                />
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="main-header-mobile">
-        <div className="header-mobile">
-          <div
-            className={device === "Android" ? "header-left" : "header-left-ios"}
-          >
-            <div className="logo">
-              <Link href={"/"} prefetch={false}>
-                <Image
-                  src="/images/logo_login.png"
-                  width={100}
-                  height={40}
-                  alt=""
-                />
-              </Link>
-            </div>
-          </div>
-
-          <div
-            className={
-              device === "Android" ? "header-right" : "header-right-ios"
-            }
-          >
-            {user ? (
-              <div className="header-right-menu">
-                <MenuProfileMobile user={user} message={message} />
-              </div>
-            ) : (
-              <div className="header-right-menu">
-                <span></span>
-
-                <button
-                  className="login"
-                  onClick={() => handleSetActiveTab(0)} // Use memoized function
-                >
-                  Đăng nhập
-                </button>
-
-                <button
-                  className="register"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => handleSetActiveTab(1)} // Use memoized function
-                >
-                  Đăng ký
-                </button>
-                <DialogLogin
-                  activeTab={activeTab}
-                  onClose={handleClose}
+                  onClose={handleMouseLeave}
                   open={show}
                 />
               </div>
