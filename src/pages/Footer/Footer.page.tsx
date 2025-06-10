@@ -6,154 +6,276 @@ import { IconButton } from "@mui/material";
 import { NewReleases, Newspaper, Telegram, YouTube } from "@mui/icons-material";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import { VisaIcon } from "@/shared/Svgs/Svg.component";
+import {
+  DiscordIcon,
+  FacebookIcon,
+  TeleIcon,
+  TiktokIcon,
+  VisaIcon,
+  YoutubeIcon,
+} from "@/shared/Svgs/Svg.component";
 import { PaymentMenuFooter } from "@/datafake/Menu";
 
 export default function FooterPage() {
   return (
     <>
-      <footer>
-        <div className="info-footer">
-          <Image src="/images/logo_login.png" width={130} height={100} alt="" />
-          <div className="info-title">
-            <h2>
-              KU99 - Nhà cái thể thao trực tuyến, Siêu chợ games đổi thưởng đỉnh
-              cao
-            </h2>
-            <p>
-              KU99 là trang cá cược thể thao hấp dẫn, cung cấp đa dạng về sản
-              phẩm trò chơi như Thể Thao, Trò Chơi, Casino Trực Tuyến và thưởng
-              hoàn trả cao nhất trên thị trường.
+      <footer
+        style={{ backgroundColor: "#000", color: "#fff", paddingTop: "200px" }}
+      >
+        <div
+          style={{
+            maxWidth: "1200px",
+            margin: "0 auto",
+            display: "flex",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            padding: "0 20px",
+          }}
+        >
+          <div>
+            <h3>More about OKX</h3>
+            <ul style={{ listStyle: "none", padding: 0 }}>
+              <li>
+                <Link href="#">About us</Link>
+              </li>
+              <li>
+                <Link href="/candidate-privacy-notice">
+                  Candidate Privacy Notice
+                </Link>
+              </li>
+              <li>
+                <Link href="#">Careers</Link>
+              </li>
+              <li>
+                <Link href="/#">Contact us</Link>
+              </li>
+              <li>
+                <Link href="#">Terms of service</Link>
+              </li>
+              <li>
+                <Link href="#">Privacy notice</Link>
+              </li>
+              <li>
+                <Link href="#">Disclosures</Link>
+              </li>
+              <li>
+                <Link href="#">Whistleblower notice</Link>
+              </li>
+              <li>
+                <Link href="#">Law enforcement</Link>
+              </li>
+              <li>
+                <Link href="#">OKX app</Link>
+              </li>
+              <li>
+                <Link href="#">OKX TR</Link>
+              </li>
+              <li>
+                <Link href="#">xBTC</Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3>Products</h3>
+            <ul style={{ listStyle: "none", padding: 0 }}>
+              <li>
+                <Link href="#">Buy crypto</Link>
+              </li>
+              <li>
+                <Link href="#">P2P trading</Link>
+              </li>
+              <li>
+                <Link href="#">Convert</Link>
+              </li>
+              <li>
+                <Link href="#">Trade</Link>
+              </li>
+              <li>
+                <Link href="#">Earn</Link>
+              </li>
+              <li>
+                <Link href="#">OKTC</Link>
+              </li>
+              <li>
+                <Link href="#">Trading bots</Link>
+              </li>
+              <li>
+                <Link href="#">All cryptocurrencies</Link>
+              </li>
+              <li>
+                <Link href="#">Learn</Link>
+              </li>
+              <li>
+                <Link href="#">TradingView</Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3>Services</h3>
+            <ul style={{ listStyle: "none", padding: 0 }}>
+              <li>
+                <Link href="#">Affiliate</Link>
+              </li>
+              <li>
+                <Link href="#">API</Link>
+              </li>
+              <li>
+                <Link href="#">Historical market data</Link>
+              </li>
+              <li>
+                <Link href="#">CEX fee schedule</Link>
+              </li>
+              <li>
+                <Link href="#">Listing application</Link>
+              </li>
+              <li>
+                <Link href="#">P2P Merchant application</Link>
+              </li>
+              <li>
+                <Link href="#">Support</Link>
+              </li>
+              <li>
+                <Link href="#">Support center</Link>
+              </li>
+              <li>
+                <Link href="#">Channel verification</Link>
+              </li>
+              <li>
+                <Link href="#">Announcements</Link>
+              </li>
+              <li>
+                <Link href="#">Connect with OKX</Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3>Buy crypto</h3>
+            <ul style={{ listStyle: "none", padding: 0 }}>
+              <li>
+                <Link href="#">Buy USDT</Link>
+              </li>
+              <li>
+                <Link href="#">Buy USDC</Link>
+              </li>
+              <li>
+                <Link href="#">Buy Bitcoin</Link>
+              </li>
+              <li>
+                <Link href="#">Buy ADA</Link>
+              </li>
+              <li>
+                <Link href="#">Buy Solana</Link>
+              </li>
+              <li>
+                <Link href="#">Buy Litecoin</Link>
+              </li>
+              <li>
+                <Link href="#">Buy XRP</Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3>Trade</h3>
+            <ul style={{ listStyle: "none", padding: 0 }}>
+              <li>
+                <Link href="#">BTC/USDC</Link>
+              </li>
+              <li>
+                <Link href="#">ETH/USDC</Link>
+              </li>
+              <li>
+                <Link href="#">BTC/USDT</Link>
+              </li>
+              <li>
+                <Link href="#">ETH/USDT</Link>
+              </li>
+              <li>
+                <Link href="#">LTC/USDT</Link>
+              </li>
+              <li>
+                <Link href="#">SOL/USDT</Link>
+              </li>
+              <li>
+                <Link href="#">XRP/USDT</Link>
+              </li>
+            </ul>
+          </div>
+          <div style={{ display: "grid", gap: "10px" }}>
+            <h3>Trade on the go with OKX</h3>
+            <button
+              style={{
+                backgroundColor: "#fff",
+                color: "#000",
+                height: "57px",
+                border: "none",
+                borderRadius: "10px",
+                cursor: "pointer",
+                fontSize: "16px",
+                fontWeight: 600,
+                marginTop: "-60px",
+              }}
+            >
+              Register
+            </button>
+            <div style={{ width: "100px", margin: "auto" }}>
+              <img
+                src="./images/qr.png"
+                alt="Scan to download OKX app"
+                style={{ width: "100px", height: "100px", marginTop: "-50px" }}
+              />
+            </div>
+            <p style={{ textAlign: "center", marginTop: "-40px" }}>
+              Scan to download OKX app
             </p>
           </div>
         </div>
-        <div className="list-menu">
-          <div className="menu-1">
-            <h3>Thể thao</h3>
-            <ul>
-              <li>
-                <Link href={"#"}>Lịch thi đấu</Link>
-              </li>
-              <li>
-                <Link href={"#"}>Cược thể thao</Link>
-              </li>
-            </ul>
-          </div>
-          <div className="menu-1">
-            <h3>Về chúng tôi</h3>
-            <ul>
-              <li>
-                <Link href={"#"}>Giới thiệu</Link>
-              </li>
-              <li>
-                <Link href={"#"}>Điều kiện - Điều khoản</Link>
-              </li>
-              <li>
-                <Link href={"#"}>Bảo mật</Link>
-              </li>
-              <li>
-                <Link href={"#"}>Chơi game có trách nhiệm</Link>
-              </li>
-              <li>
-                <Link href={"#"}>Quy định chung</Link>
-              </li>
-            </ul>
-          </div>
-          <div className="menu-1">
-            <h3>Trò chơi</h3>
-            <ul>
-              <li>
-                <Link href={"#"}>Bắn cá</Link>
-              </li>
-              <li>
-                <Link href={"#"}>Slots</Link>
-              </li>
-              <li>
-                <Link href={"#"}>Nổ hũ</Link>
-              </li>
-              <li>
-                <Link href={"#"}>Game bài</Link>
-              </li>
-              <li>
-                <Link href={"#"}>Lô đề</Link>
-              </li>
-            </ul>
-          </div>
-          <div className="menu-1">
-            <h3>Hỗ trợ 24/7</h3>
-            <ul>
-              <li>
-                <Link href={"#"}>Trực tuyến 24/7</Link>
-              </li>
-              <li>
-                <Link href={"#"}>Cộng đồng</Link>
-              </li>
-              <li>
-                <Link href={"#"}>Hướng dẫn nạp rút</Link>
-              </li>
-            </ul>
-          </div>
-          <div className="menu-1">
-            <h3>Thông tin</h3>
-            <ul>
-              <li>
-                <Link href={"#"}>Khuyến mãi / Sự kiện</Link>
-              </li>
-              <li>
-                <Link href={"#"}>Tin tức</Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="title-2">
-          <p>Copyright © 2024 Powered By KU99 All Rights Reserved.</p>
-          <div className="title-img2">
-            <Image
-              src={"/images/copyright-logo.png"}
-              alt=""
-              width={120}
-              height={30}
-            />
-            <Image
-              src={"/images/DMCA_logo-grn-btn100w.png"}
-              alt=""
-              width={100}
-              height={30}
-            />
-          </div>
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+            justifyContent: "left",
+            marginLeft: "250px",
+            padding: "50px 0",
+            alignItems: "center",
+          }}
+        >
+          <h2>Community</h2>
+          <ul
+            style={{
+              display: "flex",
+              gap: "10px",
+              marginTop: "20px",
+              marginLeft: "50px",
+            }}
+          >
+            <li>
+              <a href="#">
+                <TiktokIcon />
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <FacebookIcon />
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <TeleIcon />
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <DiscordIcon />
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <YoutubeIcon />
+              </a>
+            </li>
+          </ul>
         </div>
       </footer>
-      <div className="footer-mobile">
-        <div className="footer-section">
-          <h3>Về chúng tôi</h3>
-          <div className="footer-links">
-            <button>📘 Giới thiệu</button>
-            <button>📜 Quy định</button>
-            <button>🔒 Bảo mật</button>
-            <button>📖 Hướng dẫn</button>
-            <button>📰 Tin tức</button>
-          </div>
-        </div>
-
-        <div className="footer-section">
-          <h3>Liên hệ</h3>
-          <div className="footer-links">
-            <button>💬 Live chat 24/7</button>
-            <button>📲 Telegram KU99</button>
-            <button>👥 Cộng đồng</button>
-            <button>📞 Hotline</button>
-            <button>📘 Fanpage KU99</button>
-          </div>
-        </div>
-        <h2>
-          KU99 - Nhà cái thể thao trực tuyến, Siêu chợ games đổi thưởng đỉnh cao
-        </h2>
-        <p className="footer-note">
-          KU99 là trang cá cược thể thao hấp dẫn, cung cấp đa dạng về sản phẩm
-          trò chơi như Thể Thao, Trò Chơi, Casino Trực Tuyến và thưởng hoàn trả
-          cao nhất trên thị trường.
-        </p>
-      </div>
     </>
   );
 }

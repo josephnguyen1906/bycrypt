@@ -26,6 +26,7 @@ import {
   ProfileIcon,
   RutIcon,
   RutMenuIcon,
+  UserIcon,
 } from "@/shared/Svgs/Svg.component";
 import Image from "next/image";
 import NavigationGame from "@/hook/NavigationGame";
@@ -115,16 +116,6 @@ export default function MenuProfile({ user }: UserProps) {
           borderRadius: "8px",
         }}
       >
-        {/* Username và Số dư */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Typography sx={{ color: "white", fontSize: 14 }}>
-            {user?.username ?? "huyn196Ebfa5"}
-          </Typography>
-          <Typography sx={{ color: "#fbc16c", fontSize: 14 }}>
-            {formatCurrency(user?.coin ?? 0)}
-          </Typography>
-        </Box>
-
         {/* Nút Rút, Nạp và Icon Menu */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           {/* Nút Rút */}
@@ -142,10 +133,7 @@ export default function MenuProfile({ user }: UserProps) {
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
             >
-              <Avatar
-                src="/images/avatar-4.webp"
-                sx={{ width: 32, height: 32 }}
-              ></Avatar>
+              <UserIcon />
             </button>
           </Tooltip>
           <button
