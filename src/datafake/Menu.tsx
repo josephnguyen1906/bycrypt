@@ -36,7 +36,7 @@ import Image from "next/image";
 export const MenuWebsite = [
   {
     id: "1",
-    link: "#",
+    link: "/trade",
     title: "Buy & Sell",
     item: [
       {
