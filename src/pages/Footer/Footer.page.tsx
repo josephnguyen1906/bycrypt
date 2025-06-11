@@ -224,7 +224,7 @@ export default function FooterPage() {
             </button>
             <div style={{ width: "100px", margin: "auto" }}>
               <img
-                src="./images/qr.png"
+                src="/images/qr.png"
                 alt="Scan to download OKX app"
                 style={{ width: "100px", height: "100px", marginTop: "-50px" }}
               />
