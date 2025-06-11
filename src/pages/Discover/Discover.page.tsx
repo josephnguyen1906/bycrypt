@@ -6,7 +6,7 @@ export default function DiscoverPage() {
     <Box sx={{ background: "#000", paddingTop: "64px" }}>
       <Box
         sx={{
-          height: "800px",
+          height: "700px",
           padding: "20px 0",
         }}
       >
