@@ -50,7 +50,7 @@ export const MenuWebsite = [
   },
   {
     id: "2",
-    link: "#",
+    link: "/discover",
     title: "Discover",
     item: [
       {
