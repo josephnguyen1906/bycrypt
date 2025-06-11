@@ -68,7 +68,7 @@ export default function MenuProfile({ user }: UserProps) {
     {
       text: "Overview",
       icon: <OverviewIcon />,
-      onClick: () => router.push("/profile"),
+      onClick: () => router.push("/overview"),
     },
     {
       text: "Account",

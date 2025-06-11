@@ -20,10 +20,10 @@ export default function FooterPage() {
   return (
     <>
       <footer
-        style={{ backgroundColor: "#000", color: "#fff", paddingTop: "200px" }}
+        style={{ backgroundColor: "#000", color: "#fff", paddingTop: "50px" }}
       >
         <div className="footer-icon">
-          <Image src={"./images/logo.png"} width={50} height={50} alt="" />
+          <Image src={"/images/logo.png"} width={50} height={50} alt="" />
           <p>©2017 - 2025 OKX.COM</p>
         </div>
         <div
