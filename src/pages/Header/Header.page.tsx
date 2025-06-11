@@ -290,46 +290,43 @@ export default function HeaderPage(props: propUser) {
           <div className="header-right">
             {user ? (
               <div className="header-right-menu">
-                <span></span>
-                <div className="header-right-menu">
-                  <input
-                    type="text"
-                    placeholder="Tìm kiếm tiền mã hoá"
-                    className="search-bar"
-                  />
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm tiền mã hoá"
+                  className="search-bar"
+                />
 
-                  <MenuProfile user={user} />
-                  <button
-                    style={{
-                      background: "none",
-                      border: "none",
-                      padding: 0,
-                      cursor: "pointer",
-                    }}
-                  >
-                    <NotiIcon />
-                  </button>
-                  <button
-                    style={{
-                      background: "none",
-                      border: "none",
-                      padding: 0,
-                      cursor: "pointer",
-                    }}
-                  >
-                    <QuestionIcon />
-                  </button>
-                  <button
-                    style={{
-                      background: "none",
-                      border: "none",
-                      padding: 0,
-                      cursor: "pointer",
-                    }}
-                  >
-                    <InternetIcon />
-                  </button>
-                </div>
+                <MenuProfile user={user} />
+                <button
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    cursor: "pointer",
+                  }}
+                >
+                  <NotiIcon />
+                </button>
+                <button
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    cursor: "pointer",
+                  }}
+                >
+                  <QuestionIcon />
+                </button>
+                <button
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    cursor: "pointer",
+                  }}
+                >
+                  <InternetIcon />
+                </button>
               </div>
             ) : (
               <div className="header-right">

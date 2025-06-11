@@ -1,4 +1,5 @@
 "use client";
+import MarketDataWidget from "@/components/ChartView/MarketDataWidget";
 import { ProfileIcon, UserIcon } from "@/shared/Svgs/Svg.component";
 import {
   Box,
@@ -27,6 +28,26 @@ const CryptoTable = styled("div")({
     borderBottom: "1px solid #ddd",
   },
 });
+
+const Announcements = [
+  {
+    date: "06/10/2025",
+    title: "OKX to delist several perpetual futures",
+  },
+  {
+    date: "06/10/2025",
+    title: "OKX to list perpetual for RESOLV crypto",
+  },
+  {
+    date: "06/10/2025",
+    title:
+      "Announcement from OKX regarding the delay of RESOLV (Resolv) listing",
+  },
+  {
+    date: "06/10/2025",
+    title: "OKX to adjust position tiers of several futures",
+  },
+];
 
 export default function OverviewPage() {
   return (
@@ -131,87 +152,79 @@ export default function OverviewPage() {
         <Grid container spacing={2}>
           {/* Left Section */}
           <Grid item xs={8}>
-            <StyledPaper>
-              <Typography variant="h6">
+            <StyledPaper sx={{ display: "grid", gap: 2 }}>
+              <Typography
+                variant="h2"
+                sx={{ fontSize: "30px", fontWeight: "bold" }}
+              >
                 Get verified to secure your account
               </Typography>
               <Typography>
                 Provide your ID, a selfie, and personal information.
               </Typography>
-              <Button variant="contained" sx={{ mt: 1 }}>
+              <Button
+                type="button"
+                sx={{
+                  mt: 1,
+                  backgroundColor: "#000",
+                  color: "#fff",
+                  borderRadius: "20px",
+                  width: "150px",
+                  height: "50px",
+                  textTransform: "none",
+                  fontWeight: "bold",
+                  "&:hover": {
+                    backgroundColor: "#000",
+                  },
+                }}
+              >
                 Get verified
               </Button>
             </StyledPaper>
             <StyledPaper>
-              <Typography variant="h6">Today’s crypto prices</Typography>
-              <CryptoTable>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Price</th>
-                      <th>Change</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>BTC</td>
-                      <td>$109,749.4</td>
-                      <td style={{ color: "red" }}>-0.49%</td>
-                    </tr>
-                    <tr>
-                      <td>ETH</td>
-                      <td>$2,786.38</td>
-                      <td style={{ color: "red" }}>-1.07%</td>
-                    </tr>
-                    <tr>
-                      <td>OKB</td>
-                      <td>$53.4400</td>
-                      <td style={{ color: "red" }}>-0.63%</td>
-                    </tr>
-                    <tr>
-                      <td>SOL</td>
-                      <td>$165.21</td>
-                      <td style={{ color: "green" }}>+0.05%</td>
-                    </tr>
-                    <tr>
-                      <td>TON</td>
-                      <td>$3.3270</td>
-                      <td style={{ color: "red" }}>-0.66%</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </CryptoTable>
+              <Typography
+                variant="h4"
+                sx={{ fontSize: "25px", fontWeight: "bold" }}
+              >
+                Today’s crypto prices
+              </Typography>
+              <MarketDataWidget width={750} height={450} theme="light" />
             </StyledPaper>
           </Grid>
           {/* Right Section */}
           <Grid item xs={4}>
             <StyledPaper>
-              <Typography variant="h6">Announcements</Typography>
-              <Divider sx={{ my: 1 }} />
-              <Typography variant="body2" color="text.secondary">
-                06/10/2025 - OKX to delist several perpetual futures
+              <Typography
+                variant="h3"
+                sx={{ fontSize: "28px", fontWeight: "bold" }}
+              >
+                Announcements
               </Typography>
-              <Typography variant="body2" color="text.secondary">
-                06/10/2025 - OKX to list perpetual for RESOLV crypto
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                06/10/2025 - Announcement from OKX regarding the delay of RESOLV
-                (Resolv) listing
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                06/10/2025 - OKX to adjust position tiers of several futures
-              </Typography>
+              {Announcements.map((announcement, index) => (
+                <Box key={index}>
+                  <Divider sx={{ my: 1 }} />
+                  <Box sx={{ padding: "10px 0px" }}>
+                    <Typography variant="body2" color="text.secondary">
+                      {announcement.date}
+                    </Typography>
+                    <Typography variant="body2" color="black">
+                      {announcement.title}
+                    </Typography>
+                  </Box>
+                </Box>
+              ))}
             </StyledPaper>
             <StyledPaper>
-              <Typography variant="h6">
+              <Typography
+                variant="h4"
+                sx={{ fontSize: "20px", fontWeight: "bold" }}
+              >
                 Download app and trade on the go
               </Typography>
               <Box sx={{ textAlign: "center", mt: 1 }}>
-                <Typography>OKX App</Typography>
                 <Box
                   component="img"
-                  src="/qrcode.png"
+                  src="/images/qr.png"
                   alt="QR Code"
                   sx={{ width: 100, height: 100 }}
                 />
