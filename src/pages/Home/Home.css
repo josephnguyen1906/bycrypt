@@ -7,11 +7,13 @@
 }
 
 .home-webiste {
+    width: 100%;
     display: block;
     padding-top: 150px;
 }
 
 .home-join {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
