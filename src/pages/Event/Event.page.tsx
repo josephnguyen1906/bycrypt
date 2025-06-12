@@ -2,23 +2,17 @@
 import React, { useEffect, useState } from "react";
 import "./Event.css";
 import Image from "next/image";
-import { getPlayGameById } from "@/services/GameApi.service";
 import LoadingComponent from "@/components/Loading";
 import NavigationGameComponent from "@/hook/NavigationGame";
 import swal from "sweetalert";
 import Carousel from "react-multi-carousel";
 import { slideImg, slideImgPromotion } from "@/datafake/slide";
 import { IpromotionResponse } from "@/interface/promotion.interface";
-import { getAllPromotion } from "@/services/Promotion.service";
 export default function EventPage() {
   const [loading, setLoading] = useState(false);
   const [promotion, setPromotion] = useState<IpromotionResponse[]>([]);
   useEffect(() => {
     setLoading(true);
-    getAllPromotion().then((res: any) => {
-      setPromotion(res.data);
-      setLoading(false);
-    });
   }, []);
   return (
     <>

@@ -11,15 +11,43 @@ import {
   FormControl,
   Grid,
 } from "@mui/material";
+import { toast } from "react-toastify";
+import { signupUser } from "@/services/User.service";
 
 export default function SignupPage() {
-  const [phone, setPhone] = useState("+84");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loadding, setLoadding] = useState<boolean>(false);
+  const handlePassword = (e: any) => setPassword(e.target.value);
+  const handleUsername = (e: any) => setEmail(e.target.value);
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    console.log("Phone:", phone);
+  const signup = (e: React.FormEvent) => {
+    // e.preventDefault();
+    if (email !== "" && password !== "") {
+      setLoadding(true);
+      signupUser(email, password)
+        .then((res: any) => {
+          console.log(res.message);
+
+          if (res?.status === true) {
+            toast.success("Đăng ký thành công");
+            window.location.href = "/login";
+          } else {
+            toast.error(res?.message);
+          }
+        })
+        .catch((err) => {
+          console.error("API error:", err);
+          toast.error(err?.message || "Lỗi không xác định");
+        });
+    } else {
+      swal(
+        "Đăng nhập",
+        "Tên đăng nhập và mật khẩu không được để trống",
+        "error"
+      );
+    }
   };
-
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
       {/* Left Section */}
@@ -109,24 +137,28 @@ export default function SignupPage() {
           <Typography variant="h4" gutterBottom>
             Enter your email
           </Typography>
-          <form onSubmit={handleSubmit}>
+          <form>
             <InputLabel>Email </InputLabel>
             <TextField
               fullWidth
               placeholder="Enter Email"
               variant="outlined"
+              value={email}
+              onChange={handleUsername}
               sx={{ mb: 2, borderRadius: "15px" }}
             />
 
-            <InputLabel>Referral code (optional) </InputLabel>
+            <InputLabel>Password </InputLabel>
             <TextField
               fullWidth
               variant="outlined"
-              type="text"
+              type="password"
+              value={password}
+              onChange={handlePassword}
               sx={{ mb: 2, borderRadius: "15px" }}
             />
             <Button
-              type="submit"
+              type="button"
               fullWidth
               sx={{
                 mb: 2,
@@ -135,6 +167,7 @@ export default function SignupPage() {
                 color: "white",
                 "&:hover": { backgroundColor: "#000", color: "white" },
               }}
+              onClick={signup}
             >
               Sign up
             </Button>

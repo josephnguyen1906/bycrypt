@@ -1,5 +1,6 @@
 "use client";
 import MarketDataWidget from "@/components/ChartView/MarketDataWidget";
+import useAuth from "@/hook/useAuth";
 import { ProfileIcon, UserIcon } from "@/shared/Svgs/Svg.component";
 import {
   Box,
@@ -50,6 +51,8 @@ const Announcements = [
 ];
 
 export default function OverviewPage() {
+  const { user } = useAuth();
+
   return (
     <Box sx={{ backgroundColor: "#fff" }}>
       <Box
@@ -72,8 +75,8 @@ export default function OverviewPage() {
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <Avatar
-              src="/profile-placeholder.png" // Replace with actual profile image path
-              alt="Profile"
+              src={user?.username} // Replace with actual profile image path
+              alt={user?.username}
               sx={{ width: 80, height: 80, borderRadius: "50%" }}
             />
             <Box
@@ -83,9 +86,9 @@ export default function OverviewPage() {
                 marginRight: 2,
               }}
             >
-              <Typography variant="h6">huy***@gmail.com</Typography>
+              <Typography variant="h6">{user?.username}</Typography>
               <Typography variant="body2" color="text.secondary">
-                718329357189846177
+                {user?.phone}
               </Typography>
             </Box>
           </Box>
@@ -101,7 +104,7 @@ export default function OverviewPage() {
               <Typography sx={{ color: "gray", fontSize: "13px" }}>
                 Email
               </Typography>
-              <Typography>huy***@gmail.com</Typography>
+              <Typography>{user?.username} </Typography>
             </Box>
             <Box sx={{ display: "grid", alignItems: "center" }}>
               <Typography sx={{ color: "gray", fontSize: "13px" }}>
@@ -125,7 +128,7 @@ export default function OverviewPage() {
               <Typography sx={{ color: "gray", fontSize: "13px" }}>
                 Country/Region
               </Typography>
-              <Typography>Vietnam</Typography>
+              <Typography>{user?.addr} </Typography>
             </Box>
             <Box sx={{ display: "grid", alignItems: "center" }}>
               <Typography sx={{ color: "gray", fontSize: "13px" }}>

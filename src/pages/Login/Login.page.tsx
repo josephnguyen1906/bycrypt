@@ -11,16 +11,43 @@ import {
   FormControl,
   Grid,
 } from "@mui/material";
+import { loginUser } from "@/services/User.service";
+import { toast } from "react-toastify";
 
 export default function LoginPage() {
-  const [phone, setPhone] = useState("+84");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loadding, setLoadding] = useState<boolean>(false);
+  const handlePassword = (e: any) => setPassword(e.target.value);
+  const handleUsername = (e: any) => setEmail(e.target.value);
+  console.log(email);
+  console.log(password);
 
-  const handleSubmit = (e: any) => {
+  // Login handler
+  const login = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Phone:", phone);
+    if (email !== "" && password !== "") {
+      setLoadding(true);
+      await loginUser(email, password)
+        .then((res: any) => {
+          if (res?.status === true) {
+            window.localStorage.setItem("tokenokx", res.token);
+            window.location.href = "/";
+          } else {
+            toast.error(res?.msg);
+          }
+        })
+        .finally(() => {
+          setLoadding(false);
+        });
+    } else {
+      swal(
+        "Đăng nhập",
+        "Tên đăng nhập và mật khẩu không được để trống",
+        "error"
+      );
+    }
   };
-
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
       {/* Left Section */}
@@ -110,12 +137,15 @@ export default function LoginPage() {
           <Typography variant="h4" gutterBottom>
             Log in
           </Typography>
-          <form onSubmit={handleSubmit}>
+          <form>
             <InputLabel>Email / username </InputLabel>
             <TextField
               fullWidth
               placeholder="Enter Email / username"
               variant="outlined"
+              value={email}
+              type="email"
+              onChange={handleUsername}
               sx={{ mb: 2, borderRadius: "15px" }}
             />
 
@@ -125,11 +155,14 @@ export default function LoginPage() {
               placeholder="Enter Password"
               variant="outlined"
               type="password"
+              value={password}
+              onChange={handlePassword}
               sx={{ mb: 2, borderRadius: "15px" }}
             />
             <Button
               type="submit"
               fullWidth
+              onClick={login}
               sx={{
                 mb: 2,
                 backgroundColor: "#000",

@@ -15,7 +15,6 @@ import {
   SportIcon,
   TabletGameIcon,
 } from "@/shared/Svgs/Svg.component";
-import usePlayGame from "@/hook/usePlayGame";
 import { MenuMobile } from "@/datafake/Menu";
 
 type CustomizedDialogProps = {
@@ -29,8 +28,6 @@ export default function MenuPopupComponent({
   onClose,
   title,
 }: CustomizedDialogProps) {
-  const { loading, playGame } = usePlayGame();
-
   return (
     <CustomizedDialog open={open} onClose={onClose} title={title}>
       <nav className="header-bottom-menu">

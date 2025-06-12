@@ -9,7 +9,7 @@ export function getStore(key: string): any {
 export function getToken() {
   const store =
     typeof window !== "undefined"
-      ? window.localStorage.getItem("tokenku99")
+      ? window.localStorage.getItem("tokenokx")
       : null;
   return store;
 }

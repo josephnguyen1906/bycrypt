@@ -78,7 +78,11 @@ export default function HomePage() {
             </h2>
 
             <div className="send-mail">
-              <input type="text" placeholder="Enter Email" />
+              <input
+                type="text"
+                placeholder="Enter Email"
+                style={{ color: "#fff" }}
+              />
               <button type="button">Try OKX</button>
             </div>
             <div className="join-img">

@@ -83,7 +83,7 @@ export default function MenuProfile({ user }: UserProps) {
     {
       text: "Account verification",
       icon: <RutIcon />,
-      onClick: () => router.push("/profile/account-withdraw"),
+      onClick: () => router.push("/verified"),
     },
     {
       text: "Invitation to join",
@@ -110,7 +110,7 @@ export default function MenuProfile({ user }: UserProps) {
       text: "Log out",
       icon: <LogoutMenuIcon />,
       onClick: () => {
-        window.localStorage.removeItem("tokenku99");
+        window.localStorage.removeItem("tokenokx");
         window.location.href = "/";
       },
     },

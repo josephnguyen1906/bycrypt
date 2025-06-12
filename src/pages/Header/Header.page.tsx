@@ -7,7 +7,7 @@ import Link from "next/link";
 import { userResponse } from "@/interface/user.interface";
 import { useRouter } from "next/navigation";
 import swal from "sweetalert";
-import { getMe, getMessage } from "@/services/User.service";
+import { getMe } from "@/services/User.service";
 import {
   alpha,
   Avatar,
@@ -25,7 +25,6 @@ import TranslateContextComponent from "../../components/GgTranstale/TranslateCon
 import MenuProfile from "@/components/subMenu/MenuProfile";
 import MenuProfileMobile from "@/components/subMenu/MenuProfileMobile";
 import { getToken } from "@/configs/client-store";
-import usePlayGame from "@/hook/usePlayGame";
 import LoadingComponent from "@/components/Loading";
 import SimpleBackdrop from "@/components/Loading/LoaddingPage";
 import { MenuWebsite } from "@/datafake/Menu";
@@ -88,7 +87,6 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 
 export default function HeaderPage(props: propUser) {
-  const { loading, playGame } = usePlayGame();
   const [show, setShow] = useState(false);
   const [activeTab, setActiveTab] = useState<number>(0);
   const [user, setUser] = useState<any>(props.user);
@@ -143,11 +141,7 @@ export default function HeaderPage(props: propUser) {
         console.error("Error during initialization:", error);
       }
     };
-    getMessage().then((res) => {
-      if (res.data) {
-        setMessage(res.data);
-      }
-    });
+
     initialize();
   }, []);
 

@@ -142,9 +142,6 @@ export default function MenuProfileMobile(data: userProps) {
             <Typography sx={{ fontSize: "16px", fontWeight: "bold" }}>
               {data.user?.username || "huyn19e6bffa5"}
             </Typography>
-            <Typography sx={{ fontSize: "12px", color: "#fbc16c" }}>
-              Ví của tui {formatCurrency(data.user?.coin ?? 0)}
-            </Typography>
           </Box>
         </Box>
         <IconButton onClick={handleDrawerClose}>
@@ -243,7 +240,7 @@ export default function MenuProfileMobile(data: userProps) {
         <Button
           onClick={() =>
             handleMenuItemClick(() => {
-              window.localStorage.removeItem("tokenku99");
+              window.localStorage.removeItem("tokenokx");
               window.location.href = "/";
             })
           }
@@ -280,29 +277,6 @@ export default function MenuProfileMobile(data: userProps) {
           marginLeft: "-20px",
         }}
       >
-        <Tooltip title={formatCurrency(data.user?.coin ?? 0)}>
-          <Button
-            sx={{
-              background: "#1a263f",
-              color: "#fbc16c",
-              borderRadius: "16px",
-              padding: "4px 12px",
-              fontSize: "14px",
-              textTransform: "none",
-              maxWidth: "80px",
-              width: "100%",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-              display: "block",
-              "&:hover": {
-                background: "#2f3b56",
-              },
-            }}
-          >
-            {formatCurrency(data.user?.coin ?? 0)}
-          </Button>
-        </Tooltip>
         <Button
           onClick={() => route.replace("/profile/account-deposit")}
           sx={{

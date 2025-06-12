@@ -8,7 +8,6 @@ import { usePathname, useRouter } from "next/navigation";
 import LoadingComponent from "../Loading";
 import { getMe } from "@/services/User.service";
 import { GameConfig } from "@/configs/GameConfig";
-import { getWalletGameByUser, walletTransfer } from "@/services/Wallet.service";
 import MenuPopupComponent from "../popup/MenuPopup.component";
 import SupportPopupComponent from "../popup/SupportPopup.component";
 import "./PrimaryLayout.css";
@@ -32,11 +31,7 @@ export default function PrimaryLayoutComponent({
   const router = useRouter();
   const path = usePathname();
   const [openSupport, setOpenSupport] = useState(false);
-  const [user, setUser] = useState<any>({
-    id: "1",
-    username: "Guest",
-    coin: 0,
-  });
+  const [user, setUser] = useState<any>(null);
   const [load, setLoad] = useState(false);
   const hanldMenu = (menu: number) => {
     setMenu(menu);
@@ -62,29 +57,29 @@ export default function PrimaryLayoutComponent({
   };
   console.log("path", path);
 
-  // useEffect(() => {
-  //   const initialize = async () => {
-  //     try {
-  //       const res: any = await getMe();
-  //       setUser(res.user);
-  //       if (path?.startsWith("/profile") && !res.user) {
-  //         router.replace("/");
-  //         return;
-  //       }
-  //       if (res?.user) {
-  //         setUser(res.user);
-  //         const updatedRes: any = await getMe(); // Gọi lại API sau khi hoàn thành
-  //         setUser(updatedRes?.user);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error during initialization:", error);
-  //     } finally {
-  //       setLoad(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const initialize = async () => {
+      try {
+        const res: any = await getMe();
+        setUser(res.user);
+        if (path?.startsWith("/profile") && !res.user) {
+          router.replace("/");
+          return;
+        }
+        if (res?.user) {
+          setUser(res.user);
+          const updatedRes: any = await getMe(); // Gọi lại API sau khi hoàn thành
+          setUser(updatedRes?.user);
+        }
+      } catch (error) {
+        console.error("Error during initialization:", error);
+      } finally {
+        setLoad(false);
+      }
+    };
 
-  //   initialize();
-  // }, [path]);
+    initialize();
+  }, [path]);
 
   return (
     <>
@@ -96,7 +91,8 @@ export default function PrimaryLayoutComponent({
 
           <main>{children}</main>
           {path === "/login/" || path === "/signup/" ? "" : <FooterPage />}
-          <nav className="menu-mobile">
+
+          {/* <nav className="menu-mobile">
             <ul>
               <li>
                 <button type="button" onClick={() => hanldMenu(5)}>
@@ -127,11 +123,6 @@ export default function PrimaryLayoutComponent({
               </li>
               <li>
                 <button type="button" onClick={() => hanldMenu(2)}>
-                  {/* <SearchIcon
-                    width="25px"
-                    height="25px"
-                    className="moblie-icon"
-                  /> */}
                   <Image
                     src={"/images/home.png"}
                     width={34}
@@ -161,7 +152,7 @@ export default function PrimaryLayoutComponent({
                 </button>
               </li>
             </ul>
-          </nav>
+          </nav> */}
 
           {/* <MenuPopupComponent
             open={open}

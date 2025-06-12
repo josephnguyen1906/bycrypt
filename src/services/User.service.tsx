@@ -1,35 +1,23 @@
 import { authInstance, contentInstance } from "@/configs/CustomizeAxios";
 
 // đăng nhập
-const loginUser = (username: string, password: string) => {
-  return authInstance.post("/auth/login", {
-    username,
-    password,
-    captcha: "123",
-  });
-};
-
-// Đăng ký
-const signupUser = (
-  name: string,
-  username: string,
-  password: string,
-  email: string,
-  phone: string
-) => {
-  return authInstance.post("/auth/register", {
-    name,
-    username,
-    phone,
+const loginUser = (email: string, password: string) => {
+  return authInstance.post("/api/login", {
     email,
     password,
   });
 };
-const getMessage = () => {
-  return contentInstance.get("/api/message");
+
+// Đăng ký
+const signupUser = (email: string, password: string) => {
+  return authInstance.post("/api/register", {
+    email,
+    password,
+  });
 };
+
 const getMe = () => {
-  return contentInstance.get("/api/auth/me");
+  return contentInstance.get("/api/me");
 };
 
 // Cập nhập mật khẩu tài khoản
@@ -63,6 +51,5 @@ export {
   signupUser,
   updatePassword,
   getMe,
-  getMessage,
   updatePasswordWithdrawals,
 };

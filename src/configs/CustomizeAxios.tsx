@@ -2,14 +2,9 @@ import axios from "axios";
 import { getToken } from "./client-store";
 import swal from "sweetalert";
 
-// Lấy baseURL từ environment
-const AUTH_API_URL = "https://www.ku99.win";
-
-const CONTENT_API_URL = "https://api1.ku99.win";
-
 // API instance for login and register
 const authInstance = axios.create({
-  baseURL: AUTH_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "https://api.pi-cointrading.com",
   timeout: 10000,
 });
 
@@ -31,8 +26,6 @@ authInstance.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    console.log(error.response);
-
     if (error.response && error.response.data) {
       return Promise.reject(error.response.data);
     }
@@ -42,7 +35,7 @@ authInstance.interceptors.response.use(
 
 // API instance for content
 const contentInstance = axios.create({
-  baseURL: CONTENT_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "https://api.pi-cointrading.com",
   timeout: 10000,
 });
 
