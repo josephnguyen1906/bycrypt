@@ -40,7 +40,7 @@ import {
 } from "@/shared/Svgs/Svg.component";
 
 interface propUser {
-  user: userResponse;
+  user: userResponse | null;
 }
 
 const StyledMenu = styled((props: MenuProps) => (

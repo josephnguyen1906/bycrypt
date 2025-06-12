@@ -43,7 +43,7 @@ export default function VerifiedPage() {
   };
 
   return (
-    <Box sx={{ padding: "100px 0px", backgroundColor: "#fff" }}>
+    <Box sx={{ backgroundColor: "#fff" }}>
       <Box sx={{ width: "80%", margin: "auto" }}>
         <Typography variant="h3" sx={{ fontSize: "25px", fontWeight: "600" }}>
           Account Verified

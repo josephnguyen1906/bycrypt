@@ -1,6 +1,6 @@
-import ProfilePage from "@/pages/Profile/Profile.page";
+import ProfilePage from "@/pages/Profile/Profile";
 import React from "react";
 
 export default function page() {
-  return <ProfilePage />;
+  return <ProfilePage value={1} />;
 }

@@ -1,6 +1,6 @@
-import VerifiedPage from "@/pages/Profile/Verified.page";
+import ProfilePage from "@/pages/Profile/Profile";
 import React from "react";
 
 export default function page() {
-  return <VerifiedPage />;
+  return <ProfilePage value={3} />;
 }

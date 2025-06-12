@@ -58,8 +58,6 @@ export default function OverviewPage() {
       <Box
         sx={{
           padding: 2,
-          backgroundColor: "#fff",
-          paddingTop: "80px",
           width: "80%",
           margin: "0 auto",
         }}

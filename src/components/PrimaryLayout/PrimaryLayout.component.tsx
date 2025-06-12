@@ -18,6 +18,9 @@ import {
   SportsIcon,
 } from "@/shared/Svgs/Svg.component";
 import { Button } from "@mui/material";
+import useAuth from "@/hook/useAuth";
+import { IUser } from "@/shared/interfaces";
+
 const FooterPage = dynamic(() => import("@/pages/Footer/Footer.page"), {
   ssr: false,
 });
@@ -28,11 +31,13 @@ export default function PrimaryLayoutComponent({
   children: React.ReactNode;
 }) {
   const [menu, setMenu] = useState(2);
+  const [isLoading, setIsLoading] = useState(true); // New state for loading
   const router = useRouter();
   const path = usePathname();
+  const [load, setLoad] = useState(true);
   const [openSupport, setOpenSupport] = useState(false);
-  const [user, setUser] = useState<any>(null);
-  const [load, setLoad] = useState(false);
+  const [user, setUser] = useState<IUser | null>(null);
+  // const { user, loading } = useAuth();
   const hanldMenu = (menu: number) => {
     setMenu(menu);
     setOpenSupport(false);
@@ -66,6 +71,7 @@ export default function PrimaryLayoutComponent({
         }
         if (res?.user) {
           setUser(res.user);
+
           const updatedRes: any = await getMe(); // Gọi lại API sau khi hoàn thành
           setUser(updatedRes?.user);
         }
@@ -104,13 +110,11 @@ export default function PrimaryLayoutComponent({
                     alt=""
                     className="moblie-icon"
                   />
-
                   <p className={menu === 5 ? "mobile-active" : "mobile-p"}>
                     Khuyến mãi
                   </p>
                 </button>
               </li>
-
               <li>
                 <button type="button" onClick={() => hanldMenu(1)}>
                   <SportsIcon className="moblie-icon" />

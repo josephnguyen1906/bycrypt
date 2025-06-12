@@ -1,6 +1,6 @@
-import OverviewPage from "@/pages/Profile/Overview.page";
+import ProfilePage from "@/pages/Profile/Profile";
 import React from "react";
 
 export default function page() {
-  return <OverviewPage />;
+  return <ProfilePage value={0} />;
 }

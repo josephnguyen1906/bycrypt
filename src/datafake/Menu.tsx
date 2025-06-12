@@ -32,7 +32,57 @@ import {
   YouTube,
 } from "@mui/icons-material";
 import Image from "next/image";
-
+export const MenuAset = [
+  {
+    id: "1",
+    link: "/trade",
+    title: "Asset",
+    item: [
+      {
+        id: "1",
+        link: "#",
+        title: "History",
+        icon: <P2PMenuIcon />,
+      },
+      {
+        id: "2",
+        link: "#",
+        title: "Opening command",
+        icon: <P2PMenuIcon />,
+      },
+      {
+        id: "3",
+        link: "#",
+        title: "Close command",
+        icon: <P2PMenuIcon />,
+      },
+      {
+        id: "4",
+        link: "#",
+        title: "The excavator is operating.",
+        icon: <P2PMenuIcon />,
+      },
+      {
+        id: "5",
+        link: "#",
+        title: "The mining machine has expired",
+        icon: <P2PMenuIcon />,
+      },
+      {
+        id: "6",
+        link: "#",
+        title: "The order is frozen",
+        icon: <P2PMenuIcon />,
+      },
+      {
+        id: "7",
+        link: "#",
+        title: "The order has not been frozen.",
+        icon: <P2PMenuIcon />,
+      },
+    ],
+  },
+];
 export const MenuWebsite = [
   {
     id: "1",

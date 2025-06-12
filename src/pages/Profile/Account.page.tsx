@@ -4,10 +4,10 @@ import { VerifiedIcon, WarningIcon } from "@/shared/Svgs/Svg.component";
 import { Avatar, Box, Typography } from "@mui/material";
 import React from "react";
 
-export default function ProfilePage() {
+export default function AccountPage() {
   const { user, loading } = useAuth();
   return (
-    <Box sx={{ padding: "100px 0px", backgroundColor: "#fff" }}>
+    <Box sx={{ backgroundColor: "#fff" }}>
       <Box
         sx={{
           width: "80%",

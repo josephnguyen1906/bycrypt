@@ -22,34 +22,20 @@ const getMe = () => {
 
 // Cập nhập mật khẩu tài khoản
 const updatePassword = (
-  oldPassword: string,
-  newPassword: string,
-  newPasswordConfirm: string
+  old_password: string,
+  new_password: string,
+  new_password_confirmation: string
 ) => {
-  return contentInstance.post(`/api/auth/change-password`, {
-    oldPassword,
-    newPassword,
-    newPasswordConfirm,
+  return contentInstance.post(`/api/change-password`, {
+    old_password,
+    new_password,
+    new_password_confirmation,
   });
 };
 
-// Cập nhập mật khẩu bảo mật game
-const updatePasswordWithdrawals = (
-  oldPassword: string,
-  newPassword: string,
-  newPasswordConfirm: string
-) => {
-  return contentInstance.post(`/api/auth/change-password-security`, {
-    oldPassword,
-    newPassword,
-    newPasswordConfirm,
-  });
+// Cập nhập mật khẩu tài khoản
+const getReferral = () => {
+  return contentInstance.get(`/api/referral`);
 };
 
-export {
-  loginUser,
-  signupUser,
-  updatePassword,
-  getMe,
-  updatePasswordWithdrawals,
-};
+export { loginUser, signupUser, updatePassword, getMe, getReferral };
