@@ -55,8 +55,6 @@ export default function PrimaryLayoutComponent({
         break;
     }
   };
-  console.log("path", path);
-
   useEffect(() => {
     const initialize = async () => {
       try {

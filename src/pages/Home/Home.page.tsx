@@ -74,21 +74,21 @@ export default function HomePage() {
               <button type="button">Try OKX</button>
             </div>
             <div className="join-img">
-              <Image
+              <img
                 src="/images/DD7AC9432E675714.webp"
                 alt="join"
                 width={200}
                 height={200}
                 loading="lazy"
               />
-              <Image
+              <img
                 src="/images/499A92F3657A52EC.webp"
                 alt="join"
                 width={200}
                 height={200}
                 loading="lazy"
               />
-              <Image
+              <img
                 src="/images/6279B178FADAFCC5.webp"
                 alt="join"
                 width={60}

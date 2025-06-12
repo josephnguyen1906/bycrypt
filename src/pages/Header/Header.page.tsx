@@ -171,7 +171,7 @@ export default function HeaderPage(props: propUser) {
                   fontStyle: "italic",
                 }}
               >
-                <Image src="/images/logo.png" width={80} height={80} alt="" />
+                <img src="/images/logo.png" width={80} height={80} alt="" />
               </a>
             </div>
           </div>
