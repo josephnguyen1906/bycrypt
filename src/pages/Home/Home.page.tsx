@@ -8,18 +8,6 @@ import React, {
 } from "react";
 import "./Home.css";
 import Image from "next/image";
-import { Slide } from "react-slideshow-image";
-import "react-slideshow-image/dist/styles.css";
-import Marquee from "react-fast-marquee";
-import {
-  AgentIcon,
-  DownloadAppIcon,
-  EmailIcon,
-  SupportIcon,
-} from "@/shared/Svgs/Svg.component";
-import Modal from "@/components/Modal";
-import Link from "next/link";
-import { IBannerImg, INotification, IUser } from "@/shared/interfaces";
 import { useRouter } from "next/navigation";
 import LoadingComponent from "@/components/Loading";
 import swal from "sweetalert";
@@ -54,19 +42,19 @@ export default function HomePage() {
   const [isFixed, setIsFixed] = useState(false);
   const route = useRouter();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      const isNearBottom = scrollPosition > documentHeight - windowHeight - 800;
-      setIsFixed(scrollPosition > 300 && !isNearBottom);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const scrollPosition = window.scrollY;
+  //     const windowHeight = window.innerHeight;
+  //     const documentHeight = document.documentElement.scrollHeight;
+  //     const isNearBottom = scrollPosition > documentHeight - windowHeight - 800;
+  //     setIsFixed(scrollPosition > 300 && !isNearBottom);
+  //   };
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
 
   return (
     <div className="home">
@@ -87,29 +75,32 @@ export default function HomePage() {
             </div>
             <div className="join-img">
               <Image
-                src="./images/DD7AC9432E675714.webp"
+                src="/images/DD7AC9432E675714.webp"
                 alt="join"
                 width={200}
                 height={200}
+                loading="lazy"
               />
               <Image
-                src="./images/499A92F3657A52EC.webp"
+                src="/images/499A92F3657A52EC.webp"
                 alt="join"
                 width={200}
                 height={200}
+                loading="lazy"
               />
               <Image
-                src="./images/6279B178FADAFCC5.webp"
+                src="/images/6279B178FADAFCC5.webp"
                 alt="join"
                 width={60}
                 height={60}
                 style={{ width: "60px", height: "60px" }}
+                loading="lazy"
               />
             </div>
           </div>
           <div className="home-join-right">
             <video
-              src="./images/79620084DA93114F.webm"
+              src="/images/79620084DA93114F.webm"
               autoPlay
               loop
               muted
