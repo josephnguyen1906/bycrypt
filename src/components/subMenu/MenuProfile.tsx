@@ -158,10 +158,10 @@ export default function MenuProfile({ user }: UserProps) {
       },
     },
     {
-      text: "Invitation to join",
+      text: "Referral",
       icon: <GiftMenuIcon />,
       onClick: () => {
-        router.push("/promotion");
+        router.push("/referral");
         handleClose();
       },
     },

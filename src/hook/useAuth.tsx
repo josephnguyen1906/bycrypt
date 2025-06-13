@@ -12,7 +12,7 @@ export default function useAuth() {
     const fetchUser = async () => {
       try {
         const res: any = await getMe();
-        if (res.code === 200) {
+        if (res.status === true) {
           setUser(res.user);
 
           setLoading(false);

@@ -12,6 +12,7 @@ import {
   styled,
   Avatar,
 } from "@mui/material";
+import { log } from "console";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -52,7 +53,7 @@ const Announcements = [
 
 export default function OverviewPage() {
   const { user } = useAuth();
-
+  console.log("User data:", user);
   return (
     <Box sx={{ backgroundColor: "#fff" }}>
       <Box
@@ -215,7 +216,7 @@ export default function OverviewPage() {
                 </Box>
               ))}
             </StyledPaper>
-            <StyledPaper>
+            {/* <StyledPaper>
               <Typography
                 variant="h4"
                 sx={{ fontSize: "20px", fontWeight: "bold" }}
@@ -231,7 +232,7 @@ export default function OverviewPage() {
                 />
                 <Typography>Scan to download</Typography>
               </Box>
-            </StyledPaper>
+            </StyledPaper> */}
           </Grid>
         </Grid>
       </Box>

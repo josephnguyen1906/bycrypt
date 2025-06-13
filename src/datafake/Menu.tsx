@@ -119,12 +119,12 @@ export const MenuWebsite = [
       },
     ],
   },
-  {
-    id: "3",
-    link: "#",
-    title: "IDO Launchpad",
-    item: [],
-  },
+  // {
+  //   id: "3",
+  //   link: "#",
+  //   title: "IDO Launchpad",
+  //   item: [],
+  // },
   {
     id: "4",
     link: "/excavator",
@@ -155,7 +155,7 @@ export const MenuWebsite = [
   },
   {
     id: "5",
-    link: "#",
+    link: "/trade",
     title: "Trade",
     item: [
       {
@@ -194,6 +194,12 @@ export const MenuWebsite = [
         icon: <P2PMenuIcon />,
       },
     ],
+  },
+  {
+    id: "6",
+    link: "#",
+    title: "Notification",
+    item: [],
   },
 ];
 

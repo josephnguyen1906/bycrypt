@@ -74,7 +74,7 @@ export default function ProfilePage(props: TabProps) {
           <Tab label="Profile" {...a11yProps(1)} />
           <Tab label="Security setting" {...a11yProps(2)} />
           <Tab label="Account verification" {...a11yProps(3)} />
-          <Tab label="Invitation to join" {...a11yProps(4)} />
+          <Tab label="Referral" {...a11yProps(4)} />
           <Tab label="Notification" {...a11yProps(5)} />
           <Tab label="Bill" {...a11yProps(6)} />
         </Tabs>
