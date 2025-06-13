@@ -38,6 +38,10 @@ export default function LoginPage() {
             toast.error(res?.msg);
           }
         })
+        .catch((err) => {
+          console.error("API error:", err);
+          toast.error(err?.message || "Lỗi không xác định");
+        })
         .finally(() => {
           setLoadding(false);
         });
