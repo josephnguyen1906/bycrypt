@@ -57,10 +57,13 @@ export default function ExcavatorPage() {
       <Box
         sx={{
           width: "100%",
-          margin: "0 auto",
           backgroundColor: "#000",
-          display: "flex",
+          display: {
+            xs: "grid",
+            sm: "flex",
+          },
           justifyContent: "center",
+          justifyItems: "center",
           alignItems: "center",
           gap: "50px",
           paddingTop: "80px",
@@ -69,17 +72,44 @@ export default function ExcavatorPage() {
         <Box>
           <img src="/images/113A699D75096FA7.png" style={{ height: "400px" }} />
         </Box>
-        <Box sx={{ width: "400px" }}>
-          <Typography variant="h6" color={"#e5f663"}>
+        <Box
+          sx={{
+            width: {
+              xs: "100%",
+              sm: "400px",
+            },
+            textAlign: {
+              xs: "center",
+              sm: "left",
+            },
+            paddingBottom: {
+              xs: "100px",
+              sm: "0px",
+            },
+          }}
+        >
+          <Typography
+            variant="h6"
+            color={"#e5f663"}
+            sx={{ fontSize: { xs: "18px", sm: "20px" } }}
+          >
             Now available
           </Typography>
-          <Typography variant="h6" color={"#e5f663"}>
+          <Typography
+            variant="h6"
+            color={"#e5f663"}
+            sx={{ fontSize: { xs: "18px", sm: "20px" } }}
+          >
             For institutional clients
           </Typography>
-          <Typography variant="h3" color={"white"}>
+          <Typography
+            variant="h3"
+            color={"white"}
+            sx={{ fontSize: { xs: "20px", sm: "35px" } }}
+          >
             Rent an excavator
           </Typography>
-          <Typography sx={{ color: "white", fontSize: "16px" }}>
+          <Typography sx={{ color: "white", fontSize: "16px", width: "300px" }}>
             Rent a mining machine to speed up your coin mining. Increase your
             earning rate.
           </Typography>
@@ -108,7 +138,10 @@ export default function ExcavatorPage() {
             textAlign: "center",
             padding: "20px 0",
             color: "#000",
-            fontSize: "35px",
+            fontSize: {
+              xs: "20px",
+              sm: "35px",
+            },
             fontWeight: "bold",
           }}
           variant="h3"
@@ -160,7 +193,10 @@ export default function ExcavatorPage() {
                 sx={{
                   width: "100%",
                   margin: "0 auto",
-                  display: "flex",
+                  display: {
+                    xs: "grid",
+                    sm: "flex",
+                  },
                   flexWrap: "wrap",
                   gap: "30px",
                 }}
@@ -169,7 +205,10 @@ export default function ExcavatorPage() {
                   <Box
                     key={index}
                     sx={{
-                      width: "calc(50% - 20px)",
+                      width: {
+                        xs: "100%",
+                        sm: "calc(50% - 20px)",
+                      },
                       border: "1px solid #909090",
                       padding: "10px",
                       borderRadius: "10px",
@@ -265,7 +304,10 @@ export default function ExcavatorPage() {
                 sx={{
                   width: "100%",
                   margin: "0 auto",
-                  display: "flex",
+                  display: {
+                    xs: "grid",
+                    sm: "flex",
+                  },
                   flexWrap: "wrap",
                   gap: "20px",
                 }}
@@ -274,7 +316,10 @@ export default function ExcavatorPage() {
                   <Box
                     key={index}
                     sx={{
-                      width: "calc(50% - 20px)",
+                      width: {
+                        xs: "100%",
+                        sm: "calc(50% - 20px)",
+                      },
                       border: "1px solid #909090",
                       padding: "10px",
                       borderRadius: "10px",
@@ -370,7 +415,10 @@ export default function ExcavatorPage() {
                 sx={{
                   width: "100%",
                   margin: "0 auto",
-                  display: "flex",
+                  display: {
+                    xs: "grid",
+                    sm: "flex",
+                  },
                   flexWrap: "wrap",
                   gap: "20px",
                 }}
@@ -379,7 +427,10 @@ export default function ExcavatorPage() {
                   <Box
                     key={index}
                     sx={{
-                      width: "calc(50% - 20px)",
+                      width: {
+                        xs: "100%",
+                        sm: "calc(50% - 20px)",
+                      },
                       border: "1px solid #909090",
                       padding: "10px",
                       borderRadius: "10px",

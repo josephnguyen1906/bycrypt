@@ -6,7 +6,15 @@ import MarketDataWidget from "@/components/ChartView/MarketDataWidget";
 import TradingViewTickerTape from "@/components/ChartView/TradingViewTickerTape";
 export default function TradePage() {
   return (
-    <Box sx={{ background: "#fff", paddingTop: "70px" }}>
+    <Box
+      sx={{
+        background: "#fff",
+        paddingTop: {
+          xs: "0px",
+          sm: "70px",
+        },
+      }}
+    >
       <Box
         sx={{
           height: "800px",
