@@ -54,6 +54,11 @@ export default function LoginPage() {
       sx={{
         backgroundColor: "#fff",
         paddingTop: "50px",
+        display: "flex",
+        alignItems: {
+          xs: "flex-start",
+          sm: "normal",
+        },
         height: "100vh",
       }}
     >

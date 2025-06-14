@@ -45,7 +45,18 @@ export default function SignupPage() {
     }
   };
   return (
-    <Box sx={{ backgroundColor: "#fff", paddingTop: "50px", height: "100vh" }}>
+    <Box
+      sx={{
+        backgroundColor: "#fff",
+        paddingTop: "50px",
+        display: "flex",
+        alignItems: {
+          xs: "flex-start",
+          sm: "normal",
+        },
+        height: "100vh",
+      }}
+    >
       {/* Left Section */}
       <Box
         sx={{
