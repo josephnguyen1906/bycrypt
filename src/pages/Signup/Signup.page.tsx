@@ -53,7 +53,10 @@ export default function SignupPage() {
           backgroundColor: "black",
           color: "white",
           p: 4,
-          display: "flex",
+          display: {
+            xs: "none",
+            sm: "flex",
+          },
           flexDirection: "column",
           justifyContent: "center",
           margin: "0 auto",
@@ -121,7 +124,10 @@ export default function SignupPage() {
       {/* Right Section */}
       <Box
         sx={{
-          width: "50%",
+          width: {
+            xs: "100%",
+            sm: "50%",
+          },
           backgroundColor: "#f5f5f5",
           display: "flex",
           alignItems: "center",

@@ -14,7 +14,6 @@ import {
   VisaIcon,
   YoutubeIcon,
 } from "@/shared/Svgs/Svg.component";
-import { PaymentMenuFooter } from "@/datafake/Menu";
 
 export default function FooterPage() {
   return (

@@ -58,7 +58,10 @@ export default function LoginPage() {
           backgroundColor: "black",
           color: "white",
           p: 4,
-          display: "flex",
+          display: {
+            xs: "none",
+            sm: "flex",
+          },
           flexDirection: "column",
           justifyContent: "center",
           margin: "0 auto",
@@ -126,8 +129,11 @@ export default function LoginPage() {
       {/* Right Section */}
       <Box
         sx={{
-          width: "50%",
-          backgroundColor: "#f5f5f5",
+          width: {
+            xs: "100%",
+            sm: "50%",
+          },
+          backgroundColor: "#fff",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",

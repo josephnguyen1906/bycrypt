@@ -20,7 +20,7 @@ import {
   UserIcon,
 } from "@/shared/Svgs/Svg.component";
 import NavigationGame from "@/hook/NavigationGame";
-import { MenuAset } from "@/datafake/Menu";
+import { MenuAset, menuItems } from "@/datafake/Menu";
 import Link from "next/link";
 
 export interface UserProps {
@@ -123,82 +123,6 @@ export default function MenuProfile({ user }: UserProps) {
       },
     },
   };
-
-  const menuItems = [
-    {
-      text: "Overview",
-      icon: <OverviewIcon />,
-      onClick: () => {
-        router.push("/overview");
-        handleClose();
-      },
-    },
-    {
-      text: "Account",
-      icon: <ProfileIcon />,
-      onClick: () => {
-        router.push("/profile");
-        handleClose();
-      },
-    },
-    {
-      text: "Security settings",
-      icon: <NapIcon />,
-      onClick: () => {
-        router.push("/security");
-        handleClose();
-      },
-    },
-    {
-      text: "Account verification",
-      icon: <RutIcon />,
-      onClick: () => {
-        router.push("/verified");
-        handleClose();
-      },
-    },
-    {
-      text: "Referral",
-      icon: <GiftMenuIcon />,
-      onClick: () => {
-        router.push("/referral");
-        handleClose();
-      },
-    },
-    {
-      text: "Notification",
-      icon: <HistoryMenuIcon />,
-      onClick: () => {
-        router.push("/profile/transaction-history");
-        handleClose();
-      },
-    },
-    {
-      text: "Live chat 24/7",
-      icon: <LiveChatMenuIcon />,
-      onClick: () => {
-        NavigationGame("https://t.me/HitJuwa");
-        handleClose();
-      },
-    },
-    {
-      text: "My invoice",
-      icon: <InvoiceMenuIcon />,
-      onClick: () => {
-        NavigationGame("https://t.me/HitJuwa");
-        handleClose();
-      },
-    },
-    {
-      text: "Log out",
-      icon: <LogoutMenuIcon />,
-      onClick: () => {
-        window.localStorage.removeItem("tokenokx");
-        window.location.href = "/";
-        handleClose();
-      },
-    },
-  ];
 
   return (
     <React.Fragment>
@@ -342,8 +266,21 @@ export default function MenuProfile({ user }: UserProps) {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            {menuItems.map((item, index) => (
-              <MenuItem onClick={item.onClick} sx={menuItemStyles} key={index}>
+            {menuItems.map((item: any, index) => (
+              <MenuItem
+                onClick={() => {
+                  if (item.link === "/logout") {
+                    window.localStorage.removeItem("tokenokx");
+                    window.location.href = "/";
+                    handleClose();
+                  } else {
+                    router.push(item.link || "/");
+                    handleClose();
+                  }
+                }}
+                sx={menuItemStyles}
+                key={index}
+              >
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 {item.text}
               </MenuItem>

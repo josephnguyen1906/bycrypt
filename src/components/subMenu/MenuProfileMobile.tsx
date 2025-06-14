@@ -41,8 +41,10 @@ import {
   P2PMenuIcon,
   ProfileIcon,
   RutMenuIcon,
+  WarningIcon,
 } from "@/shared/Svgs/Svg.component";
 import NavigationGame from "@/hook/NavigationGame";
+import { MenuAset, menuItemMobile, menuItems } from "@/datafake/Menu";
 
 export interface userProps {
   user: userResponse | null;
@@ -53,7 +55,7 @@ export default function MenuProfileMobile(data: userProps) {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const open1 = Boolean(anchorEl1);
-  const route = useRouter();
+  const router = useRouter();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setDrawerOpen(true);
@@ -76,39 +78,6 @@ export default function MenuProfileMobile(data: userProps) {
     handleDrawerClose();
   };
 
-  const menuItems = [
-    {
-      text: "Quản lý tài khoản",
-      icon: <ProfileIcon />,
-      onClick: () => route.push("/profile"),
-    },
-    {
-      text: "Quản lý ngân hàng",
-      icon: <BankMenuIcon />,
-      onClick: () => route.push("/profile"),
-    },
-    {
-      text: "Tiền thưởng",
-      icon: <GiftMenuIcon />,
-      onClick: () => route.push("/promotion"),
-    },
-    {
-      text: "Lịch sử giao dịch",
-      icon: <HistoryMenuIcon />,
-      onClick: () => route.push("/profile/transaction-history"),
-    },
-    {
-      text: "Lịch sử cược cục",
-      icon: <HistoryBetMenuIcon />,
-      onClick: () => route.push("/profile/betting-history"),
-    },
-    {
-      text: "Live chat 24/7",
-      icon: <LiveChatMenuIcon />,
-      onClick: () => NavigationGame("https://t.me/HitJuwa"),
-    },
-  ];
-
   const drawerList = () => (
     <Box
       sx={{
@@ -121,105 +90,295 @@ export default function MenuProfileMobile(data: userProps) {
       }}
       role="presentation"
     >
-      {/* Header Section */}
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "16px",
-          background: "#fff",
-          color: "black",
-        }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <Avatar src="/images/avatar-4.webp" sx={{ width: 40, height: 40 }} />
-          <Box>
-            <Typography
-              sx={{ fontSize: "16px", fontWeight: "bold", color: "black" }}
-            >
-              {data.user?.username || "huyn19e6bffa5"}
-            </Typography>
-          </Box>
-        </Box>
-        <IconButton
-          onClick={handleDrawerClose}
-          sx={{
-            color: "white",
-            background: "rgba(0, 0, 0, 0.1)",
-            borderRadius: "50%",
-            "&:hover": {
-              background: "rgba(255, 255, 255, 0.2)",
-            },
-          }}
-        >
-          <CloseIcon sx={{ fontSize: "24px" }} />
-        </IconButton>
-      </Box>
-
-      {/* Menu Items */}
-      <List sx={{ flex: 1 }}>
-        {menuItems.map((item) => (
-          <ListItem
-            key={item.text}
-            disablePadding
+      {data.user ? (
+        <Box>
+          {/* Header Section */}
+          <Box
             sx={{
-              padding: "0 4.2666666667vw 4.2666666667vw",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "16px",
+              background: "#fff",
+              color: "black",
+              border: "1px solid #e0e0e0",
             }}
           >
-            <ListItemButton
-              onClick={() => handleMenuItemClick(item.onClick)}
+            <Box sx={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <Avatar
+                src="/images/avatar-4.webp"
+                sx={{ width: 40, height: 40 }}
+              />
+              <Box>
+                <Typography
+                  sx={{ fontSize: "16px", fontWeight: "bold", color: "black" }}
+                >
+                  {data.user?.username || "huyn19e6bffa5"}
+                </Typography>
+                <Typography sx={{ fontSize: "13px", color: "#909090" }}>
+                  Profile and settings
+                </Typography>
+              </Box>
+            </Box>
+            <IconButton
+              onClick={handleDrawerClose}
               sx={{
-                padding: "10px",
-                height: "12.8vw",
-                borderRadius: "10px",
+                color: "white",
+                background: "rgba(0, 0, 0, 0.1)",
+                borderRadius: "50%",
                 "&:hover": {
-                  background: "lightgray",
+                  background: "rgba(255, 255, 255, 0.2)",
                 },
               }}
             >
-              <ListItemIcon sx={{ minWidth: "40px" }}>{item.icon}</ListItemIcon>
-              <ListItemText
-                primary={item.text}
-                primaryTypographyProps={{
-                  fontSize: "3.7333333333vw !important",
-                  lineHeight: "5.3333333333vw !important",
-                  fontFamily: "Lexend, sans-serif !important",
-                  fontWeight: "400 !important",
+              <CloseIcon sx={{ fontSize: "24px" }} />
+            </IconButton>
+          </Box>
+          <Typography
+            sx={{ fontSize: "18px", fontWeight: "600", padding: "10px" }}
+          >
+            Shortcuts
+          </Typography>
+          {/* Menu Items */}
+          <List sx={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+            {menuItemMobile.map((item) => (
+              <ListItem
+                key={item.text}
+                disablePadding
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "30%",
+                  justifyContent: "center",
                 }}
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+              >
+                <ListItemButton
+                  onClick={() => {
+                    if (item.link === "/logout") {
+                      window.localStorage.removeItem("tokenokx");
+                      window.location.href = "/";
+                      handleDrawerClose();
+                    } else {
+                      router.push(item.link || "/");
+                      handleDrawerClose();
+                    }
+                  }}
+                  sx={{
+                    padding: "10px",
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    justifyItems: "center",
+                    margin: "auto",
+                    borderRadius: "10px",
+                    "&:hover": {
+                      background: "lightgray",
+                    },
+                  }}
+                >
+                  {item.icon}
+                  <Typography sx={{ fontSize: "13px", textAlign: "center" }}>
+                    {item.text}
+                  </Typography>
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <Typography
+            sx={{
+              fontSize: "18px",
+              fontWeight: "600",
+              padding: "10px",
+              borderTop: "1px solid lightgrey",
+            }}
+          >
+            Manage assset
+          </Typography>
+          {/* Menu Items */}
+          <List sx={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+            {MenuAset[0].item.map((item) => (
+              <ListItem
+                key={item.title}
+                disablePadding
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "30%",
+                  justifyContent: "center",
+                }}
+              >
+                <ListItemButton
+                  onClick={() => {
+                    if (item.link === "/logout") {
+                      window.localStorage.removeItem("tokenokx");
+                      window.location.href = "/";
+                      handleDrawerClose();
+                    } else {
+                      router.push(item.link || "/");
+                      handleDrawerClose();
+                    }
+                  }}
+                  sx={{
+                    padding: "10px",
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    justifyItems: "center",
+                    margin: "auto",
+                    borderRadius: "10px",
+                    "&:hover": {
+                      background: "lightgray",
+                    },
+                  }}
+                >
+                  {item.icon}
+                  <Typography sx={{ fontSize: "13px", textAlign: "center" }}>
+                    {item.title}
+                  </Typography>
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
 
-      {/* Sign Out Button */}
-      <Box sx={{ padding: "16px" }}>
-        <Button
-          onClick={() =>
-            handleMenuItemClick(() => {
-              window.localStorage.removeItem("tokenokx");
-              window.location.href = "/";
-            })
-          }
-          sx={{
-            width: "100%",
-            background: "transparent",
-            color: "black",
-            border: "1px solid #2f3b56",
-            borderRadius: "8px",
-            textTransform: "none",
-            fontSize: "14px",
-            padding: "8px 0",
-            "&:hover": {
-              background: "#2f3b56",
-            },
-          }}
-        >
-          <LogoutMenuIcon />
-          ĐĂNG XUẤT
-        </Button>
-      </Box>
+          {/* Sign Out Button */}
+          <Box
+            sx={{
+              padding: "16px",
+              position: "fixed",
+              bottom: 0,
+              width: "100%",
+            }}
+          >
+            <Button
+              onClick={() =>
+                handleMenuItemClick(() => {
+                  window.localStorage.removeItem("tokenokx");
+                  window.location.href = "/";
+                })
+              }
+              sx={{
+                width: "100%",
+                background: "transparent",
+                color: "black",
+                border: "1px solid #2f3b56",
+                borderRadius: "8px",
+                textTransform: "none",
+                fontSize: "14px",
+                padding: "8px 0",
+                "&:hover": {
+                  background: "#2f3b56",
+                },
+              }}
+            >
+              <LogoutMenuIcon />
+              ĐĂNG XUẤT
+            </Button>
+          </Box>
+        </Box>
+      ) : (
+        <Box>
+          {/* Header Section */}
+          <Box
+            sx={{
+              display: "grid",
+              alignItems: "center",
+              padding: "100px 20px",
+              background: "#fff",
+              color: "black",
+            }}
+          >
+            <Typography
+              variant="h2"
+              sx={{ fontSize: "30px", fontWeight: "600", color: "black" }}
+            >
+              Welcome to OKX
+            </Typography>
+            <Typography sx={{ fontSize: "16px", color: "#909090" }}>
+              Experience lightning-fast trading and low fees
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                marginTop: "15px",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "12px",
+              }}
+            >
+              <Button
+                href="/login"
+                sx={{
+                  width: "45%",
+                  height: "40px",
+                  borderRadius: "15px",
+                  background: "#fff",
+                  border: "1px solid #000",
+                  color: "black",
+                }}
+              >
+                Log in
+              </Button>
+              <Button
+                href="/signup"
+                sx={{
+                  width: "45%",
+                  height: "40px",
+                  borderRadius: "15px",
+                  background: "#000",
+                  border: "1px solid #000",
+                  color: "white",
+                }}
+              >
+                Sign up
+              </Button>
+            </Box>
+            <IconButton
+              onClick={handleDrawerClose}
+              sx={{
+                position: "fixed",
+                width: "40px",
+                height: "40px",
+                color: "white",
+                background: "rgba(0, 0, 0, 0.1)",
+                borderRadius: "50%",
+                top: "20px",
+                right: "20px",
+                "&:hover": {
+                  background: "rgba(255, 255, 255, 0.2)",
+                },
+              }}
+            >
+              <CloseIcon sx={{ fontSize: "24px" }} />
+            </IconButton>
+          </Box>
+          {/* Sign Out Button */}
+          <Box
+            sx={{
+              padding: "16px",
+              position: "fixed",
+              bottom: 0,
+              width: "100%",
+              borderTop: "1px solid #e0e0e0",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <WarningIcon width="25px" height="25px" fill="#000" />
+              <Typography sx={{ fontSize: "20px", fontWeight: 500 }}>
+                About OKX
+              </Typography>
+            </Box>
+            <Typography
+              sx={{ fontSize: "18px", fontWeight: 400, color: "#909090" }}
+            >
+              v6.123.0
+            </Typography>
+          </Box>
+        </Box>
+      )}
     </Box>
   );
 
@@ -237,6 +396,7 @@ export default function MenuProfileMobile(data: userProps) {
           padding: "8px 8px",
           background: "#fff",
           border: "none",
+          position: "fixed",
         }}
       >
         <Tooltip title="Account settings">
