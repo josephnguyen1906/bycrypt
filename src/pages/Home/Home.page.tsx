@@ -23,6 +23,8 @@ import {
 } from "@mui/material";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import useAuth from "@/hook/useAuth";
+import TradingViewHotlists from "@/components/ChartView/TradingViewHotlists";
+import { CoinIcon } from "@/shared/Svgs/Svg.component";
 const responsiveSettings = [
   {
     breakpoint: 500,
@@ -418,7 +420,195 @@ export default function HomePage() {
               </Box>
             </Box>
           ) : (
-            <Box></Box>
+            <Box>
+              <Typography
+                variant="h2"
+                sx={{
+                  fontSize: "30px",
+                  fontWeight: "600",
+                  textAlign: "center",
+                }}
+              >
+                Welcome back {user.username}
+              </Typography>
+              <Box
+                sx={{
+                  width: "90%",
+                  margin: "auto",
+                  background: "lightgrey",
+                  borderRadius: "10px",
+                  marginTop: "20px",
+                  marginBottom: "20px",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: "15px",
+                    alignItems: "center",
+                    justifyContent: "Center",
+                    justifyItems: "center",
+                  }}
+                >
+                  <CoinIcon width="100px" height="100px" />
+                  <Box>
+                    <Typography
+                      sx={{
+                        color: "gray",
+                        fontSize: "20px",
+                        fontWeight: "550",
+                      }}
+                    >
+                      Welcome Reward!
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "black",
+                        fontSize: "16px",
+                        fontWeight: "550",
+                      }}
+                    >
+                      Ejnoy a 23 USDT welcome to reward to kickstart your
+                      trading journey
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+              <TradingViewHotlists />
+              <Box sx={{ paddingTop: "10px", paddingBottom: "100px" }}>
+                <h2>Questions? We’ve got answers.</h2>
+                <Accordion
+                  sx={{
+                    backgroundColor: "#fff",
+                    borderBottom: "1px solid gray",
+                    color: "#000",
+                    "& .MuiAccordionSummary-root": {
+                      color: "#000", // Đảm bảo tiêu đề có màu trắng
+                    },
+                    "& .MuiAccordionDetails-root": {
+                      color: "gray", // Đảm bảo nội dung có màu trắng
+                    },
+                  }}
+                >
+                  <AccordionSummary
+                    expandIcon={
+                      <ControlPointIcon
+                        sx={{ color: "#000" }}
+                        style={{ fontSize: 40 }}
+                      />
+                    }
+                    aria-controls="panel1-content"
+                    id="panel1-header"
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: "20px",
+                        padding: "10px 0px",
+                        color: "black",
+                      }}
+                    >
+                      What products does OKX provide?
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails sx={{ fontSize: 18, color: "gray" }}>
+                    OKX is an innovative cryptocurrency exchange with advanced
+                    financial offerings. We offer cutting-edge crypto trading
+                    and earning services to millions of users globally in more
+                    than 180 regions. With OKX, you can: Trade a wide variety of
+                    tokens and trading pairs. Connect to the world-famous
+                    TradingView Platform and trade crypto directly with their
+                    supercharged charts.
+                  </AccordionDetails>
+                </Accordion>
+                <Accordion
+                  sx={{
+                    backgroundColor: "#fff",
+                    borderBottom: "1px solid #fff",
+                    color: "#000",
+                    "& .MuiAccordionSummary-root": {
+                      color: "#000",
+                    },
+                    "& .MuiAccordionDetails-root": {
+                      color: "gray",
+                    },
+                  }}
+                >
+                  <AccordionSummary
+                    expandIcon={
+                      <ControlPointIcon
+                        sx={{ color: "#000" }}
+                        style={{ fontSize: 40 }}
+                      />
+                    }
+                    aria-controls="panel2-content"
+                    id="panel2-header"
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: "20px",
+                        padding: "10px 0px",
+                        color: "black",
+                      }}
+                    >
+                      How do I buy Bitcoin and other cryptocurrencies on OKX?
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails sx={{ fontSize: 18, color: "gray" }}>
+                    Easily buy Bitcoin within minutes with GBP, EUR, USD, or
+                    your local currency. OKX supports various popular payment
+                    methods, including Visa, Mastercard, and ApplePay credit
+                    cards. To get started, check out our latest guide on how to
+                    buy Bitcoin on OKX. Want to buy, sell, or hold other coins
+                    that are gaining traction in the crypto ecosystem? Kickstart
+                    your journey with OKX and explore prices and other
+                    information for cryptos such as Bitcoin (BTC), Ethereum
+                    (ETH) and more!
+                  </AccordionDetails>
+                </Accordion>
+                <Accordion
+                  sx={{
+                    backgroundColor: "#fff",
+                    borderBottom: "1px solid gray",
+                    color: "#000",
+                    "& .MuiAccordionSummary-root": {
+                      color: "#000",
+                    },
+                    "& .MuiAccordionDetails-root": {
+                      color: "gray",
+                    },
+                  }}
+                >
+                  <AccordionSummary
+                    expandIcon={
+                      <ControlPointIcon
+                        sx={{ color: "#000" }}
+                        style={{ fontSize: 40 }}
+                      />
+                    }
+                    aria-controls="panel2-content"
+                    id="panel2-header"
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: "20px",
+                        padding: "10px 0px",
+                        color: "black",
+                      }}
+                    >
+                      What is crypto?
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails sx={{ fontSize: 18, color: "gray" }}>
+                    Cryptocurrency is a decentralized digital currency that
+                    operates on blockchain technology. Its key features include
+                    transparency, borderless transactions and immutability. Some
+                    of the most popular cryptocurrencies, by market
+                    capitalization, include Bitcoin, Ethereum, Tether, which can
+                    be traded on OKX.
+                  </AccordionDetails>
+                </Accordion>
+              </Box>
+            </Box>
           )}
         </div>
       )}

@@ -1,10 +1,11 @@
 "use client";
 import { getMe } from "@/services/User.service";
+import { IUser } from "@/shared/interfaces";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function useAuth() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<IUser | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 

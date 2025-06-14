@@ -396,7 +396,6 @@ export default function MenuProfileMobile(data: userProps) {
           padding: "8px 8px",
           background: "#fff",
           border: "none",
-          position: "fixed",
         }}
       >
         <Tooltip title="Account settings">
