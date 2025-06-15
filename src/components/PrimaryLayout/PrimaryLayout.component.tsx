@@ -67,6 +67,7 @@ export default function PrimaryLayoutComponent({
         break;
     }
   };
+  const protectedPaths = ["/overview", "/profile", "/referral", "/verified"];
   useEffect(() => {
     const initialize = async () => {
       try {
@@ -74,30 +75,24 @@ export default function PrimaryLayoutComponent({
         const isLoggedIn = !!res?.user;
         setUser(res.user);
 
-        // Các route cần bảo vệ
-        const protectedPaths = [
-          "/overview",
-          "/profile",
-          "/referral",
-          "/verified",
-        ];
-        const isProtectedPath = protectedPaths.some((protectedPath) =>
-          path?.startsWith(protectedPath)
-        );
+        const isProtectedPath = protectedPaths.some((p) => path?.startsWith(p));
 
-        if (!isLoggedIn && isProtectedPath) {
+        if (res.status === false && isProtectedPath) {
           router.replace("/");
           return;
         }
 
-        // Nếu đăng nhập, có thể gọi thêm API hoặc cập nhật user
         if (isLoggedIn) {
           const updatedRes: any = await getMe();
           setUser(updatedRes?.user);
+          setLoad(false);
         }
       } catch (error) {
-        console.error("Error during initialization:", error);
-      } finally {
+        const isProtectedPath = protectedPaths.some((p) => path?.startsWith(p));
+        if (isProtectedPath) {
+          router.replace("/");
+          return;
+        }
         setLoad(false);
       }
     };
