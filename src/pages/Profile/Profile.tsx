@@ -61,7 +61,10 @@ export default function ProfilePage(props: TabProps) {
       <Box
         sx={{
           width: "100%",
-          paddingTop: "80px",
+          paddingTop: {
+            xs: "10px",
+            sm: "80px",
+          },
           overflowX: "auto",
           whiteSpace: "nowrap",
         }}
