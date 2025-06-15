@@ -46,6 +46,10 @@ const getNotification = () => {
   return contentInstance.get("/api/user/notices");
 };
 
+const getBills = () => {
+  return contentInstance.get("/api/user/bills");
+};
+
 export {
   loginUser,
   signupUser,
@@ -54,4 +58,5 @@ export {
   getReferral,
   getOrepool,
   getNotification,
+  getBills,
 };

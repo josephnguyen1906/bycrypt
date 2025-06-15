@@ -8,6 +8,7 @@ import ChangePassword from "./ChangePassword";
 import InvitationPage from "./Invitation";
 import useAuth from "@/hook/useAuth";
 import { useRouter } from "next/navigation";
+import BillPage from "./Bill";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -121,7 +122,7 @@ export default function ProfilePage(props: TabProps) {
         <InvitationPage />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={5}>
-        <InvitationPage />
+        <BillPage />
       </CustomTabPanel>
     </Box>
   );

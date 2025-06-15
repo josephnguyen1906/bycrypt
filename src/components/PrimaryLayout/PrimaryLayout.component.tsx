@@ -67,7 +67,13 @@ export default function PrimaryLayoutComponent({
         break;
     }
   };
-  const protectedPaths = ["/overview", "/profile", "/referral", "/verified"];
+  const protectedPaths = [
+    "/overview",
+    "/profile",
+    "/referral",
+    "/verified",
+    "/bill",
+  ];
   useEffect(() => {
     const initialize = async () => {
       try {
