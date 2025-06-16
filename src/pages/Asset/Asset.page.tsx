@@ -149,6 +149,10 @@ export default function AssetPage() {
           xs: "10px",
           sm: "80px",
         },
+        paddingBottom: {
+          xs: "50px",
+          sm: "0px",
+        },
       }}
     >
       <Box
@@ -214,7 +218,10 @@ export default function AssetPage() {
               xs: "none",
               sm: "0px 0px 30px rgba(255, 255, 255, 0.42)",
             },
-            padding: "10px",
+            padding: {
+              xs: "0px",
+              sm: "10px",
+            },
             backgroundColor: "#000",
             borderRadius: "10px",
           }}
@@ -229,15 +236,17 @@ export default function AssetPage() {
                   xs: "100%",
                   sm: "80%",
                 },
+                padding: "0px 10px",
                 "& .MuiTab-root": {
                   color: "#909090",
                   fontSize: "18px",
                   fontWeight: 500,
-                  whiteSpace: "nowrap", // giữ chữ không xuống dòng
+                  whiteSpace: "nowrap",
                   "&:hover": { color: "#fff" },
                   "&.Mui-selected": {
                     color: "#fff",
                     fontWeight: 700,
+                    borderBottom: "2px solid #fff",
                   },
                 },
                 "& .MuiTabs-indicator": {
@@ -262,7 +271,7 @@ export default function AssetPage() {
                   id="country-select-demo"
                   sx={{
                     padding: {
-                      xs: "10px 0px",
+                      xs: "0px 0px",
                       sm: "20px 0px",
                     },
                   }}
@@ -340,7 +349,7 @@ export default function AssetPage() {
                 {bank > 0 ? (
                   <Autocomplete
                     id="country-select-demo"
-                    sx={{ padding: "10px 0px" }}
+                    sx={{ padding: "20px 0px" }}
                     options={medthod}
                     autoHighlight
                     getOptionLabel={(option) => option.name}
@@ -413,7 +422,7 @@ export default function AssetPage() {
                 ) : (
                   <Autocomplete
                     id="country-select-demo"
-                    sx={{ padding: "10px 0px" }}
+                    sx={{ padding: "20px 0px" }}
                     options={medthodWallet}
                     autoHighlight
                     getOptionLabel={(option) => option.name}
@@ -491,7 +500,6 @@ export default function AssetPage() {
                   onChange={(e) => setAmount(e.target.value)}
                   sx={{
                     width: "100%",
-                    marginTop: "20px",
                     "& .MuiInputBase-input": {
                       color: "white",
                     },
@@ -524,7 +532,38 @@ export default function AssetPage() {
                 >
                   Upload transaction images
                 </Typography>
-                <input
+                <TextField
+                  id="outlined-basic"
+                  variant="outlined"
+                  type="file"
+                  ref={frontFileInput}
+                  onChange={handleFrontChange}
+                  sx={{
+                    width: "100%",
+                    "& .MuiInputBase-input": {
+                      color: "white",
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "white",
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "white",
+                    },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
+                    },
+                  }}
+                />
+
+                {/* <input
                   id="front-image-upload"
                   type="file"
                   accept="image/*"
@@ -532,7 +571,7 @@ export default function AssetPage() {
                   ref={frontFileInput}
                   onChange={handleFrontChange}
                   style={{ color: "white" }}
-                />
+                /> */}
                 <Box
                   sx={{ width: "100%", textAlign: "center", marginTop: "20px" }}
                 >
