@@ -116,7 +116,6 @@ export default function AssetPage() {
     };
     referral();
   }, []);
-  console.log("configs", configs);
 
   const handleSubmit = async () => {
     if (!frontImage) {
@@ -144,8 +143,8 @@ export default function AssetPage() {
   return (
     <Box
       sx={{
+        width: "100%",
         backgroundColor: "#000",
-
         paddingTop: {
           xs: "10px",
           sm: "80px",
@@ -154,7 +153,10 @@ export default function AssetPage() {
     >
       <Box
         sx={{
-          width: "80%",
+          width: {
+            xs: "100%",
+            sm: "80%",
+          },
           display: {
             xs: "block",
             sm: "flex",
@@ -203,14 +205,18 @@ export default function AssetPage() {
         <Box
           sx={{
             width: { xs: "100%", sm: "55%" },
-            margin: "0 auto",
-            boxShadow: "0px 0px 10px white",
+            border: "1px solid rgba(203, 203, 203, 0.46)",
+
+            boxShadow: {
+              xs: "none",
+              sm: "0px 0px 30px rgba(255, 255, 255, 0.42)",
+            },
             padding: "10px",
             backgroundColor: "#000",
-            borderRadius: "8px",
+            borderRadius: "10px",
           }}
         >
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Box sx={{ borderBottom: 1 }}>
             <Tabs
               value={value}
               onChange={handleChange}
@@ -220,8 +226,6 @@ export default function AssetPage() {
                   xs: "100%",
                   sm: "80%",
                 },
-                margin: "0 auto",
-                minWidth: "600px", // Optional, giúp Tabs không bị bóp nhỏ
                 "& .MuiTab-root": {
                   color: "#909090",
                   fontSize: "18px",
@@ -549,7 +553,27 @@ export default function AssetPage() {
                   </Button>
                 </Box>
               </Box>
-              <Box sx={{ width: { xs: "100%", sm: "50%" } }}>
+              <Box
+                sx={{
+                  width: { xs: "100%", sm: "50%" },
+                  boxShadow: {
+                    xs: "0px 0px 30px rgba(255, 255, 255, 0.31)",
+                    sm: "none",
+                  },
+                  padding: {
+                    xs: "10px",
+                    sm: "0px",
+                  },
+                  marginTop: {
+                    xs: "20px",
+                    sm: "0px",
+                  },
+                  marginBottom: {
+                    xs: "20px",
+                    sm: "0px",
+                  },
+                }}
+              >
                 <Typography
                   sx={{
                     color: "white",
