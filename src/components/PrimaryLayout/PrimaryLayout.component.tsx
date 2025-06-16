@@ -90,7 +90,7 @@ export default function PrimaryLayoutComponent({
 
         if (isLoggedIn) {
           const updatedRes: any = await getMe();
-          setUser(updatedRes?.user);
+          setUser(updatedRes?.data);
           setLoad(false);
         }
       } catch (error) {

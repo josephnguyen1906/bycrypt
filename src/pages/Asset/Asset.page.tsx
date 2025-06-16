@@ -205,7 +205,10 @@ export default function AssetPage() {
         <Box
           sx={{
             width: { xs: "100%", sm: "55%" },
-            border: "1px solid rgba(203, 203, 203, 0.46)",
+            border: {
+              xs: "none",
+              sm: "1px solid rgba(203, 203, 203, 0.46)",
+            },
 
             boxShadow: {
               xs: "none",
