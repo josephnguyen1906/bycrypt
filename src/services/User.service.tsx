@@ -33,6 +33,22 @@ const updatePassword = (
   });
 };
 
+const verifiUser = (formData: FormData) => {
+  return contentInstance.post("/api/user/verify-account", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+const topUpCoins = (formData: FormData) => {
+  return contentInstance.post("/api/finance/deposit", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
 // Cập nhập mật khẩu tài khoản
 const getReferral = () => {
   return contentInstance.get(`/api/user/referral`);
@@ -54,6 +70,10 @@ const getMyWallet = () => {
   return contentInstance.get("/api/finance/balance");
 };
 
+const getWebsiteConfig = () => {
+  return contentInstance.get("/api/config");
+};
+
 export {
   loginUser,
   signupUser,
@@ -64,4 +84,7 @@ export {
   getNotification,
   getBills,
   getMyWallet,
+  verifiUser,
+  topUpCoins,
+  getWebsiteConfig,
 };

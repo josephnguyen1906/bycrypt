@@ -1,16 +1,19 @@
 "use client";
 import useAuth from "@/hook/useAuth";
+import { verifiUser } from "@/services/User.service";
 import { VerifiedIcon, WarningIcon } from "@/shared/Svgs/Svg.component";
 import { Box, Button, Stack, Typography, Grid } from "@mui/material";
 import React, { useRef, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function VerifiedPage() {
   const { user, loading } = useAuth();
   const frontFileInput = useRef<HTMLInputElement>(null);
   const backFileInput = useRef<HTMLInputElement>(null);
 
-  const [frontImage, setFrontImage] = useState<string | null>(null);
-  const [backImage, setBackImage] = useState<string | null>(null);
+  const [phone, setPhone] = useState<string>("");
+  const [frontImage, setFrontImage] = useState<File>();
+  const [backImage, setBackImage] = useState<File>();
 
   const handleFrontClick = () => {
     frontFileInput.current?.click();
@@ -23,22 +26,36 @@ export default function VerifiedPage() {
   const handleFrontChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFrontImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      setFrontImage(file);
     }
   };
 
   const handleBackChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setBackImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      setBackImage(file);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!frontImage || !backImage || !phone) {
+      alert(
+        "Please upload both front and back images and provide a phone number."
+      );
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("phone", phone);
+      formData.append("cardfm", frontImage);
+      formData.append("cardzm", backImage);
+
+      await verifiUser(formData);
+      toast.success("Verification submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting verification:", error);
+      toast.error("Failed to submit verification. Please try again.");
     }
   };
 
@@ -63,7 +80,7 @@ export default function VerifiedPage() {
               paddingTop: "10px",
             }}
           >
-            <WarningIcon /> The customer is account has not been verified.
+            <WarningIcon /> The customer account has not been verified.
           </Typography>
         ) : (
           <Typography
@@ -117,7 +134,6 @@ export default function VerifiedPage() {
                     objectFit: "cover",
                   }}
                 />
-
                 <Typography align="center" mt={1} sx={{ color: "#fff" }}>
                   Mặt trước
                 </Typography>
@@ -147,7 +163,6 @@ export default function VerifiedPage() {
                     objectFit: "cover",
                   }}
                 />
-
                 <Typography align="center" mt={1} sx={{ color: "#fff" }}>
                   Mặt sau
                 </Typography>
@@ -169,7 +184,9 @@ export default function VerifiedPage() {
                 <Box
                   component="img"
                   src={
-                    frontImage ? frontImage : "/images/mau_the_can-cuoc_moi.jpg"
+                    frontImage
+                      ? URL.createObjectURL(frontImage)
+                      : "/images/mau_the_can-cuoc_moi.jpg"
                   }
                   alt="Mặt trước CCCD"
                   onClick={handleFrontClick}
@@ -196,7 +213,11 @@ export default function VerifiedPage() {
               <Box sx={{ width: "40%", textAlign: "center" }}>
                 <Box
                   component="img"
-                  src={backImage ? backImage : "/images/cccdms.png"}
+                  src={
+                    backImage
+                      ? URL.createObjectURL(backImage)
+                      : "/images/cccdms.png"
+                  }
                   alt="Mặt sau CCCD"
                   onClick={handleBackClick}
                   sx={{
@@ -219,23 +240,40 @@ export default function VerifiedPage() {
                 </Typography>
               </Box>
             </Box>
-            <Button
-              type="button"
-              sx={{
-                display: "flex",
-                background: "#fff",
-                color: "#000",
-                width: "200px",
-                height: "50px",
-                borderRadius: "15px",
-                margin: "0 auto",
-                "&:hover": {
+            <Box sx={{ mt: 2, textAlign: "center" }}>
+              <input
+                type="text"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Enter phone number"
+                style={{
+                  padding: "10px",
+                  borderRadius: "8px",
+                  border: "1px solid #fff",
+                  background: "#000",
+                  color: "#fff",
+                  marginBottom: "20px",
+                }}
+              />
+              <Button
+                type="button"
+                sx={{
+                  display: "flex",
                   background: "#fff",
-                },
-              }}
-            >
-              Submit
-            </Button>
+                  color: "#000",
+                  width: "200px",
+                  height: "50px",
+                  borderRadius: "15px",
+                  margin: "0 auto",
+                  "&:hover": {
+                    background: "#fff",
+                  },
+                }}
+                onClick={handleSubmit}
+              >
+                Submit
+              </Button>
+            </Box>
           </Box>
         )}
       </Box>

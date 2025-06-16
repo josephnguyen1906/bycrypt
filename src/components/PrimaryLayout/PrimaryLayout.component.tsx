@@ -63,7 +63,7 @@ export default function PrimaryLayoutComponent({
         router.replace("/excavator");
         break;
       case 5:
-        router.replace("/");
+        router.replace("/asset");
         break;
     }
   };
