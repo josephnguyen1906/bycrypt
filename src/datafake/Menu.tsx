@@ -61,12 +61,12 @@ export const MenuAset = [
         title: "History",
         icon: <HistoryIcon />,
       },
-      {
-        id: "2",
-        link: "#",
-        title: "Experiment",
-        icon: <ExperimentIcon />,
-      },
+      // {
+      //   id: "2",
+      //   link: "#",
+      //   title: "Experiment",
+      //   icon: <ExperimentIcon />,
+      // },
       {
         id: "3",
         link: "#",
@@ -447,12 +447,12 @@ export const MenuAset2 = [
     title: "History",
     icon: <HistoryIcon fill="#fff" />,
   },
-  {
-    id: "2",
-    link: "#",
-    title: "Experiment",
-    icon: <ExperimentIcon fill="#fff" />,
-  },
+  // {
+  //   id: "2",
+  //   link: "#",
+  //   title: "Experiment",
+  //   icon: <ExperimentIcon fill="#fff" />,
+  // },
   {
     id: "3",
     link: "#",

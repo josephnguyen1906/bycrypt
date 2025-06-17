@@ -213,8 +213,8 @@ export default function BuySellPage() {
                     transition: "0.3s",
                   },
                   "& .Mui-selected": {
-                    backgroundColor: "#00c853", // xanh lá
-                    color: "#ffffff",
+                    backgroundColor: value === 1 ? "red" : "#00c853", // xanh lá
+                    color: "white",
                     fontWeight: 600,
                   },
                   "& .MuiTabs-flexContainer": {
@@ -381,8 +381,8 @@ export default function BuySellPage() {
                   transition: "0.3s",
                 },
                 "& .Mui-selected": {
-                  backgroundColor: "#00c853", // xanh lá
-                  color: "#ffffff",
+                  backgroundColor: value === 1 ? "red" : "#00c853", // xanh lá
+                  color: "white",
                   fontWeight: 600,
                 },
                 "& .MuiTabs-flexContainer": {
