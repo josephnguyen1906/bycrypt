@@ -64,6 +64,14 @@ const sellCoins = (formData: FormData) => {
   });
 };
 
+const createOrder = (formData: FormData) => {
+  return contentInstance.post("/api/contract/create-order", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
 // Cập nhập mật khẩu tài khoản
 const getReferral = () => {
   return contentInstance.get(`/api/user/referral`);
@@ -88,7 +96,12 @@ const getMyWallet = () => {
 const getWebsiteConfig = () => {
   return contentInstance.get("/api/config");
 };
-
+const getListCoin = () => {
+  return contentInstance.get("/api/contract/coin");
+};
+const getBuySellConfig = () => {
+  return contentInstance.get("/api/contract/settings");
+};
 export {
   loginUser,
   signupUser,
@@ -104,4 +117,7 @@ export {
   getWebsiteConfig,
   updatePaymentPassword,
   sellCoins,
+  getListCoin,
+  createOrder,
+  getBuySellConfig,
 };
