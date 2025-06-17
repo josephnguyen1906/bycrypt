@@ -141,9 +141,9 @@ export default function BuyComponent(progs: TabProps) {
                 >
                   <Typography
                     sx={{
-                      fontSize: { xs: "10px", sm: "14px" },
-                      fontWeight: 600,
-                      textTransform: "capitalize",
+                      fontSize: { xs: "12px", sm: "16px" },
+                      fontWeight: "700",
+                      textTransform: "uppercase",
                     }}
                   >
                     {item} minute
