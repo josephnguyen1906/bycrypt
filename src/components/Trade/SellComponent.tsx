@@ -142,15 +142,6 @@ export default function SellComponent(progs: TabProps) {
                   <Typography
                     sx={{
                       fontSize: { xs: "10px", sm: "14px" },
-                      fontWeight: 500,
-                      textTransform: "capitalize",
-                    }}
-                  >
-                    Time end
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontSize: { xs: "10px", sm: "14px" },
                       fontWeight: 600,
                       textTransform: "capitalize",
                     }}

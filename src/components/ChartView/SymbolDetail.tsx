@@ -1,37 +1,46 @@
 import React, { useEffect, useRef } from "react";
 
-interface TradingViewSymbolInfoProps {
+interface TechnicalAnalysisProps {
   symbol: string;
+  width: string | null;
+  height: string | null;
 }
 
-const TradingViewSymbolInfo: React.FC<TradingViewSymbolInfoProps> = ({
+const TradingViewSymbolInfo: React.FC<TechnicalAnalysisProps> = ({
   symbol,
+  width,
+  height,
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!ref.current) return;
+    if (!containerRef.current) return;
 
-    ref.current.innerHTML = "";
+    containerRef.current.innerHTML = "";
 
     const script = document.createElement("script");
     script.src =
-      "https://s3.tradingview.com/external-embedding/embed-widget-symbol-info.js";
+      "https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js";
     script.type = "text/javascript";
     script.async = true;
     script.innerHTML = JSON.stringify({
+      interval: "1m",
+      width: width || "100%",
+      height: height || "100%",
+      isTransparent: false,
       symbol,
-      height: "300",
+      showIntervalTabs: true,
+      displayMode: "multiple",
       locale: "en",
       colorTheme: "dark",
-      fontSize: "12",
-      isTransparent: false,
     });
 
-    ref.current.appendChild(script);
+    containerRef.current.appendChild(script);
   }, [symbol]);
 
-  return <div className="tradingview-widget-container" ref={ref}></div>;
+  return (
+    <div className="tradingview-widget-container" ref={containerRef}></div>
+  );
 };
 
 export default TradingViewSymbolInfo;

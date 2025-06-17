@@ -180,40 +180,41 @@ export default function BuySellPage() {
                 height: "360px",
               }}
               aria-label="main mailbox folders"
-            ></Box>
+            >
+              <TradingViewSymbolInfo
+                width="100%"
+                height={"360"}
+                symbol={coin}
+              />
+            </Box>
             <Box sx={{ width: "100%", padding: "10px" }}>
               <Tabs
                 value={value}
                 onChange={handleChange}
                 aria-label="basic tabs example"
+                TabIndicatorProps={{ style: { display: "none" } }}
                 sx={{
-                  width: {
-                    xs: "100%",
-                    sm: "80%",
-                  },
-                  padding: "0px 5px",
+                  backgroundColor: "#2c2c2c",
+                  borderRadius: "999px", // bo tròn toàn bộ khung
+                  minHeight: "30px",
+                  width: "fit-content",
+                  margin: "auto",
+                  display: "flex",
                   "& .MuiTab-root": {
-                    color: "#909090",
-                    fontSize: {
-                      xs: "14px",
-                      sm: "18px",
-                    },
-
+                    textTransform: "none",
+                    borderRadius: "999px",
+                    minHeight: "30px",
+                    minWidth: "80px",
+                    px: 3,
                     fontWeight: 500,
-                    whiteSpace: "nowrap",
-                    "&:hover": { color: "#fff" },
-                    "&.Mui-selected": {
-                      color: "#fff",
-                      fontWeight: 700,
-                      fontSize: {
-                        xs: "14px",
-                        sm: "18px",
-                      },
-                      borderBottom: "2px solid #fff",
-                    },
+                    color: "#aaa",
+                    backgroundColor: "transparent",
+                    transition: "0.3s",
                   },
-                  "& .MuiTabs-indicator": {
-                    backgroundColor: "#000",
+                  "& .Mui-selected": {
+                    backgroundColor: "#00c853", // xanh lá
+                    color: "#fff",
+                    fontWeight: 600,
                   },
                 }}
               >
