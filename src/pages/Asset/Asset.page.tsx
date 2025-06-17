@@ -709,7 +709,7 @@ export default function AssetPage() {
                 </Box>
                 <Box
                   sx={{
-                    width: { xs: "53%", sm: "45%" },
+                    width: { xs: "50%", sm: "45%" },
                     boxShadow: {
                       xs: "0px 0px 30px rgba(255, 255, 255, 0.31)",
                       sm: "0px 0px 30px rgba(255, 255, 255, 0.24)",

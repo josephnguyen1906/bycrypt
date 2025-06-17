@@ -107,7 +107,7 @@ export default function MenuProfileMobile(data: userProps) {
               padding: "16px",
               background: "#000",
               color: "#fff",
-              border: "1px solid #e0e0e0",
+              borderBottom: "1px solid #e0e0e0",
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: "12px" }}>
