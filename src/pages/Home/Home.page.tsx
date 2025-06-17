@@ -19,12 +19,14 @@ import {
   Avatar,
   Box,
   Button,
+  TextField,
   Typography,
 } from "@mui/material";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import useAuth from "@/hook/useAuth";
 import TradingViewHotlists from "@/components/ChartView/TradingViewHotlists";
-import { CoinIcon } from "@/shared/Svgs/Svg.component";
+import { CoinIcon, SearchIcon } from "@/shared/Svgs/Svg.component";
+import { Search } from "@mui/icons-material";
 const responsiveSettings = [
   {
     breakpoint: 500,
@@ -423,11 +425,50 @@ export default function HomePage() {
             </Box>
           ) : (
             <Box>
+              <Box sx={{ width: "100%", textAlign: "center" }}>
+                <Search
+                  sx={{ color: "white", position: "absolute", margin: "5px" }}
+                />
+                <TextField
+                  placeholder="🔥Newly listed USDG assets"
+                  variant="standard" // hoặc "filled" tùy mục đích, để tránh border mặc định
+                  InputProps={{
+                    disableUnderline: true, // ẩn gạch chân nếu dùng "standard"
+                  }}
+                  sx={{
+                    width: "90%",
+                    height: "35px",
+                    borderRadius: "10px",
+                    margin: "auto",
+                    paddingLeft: "20px",
+                    backgroundColor: "rgba(142, 142, 142, 0.34)",
+                    "& .MuiInputBase-root": {
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      padding: "0 14px",
+                    },
+                    "& .MuiInputBase-input": {
+                      color: "white",
+                      padding: 0,
+                      display: "flex",
+                      alignItems: "center",
+                      height: "100%",
+                      boxSizing: "border-box",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "white",
+                      fontSize: { xs: "12px", sm: "14px" },
+                      opacity: 1,
+                    },
+                  }}
+                />
+              </Box>
               <Box
                 sx={{
                   width: "100%",
                   display: "flex",
-                  padding: "0 20px",
+                  padding: "5px 20px",
                 }}
               >
                 <Box sx={{ width: "50%", textAlign: "left" }}>
@@ -464,6 +505,45 @@ export default function HomePage() {
                     PNL today $0.00(0.00%)
                   </Typography>
                 </Box>
+              </Box>
+              <Box
+                sx={{
+                  width: "90%",
+                  display: "flex",
+                  justifyContent: "space-around",
+                  margin: "auto",
+                }}
+              >
+                <Button
+                  href="/asset"
+                  sx={{
+                    width: "45%",
+                    height: "35px",
+                    borderRadius: "15px",
+                    background: "#3cff20",
+                    color: "black",
+                    "&:hover": {
+                      background: "#3cff20",
+                    },
+                  }}
+                >
+                  Deposit USDT
+                </Button>
+                <Button
+                  href="/asset"
+                  sx={{
+                    width: "45%",
+                    height: "35px",
+                    borderRadius: "15px",
+                    background: "#3cff20",
+                    color: "black",
+                    "&:hover": {
+                      background: "#3cff20",
+                    },
+                  }}
+                >
+                  Deposit PI
+                </Button>
               </Box>
               <Box
                 sx={{
@@ -509,7 +589,9 @@ export default function HomePage() {
                   </Box>
                 </Box>
               </Box>
-              <TradingViewHotlists />
+              <Box sx={{ width: "90%", margin: "auto" }}>
+                <TradingViewHotlists />
+              </Box>
               <Box
                 sx={{
                   paddingTop: "40px",

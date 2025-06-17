@@ -247,7 +247,9 @@ export default function BuyComponent(progs: TabProps) {
             }}
             sx={{
               width: "100%",
-
+              background: "#5e5e5e",
+              borderRadius: "10px",
+              outline: "none",
               "& .MuiInputBase-input": {
                 color: "white",
                 padding: "0 14px",
@@ -267,15 +269,18 @@ export default function BuyComponent(progs: TabProps) {
                   xs: "45px",
                   sm: "45px",
                 },
+
                 fontSize: { xs: "12px", sm: "14px" },
                 "& fieldset": {
-                  borderColor: "white",
+                  color: "white",
+                  outline: "none",
                 },
                 "&:hover fieldset": {
-                  borderColor: "white",
+                  // borderColor: "white",
                 },
                 "&.Mui-focused fieldset": {
-                  borderColor: "white",
+                  // borderColor: "white",
+                  border: "none",
                 },
               },
 

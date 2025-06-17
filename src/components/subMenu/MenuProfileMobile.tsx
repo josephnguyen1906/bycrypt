@@ -25,7 +25,7 @@ import Logout from "@mui/icons-material/Logout";
 import FolderIcon from "@mui/icons-material/Folder";
 import CloseIcon from "@mui/icons-material/Close";
 import { userResponse } from "@/interface/user.interface";
-import { Button } from "@mui/material";
+import { Badge, Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/utils/formatMoney";
 import Image from "next/image";
@@ -37,10 +37,12 @@ import {
   HistoryMenuIcon,
   LiveChatMenuIcon,
   LogoutMenuIcon,
+  MessageIcon,
   NapMenuIcon,
   P2PMenuIcon,
   ProfileIcon,
   RutMenuIcon,
+  StarIcon,
   WarningIcon,
 } from "@/shared/Svgs/Svg.component";
 import NavigationGame from "@/hook/NavigationGame";
@@ -409,6 +411,7 @@ export default function MenuProfileMobile(data: userProps) {
           padding: "8px 8px",
           background: "#000",
           border: "none",
+          justifyContent: "space-between",
         }}
       >
         <Tooltip title="Account settings">
@@ -422,6 +425,31 @@ export default function MenuProfileMobile(data: userProps) {
             <DashboardIcon fill="#fff" />
           </IconButton>
         </Tooltip>
+        <Box
+          sx={{
+            display: "flex",
+            gap: "10px",
+            alignItems: "center",
+            paddingRight: "10px",
+          }}
+        >
+          <Tooltip title="Hot">
+            <StarIcon width="25px" height="25px" />
+          </Tooltip>
+          <Tooltip title="Notification">
+            <Badge
+              badgeContent={4}
+              color="error"
+              overlap="circular"
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+            >
+              <MessageIcon width="20px" height="20px" />
+            </Badge>
+          </Tooltip>
+        </Box>
       </Box>
       <Drawer
         anchor="left"
