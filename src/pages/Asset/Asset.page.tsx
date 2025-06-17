@@ -308,8 +308,30 @@ export default function AssetPage() {
                   },
                 }}
               >
-                <Tab label="Deposit" {...a11yProps(0)} />
-                <Tab label="Withdraw" {...a11yProps(1)} />
+                <Tab
+                  label="Deposit"
+                  {...a11yProps(0)}
+                  sx={{
+                    color: "white",
+                    "&.Mui-selected": {
+                      backgroundColor: "#00c853",
+                      color: "white",
+                      fontWeight: 600,
+                    },
+                  }}
+                />
+                <Tab
+                  label="Withdraw"
+                  {...a11yProps(1)}
+                  sx={{
+                    color: "white",
+                    "&.Mui-selected": {
+                      backgroundColor: "#00c853",
+                      color: "white",
+                      fontWeight: 600,
+                    },
+                  }}
+                />
               </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
