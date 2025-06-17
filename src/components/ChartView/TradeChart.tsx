@@ -21,6 +21,7 @@ const TradeChart = (props: TradeChartProps) => {
       interval: "D",
       timezone: "Etc/UTC",
       hide_top_toolbar: true,
+      withdateranges: true,
       theme: "dark",
       style: "1",
       locale: "en",
