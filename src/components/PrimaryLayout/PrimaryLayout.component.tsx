@@ -127,7 +127,7 @@ export default function PrimaryLayoutComponent({
                     fill={menu === 1 ? "#fff" : "#909090"}
                   />
                   <p className={menu === 1 ? "mobile-active" : "mobile-p"}>
-                    OKX
+                    Home
                   </p>
                 </button>
               </li>
