@@ -149,7 +149,7 @@ export default function SellComponent(progs: TabProps) {
                     sx={{
                       fontSize: { xs: "13px", sm: "16px" },
                       fontWeight: 800,
-                      textTransform: "uppercase",
+                      textTransform: "capitalize",
                     }}
                   >
                     {item} minute
