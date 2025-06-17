@@ -65,12 +65,15 @@ export default function ExcavatorPage() {
           justifyContent: "center",
           justifyItems: "center",
           alignItems: "center",
-          gap: "50px",
+          gap: {
+            xs: "10px",
+            sm: "50px",
+          },
           paddingTop: "80px",
         }}
       >
         <Box>
-          <img src="/images/113A699D75096FA7.png" style={{ height: "400px" }} />
+          <img src="/images/113A699D75096FA7.png" style={{ height: "350px" }} />
         </Box>
         <Box
           sx={{

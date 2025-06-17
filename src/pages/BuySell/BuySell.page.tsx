@@ -200,6 +200,7 @@ export default function BuySellPage() {
                   width: "fit-content",
                   margin: "auto",
                   display: "flex",
+                  color: "#fff",
                   "& .MuiTab-root": {
                     textTransform: "none",
                     borderRadius: "999px",
@@ -207,14 +208,17 @@ export default function BuySellPage() {
                     minWidth: "80px",
                     px: 3,
                     fontWeight: 500,
-                    color: "#aaa",
+                    color: "#fff",
                     backgroundColor: "transparent",
                     transition: "0.3s",
                   },
                   "& .Mui-selected": {
                     backgroundColor: "#00c853", // xanh lá
-                    color: "#fff",
+                    color: "#ffffff",
                     fontWeight: 600,
+                  },
+                  "& .MuiTabs-flexContainer": {
+                    color: "#ffffff", // màu chữ của tab
                   },
                 }}
               >
@@ -364,6 +368,7 @@ export default function BuySellPage() {
                 width: "fit-content",
                 margin: "auto",
                 display: "flex",
+                color: "#ffffff",
                 "& .MuiTab-root": {
                   textTransform: "none",
                   borderRadius: "999px",
@@ -371,14 +376,17 @@ export default function BuySellPage() {
                   minWidth: "80px",
                   px: 3,
                   fontWeight: 500,
-                  color: "#aaa",
+                  color: "#ffffff",
                   backgroundColor: "transparent",
                   transition: "0.3s",
                 },
                 "& .Mui-selected": {
                   backgroundColor: "#00c853", // xanh lá
-                  color: "#fff",
+                  color: "#ffffff",
                   fontWeight: 600,
+                },
+                "& .MuiTabs-flexContainer": {
+                  color: "#ffffff", // màu chữ của tab
                 },
               }}
             >

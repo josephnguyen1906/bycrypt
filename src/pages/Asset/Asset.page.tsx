@@ -280,25 +280,30 @@ export default function AssetPage() {
                 onChange={handleChange}
                 aria-label="basic tabs example"
                 sx={{
-                  width: {
-                    xs: "100%",
-                    sm: "80%",
-                  },
-                  padding: "0px 10px",
+                  backgroundColor: "#2c2c2c",
+                  borderRadius: "999px",
+                  minHeight: "30px",
+                  width: "fit-content",
+                  margin: "auto",
+                  display: "flex",
                   "& .MuiTab-root": {
-                    color: "#909090",
-                    fontSize: "18px",
+                    textTransform: "none",
+                    borderRadius: "999px",
+                    minHeight: "30px",
+                    minWidth: "80px",
+                    px: 3,
                     fontWeight: 500,
-                    whiteSpace: "nowrap",
-                    "&:hover": { color: "#fff" },
-                    "&.Mui-selected": {
-                      color: "#fff",
-                      fontWeight: 700,
-                      borderBottom: "2px solid #fff",
-                    },
+                    color: "#ffffff", // màu chữ mặc định
+                    backgroundColor: "transparent",
+                    transition: "0.3s",
                   },
-                  "& .MuiTabs-indicator": {
-                    backgroundColor: "#000",
+                  "& .Mui-selected": {
+                    backgroundColor: "#00c853", // màu nền khi selected
+                    color: "#ffffff", // màu chữ khi selected
+                    fontWeight: 600,
+                  },
+                  "& .MuiTabs-flexContainer": {
+                    color: "#ffffff", // có thể bỏ nếu không cần
                   },
                 }}
               >
