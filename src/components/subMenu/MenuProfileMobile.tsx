@@ -281,7 +281,7 @@ export default function MenuProfileMobile(data: userProps) {
               }}
             >
               <LogoutMenuIcon fill="#fff" />
-              ĐĂNG XUẤT
+              Log out
             </Button>
           </Box>
         </Box>

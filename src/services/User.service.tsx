@@ -111,7 +111,28 @@ const getBuySellConfig = () => {
   return contentInstance.get("/api/contract/settings");
 };
 const getStaking = () => {
-  return contentInstance.get("api/issue/list");
+  return contentInstance.get("/api/issue/list");
+};
+const getBbhistoryorder = () => {
+  return contentInstance.get("/api/trade/bbhistoryorder");
+};
+const getContractpc = () => {
+  return contentInstance.get("/api/contract/contractpc");
+};
+const getContractjc = () => {
+  return contentInstance.get("/api/contract/contractjc");
+};
+const getNormalmin = () => {
+  return contentInstance.get("/api/orepool/normalmin");
+};
+const getOverduemin = () => {
+  return contentInstance.get("/api/orepool/overduemin");
+};
+const getNormalissue = () => {
+  return contentInstance.get("/api/issue/normalissue");
+};
+const getOverdueissue = () => {
+  return contentInstance.get("/api/issue/overdueissue");
 };
 export {
   loginUser,
@@ -133,4 +154,11 @@ export {
   getBuySellConfig,
   getStaking,
   buyMining,
+  getContractpc,
+  getContractjc,
+  getNormalmin,
+  getOverduemin,
+  getNormalissue,
+  getOverdueissue,
+  getBbhistoryorder,
 };

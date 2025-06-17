@@ -73,6 +73,13 @@ export default function PrimaryLayoutComponent({
     "/referral",
     "/verified",
     "/bill",
+    "/history",
+    "/frozenyet",
+    "/frozenCommand",
+    "/excavatorexpired",
+    "/excavatoroperating",
+    "/opencommand",
+    "/closecommand",
   ];
   useEffect(() => {
     const initialize = async () => {
