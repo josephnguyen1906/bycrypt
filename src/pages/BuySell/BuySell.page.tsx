@@ -208,7 +208,7 @@ export default function BuySellPage() {
                     minWidth: "80px",
                     px: 3,
                     fontWeight: 500,
-                    color: "#ffffff",
+                    color: "white",
                     backgroundColor: "transparent",
                     transition: "0.3s",
                   },
@@ -218,7 +218,7 @@ export default function BuySellPage() {
                     fontWeight: 600,
                   },
                   "& .MuiTabs-flexContainer": {
-                    color: "#ffffff", // màu chữ của tab
+                    color: "white", // màu chữ của tab
                   },
                 }}
               >
@@ -376,7 +376,7 @@ export default function BuySellPage() {
                   minWidth: "80px",
                   px: 3,
                   fontWeight: 500,
-                  color: "#ffffff",
+                  color: "white",
                   backgroundColor: "transparent",
                   transition: "0.3s",
                 },
@@ -386,7 +386,7 @@ export default function BuySellPage() {
                   fontWeight: 600,
                 },
                 "& .MuiTabs-flexContainer": {
-                  color: "#ffffff", // màu chữ của tab
+                  color: "white", // màu chữ của tab
                 },
               }}
             >
