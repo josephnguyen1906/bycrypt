@@ -201,6 +201,11 @@ export default function BuySellPage() {
                   margin: "auto",
                   display: "flex",
                   color: "#ffffff",
+                  "& .MuiButtonBase-root-MuiTab-root": {
+                    "& .Mui-selected": {
+                      color: "white",
+                    },
+                  },
                   "& .MuiTab-root": {
                     textTransform: "none",
                     borderRadius: "999px",
@@ -222,8 +227,30 @@ export default function BuySellPage() {
                   },
                 }}
               >
-                <Tab label="Buy" {...a11yProps(0)} />
-                <Tab label="Sell" {...a11yProps(1)} />
+                <Tab
+                  label="Buy"
+                  {...a11yProps(0)}
+                  sx={{
+                    color: "white",
+                    "&.Mui-selected": {
+                      backgroundColor: "#00c853",
+                      color: "white",
+                      fontWeight: 600,
+                    },
+                  }}
+                />
+                <Tab
+                  label="Sell"
+                  {...a11yProps(1)}
+                  sx={{
+                    color: "white",
+                    "&.Mui-selected": {
+                      backgroundColor: "red",
+                      color: "white",
+                      fontWeight: 600,
+                    },
+                  }}
+                />
               </Tabs>
               <CustomTabPanel value={value} index={0}>
                 <BuyComponent user={user} value={coin} />
@@ -369,6 +396,11 @@ export default function BuySellPage() {
                 margin: "auto",
                 display: "flex",
                 color: "#ffffff",
+                "& .MuiButtonBase-root-MuiTab-root": {
+                  "& .Mui-selected": {
+                    color: "white",
+                  },
+                },
                 "& .MuiTab-root": {
                   textTransform: "none",
                   borderRadius: "999px",
@@ -380,6 +412,7 @@ export default function BuySellPage() {
                   backgroundColor: "transparent",
                   transition: "0.3s",
                 },
+
                 "& .Mui-selected": {
                   backgroundColor: value === 1 ? "red" : "#00c853", // xanh lá
                   color: "white",
@@ -390,8 +423,30 @@ export default function BuySellPage() {
                 },
               }}
             >
-              <Tab label="Buy" {...a11yProps(0)} />
-              <Tab label="Sell" {...a11yProps(1)} />
+              <Tab
+                label="Buy"
+                {...a11yProps(0)}
+                sx={{
+                  color: "white",
+                  "&.Mui-selected": {
+                    backgroundColor: "#00c853",
+                    color: "white",
+                    fontWeight: 600,
+                  },
+                }}
+              />
+              <Tab
+                label="Sell"
+                {...a11yProps(1)}
+                sx={{
+                  color: "white",
+                  "&.Mui-selected": {
+                    backgroundColor: "red",
+                    color: "white",
+                    fontWeight: 600,
+                  },
+                }}
+              />
             </Tabs>
             <CustomTabPanel value={value} index={0}>
               <BuyComponent user={user} value={coin} />
