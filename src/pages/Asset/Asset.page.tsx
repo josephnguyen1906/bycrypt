@@ -312,7 +312,7 @@ export default function AssetPage() {
                   display: "flex",
                   flexWrap: "wrap",
                   gap: 1,
-                  alignItems: "center",
+                  alignItems: "flex-start",
                 }}
               >
                 <Box sx={{ width: { xs: "45%", sm: "45%" } }}>
@@ -886,10 +886,7 @@ export default function AssetPage() {
                       <Typography
                         sx={{
                           color: "white",
-                          fontSize: {
-                            xs: "14px",
-                            sm: "14px",
-                          },
+                          fontSize: { xs: "10px", sm: "14px" },
                           marginTop: "10px",
                         }}
                       >
@@ -905,10 +902,7 @@ export default function AssetPage() {
                         <Typography
                           sx={{
                             color: "white",
-                            fontSize: {
-                              xs: "14px",
-                              sm: "14px",
-                            },
+                            fontSize: { xs: "10px", sm: "14px" },
                             marginTop: "10px",
                           }}
                         >
@@ -917,10 +911,7 @@ export default function AssetPage() {
                         <Typography
                           sx={{
                             color: "white",
-                            fontSize: {
-                              xs: "14px",
-                              sm: "14px",
-                            },
+                            fontSize: { xs: "10px", sm: "14px" },
                             marginTop: "10px",
                           }}
                         >
@@ -958,10 +949,7 @@ export default function AssetPage() {
                             alignItems: "center",
                             gap: "10px",
                             color: "white",
-                            fontSize: {
-                              xs: "14px",
-                              sm: "14px",
-                            },
+                            fontSize: { xs: "10px", sm: "14px" },
                             marginTop: "10px",
                           }}
                         >
@@ -973,10 +961,7 @@ export default function AssetPage() {
                             alignItems: "center",
                             gap: "10px",
                             color: "white",
-                            fontSize: {
-                              xs: "14px",
-                              sm: "14px",
-                            },
+                            fontSize: { xs: "10px", sm: "14px" },
                             marginTop: "10px",
                           }}
                         >
@@ -1015,10 +1000,7 @@ export default function AssetPage() {
                         <Typography
                           sx={{
                             color: "white",
-                            fontSize: {
-                              xs: "14px",
-                              sm: "14px",
-                            },
+                            fontSize: { xs: "10px", sm: "14px" },
                             marginTop: "10px",
                           }}
                         >
@@ -1027,10 +1009,7 @@ export default function AssetPage() {
                         <Typography
                           sx={{
                             color: "white",
-                            fontSize: {
-                              xs: "14px",
-                              sm: "14px",
-                            },
+                            fontSize: { xs: "10px", sm: "14px" },
                             marginTop: "10px",
                           }}
                         >
