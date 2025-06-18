@@ -187,8 +187,8 @@ export default function StakingPage() {
             Read more
           </Button>
         </Box>
-        <Box>
-          <img src="/images/F695CAF106522D37.png" style={{ height: "350px" }} />
+        <Box sx={{ display: { xs: "none", sm: "block" } }}>
+          <img src="/images/F695CAF106522D37.png" style={{ height: "300px" }} />
         </Box>
       </Box>
       <Box

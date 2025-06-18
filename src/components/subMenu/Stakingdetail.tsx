@@ -25,7 +25,7 @@ import Logout from "@mui/icons-material/Logout";
 import FolderIcon from "@mui/icons-material/Folder";
 import CloseIcon from "@mui/icons-material/Close";
 import { userResponse } from "@/interface/user.interface";
-import { Badge, Button } from "@mui/material";
+import { Badge, Button, TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/utils/formatMoney";
 import Image from "next/image";
@@ -109,7 +109,7 @@ export default function Stakingdetail(data: userProps) {
           color: "#fff",
         }}
       >
-        <Typography sx={{}}>Staking</Typography>
+        <Typography sx={{ textAlign: "center" }}>Staking</Typography>
         <IconButton
           onClick={handleDrawerClose}
           sx={{
@@ -124,6 +124,34 @@ export default function Stakingdetail(data: userProps) {
           <CloseIcon sx={{ fontSize: "24px" }} />
         </IconButton>
       </Box>
+      <TextField
+        sx={{
+          width: "90%",
+          margin: "16px auto",
+          background: "#909090",
+          borderRadius: "10px",
+          color: "white",
+          border: "none",
+
+          "& .MuiOutlinedInput-root": {
+            color: "white",
+            "&.Mui-focused fieldset": {
+              // borderColor: "white",
+              border: "none",
+            },
+          },
+          "& .MuiInputBase-input::placeholder": {
+            color: "white",
+            fontSize: { xs: "12px", sm: "14px" },
+            opacity: 1, // để không bị mờ
+          },
+        }}
+        placeholder="Search"
+        variant="outlined"
+        InputProps={{
+          startAdornment: <IconButton>{/* <SearchIcon /> */}</IconButton>,
+        }}
+      />
     </Box>
   );
 
