@@ -60,7 +60,6 @@ export default function HistoryPage(props: TabProps) {
     }
   }, [value]);
   const tabLabels = [
-    "History",
     "Open command",
     "Close command",
     "Excavator operating",
@@ -126,27 +125,27 @@ export default function HistoryPage(props: TabProps) {
       </Box>
 
       {/* Tab panels */}
-      <CustomTabPanel value={value} index={0}>
+      {/* <CustomTabPanel value={value} index={0}>
         <History />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
+      </CustomTabPanel> */}
+      <CustomTabPanel value={value} index={0}>
         <OpenCommand />
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
+      <CustomTabPanel value={value} index={1}>
         <CloseCommand />
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={3}>
+      <CustomTabPanel value={value} index={2}>
         <NormalMin />
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={4}>
+      <CustomTabPanel value={value} index={3}>
         <OverdueMin />
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={5}>
+      {/* <CustomTabPanel value={value} index={4}>
         <NormalIssue />
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={6}>
+      <CustomTabPanel value={value} index={5}>
         <OverDueIssue />
-      </CustomTabPanel>
+      </CustomTabPanel> */}
     </Box>
   );
 }

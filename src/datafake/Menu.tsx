@@ -55,12 +55,12 @@ export const MenuAset = [
     link: "#",
     title: "Asset",
     item: [
-      {
-        id: "1",
-        link: "/history",
-        title: "History",
-        icon: <HistoryIcon />,
-      },
+      // {
+      //   id: "1",
+      //   link: "/history",
+      //   title: "History",
+      //   icon: <HistoryIcon />,
+      // },
       // {
       //   id: "2",
       //   link: "#",
@@ -71,7 +71,7 @@ export const MenuAset = [
         id: "3",
         link: "/opencommand",
         title: "Open command",
-        icon: <TradeIcon />,
+        icon: <HistoryIcon />,
       },
       {
         id: "4",
@@ -441,12 +441,12 @@ export const menuItemMobile2 = [
   },
 ];
 export const MenuAset2 = [
-  {
-    id: "1",
-    link: "/history",
-    title: "History",
-    icon: <HistoryIcon fill="#fff" />,
-  },
+  // {
+  //   id: "1",
+  //   link: "/history",
+  //   title: "History",
+  //   icon: <HistoryIcon fill="#fff" />,
+  // },
   // {
   //   id: "2",
   //   link: "#",
@@ -457,7 +457,7 @@ export const MenuAset2 = [
     id: "3",
     link: "/opencommand",
     title: "Open command",
-    icon: <TradeIcon fill="#fff" />,
+    icon: <HistoryIcon fill="#fff" />,
   },
   {
     id: "4",
