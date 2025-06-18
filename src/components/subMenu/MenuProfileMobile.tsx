@@ -35,6 +35,7 @@ import {
   GiftMenuIcon,
   HistoryBetMenuIcon,
   HistoryMenuIcon,
+  InternetIcon,
   LiveChatMenuIcon,
   LogoutMenuIcon,
   MessageIcon,
@@ -428,7 +429,7 @@ export default function MenuProfileMobile(data: userProps) {
         <Box
           sx={{
             display: "flex",
-            gap: "10px",
+            gap: "15px",
             alignItems: "center",
             paddingRight: "10px",
           }}
@@ -448,6 +449,9 @@ export default function MenuProfileMobile(data: userProps) {
             >
               <MessageIcon width="20px" height="20px" />
             </Badge>
+          </Tooltip>
+          <Tooltip title="Hot">
+            <InternetIcon width="24px" height="24px" />
           </Tooltip>
         </Box>
       </Box>

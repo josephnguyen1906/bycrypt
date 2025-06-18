@@ -69,6 +69,7 @@ export default function ExcavatorPage() {
       const formData = new FormData();
       formData.append("id", item.id);
       await buyMining(formData);
+      toast.success("Buy mining machine successfully.");
     } catch (error: any) {
       toast.error(
         error?.message || "An error occurred while renting the machine."
@@ -298,7 +299,7 @@ export default function ExcavatorPage() {
                           sx={{ color: "#666", fontSize: "14px" }}
                         >
                           Output the machine:{" "}
-                          {item.dayoutnum + " " + item.pricecoin}/Day
+                          {item.dayoutnum + " " + item.outcoin}/Day
                         </Typography>
                         <Typography
                           variant="body1"
@@ -413,7 +414,7 @@ export default function ExcavatorPage() {
                           sx={{ color: "#666", fontSize: "14px" }}
                         >
                           Output the machine:{" "}
-                          {item.dayoutnum + " " + item.pricecoin}/Day
+                          {item.dayoutnum + " " + item.outcoin}/Day
                         </Typography>
                         <Typography
                           variant="body1"
@@ -528,7 +529,7 @@ export default function ExcavatorPage() {
                           sx={{ color: "#666", fontSize: "14px" }}
                         >
                           Output the machine:{" "}
-                          {item.dayoutnum + " " + item.pricecoin}/Day
+                          {item.dayoutnum + " " + item.outcoin}/Day
                         </Typography>
                         <Typography
                           variant="body1"

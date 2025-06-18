@@ -266,19 +266,24 @@ export default function NormalMin() {
                       <Box>
                         <Typography
                           variant="h6"
-                          sx={{ marginTop: "10px", color: "#fff" }}
+                          sx={{
+                            marginTop: "10px",
+                            color: "#fff",
+                            fontSize: "16px",
+                          }}
                         >
-                          {item.title}
+                          {item.kjtitle}
                         </Typography>
                         <Typography
                           sx={{
                             paddingTop: "5px",
-                            fontSize: "14px",
+                            fontSize: "10px",
                             color: "#666",
                             paddingBottom: "10px",
                           }}
                         >
-                          {item.content}
+                          Type:{" "}
+                          {item.type === 1 ? "Private ownership" : "Shared"}
                         </Typography>
                         <Box
                           sx={{
@@ -289,37 +294,58 @@ export default function NormalMin() {
                         >
                           <Typography
                             variant="body1"
-                            sx={{ color: "#666", fontSize: "14px" }}
+                            sx={{ color: "#666", fontSize: "10px" }}
                           >
-                            Rental price: {item.pricenum}
+                            exploitation cycle: {item.cycle}
                           </Typography>
                           <Typography
                             variant="body1"
-                            sx={{ color: "#666", fontSize: "14px" }}
+                            sx={{ color: "#666", fontSize: "10px" }}
                           >
-                            Type : {item.type === 1 ? "Personal" : "Share"}
+                            Common usage rate: {item.sharebl || 0} %
                           </Typography>
                           <Typography
                             variant="body1"
-                            sx={{ color: "#666", fontSize: "14px" }}
+                            sx={{ color: "#666", fontSize: "10px" }}
                           >
-                            Type currency received : {item.outcoin}
+                            Revenue: {item.synum}
                           </Typography>
                           <Typography
                             variant="body1"
-                            sx={{ color: "#666", fontSize: "14px" }}
+                            sx={{ color: "#666", fontSize: "10px" }}
                           >
-                            Output the machine:{" "}
-                            {item.dayoutnum + " " + item.pricecoin}/Day
+                            Status :{" "}
+                            {item.type === 1
+                              ? "Normal"
+                              : item.type === 2
+                              ? "Stop producing money"
+                              : "Expired"}
                           </Typography>
                           <Typography
                             variant="body1"
-                            sx={{ color: "#666", fontSize: "14px" }}
+                            sx={{ color: "#666", fontSize: "10px" }}
                           >
-                            Method: Automation
+                            Oput Type : {item.outcoin}
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            sx={{ color: "#666", fontSize: "10px" }}
+                          >
+                            Produce: {item.outnum} coin
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            sx={{ color: "#666", fontSize: "10px" }}
+                          >
+                            Produce: {item.outusdt} usdt
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            sx={{ color: "#666", fontSize: "10px" }}
+                          >
+                            Freeze money: {item.djout === 1 ? "No" : "Yes"}
                           </Typography>
                         </Box>
-                        <LinearWithValueLabel value={item.suanl} />
                       </Box>
                     </Box>
                   ))}

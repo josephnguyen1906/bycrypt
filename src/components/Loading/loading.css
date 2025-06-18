@@ -81,6 +81,7 @@
     height: 36px;
     /* Chiều cao */
     animation: spin89345 1s linear infinite;
+    margin-top: 23px;
     /* Tạo hiệu ứng xoay */
 }
 

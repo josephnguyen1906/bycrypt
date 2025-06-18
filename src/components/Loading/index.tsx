@@ -8,15 +8,14 @@ export default function LoadingComponent() {
       <div className="item">
         <div className="banner-loading">
           <Image
-            src={"/images/logo.png"}
+            src={"/images/photo_2025-06-18_16-37-52-removebg-preview.png"}
             width="100"
             height={100}
             alt=""
             style={{
               objectFit: "contain",
-              width: "100px",
-              height: "100px",
-              paddingBottom: "20px",
+              width: "80px",
+              height: "80px",
             }}
           />
         </div>

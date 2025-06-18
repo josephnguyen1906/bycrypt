@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: "OKX",
   description: "OKX",
   icons: {
-    icon: "images/OIP.webp", // /public path
+    icon: "images/photo_2025-06-18_16-37-52-removebg-preview.png", // /public path
   },
 };
 

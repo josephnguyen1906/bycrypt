@@ -54,7 +54,7 @@ export default function PrimaryLayoutComponent({
         router.replace("/");
         break;
       case 2:
-        router.replace("/trade");
+        router.replace("/staking");
         break;
       case 3:
         router.replace("/buysell");

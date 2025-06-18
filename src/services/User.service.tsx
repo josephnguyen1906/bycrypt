@@ -80,6 +80,14 @@ const buyMining = (formData: FormData) => {
   });
 };
 
+const buySubscribe = (formData: FormData) => {
+  return contentInstance.post("/api/issue/subscribe", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
 // Cập nhập mật khẩu tài khoản
 const getReferral = () => {
   return contentInstance.get(`/api/user/referral`);
@@ -161,4 +169,5 @@ export {
   getNormalissue,
   getOverdueissue,
   getBbhistoryorder,
+  buySubscribe,
 };

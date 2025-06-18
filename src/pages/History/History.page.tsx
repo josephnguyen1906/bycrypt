@@ -65,8 +65,6 @@ export default function HistoryPage(props: TabProps) {
     "Close command",
     "Excavator operating",
     "Excavator expired",
-    "Frozen Command",
-    "Not frozen yet Command",
   ];
   return (
     <Box

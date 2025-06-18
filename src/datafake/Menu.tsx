@@ -82,13 +82,13 @@ export const MenuAset = [
       {
         id: "5",
         link: "/excavatoroperating",
-        title: "Excavator operating",
+        title: "Mining activity",
         icon: <CpuStartIcon />,
       },
       {
         id: "6",
         link: "/excavatorexpired",
-        title: "Excavator expired",
+        title: "Mining expired",
         icon: <CpuStopIcon />,
       },
       {
@@ -468,25 +468,25 @@ export const MenuAset2 = [
   {
     id: "5",
     link: "/excavatoroperating",
-    title: "Excavator operating",
+    title: "Mining activity",
     icon: <CpuStartIcon fill="#fff" />,
   },
   {
     id: "6",
     link: "/excavatorexpired",
-    title: "Excavator expired",
+    title: "Mining expired",
     icon: <CpuStopIcon fill="#fff" />,
   },
-  {
-    id: "7",
-    link: "/frozenCommand",
-    title: "Frozen Command",
-    icon: <CommandfrozenIcon fill="#fff" />,
-  },
-  {
-    id: "8",
-    link: "/frozenyet",
-    title: "Not frozen yet Command",
-    icon: <NotCommandfrozenIcon fill="#fff" />,
-  },
+  // {
+  //   id: "7",
+  //   link: "/frozenCommand",
+  //   title: "Frozen Command",
+  //   icon: <CommandfrozenIcon fill="#fff" />,
+  // },
+  // {
+  //   id: "8",
+  //   link: "/frozenyet",
+  //   title: "Not frozen yet Command",
+  //   icon: <NotCommandfrozenIcon fill="#fff" />,
+  // },
 ];
