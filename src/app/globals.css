@@ -306,9 +306,7 @@ input {
   }
 
   #google_translate_element select {
-    width: 120px;
-    right: 10px;
-    top: 60px;
-    position: fixed;
+    width: 80%;
+    margin: auto;
   }
 }

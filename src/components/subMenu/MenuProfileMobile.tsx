@@ -25,7 +25,7 @@ import Logout from "@mui/icons-material/Logout";
 import FolderIcon from "@mui/icons-material/Folder";
 import CloseIcon from "@mui/icons-material/Close";
 import { userResponse } from "@/interface/user.interface";
-import { Badge, Button } from "@mui/material";
+import { Badge, Button, Dialog } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/utils/formatMoney";
 import Image from "next/image";
@@ -54,6 +54,7 @@ import {
   menuItemMobile2,
   menuItems,
 } from "@/datafake/Menu";
+import TranslateGoogle from "../GgTranstale/TranslateContext.component";
 
 export interface userProps {
   user: userResponse | null;
@@ -62,10 +63,20 @@ export interface userProps {
 export default function MenuProfileMobile(data: userProps) {
   const [anchorEl1, setAnchorEl1] = React.useState<null | HTMLElement>(null);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-
+  const [langAnchorEl, setLangAnchorEl] = React.useState<null | HTMLElement>(
+    null
+  );
+  const isLangMenuOpen = Boolean(langAnchorEl);
   const open1 = Boolean(anchorEl1);
   const router = useRouter();
 
+  const handleLangMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setLangAnchorEl(event.currentTarget);
+  };
+
+  const handleLangMenuClose = () => {
+    setLangAnchorEl(null);
+  };
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setDrawerOpen(true);
   };
@@ -397,79 +408,125 @@ export default function MenuProfileMobile(data: userProps) {
     </Box>
   );
 
-  return (
-    <React.Fragment>
+  const menuTranslate = () => (
+    <Box
+      sx={{
+        width: "100%",
+        background: "#909090",
+        color: "#fff",
+        height: "200px",
+      }}
+    >
       <Box
         sx={{
-          display: {
-            xs: "flex",
-            sm: "flex",
-            md: "none",
-          },
-          gap: "8px",
-          height: "50px",
-          lineHeight: "50px",
-          padding: "8px 8px",
-          background: "#000",
-          border: "none",
-          justifyContent: "space-between",
+          width: "100%",
+          height: "200px",
+          padding: "20px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Tooltip title="Account settings">
-          <IconButton
-            onClick={handleClick}
-            size="small"
-            aria-controls={drawerOpen ? "account-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={drawerOpen ? "true" : undefined}
-          >
-            <DashboardIcon fill="#fff" />
-          </IconButton>
-        </Tooltip>
+        <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
+          Select language
+        </Typography>
+        <TranslateGoogle />
+      </Box>
+    </Box>
+  );
+
+  return (
+    <>
+      <React.Fragment>
         <Box
           sx={{
-            display: "flex",
-            gap: "15px",
-            alignItems: "center",
-            paddingRight: "10px",
+            display: {
+              xs: "flex",
+              sm: "flex",
+              md: "none",
+            },
+            gap: "8px",
+            height: "50px",
+            lineHeight: "50px",
+            padding: "8px 8px",
+            background: "#000",
+            border: "none",
+            justifyContent: "space-between",
           }}
         >
-          <Tooltip title="Hot">
-            <StarIcon width="25px" height="25px" />
-          </Tooltip>
-          <Tooltip title="Notification">
-            <Badge
-              badgeContent={4}
-              color="error"
-              overlap="circular"
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
+          <Tooltip title="Account settings">
+            <IconButton
+              onClick={handleClick}
+              size="small"
+              aria-controls={drawerOpen ? "account-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={drawerOpen ? "true" : undefined}
             >
-              <MessageIcon width="20px" height="20px" />
-            </Badge>
+              <DashboardIcon fill="#fff" />
+            </IconButton>
           </Tooltip>
-          <Tooltip title="Hot">
-            <InternetIcon width="24px" height="24px" />
-          </Tooltip>
+          <Box
+            sx={{
+              display: "flex",
+              gap: "15px",
+              alignItems: "center",
+              paddingRight: "10px",
+            }}
+          >
+            <Tooltip title="Hot">
+              <StarIcon width="25px" height="25px" />
+            </Tooltip>
+            <Tooltip title="Notification">
+              <Badge
+                badgeContent={4}
+                color="error"
+                overlap="circular"
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+              >
+                <MessageIcon width="20px" height="20px" />
+              </Badge>
+            </Tooltip>
+            <Tooltip title="Language">
+              <IconButton onClick={handleLangMenuOpen}>
+                <InternetIcon width="24px" height="24px" />
+              </IconButton>
+            </Tooltip>
+          </Box>
         </Box>
-      </Box>
-      <Drawer
-        anchor="left"
-        open={drawerOpen}
-        onClose={handleDrawerClose}
-        sx={{
-          zIndex: 9999999,
-          "& .MuiDrawer-paper": {
-            background: "#1a263f",
-            border: "none",
-            borderRadius: "0",
-          },
-        }}
-      >
-        {drawerList()}
-      </Drawer>
-    </React.Fragment>
+        <Drawer
+          anchor="left"
+          open={drawerOpen}
+          onClose={handleDrawerClose}
+          sx={{
+            zIndex: 9999999,
+            "& .MuiDrawer-paper": {
+              background: "#1a263f",
+              border: "none",
+              borderRadius: "0",
+            },
+          }}
+        >
+          {drawerList()}
+        </Drawer>
+        <Dialog
+          open={isLangMenuOpen}
+          onClose={handleLangMenuClose}
+          PaperProps={{
+            style: {
+              width: "80%",
+              backgroundColor: "#909090",
+              color: "#fff",
+              borderRadius: "8px",
+              marginTop: "10%",
+            },
+          }}
+        >
+          {menuTranslate()}
+        </Dialog>
+      </React.Fragment>
+    </>
   );
 }

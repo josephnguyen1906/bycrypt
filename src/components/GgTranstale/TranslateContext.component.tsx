@@ -12,7 +12,7 @@ const TranslateGoogle: React.FC = () => {
     new window.google.translate.TranslateElement(
       {
         pageLanguage: "en",
-        includedLanguages: "en,hi",
+        includedLanguages: "en,vi,zh-CN",
         autoDisplay: false,
       },
       "google_translate_element"
