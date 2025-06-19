@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 type TradeChartProps = {
   symbols?: string;
   height?: string;
@@ -7,7 +7,13 @@ type TradeChartProps = {
 };
 const TradeChart = (props: TradeChartProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [language, setLanguage] = useState<string>("en");
 
+  // Get language from localStorage on first mount
+  useEffect(() => {
+    const storedLang = localStorage.getItem("language") || "en";
+    setLanguage(storedLang);
+  }, []);
   useEffect(() => {
     const script = document.createElement("script");
     script.src =
@@ -24,7 +30,7 @@ const TradeChart = (props: TradeChartProps) => {
       withdateranges: true,
       theme: "dark",
       style: "1",
-      locale: "en",
+      locale: `"${language}"`,
       allow_symbol_change: true,
       support_host: "https://www.tradingview.com",
     });
@@ -33,7 +39,7 @@ const TradeChart = (props: TradeChartProps) => {
       containerRef.current.innerHTML = ""; // Xóa trước khi append mới
       containerRef.current.appendChild(script);
     }
-  }, [props.symbols]);
+  }, [props.symbols, language]);
 
   return (
     <Box

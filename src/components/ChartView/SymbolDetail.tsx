@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface TechnicalAnalysisProps {
   symbol: string;
@@ -12,7 +12,13 @@ const TradingViewSymbolInfo: React.FC<TechnicalAnalysisProps> = ({
   height,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [language, setLanguage] = useState<string>("en");
 
+  // Get language from localStorage on first mount
+  useEffect(() => {
+    const storedLang = localStorage.getItem("language") || "en";
+    setLanguage(storedLang);
+  }, []);
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -31,12 +37,12 @@ const TradingViewSymbolInfo: React.FC<TechnicalAnalysisProps> = ({
       symbol,
       showIntervalTabs: true,
       displayMode: "multiple",
-      locale: "en",
+      locale: `${language}`,
       colorTheme: "dark",
     });
 
     containerRef.current.appendChild(script);
-  }, [symbol]);
+  }, [symbol, language]);
 
   return (
     <div className="tradingview-widget-container" ref={containerRef}></div>

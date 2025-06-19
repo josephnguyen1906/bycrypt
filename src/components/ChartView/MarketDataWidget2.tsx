@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 type MarketDataWidgetProps = {
   width?: number;
   height?: number;
@@ -7,7 +7,13 @@ type MarketDataWidgetProps = {
 
 const MarketDataWidget2 = (progs: MarketDataWidgetProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [language, setLanguage] = useState<string>("en");
 
+  // Get language from localStorage on first mount
+  useEffect(() => {
+    const storedLang = localStorage.getItem("language") || "en";
+    setLanguage(storedLang);
+  }, []);
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -75,7 +81,7 @@ const MarketDataWidget2 = (progs: MarketDataWidgetProps) => {
       showSymbolLogo: true,
       isTransparent: true,
       colorTheme: "dark",
-      locale: "en",
+      locale: `"${language}"`,
       backgroundColor: "#131722",
     });
 
@@ -84,7 +90,7 @@ const MarketDataWidget2 = (progs: MarketDataWidgetProps) => {
     return () => {
       container.innerHTML = ""; // Cleanup on unmount
     };
-  }, [progs.width, progs.height]);
+  }, [progs.width, progs.height, language]);
 
   return (
     <div className="tradingview-widget-container" ref={containerRef}>

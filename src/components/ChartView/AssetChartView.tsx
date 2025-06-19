@@ -39,11 +39,17 @@
 // export default TradingViewTickersWidget;
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const AssetChartView: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [language, setLanguage] = useState<string>("en");
 
+  // Get language from localStorage on first mount
+  useEffect(() => {
+    const storedLang = localStorage.getItem("language") || "en";
+    setLanguage(storedLang);
+  }, []);
   useEffect(() => {
     const script = document.createElement("script");
     script.src =
@@ -68,7 +74,7 @@ const AssetChartView: React.FC = () => {
       showSymbolLogo: true,
       colorTheme: "dark",
       //   isTransparent: false,
-      locale: "en",
+      locale: `"${language}"`,
       width: "100%",
       height: "300px",
       displayMode: "compact",
@@ -77,7 +83,7 @@ const AssetChartView: React.FC = () => {
       containerRef.current.innerHTML = "";
       containerRef.current.appendChild(script);
     }
-  }, []);
+  }, [language]);
 
   return (
     <div className="tradingview-widget-container">

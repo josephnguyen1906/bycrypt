@@ -1,10 +1,16 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const TradingViewStockHeatmap: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [language, setLanguage] = useState<string>("en");
 
+  // Get language from localStorage on first mount
+  useEffect(() => {
+    const storedLang = localStorage.getItem("language") || "en";
+    setLanguage(storedLang);
+  }, []);
   useEffect(() => {
     const script = document.createElement("script");
     script.src =
@@ -17,7 +23,7 @@ const TradingViewStockHeatmap: React.FC = () => {
       grouping: "sector",
       blockSize: "market_cap_basic",
       blockColor: "change",
-      locale: "en",
+      locale: `"${language}"`,
       symbolUrl: "",
       colorTheme: "dark",
       hasTopBar: false,
@@ -33,7 +39,7 @@ const TradingViewStockHeatmap: React.FC = () => {
       containerRef.current.innerHTML = "";
       containerRef.current.appendChild(script);
     }
-  }, []);
+  }, [language]);
 
   return (
     <div

@@ -1,9 +1,15 @@
 "use client";
-import React, { useEffect, useRef, memo } from "react";
+import React, { useEffect, useRef, memo, useState } from "react";
 
 function AdvancedRealTimeChartWidget() {
   const container = useRef<HTMLDivElement>(null);
+  const [language, setLanguage] = useState<string>("en");
 
+  // Get language from localStorage on first mount
+  useEffect(() => {
+    const storedLang = localStorage.getItem("language") || "en";
+    setLanguage(storedLang);
+  }, []);
   useEffect(() => {
     const currentContainer = container.current;
     if (!currentContainer) return;
@@ -23,7 +29,7 @@ function AdvancedRealTimeChartWidget() {
         "timezone": "Etc/UTC",
         "theme": "dark",
         "style": "1",
-        "locale": "en",
+        "locale": "${language}",
         "withdateranges": true,
         "range": "ALL",
         "allow_symbol_change": true,
@@ -38,7 +44,7 @@ function AdvancedRealTimeChartWidget() {
     return () => {
       currentContainer.innerHTML = ""; // Cleanup script when component unmounts
     };
-  }, []);
+  }, [language]);
 
   return (
     <div
