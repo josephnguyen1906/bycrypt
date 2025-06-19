@@ -1,4 +1,5 @@
 import {
+  CalendarIcon,
   CasinoCardsIcon,
   CasinoIcon,
   ChickenIcon,
@@ -74,6 +75,12 @@ export const MenuAset = [
         link: "/mystaking",
         title: "My Staking",
         icon: <ExperimentIcon fill="#fff" />,
+      },
+      {
+        id: "8",
+        link: "#",
+        title: "Daily Rewards",
+        icon: <CalendarIcon fill="#fff" />,
       },
     ],
   },
@@ -455,10 +462,10 @@ export const MenuAset2 = [
     title: "My Staking",
     icon: <ExperimentIcon fill="#fff" />,
   },
-  // {
-  //   id: "8",
-  //   link: "/frozenyet",
-  //   title: "Not frozen yet Command",
-  //   icon: <NotCommandfrozenIcon fill="#fff" />,
-  // },
+  {
+    id: "8",
+    link: "#",
+    title: "Daily Rewards",
+    icon: <CalendarIcon width="25px" height="25px" fill="#fff" />,
+  },
 ];
