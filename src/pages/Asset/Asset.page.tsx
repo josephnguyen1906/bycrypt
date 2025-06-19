@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import {
+  getBills,
   getMyWallet,
   getWebsiteConfig,
   sellCoins,
@@ -29,11 +30,9 @@ import { formatCurrency } from "@/utils/formatMoney";
 import useAuth from "@/hook/useAuth";
 import TradingViewTickerTape from "@/components/ChartView/TradingViewTickerTape";
 import AssetChartView from "@/components/ChartView/AssetChartView";
-import {
-  CopyAllOutlined,
-  Visibility,
-  VisibilityOff,
-} from "@mui/icons-material";
+import TablePagination from "@mui/material/TablePagination";
+
+import { formatDateTime } from "@/utils/formatDateTime";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -90,46 +89,27 @@ function a11yProps(index: number) {
 }
 
 export default function AssetPage() {
-  const [amount, setAmount] = useState("");
-  const [address, setAddress] = useState("");
-  const [coin, setCoin] = useState<string>();
-  const [bank, setbank] = useState(0);
-  const [method, setMethod] = useState(0);
-  const [value, setValue] = useState(0);
-  const [wallet, setWallet] = useState<CountryType[] | []>([]);
-  const [configs, setConfigs] = useState<any>();
-  const frontFileInput = useRef<HTMLInputElement>(null);
-  const [frontImage, setFrontImage] = useState<File>();
+  const [bill, setBill] = useState<any>(null);
   const { user } = useAuth();
-  const [showPassword, setShowPassword] = useState(false);
-  const [password, setPassword] = useState("");
-
-  const handleClickShowPassword = () => setShowPassword(!showPassword);
-  const handleFrontChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setFrontImage(file);
-    }
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(7);
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
   };
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-    setAddress("");
-    setAmount("");
-    setCoin("");
-    setMethod(0);
-    setbank(0);
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   };
 
   useEffect(() => {
     const referral = async () => {
       try {
-        const res: any = await getMyWallet();
-        const config: any = await getWebsiteConfig();
+        const res: any = await getBills();
         if (res.status === true) {
-          setWallet(res.data);
-        }
-        if (config.status === true) {
-          setConfigs(config.data);
+          setBill(res.data);
         }
       } catch (errors: any) {
         console.log(errors?.message);
@@ -138,53 +118,6 @@ export default function AssetPage() {
     referral();
   }, []);
 
-  const handleSubmit = async () => {
-    if (!frontImage) {
-      toast.warning("Please upload the transaction image.");
-      return;
-    }
-    if (!amount || !method || !coin) {
-      toast.warning("Please select and enter all required information.");
-      return;
-    }
-
-    try {
-      const formData = new FormData();
-      formData.append("cid", coin);
-      formData.append("amount", amount);
-      formData.append("payimg", frontImage);
-      formData.append("method", method.toString());
-
-      await topUpCoins(formData);
-      toast.success("Successful deposit command is pending approval!");
-    } catch (error: any) {
-      toast.error(
-        error.message || "Deposit command failed, please check again!"
-      );
-    }
-  };
-
-  const handleSubmitSell = async () => {
-    if (!amount || !method || !coin || !password) {
-      toast.warning("Please select and enter all required information.");
-      return;
-    }
-
-    try {
-      const formData = new FormData();
-      formData.append("cid", coin);
-      formData.append("amount", amount);
-      formData.append("method", method.toString());
-      formData.append("paypassword", password);
-
-      await sellCoins(formData);
-      toast.success("Coin withdrawal command created successfully");
-    } catch (error: any) {
-      toast.error(
-        error.message || "withdraw command failed, please check again!"
-      );
-    }
-  };
   return (
     <Box
       sx={{
@@ -274,1499 +207,256 @@ export default function AssetPage() {
               borderRadius: "10px",
             }}
           >
-            <Box sx={{ borderBottom: 1 }}>
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                aria-label="basic tabs example"
-                TabIndicatorProps={{ style: { display: "none" } }}
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                padding: "5px 20px",
+              }}
+            >
+              <Box sx={{ width: "100%", textAlign: "left" }}>
+                <Typography sx={{ color: "#909090", padding: "5px 0" }}>
+                  Estimated total value
+                </Typography>
+                <Box
+                  sx={{
+                    height: "30px",
+                    display: "flex",
+                    gap: "5px",
+                    alignItems: "flex-end",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "white",
+                      fontSize: "20px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {user?.balance?.usdt ? `${user?.balance?.usdt} ` : "0 "}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: "#909090",
+                      fontSize: "16px",
+                    }}
+                  >
+                    USD
+                  </Typography>
+                </Box>
+                <Typography sx={{ color: "#909090", padding: "5px 0" }}>
+                  PNL today $0.00(0.00%)
+                </Typography>
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                gap: "10px",
+                justifyContent: "space-evenly",
+                padding: "20px 0px",
+              }}
+            >
+              <Button
+                type="button"
+                href="/deposit"
                 sx={{
-                  backgroundColor: "#2c2c2c",
-                  borderRadius: "999px",
-                  minHeight: "30px",
-                  width: "fit-content",
-                  margin: "auto",
                   display: "flex",
-                  "& .MuiTab-root": {
-                    textTransform: "none",
-                    borderRadius: "999px",
-                    minHeight: "30px",
-                    minWidth: "80px",
-                    px: 3,
-                    fontWeight: 500,
-                    color: "#ffffff", // màu chữ mặc định
-                    backgroundColor: "transparent",
-                    transition: "0.3s",
-                  },
-                  "& .Mui-selected": {
-                    backgroundColor: "#00c853", // màu nền khi selected
-                    color: "#ffffff", // màu chữ khi selected
-                    fontWeight: 600,
-                  },
-                  "& .MuiTabs-flexContainer": {
-                    color: "#ffffff", // có thể bỏ nếu không cần
-                  },
+                  flexDirection: "column",
+                  color: "white",
+                  fontSize: "13px",
                 }}
               >
-                <Tab
-                  label="Deposit"
-                  {...a11yProps(0)}
-                  sx={{
-                    color: "white",
-                    "&.Mui-selected": {
-                      backgroundColor: "#00c853",
-                      color: "white",
-                      fontWeight: 600,
-                    },
+                <img
+                  src="/images/deposit.png"
+                  style={{
+                    width: "50px",
+                    height: "50px",
                   }}
                 />
-                <Tab
-                  label="Withdraw"
-                  {...a11yProps(1)}
-                  sx={{
-                    color: "white",
-                    "&.Mui-selected": {
-                      backgroundColor: "red",
-                      color: "white",
-                      fontWeight: 600,
-                    },
+                Deposit
+              </Button>
+              <Button
+                href="/withdraw"
+                type="button"
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  color: "white",
+                  fontSize: "13px",
+                }}
+              >
+                <img
+                  src="/images/withdraw.png"
+                  style={{
+                    width: "50px",
+                    height: "50px",
                   }}
                 />
-              </Tabs>
+                Withdraw
+              </Button>
+              <Button
+                href="/buysell"
+                type="button"
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  color: "white",
+                  fontSize: "13px",
+                }}
+              >
+                <img
+                  src="/images/payment.png"
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                  }}
+                />
+                Transfer money
+              </Button>
+              <Button
+                href="/bill"
+                type="button"
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  color: "white",
+                  fontSize: "13px",
+                }}
+              >
+                <img
+                  src="/images/history.png"
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                  }}
+                />
+                History
+              </Button>
             </Box>
-            <CustomTabPanel value={value} index={0}>
+            <Box sx={{ width: "95%", margin: "auto" }}>
+              <Typography
+                sx={{ fontSize: "16px", color: "white", fontWeight: "600" }}
+              >
+                Asset
+              </Typography>
               <Box
                 sx={{
-                  display: {
-                    xs: "block",
-                    sm: "flex",
-                  },
-                  flexWrap: "wrap",
-                  gap: 1,
-                  alignItems: "flex-start",
+                  width: "90%",
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  margin: "auto",
+                }}
+              >
+                <Typography sx={{ fontSize: "14px", color: "#909090" }}>
+                  Name
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "14px",
+                    color: "#909090",
+                    textAlign: "right",
+                  }}
+                >
+                  Quantity
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  width: "90%",
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  margin: "auto",
+                  paddingTop: "10px",
                 }}
               >
                 <Box
                   sx={{
-                    width: { xs: "100%", sm: "45%" },
-                    boxShadow: {
-                      xs: "0px 0px 30px rgba(255, 255, 255, 0.31)",
-                      sm: "0px 0px 30px rgba(255, 255, 255, 0.24)",
-                    },
-                    padding: {
-                      xs: "10px",
-                      sm: "15px",
-                    },
-
-                    borderRadius: "10px",
-                    display: {
-                      xs: "flex",
-                      sm: "none",
-                    },
-                    flexDirection: "column",
-                    alignItems: "center",
-                    height: "100%",
-                    marginBottom: "20px",
+                    display: "flex",
+                    gap: "10px",
+                    alignItems: "Center",
                   }}
                 >
-                  <Typography
-                    sx={{
-                      color: "white",
-                      fontSize: {
-                        xs: "16px",
-                        sm: "25px",
-                      },
-                      fontWeight: "bold",
-                      marginTop: "10px",
-                      textAlign: "center",
-                    }}
-                  >
-                    Top-up information
+                  <img
+                    src="/images/4f8f27a4de61fca0faca95298f6714c81fcfc22929d68e1062e396c4026452f9_200.webp"
+                    width={30}
+                    height={30}
+                  />
+                  <Typography sx={{ fontSize: "14px", color: "white" }}>
+                    Pi
                   </Typography>
-
-                  {method === 1 && (
-                    <Box>
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 1fr",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          Bank name:
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          {configs.bank_name}
-                        </Typography>
-                      </Box>
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 1fr",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          Account number:
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          {configs.bank_acc_no}
-
-                          <Tooltip title="Copy">
-                            <IconButton
-                              size="small"
-                              onClick={() => {
-                                navigator.clipboard.writeText(
-                                  configs.bank_acc_no || ""
-                                );
-                              }}
-                              sx={{ color: "white" }}
-                            >
-                              <CopyAllOutlined
-                                sx={{
-                                  fontSize: {
-                                    xs: "14px",
-                                    sm: "24px",
-                                  },
-                                }}
-                              />
-                            </IconButton>
-                          </Tooltip>
-                        </Typography>
-                      </Box>
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 1fr",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          Account name:
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          {configs.bank_acc_name}
-                        </Typography>
-                      </Box>
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 1fr",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          Amount to be paid:
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          {formatCurrency(bank * Number(amount))}{" "}
-                        </Typography>
-                      </Box>
-
-                      <Typography
-                        sx={{
-                          color: "red",
-                          fontSize: { xs: "10px", sm: "14px" },
-                          marginTop: "10px",
-                        }}
-                      >
-                        Note: After completing the payment, please take a
-                        screenshot and confirm that the payment has been made.
-                      </Typography>
-                    </Box>
-                  )}
-                  {method === 2 && (
-                    <Box>
-                      <Typography
-                        sx={{
-                          color: "white",
-                          fontSize: { xs: "10px", sm: "14px" },
-                          marginTop: "10px",
-                        }}
-                      >
-                        Transfer coins to the wallet
-                      </Typography>
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gridTemplateColumns: "40% 60%",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          Wallet address:
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          {address}
-                          <Tooltip title="Copy">
-                            <IconButton
-                              size="small"
-                              onClick={() => {
-                                navigator.clipboard.writeText(address || "");
-                              }}
-                              sx={{ color: "white" }}
-                            >
-                              <CopyAllOutlined
-                                sx={{
-                                  fontSize: {
-                                    xs: "14px",
-                                    sm: "24px",
-                                  },
-                                }}
-                              />
-                            </IconButton>
-                          </Tooltip>
-                        </Typography>
-                      </Box>
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 1fr",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "10px",
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          Type of coin:
-                        </Typography>
-                        <Typography
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "10px",
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          {coin === "1" ? (
-                            <>
-                              <img
-                                loading="lazy"
-                                width="30"
-                                src="/images/4f8f27a4de61fca0faca95298f6714c81fcfc22929d68e1062e396c4026452f9_200.webp"
-                                alt=""
-                              />{" "}
-                              PI Nework
-                            </>
-                          ) : (
-                            <>
-                              <img
-                                loading="lazy"
-                                width="30"
-                                srcSet={`/images/usdt.png`}
-                                src="/images/usdt.png"
-                                alt=""
-                              />{" "}
-                              USDT
-                            </>
-                          )}
-                        </Typography>
-                      </Box>
-
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 1fr",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          Coins to transfer:
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          {amount}
-                        </Typography>
-                      </Box>
-                      <Typography
-                        sx={{
-                          color: "red",
-                          fontSize: {
-                            xs: "10px",
-                            sm: "14px",
-                          },
-                          marginTop: "10px",
-                        }}
-                      >
-                        Note: After payment through the wallet, please take a
-                        picture of the confirmation receipt.
-                      </Typography>
-                    </Box>
-                  )}
-                  {method === 0 && (
-                    <Box>
-                      <img
-                        src="/images/credit-card.png"
-                        height={40}
-                        style={{ margin: "30px 0" }}
-                      />
-                    </Box>
-                  )}
                 </Box>
-                <Box sx={{ width: { xs: "100%", sm: "45%" } }}>
-                  <Autocomplete
-                    id="country-select-demo"
-                    sx={{
-                      padding: {
-                        xs: "0px 0px",
-                        sm: "20px 0px",
-                      },
-                    }}
-                    options={wallet}
-                    autoHighlight
-                    getOptionLabel={(option) => option.title}
-                    onChange={(event, newValue) => {
-                      setCoin(newValue?.id?.toString() || "2");
-                      setbank(newValue?.bank || 0);
-                      setAddress(newValue?.addresss || "");
-                    }}
-                    renderOption={(props, option) => {
-                      const { ...optionProps } = props;
-                      return (
-                        <Box
-                          key={option.id}
-                          component="li"
-                          sx={{
-                            "& > img": { mr: 2, flexShrink: 0 },
-                          }}
-                          {...optionProps}
-                        >
-                          {option.name === "pi" ? (
-                            <img
-                              loading="lazy"
-                              width="20"
-                              srcSet={`/images/4f8f27a4de61fca0faca95298f6714c81fcfc22929d68e1062e396c4026452f9_200.webp`}
-                              src="/images/4f8f27a4de61fca0faca95298f6714c81fcfc22929d68e1062e396c4026452f9_200.webp"
-                              alt=""
-                            />
-                          ) : (
-                            <img
-                              loading="lazy"
-                              width="20"
-                              srcSet={`/images/usdt.png`}
-                              src="/images/usdt.png"
-                              alt=""
-                            />
-                          )}
-                          {option.title}
-                        </Box>
-                      );
-                    }}
-                    renderInput={(params: any) => (
-                      <TextField
-                        {...params}
-                        placeholder="Select currency"
-                        variant="outlined"
-                        InputLabelProps={{ style: { color: "white" } }}
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            color: "white",
-
-                            "& fieldset": {
-                              borderColor: "white",
-                            },
-                            "&:hover fieldset": {
-                              borderColor: "white",
-                            },
-                            "&.Mui-focused fieldset": {
-                              borderColor: "white",
-                            },
-                          },
-                          "& .MuiInputBase-input": {
-                            padding: "0 14px", // chỉnh padding trái phải
-                            display: "flex",
-                            alignItems: "center", // quan trọng để căn giữa
-                            height: "90%", // full chiều cao TextField
-                            boxSizing: "border-box",
-                          },
-                          "& .MuiInputBase-input::placeholder": {
-                            color: "white",
-
-                            opacity: 1, // để không bị mờ
-                          },
-                        }}
-                        slotProps={{
-                          htmlInput: {
-                            ...params.inputProps,
-                            autoComplete: "new-password",
-                          },
-                        }}
-                      />
-                    )}
-                  />
-                  {bank > 0 ? (
-                    <Autocomplete
-                      id="country-select-demo"
-                      sx={{ padding: "20px 0px" }}
-                      options={medthod}
-                      autoHighlight
-                      getOptionLabel={(option) => option.name}
-                      onChange={(event, newValue) => {
-                        setMethod(newValue?.id || 2);
-                      }}
-                      renderOption={(props, option) => {
-                        const { ...optionProps } = props;
-                        return (
-                          <Box
-                            key={option.id}
-                            component="li"
-                            sx={{
-                              "& > img": { mr: 2, flexShrink: 0 },
-                            }}
-                            {...optionProps}
-                          >
-                            {option.id === 1 ? (
-                              <img
-                                loading="lazy"
-                                width="20"
-                                srcSet={`/images/bank.png`}
-                                src="/images/bank.png"
-                                alt=""
-                              />
-                            ) : (
-                              <img
-                                loading="lazy"
-                                width="20"
-                                srcSet={`/images/wallet.png`}
-                                src="/images/wallet.png"
-                                alt=""
-                              />
-                            )}
-                            {option.name}
-                          </Box>
-                        );
-                      }}
-                      renderInput={(params: any) => (
-                        <TextField
-                          {...params}
-                          placeholder="Method"
-                          variant="outlined"
-                          InputLabelProps={{ style: { color: "white" } }}
-                          sx={{
-                            "& .MuiOutlinedInput-root": {
-                              color: "white",
-
-                              "& fieldset": {
-                                borderColor: "white",
-                              },
-                              "&:hover fieldset": {
-                                borderColor: "white",
-                              },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "white",
-                              },
-                            },
-                            "& .MuiInputBase-input": {
-                              padding: "0 14px", // chỉnh padding trái phải
-                              display: "flex",
-                              alignItems: "center", // quan trọng để căn giữa
-                              height: "90%", // full chiều cao TextField
-                              boxSizing: "border-box",
-                            },
-                            "& .MuiInputBase-input::placeholder": {
-                              color: "white",
-
-                              opacity: 1, // để không bị mờ
-                            },
-                          }}
-                          slotProps={{
-                            htmlInput: {
-                              ...params.inputProps,
-                              autoComplete: "new-password",
-                            },
-                          }}
-                        />
-                      )}
-                    />
-                  ) : (
-                    <Autocomplete
-                      id="country-select-demo"
-                      sx={{ padding: "20px 0px" }}
-                      options={medthodWallet}
-                      autoHighlight
-                      getOptionLabel={(option) => option.name}
-                      onChange={(event, newValue) => {
-                        setMethod(newValue?.id || 2);
-                      }}
-                      renderOption={(props, option) => {
-                        const { ...optionProps } = props;
-                        return (
-                          <Box
-                            key={option.id}
-                            component="li"
-                            sx={{
-                              fontSize: { xs: "10px", sm: "14px" },
-                              "& > img": { mr: 2, flexShrink: 0 },
-                            }}
-                            {...optionProps}
-                          >
-                            {option.id === 1 ? (
-                              <img
-                                loading="lazy"
-                                width="20"
-                                srcSet={`/images/bank.png`}
-                                src="/images/bank.png"
-                                alt=""
-                              />
-                            ) : (
-                              <img
-                                loading="lazy"
-                                width="20"
-                                srcSet={`/images/wallet.png`}
-                                src="/images/wallet.png"
-                                alt=""
-                              />
-                            )}
-                            {option.name}
-                          </Box>
-                        );
-                      }}
-                      renderInput={(params: any) => (
-                        <TextField
-                          {...params}
-                          placeholder="Method"
-                          variant="outlined"
-                          InputLabelProps={{ style: { color: "white" } }}
-                          sx={{
-                            "& .MuiOutlinedInput-root": {
-                              color: "white",
-                              "& fieldset": {
-                                borderColor: "white",
-                              },
-                              "&:hover fieldset": {
-                                borderColor: "white",
-                              },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "white",
-                              },
-                            },
-                            "& .MuiInputBase-input": {
-                              padding: "0 14px", // chỉnh padding trái phải
-                              display: "flex",
-                              alignItems: "center", // quan trọng để căn giữa
-                              height: "90%", // full chiều cao TextField
-                              boxSizing: "border-box",
-                            },
-                            "& .MuiInputBase-input::placeholder": {
-                              color: "white",
-                              opacity: 1, // để không bị mờ
-                            },
-                          }}
-                          slotProps={{
-                            htmlInput: {
-                              ...params.inputProps,
-                              autoComplete: "new-password",
-                            },
-                          }}
-                        />
-                      )}
-                    />
-                  )}
-                  <TextField
-                    id="outlined-basic"
-                    placeholder="Amount"
-                    variant="outlined"
-                    onChange={(e) => setAmount(e.target.value)}
-                    sx={{
-                      width: "100%",
-                      "& .MuiOutlinedInput-root": {
-                        color: "white",
-                        height: {
-                          xs: "52px",
-                          sm: "45px",
-                        },
-                        fontSize: "16px",
-                        "& fieldset": {
-                          borderColor: "white",
-                        },
-                        "&:hover fieldset": {
-                          borderColor: "white",
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "white",
-                        },
-                      },
-                      "& .MuiInputBase-input": {
-                        width: "100%",
-                        padding: "0 14px", // chỉnh padding trái phải
-                        display: "flex",
-                        alignItems: "center", // quan trọng để căn giữa
-                        height: "90%", // full chiều cao TextField
-                        boxSizing: "border-box",
-                      },
-                      "& .MuiInputBase-input::placeholder": {
-                        color: "white",
-                        fontSize: "16px",
-                        opacity: 1, // để không bị mờ
-                      },
-                    }}
-                  />
-                  <Typography
-                    sx={{
-                      color: "white",
-                      marginTop: "20px",
-                      marginBottom: "10px",
-                      textAlign: "left",
-                    }}
-                  >
-                    Upload transaction images
-                  </Typography>
-                  <TextField
-                    id="outlined-basic"
-                    variant="outlined"
-                    type="file"
-                    ref={frontFileInput}
-                    onChange={handleFrontChange}
-                    sx={{
-                      width: "100%",
-                      "& .MuiOutlinedInput-root": {
-                        color: "white",
-                        width: "100%",
-                        height: {
-                          xs: "52px",
-                          sm: "45px",
-                        },
-                        fontSize: { xs: "16px", sm: "14px" },
-                        lineHeight: {
-                          xs: "35px",
-                          sm: "45px",
-                        },
-                        "& fieldset": {
-                          borderColor: "white",
-                        },
-                        "&:hover fieldset": {
-                          borderColor: "white",
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "white",
-                        },
-                      },
-                      "& .MuiInputBase-input": {
-                        padding: "0 14px", // chỉnh padding trái phải
-                        display: "flex",
-                        alignItems: "center", // quan trọng để căn giữa
-                        height: "90%", // full chiều cao TextField
-                        boxSizing: "border-box",
-                      },
-                      "& .MuiInputBase-input::placeholder": {
-                        color: "white",
-                        opacity: 1, // để không bị mờ
-                      },
-                    }}
-                  />
-                  <Box
-                    sx={{
-                      width: "100%",
-                      textAlign: "center",
-                      marginTop: "20px",
-                    }}
-                  >
-                    <Button
-                      type="button"
-                      sx={{
-                        background: "#fff",
-                        color: "black",
-                        width: "80%",
-                        height: "35px",
-                        borderRadius: "15px",
-                        fontSize: { xs: "10px", sm: "14px" },
-                        fontWeight: "bold",
-                        "&:hover": {
-                          background: "#fff",
-                        },
-                      }}
-                      onClick={handleSubmit}
-                    >
-                      Deposit
-                    </Button>
-                  </Box>
-                </Box>
-                <Box
+                <Typography
                   sx={{
-                    width: { xs: "50%", sm: "45%" },
-                    boxShadow: {
-                      xs: "0px 0px 30px rgba(255, 255, 255, 0.31)",
-                      sm: "0px 0px 30px rgba(255, 255, 255, 0.24)",
-                    },
-                    padding: {
-                      xs: "10px",
-                      sm: "15px",
-                    },
-
-                    borderRadius: "10px",
-                    display: {
-                      xs: "none",
-                      sm: "flex",
-                    },
-                    flexDirection: "column",
-                    alignItems: "center",
-                    height: "100%",
+                    fontSize: "14px",
+                    color: "white",
+                    textAlign: "right",
                   }}
                 >
-                  <Typography
-                    sx={{
-                      color: "white",
-                      fontSize: {
-                        xs: "16px",
-                        sm: "25px",
-                      },
-                      fontWeight: "bold",
-                      marginTop: "10px",
-                      textAlign: "center",
-                    }}
-                  >
-                    Top-up information
-                  </Typography>
-
-                  {method === 1 && (
-                    <Box>
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 1fr",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          Bank name:
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          {configs.bank_name}
-                        </Typography>
-                      </Box>
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 1fr",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          Account number:
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          {configs.bank_acc_no}
-
-                          <Tooltip title="Copy">
-                            <IconButton
-                              size="small"
-                              onClick={() => {
-                                navigator.clipboard.writeText(
-                                  configs.bank_acc_no || ""
-                                );
-                              }}
-                              sx={{ color: "white" }}
-                            >
-                              <CopyAllOutlined
-                                sx={{
-                                  fontSize: {
-                                    xs: "14px",
-                                    sm: "24px",
-                                  },
-                                }}
-                              />
-                            </IconButton>
-                          </Tooltip>
-                        </Typography>
-                      </Box>
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 1fr",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          Account name:
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          {configs.bank_acc_name}
-                        </Typography>
-                      </Box>
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 1fr",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          Amount to be paid:
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          {formatCurrency(bank * Number(amount))}{" "}
-                        </Typography>
-                      </Box>
-
-                      <Typography
-                        sx={{
-                          color: "red",
-                          fontSize: { xs: "10px", sm: "14px" },
-                          marginTop: "10px",
-                        }}
-                      >
-                        Note: After completing the payment, please take a
-                        screenshot and confirm that the payment has been made.
-                      </Typography>
-                    </Box>
-                  )}
-                  {method === 2 && (
-                    <Box>
-                      <Typography
-                        sx={{
-                          color: "white",
-                          fontSize: { xs: "10px", sm: "14px" },
-                          marginTop: "10px",
-                        }}
-                      >
-                        Transfer coins to the wallet
-                      </Typography>
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gridTemplateColumns: "40% 60%",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          Wallet address:
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          {address}
-                          <Tooltip title="Copy">
-                            <IconButton
-                              size="small"
-                              onClick={() => {
-                                navigator.clipboard.writeText(address || "");
-                              }}
-                              sx={{ color: "white" }}
-                            >
-                              <CopyAllOutlined
-                                sx={{
-                                  fontSize: {
-                                    xs: "14px",
-                                    sm: "24px",
-                                  },
-                                }}
-                              />
-                            </IconButton>
-                          </Tooltip>
-                        </Typography>
-                      </Box>
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 1fr",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "10px",
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          Type of coin:
-                        </Typography>
-                        <Typography
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "10px",
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          {coin === "1" ? (
-                            <>
-                              <img
-                                loading="lazy"
-                                width="30"
-                                src="/images/4f8f27a4de61fca0faca95298f6714c81fcfc22929d68e1062e396c4026452f9_200.webp"
-                                alt=""
-                              />{" "}
-                              PI Nework
-                            </>
-                          ) : (
-                            <>
-                              <img
-                                loading="lazy"
-                                width="30"
-                                srcSet={`/images/usdt.png`}
-                                src="/images/usdt.png"
-                                alt=""
-                              />{" "}
-                              USDT
-                            </>
-                          )}
-                        </Typography>
-                      </Box>
-
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 1fr",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          Coins to transfer:
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { xs: "10px", sm: "14px" },
-                            marginTop: "10px",
-                          }}
-                        >
-                          {amount}
-                        </Typography>
-                      </Box>
-                      <Typography
-                        sx={{
-                          color: "red",
-                          fontSize: {
-                            xs: "10px",
-                            sm: "14px",
-                          },
-                          marginTop: "10px",
-                        }}
-                      >
-                        Note: After payment through the wallet, please take a
-                        picture of the confirmation receipt.
-                      </Typography>
-                    </Box>
-                  )}
-                  {method === 0 && (
-                    <Box>
-                      <img
-                        src="/images/credit-card.png"
-                        height={40}
-                        style={{ margin: "30px 0" }}
-                      />
-                    </Box>
-                  )}
-                </Box>
+                  {user.balance.pi}
+                </Typography>
               </Box>
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={1}>
-              {user && user.wdstatus === 1 ? (
-                <Box
-                  sx={{ width: { xs: "100%", sm: "80%" }, margin: "0 auto" }}
-                >
-                  <Autocomplete
-                    id="country-select-demo"
-                    sx={{
-                      padding: {
-                        xs: "0px 0px",
-                        sm: "20px 0px",
-                      },
-                    }}
-                    options={wallet}
-                    autoHighlight
-                    getOptionLabel={(option) => option.title}
-                    onChange={(event, newValue) => {
-                      setCoin(newValue?.id?.toString() || "2");
-                      setbank(newValue?.bank || 0);
-                      setAddress(newValue?.addresss || "");
-                    }}
-                    renderOption={(props, option) => {
-                      const { ...optionProps } = props;
-                      return (
-                        <Box
-                          key={option.id}
-                          component="li"
-                          sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                          {...optionProps}
+            </Box>
+            <Box sx={{ width: "95%", margin: "auto", paddingTop: "20px" }}>
+              <Typography
+                sx={{ fontSize: "16px", color: "white", fontWeight: "600" }}
+              >
+                Recent history
+              </Typography>
+              {bill ? (
+                <Box>
+                  {bill
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((item: any, index: number) => (
+                      <Box key={index} sx={{ padding: "10px 0" }}>
+                        <Typography
+                          sx={{
+                            color: "white",
+                            fontSize: "14px",
+                            fontWeight: 600,
+                          }}
                         >
-                          {option.name === "pi" ? (
-                            <img
-                              loading="lazy"
-                              width="20"
-                              srcSet={`/images/4f8f27a4de61fca0faca95298f6714c81fcfc22929d68e1062e396c4026452f9_200.webp`}
-                              src="/images/4f8f27a4de61fca0faca95298f6714c81fcfc22929d68e1062e396c4026452f9_200.webp"
-                              alt=""
-                            />
-                          ) : (
-                            <img
-                              loading="lazy"
-                              width="20"
-                              srcSet={`/images/usdt.png`}
-                              src="/images/usdt.png"
-                              alt=""
-                            />
-                          )}
-                          {option.title}
-                        </Box>
-                      );
-                    }}
-                    renderInput={(params: any) => (
-                      <TextField
-                        {...params}
-                        label="Select currency"
-                        variant="outlined"
-                        InputLabelProps={{ style: { color: "white" } }}
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            color: "white",
-                            "& fieldset": {
-                              borderColor: "white",
-                            },
-                            "&:hover fieldset": {
-                              borderColor: "white",
-                            },
-                            "&.Mui-focused fieldset": {
-                              borderColor: "white",
-                            },
-                          },
-
-                          "& .MuiInputLabel-root": {
-                            color: "white",
-                          },
-                        }}
-                        slotProps={{
-                          htmlInput: {
-                            ...params.inputProps,
-                            autoComplete: "new-password",
-                          },
-                        }}
-                      />
-                    )}
-                  />
-                  {bank > 0 ? (
-                    <Autocomplete
-                      id="country-select-demo"
-                      sx={{ padding: "20px 0px" }}
-                      options={medthod}
-                      autoHighlight
-                      getOptionLabel={(option) => option.name}
-                      onChange={(event, newValue) => {
-                        setMethod(newValue?.id || 2);
-                      }}
-                      renderOption={(props, option) => {
-                        const { ...optionProps } = props;
-                        return (
-                          <Box
-                            key={option.id}
-                            component="li"
-                            sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                            {...optionProps}
-                          >
-                            {option.id === 1 ? (
-                              <img
-                                loading="lazy"
-                                width="20"
-                                srcSet={`/images/bank.png`}
-                                src="/images/bank.png"
-                                alt=""
-                              />
-                            ) : (
-                              <img
-                                loading="lazy"
-                                width="20"
-                                srcSet={`/images/wallet.png`}
-                                src="/images/wallet.png"
-                                alt=""
-                              />
-                            )}
-                            {option.name}
-                          </Box>
-                        );
-                      }}
-                      renderInput={(params: any) => (
-                        <TextField
-                          {...params}
-                          label="Method"
-                          variant="outlined"
-                          InputLabelProps={{ style: { color: "white" } }}
+                          {item.remark}
+                        </Typography>
+                        <Typography
                           sx={{
-                            "& .MuiOutlinedInput-root": {
-                              color: "white",
-                              "& fieldset": {
-                                borderColor: "white",
-                              },
-                              "&:hover fieldset": {
-                                borderColor: "white",
-                              },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "white",
-                              },
-                            },
-
-                            "& .MuiInputLabel-root": {
-                              color: "white",
-                            },
+                            color: "#909090",
+                            fontSize: "12px",
+                            fontWeight: 600,
                           }}
-                          slotProps={{
-                            htmlInput: {
-                              ...params.inputProps,
-                              autoComplete: "new-password",
-                            },
-                          }}
-                        />
-                      )}
-                    />
-                  ) : (
-                    <Autocomplete
-                      id="country-select-demo"
-                      sx={{ padding: "20px 0px" }}
-                      options={medthodWallet}
-                      autoHighlight
-                      getOptionLabel={(option) => option.name}
-                      onChange={(event, newValue) => {
-                        setMethod(newValue?.id || 2);
-                      }}
-                      renderOption={(props, option) => {
-                        const { ...optionProps } = props;
-                        return (
-                          <Box
-                            key={option.id}
-                            component="li"
-                            sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                            {...optionProps}
-                          >
-                            {option.id === 1 ? (
-                              <img
-                                loading="lazy"
-                                width="20"
-                                srcSet={`/images/bank.png`}
-                                src="/images/bank.png"
-                                alt=""
-                              />
-                            ) : (
-                              <img
-                                loading="lazy"
-                                width="20"
-                                srcSet={`/images/wallet.png`}
-                                src="/images/wallet.png"
-                                alt=""
-                              />
-                            )}
-                            {option.name}
-                          </Box>
-                        );
-                      }}
-                      renderInput={(params: any) => (
-                        <TextField
-                          {...params}
-                          label="Method"
-                          variant="outlined"
-                          InputLabelProps={{ style: { color: "white" } }}
-                          sx={{
-                            "& .MuiOutlinedInput-root": {
-                              color: "white",
-                              "& fieldset": {
-                                borderColor: "white",
-                              },
-                              "&:hover fieldset": {
-                                borderColor: "white",
-                              },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "white",
-                              },
-                            },
-
-                            "& .MuiInputLabel-root": {
-                              color: "white",
-                            },
-                          }}
-                          slotProps={{
-                            htmlInput: {
-                              ...params.inputProps,
-                              autoComplete: "new-password",
-                            },
-                          }}
-                        />
-                      )}
-                    />
-                  )}
-                  <TextField
-                    id="outlined-basic"
-                    label="Amount"
-                    variant="outlined"
-                    onChange={(e) => setAmount(e.target.value)}
+                        >
+                          {formatDateTime(item.addtime)}
+                        </Typography>
+                      </Box>
+                    ))}
+                  <TablePagination
+                    component="div"
+                    count={bill.length}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    rowsPerPageOptions={[5, 10, 25]}
                     sx={{
                       width: "100%",
-                      "& .MuiInputBase-input": {
-                        color: "white",
-                      },
-                      "& .MuiInputLabel-root": {
-                        color: "white",
-                      },
-                      "& .MuiInputLabel-root.Mui-focused": {
-                        color: "white",
-                      },
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "white",
-                        },
-                        "&:hover fieldset": {
-                          borderColor: "white",
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "white",
-                        },
-                      },
+                      color: "white",
+                      margin: "auto",
                     }}
                   />
-                  <TextField
-                    id="outlined-basic"
-                    label="Payment Password"
-                    variant="outlined"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    sx={{
-                      width: "100%",
-                      "& .MuiInputBase-input": {
-                        color: "white",
-                      },
-                      "& .MuiInputLabel-root": {
-                        color: "white",
-                      },
-                      "& .MuiInputLabel-root.Mui-focused": {
-                        color: "white",
-                      },
-                      marginTop: "20px",
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "white",
-                        },
-                        "&:hover fieldset": {
-                          borderColor: "white",
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "white",
-                        },
-                      },
-                    }}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={handleClickShowPassword}
-                            edge="end"
-                            sx={{ color: "white" }}
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  <Box
-                    sx={{
-                      width: "100%",
-                      textAlign: "center",
-                      marginTop: "20px",
-                    }}
-                  >
-                    <Button
-                      type="button"
-                      sx={{
-                        background: "#fff",
-                        color: "black",
-                        width: "80%",
-                        height: "45px",
-                        borderRadius: "15px",
-                        fontSize: { xs: "10px", sm: "14px" },
-                        fontWeight: "bold",
-                        "&:hover": {
-                          background: "#fff",
-                        },
-                      }}
-                      onClick={handleSubmitSell}
-                    >
-                      Withdraw
-                    </Button>
-                  </Box>
                 </Box>
               ) : (
-                <Box
-                  sx={{ width: "100%", margin: "auto", textAlign: "center" }}
+                <Typography
+                  sx={{
+                    color: "white",
+                    fontSize: "25px",
+                    fontWeight: 600,
+                    textAlign: "Center",
+                  }}
                 >
-                  <Typography
-                    sx={{
-                      color: "white",
-                      fontSize: "30px",
-                      textAlign: "center",
-                    }}
-                  >
-                    You have not created a payment password.
-                  </Typography>
-                  <Button
-                    type="button"
-                    href="/security"
-                    sx={{
-                      background: "#fff",
-                      color: "black",
-                      width: "250px",
-                      height: "45px",
-                      borderRadius: "15px",
-                      marginTop: "20px",
-                      fontWeight: 600,
-                      "&:hover": {
-                        background: "#fff",
-                      },
-                    }}
-                  >
-                    Add Password Payment
-                  </Button>
-                </Box>
+                  No transactions have occurred yet.
+                </Typography>
               )}
-            </CustomTabPanel>
+            </Box>
           </Box>
         ) : (
           <Box

@@ -516,34 +516,34 @@ export default function HomePage() {
                 }}
               >
                 <Button
-                  href="/asset"
+                  href="/deposit"
                   sx={{
                     width: "45%",
                     height: "35px",
                     borderRadius: "15px",
-                    background: "#3cff20",
+                    background: "#bafc42",
                     color: "black",
                     "&:hover": {
-                      background: "#3cff20",
+                      background: "#bafc42",
                     },
                   }}
                 >
                   Deposit USDT
                 </Button>
                 <Button
-                  href="/asset"
+                  href="/withdraw"
                   sx={{
                     width: "45%",
                     height: "35px",
                     borderRadius: "15px",
-                    background: "#3cff20",
+                    background: "#bafc42",
                     color: "black",
                     "&:hover": {
-                      background: "#3cff20",
+                      background: "#bafc42",
                     },
                   }}
                 >
-                  Deposit PI
+                  withdraw
                 </Button>
               </Box>
               <Box
