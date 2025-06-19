@@ -218,7 +218,11 @@ export default function StakingPage() {
         <Box
           sx={{
             width: "90%",
-            margin: "0 auto",
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: "10px",
+            margin: "auto",
           }}
         >
           {orepool?.map((item: any, index: number) => (
