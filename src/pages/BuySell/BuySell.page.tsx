@@ -300,8 +300,8 @@ export default function BuySellPage() {
                       color: "white",
                       fontWeight: "bold",
                       borderRadius: "12px",
-                      padding: "8px 24px",
-                      minWidth: "100px",
+                      padding: "8px 15px",
+                      minWidth: "75px",
                       textTransform: "capitalize",
                       border:
                         value === 0
@@ -389,8 +389,8 @@ export default function BuySellPage() {
                       color: "white",
                       fontWeight: "bold",
                       borderRadius: "12px",
-                      padding: "8px 24px",
-                      minWidth: "100px",
+                      padding: "8px 15px",
+                      minWidth: "75px",
                       textTransform: "capitalize",
                       border:
                         value === 1
@@ -540,7 +540,7 @@ export default function BuySellPage() {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  gap: 2,
+                  gap: 1,
                   // paddingBottom: 2,
                 }}
               >
@@ -551,8 +551,8 @@ export default function BuySellPage() {
                     color: "white",
                     fontWeight: "bold",
                     borderRadius: "12px",
-                    padding: "8px 24px",
-                    minWidth: "100px",
+                    padding: "8px 15px",
+                    minWidth: "75px",
                     textTransform: "capitalize",
                     border:
                       value === 0
@@ -639,8 +639,8 @@ export default function BuySellPage() {
                     color: "white",
                     fontWeight: "bold",
                     borderRadius: "12px",
-                    padding: "8px 24px",
-                    minWidth: "100px",
+                    padding: "8px 15px",
+                    minWidth: "75px",
                     textTransform: "capitalize",
                     border:
                       value === 1
