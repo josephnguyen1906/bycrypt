@@ -446,7 +446,7 @@ export default function BuyComponent(progs: TabProps) {
               background: "white",
               borderRadius: "10px",
               padding: "20px",
-              width: "70%",
+              width: "90%",
               textAlign: "center",
               position: "relative",
             }}
@@ -748,6 +748,7 @@ export default function BuyComponent(progs: TabProps) {
                     color: "black",
                     background: "#00d084",
                     marginTop: "10px",
+                    fontSize: "15px",
                     "&:hover": {
                       background: "#00d084",
                     },
