@@ -74,6 +74,8 @@ export default function BuySellPage() {
   const [trade, setTrade] = useState<any>(null);
   const [countdown, setCountdown] = useState<number | null>(null);
   const [showPopup, setShowPopup] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -115,6 +117,14 @@ export default function BuySellPage() {
 
     return () => clearInterval(interval);
   }, [countdown]);
+  const preloadImage = (src: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => resolve();
+      img.onerror = () => reject();
+    });
+  };
 
   const fetchResult = async () => {
     try {
@@ -123,6 +133,7 @@ export default function BuySellPage() {
       setResult(res.data);
       setCountdown(null);
       setTrade(null);
+      await preloadImage("/images/thongbao.png"); // preload ảnh
       setShowPopup(true);
       // toast.success("Order created successfully");
     } catch (error: any) {
@@ -374,8 +385,8 @@ export default function BuySellPage() {
                     console.log("Order result:", orderData);
                     if (orderData) {
                       setTrade(orderData);
-                      // setCountdown(orderData.time);
-                      setCountdown(30);
+                      setCountdown(orderData.time);
+                      // setCountdown(30);
                     }
                   }}
                 />
@@ -388,8 +399,8 @@ export default function BuySellPage() {
                     console.log("Order result:", orderData);
                     if (orderData) {
                       setTrade(orderData);
-                      // setCountdown(orderData.time);
-                      setCountdown(30);
+                      setCountdown(orderData.time);
+                      // setCountdown(30);
                     }
                   }}
                 />
@@ -573,8 +584,8 @@ export default function BuySellPage() {
                   console.log("Order result:", orderData);
                   if (orderData) {
                     setTrade(orderData);
-                    // setCountdown(orderData.time);
-                    setCountdown(30);
+                    setCountdown(orderData.time);
+                    // setCountdown(30);
                   }
                 }}
               />
@@ -587,8 +598,8 @@ export default function BuySellPage() {
                   console.log("Order result:", orderData);
                   if (orderData) {
                     setTrade(orderData);
-                    // setCountdown(orderData.time);
-                    setCountdown(30);
+                    setCountdown(orderData.time);
+                    // setCountdown(30);
                   }
                 }}
               />
@@ -622,6 +633,7 @@ export default function BuySellPage() {
                   component="img"
                   src="/images/thongbao.png"
                   alt="Thông báo"
+                  onLoad={() => setImageLoaded(true)}
                   sx={{
                     width: "100%",
                     height: "auto",
@@ -629,33 +641,33 @@ export default function BuySellPage() {
                     borderRadius: "10px",
                   }}
                 />
-
-                <Box
-                  sx={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    textAlign: "center",
-                    width: "100%",
-                    px: 2,
-                    opacity: "2",
-                  }}
-                >
-                  <Typography
-                    variant="h6"
+                {imageLoaded && (
+                  <Box
                     sx={{
-                      fontSize: "35px",
-                      fontWeight: "bold",
-                      color: result?.is_win === 1 ? "#00c853" : "red",
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      textAlign: "center",
+                      width: "100%",
+                      px: 2,
                     }}
                   >
-                    {result?.is_win === 1 ? "+" : "-"}
-                    {result
-                      ? formatCurrency(Number(result?.ploss), "en", "USD")
-                      : 0}
-                  </Typography>
-                </Box>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontSize: "35px",
+                        fontWeight: "bold",
+                        color: result?.is_win === 1 ? "#00c853" : "red",
+                      }}
+                    >
+                      {result?.is_win === 1 ? "+" : "-"}
+                      {result
+                        ? formatCurrency(Number(result?.ploss), "en", "USD")
+                        : 0}
+                    </Typography>
+                  </Box>
+                )}
               </Box>
             </Box>
           )}
