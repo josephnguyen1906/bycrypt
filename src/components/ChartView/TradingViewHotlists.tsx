@@ -33,91 +33,91 @@ const TradingViewHotlists: React.FC = () => {
           title: "Favorite",
           symbols: [
             {
-              s: "CRYPTOCAP:BTC",
+              s: "OKX:BTCUSDT",
             },
             {
-              s: "CRYPTOCAP:ETH",
+              s: "OKX:ETHUSDT",
             },
             {
-              s: "OKX:PIUSD",
+              s: "OKX:PIUSDT",
             },
             {
-              s: "CRYPTOCAP:SOL",
+              s: "OKX:SOLUSDT",
             },
             {
-              s: "CAPITALCOM:DOGEUSD",
+              s: "OKX:DOGEUSDT",
             },
             {
               s: "OKX:OKBUSDT",
             },
             {
-              s: "BINANCE:SPKUSDT.P",
+              s: "OKX:SPKUSDT.P",
             },
             {
-              s: "CRYPTOCAP:PEPE",
+              s: "OKX:PEPEUSDT",
             },
             {
-              s: "OKX:RADARUSD",
+              s: "OKX:IPUSDT",
             },
             {
-              s: "BINANCE:TRUMPUSDT",
+              s: "OKX:TRUMPUSDT",
             },
             {
-              s: "BITMEX:BXT",
+              s: "OKX:XRPUSDT",
             },
             {
-              s: "NASDAQ:RAY",
+              s: "OKX:RESOLVUSDT",
             },
             {
-              s: "CRYPTOCAP:XRP",
+              s: "OKX:TUSDT",
             },
             {
-              s: "TSXV:OLV",
+              s: "OKX:XUSDT",
             },
             {
-              s: "NASDAQ:HUMA",
+              s: "OKX:MAGICUSDT",
             },
             {
-              s: "CRYPTOCAP:SUI",
+              s: "OKX:HUMAUSDT",
             },
             {
-              s: "CSE:IP",
+              s: "OKX:BCHUSDT",
             },
             {
-              s: "BME:UNI",
+              s: "OKX:SUIUSDT",
             },
             {
-              s: "CRYPTOCAP:BCH",
+              s: "OKX:UNIUSDT",
             },
             {
-              s: "BITMEX:BKAITOT",
+              s: "OKX:PNUTUSDT",
             },
             {
-              s: "CBOE:WLDR",
+              s: "OKX:RAYUSDT",
             },
             {
-              s: "GEMINI:JTOUSD",
+              s: "OKX:SNTUSDT",
             },
             {
-              s: "CRYPTOCAP:ADA",
+              s: "OKX:MOODENGUSDT",
             },
             {
-              s: "CRYPTOCAP:TON",
+              s: "OKX:ADAUSDT",
             },
             {
-              s: "OMXTSE:MAGIC",
+              s: "OKX:WCTUSDT",
             },
             {
-              s: "CRYPTO:ZKJUSD",
+              s: "OKX:TONUSDT",
             },
             {
-              s: "NASDAQ:WCT",
+              s: "OKX:AERGOUSDT",
             },
             {
-              s: "BX:AAVE",
+              s: "OKX:AAVEUSDT",
             },
             {
-              s: "CRYPTOCAP:FIL",
+              s: "OKX:FILUSDT",
             },
           ],
           originalTitle: "Favorite",

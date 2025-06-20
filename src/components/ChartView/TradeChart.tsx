@@ -23,7 +23,7 @@ const TradeChart = (props: TradeChartProps) => {
     script.innerHTML = JSON.stringify({
       width: props.width || "100%",
       height: props.height || "100%",
-      symbol: `COINBASE:${props.symbols || "BTCUSD"}`,
+      symbol: `OKX:${props.symbols || "BTCUSD"}`,
       interval: "D",
       timezone: "Etc/UTC",
       hide_top_toolbar: true,
