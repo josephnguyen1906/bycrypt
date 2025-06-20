@@ -312,7 +312,8 @@ export default function SellComponent(progs: TabProps) {
               },
             }}
           >
-            Current balance: {progs.user?.balance.usdt} USDT
+            Current balance:{" "}
+            {formatCurrency(Number(progs.user?.balance.usdt), "en", "USD")}
           </Typography>
           <Button
             type="button"
