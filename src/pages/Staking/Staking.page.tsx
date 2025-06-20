@@ -203,10 +203,7 @@ export default function StakingPage() {
       </Box>
       <Box sx={{ width: "90%", margin: "auto" }}>
         <img
-          src={
-            (websiteConfig && websiteConfig?.websildeb) ||
-            "/images/photo_2025-06-18_15-01-46-removebg-preview.png"
-          }
+          src={websiteConfig && websiteConfig?.websildeb}
           style={{ width: "100%", borderRadius: "15px" }}
         />
       </Box>

@@ -75,7 +75,7 @@ const DailyRewards = () => {
   return (
     <Box bgcolor="#000" color="#fff" minHeight="100vh" padding={3}>
       <Typography
-        variant="h4"
+        variant="h5"
         fontWeight="bold"
         gutterBottom
         textAlign="center"
@@ -89,7 +89,7 @@ const DailyRewards = () => {
       </Typography>
       <Box
         sx={{
-          height: "55vh",
+          height: "50vh",
           overflowY: "auto",
           paddingRight: 1,
           scrollbarWidth: "none",
