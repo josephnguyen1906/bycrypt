@@ -15,7 +15,7 @@ export default function SellComponent(progs: TabProps) {
   const [amount, setAmount] = useState("100");
   const [price, setPrice] = useState<Number | null>(100);
   const [type, setType] = useState(0);
-  const [hytime, setHytime] = useState("1");
+  const [hytime, setHytime] = useState("10");
   const [hyykbl, setHyykbl] = useState("10");
   const router = useRouter();
   const [buySellConfig, setBuySellConfig] = useState<any>(null);

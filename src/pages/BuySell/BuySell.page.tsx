@@ -58,6 +58,7 @@ export default function BuySellPage() {
   const { user } = useAuth();
   const [listCoin, setListCoin] = useState<any>(null);
   const [coin, setCoin] = useState<any>("BTCUSDT");
+  const [symbol, setSymbol] = useState<any>("btc-usdt");
   const [coinTitle, setCoinTitle] = useState<any>("BTC/USDT");
   const [value, setValue] = useState(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -84,7 +85,6 @@ export default function BuySellPage() {
       setCoin(base + quote);
     }
   };
-
   return (
     <Box sx={{ background: "#000", paddingTop: { xs: "0px", sm: "70px" } }}>
       <Box
@@ -177,10 +177,10 @@ export default function BuySellPage() {
               />
             </Tabs>
             <CustomTabPanel value={value} index={0}>
-              <BuyComponent user={user} value={coin} />
+              <BuyComponent user={user} value={symbol} />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-              <SellComponent user={user} value={coin} />
+              <SellComponent user={user} value={symbol} />
             </CustomTabPanel>
           </Box>
         </Box>
@@ -201,7 +201,9 @@ export default function BuySellPage() {
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
             value={coinTitle}
-            onChange={(e) => handleClick(e.target.value)}
+            onChange={(e) => {
+              handleClick(e.target.value);
+            }}
             IconComponent={ArrowDropDownCircleOutlined}
             disableUnderline
             sx={{
@@ -216,6 +218,7 @@ export default function BuySellPage() {
                 <MenuItem
                   key={index}
                   value={coin.title}
+                  onClick={() => setSymbol(coin.symbol)}
                   sx={{ color: "black" }}
                 >
                   {coin.title}
@@ -346,10 +349,10 @@ export default function BuySellPage() {
                 />
               </Tabs>
               <CustomTabPanel value={value} index={0}>
-                <BuyComponent user={user} value={coin} />
+                <BuyComponent user={user} value={symbol} />
               </CustomTabPanel>
               <CustomTabPanel value={value} index={1}>
-                <SellComponent user={user} value={coin} />
+                <SellComponent user={user} value={symbol} />
               </CustomTabPanel>
             </Box>
           </Box>

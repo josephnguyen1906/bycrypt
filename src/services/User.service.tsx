@@ -146,6 +146,9 @@ const getOverdueissue = () => {
 const getMyStaking = () => {
   return contentInstance.get("/api/issue/me");
 };
+const getOrderResult = (id: number) => {
+  return contentInstance.get("/api/contract/check-order?id=" + id);
+};
 export {
   loginUser,
   signupUser,
@@ -175,4 +178,5 @@ export {
   getBbhistoryorder,
   buySubscribe,
   getMyStaking,
+  getOrderResult,
 };

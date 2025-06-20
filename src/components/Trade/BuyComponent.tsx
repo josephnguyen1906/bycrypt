@@ -1,11 +1,18 @@
 import useAuth from "@/hook/useAuth";
 import { useDebounce } from "@/hook/useDebounce";
-import { createOrder, getBuySellConfig } from "@/services/User.service";
+import {
+  createOrder,
+  getBuySellConfig,
+  getOrderResult,
+} from "@/services/User.service";
 import { IUser } from "@/shared/interfaces";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Divider, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import { CircleCountdown } from "../CountdownCircle/CountdownCircle";
+import { formatCurrency } from "@/utils/formatMoney";
+import { CloseOutlined } from "@mui/icons-material";
 interface TabProps {
   user: IUser | null;
   value: string;
@@ -16,8 +23,13 @@ export default function BuyComponent(progs: TabProps) {
   const [amount, setAmount] = useState("100");
   const [price, setPrice] = useState<Number | null>(100);
   const [type, setType] = useState(0);
-  const [hytime, setHytime] = useState("1");
-  const [hyykbl, setHyykbl] = useState("10");
+  const [hytime, setHytime] = useState("5");
+  const [hyykbl, setHyykbl] = useState("15");
+  const [countdown, setCountdown] = useState<number | null>(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [result, setResult] = useState<any>(null);
+  const [trade, setTrade] = useState<any>(null);
+
   const router = useRouter();
   const [buySellConfig, setBuySellConfig] = useState<any>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -86,12 +98,45 @@ export default function BuyComponent(progs: TabProps) {
       formData.append("method", "1");
       formData.append("uprate", hyykbl);
 
-      await createOrder(formData);
-      toast.success("Order created successfully");
+      await createOrder(formData).then((res) => {
+        setTrade(res.data);
+        setCountdown(res.data.time);
+        setShowPopup(true);
+      });
+      // toast.success("Order created successfully");
     } catch (error: any) {
       toast.error(error.message || "Order created failed, please check again!");
     }
   };
+
+  useEffect(() => {
+    if (countdown === null || countdown <= 0) return;
+
+    const interval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev && prev <= 1) {
+          clearInterval(interval);
+          fetchResult(); // khi countdown = 0 thì gọi API
+          return 0;
+        }
+        return (prev ?? 0) - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [countdown]);
+
+  const fetchResult = async () => {
+    try {
+      // Gọi API lấy kết quả
+      const res = await getOrderResult(trade?.id); // bạn cần tạo service API này
+      setResult(res.data);
+      // toast.success("Result received");
+    } catch (error: any) {
+      toast.error("Failed to fetch result");
+    }
+  };
+
   return (
     <div>
       {progs.user ? (
@@ -378,6 +423,344 @@ export default function BuyComponent(progs: TabProps) {
             >
               Login
             </Button>
+          </Box>
+        </Box>
+      )}
+      {showPopup && (
+        <Box
+          sx={{
+            position: "fixed",
+            top: "0",
+            left: "0",
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(0,0,0,0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+          }}
+        >
+          <Box
+            sx={{
+              background: "white",
+              borderRadius: "10px",
+              padding: "20px",
+              width: "70%",
+              textAlign: "center",
+              position: "relative",
+            }}
+          >
+            {result ? (
+              <>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontSize: "25px",
+                    fontWeight: "bold",
+                    padding: "5px",
+                  }}
+                >
+                  Notification
+                </Typography>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontSize: "16px",
+                    paddingBottom: "5px",
+                  }}
+                >
+                  The results are out, Staking announces the results as follows:
+                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    borderBottom: "1px solid lightgray",
+                    padding: "5px",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "500",
+                      color: "black",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    Status
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      color: "black",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {result.is_win === 1 ? "You Win" : "You Lose"}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    borderBottom: "1px solid lightgray",
+                    padding: "5px",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "500",
+                      color: "black",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    Bet amount
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      color: "black",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {formatCurrency(result.num, "USD", "USD")}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    borderBottom: "1px solid lightgray",
+                    padding: "5px",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      color: "black",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    Amount profit or loss
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      color: "black",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {formatCurrency(result.ploss, "USD", "USD")}
+                  </Typography>
+                </Box>
+                <Button
+                  sx={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "5px",
+                    color: "black",
+                    "&:hover": {
+                      background: "none",
+                    },
+                  }}
+                  onClick={() => {
+                    setShowPopup(false);
+                    setResult(null);
+                  }}
+                >
+                  <CloseOutlined style={{ fontSize: "20px" }} />
+                </Button>
+              </>
+            ) : (
+              <>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontSize: "25px",
+                    fontWeight: "bold",
+                    padding: "5px",
+                  }}
+                >
+                  Notification
+                </Typography>
+                <Box sx={{ width: "50%", margin: "auto" }}>
+                  <CircleCountdown
+                    duration={trade.time}
+                    timeLeft={countdown ?? 0}
+                  />
+                </Box>
+                <Typography
+                  sx={{
+                    fontSize: "16px",
+                    fontWeight: "500",
+                    color: "black",
+                    textTransform: "capitalize",
+                    textAlign: "left",
+                    paddingBottom: "5px",
+                  }}
+                >
+                  Order placed successfully, the order information is as
+                  follows:
+                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    borderBottom: "1px solid lightgray",
+                    padding: "5px",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "500",
+                      color: "black",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    Type:
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "500",
+                      color: "black",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {trade.hyzd === 1 ? "Buy" : "Sell"}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    borderBottom: "1px solid lightgray",
+                    padding: "5px",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "500",
+                      color: "black",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    Price now:
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "500",
+                      color: "black",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {formatCurrency(trade.buyprice, "USD", "USD")}
+                  </Typography>
+                </Box>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    borderBottom: "1px solid lightgray",
+                    padding: "5px",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "500",
+                      color: "black",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    Quantity:
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "500",
+                      color: "black",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {Number(amount)}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    padding: "5px",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "500",
+                      color: "black",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    Expected profit:
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "500",
+                      color: "black",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {hyykbl}%
+                  </Typography>
+                </Box>
+                <Button
+                  sx={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "5px",
+                    color: "black",
+                    "&:hover": {
+                      background: "none",
+                    },
+                  }}
+                  onClick={() => {
+                    setShowPopup(false);
+                    setResult(null);
+                  }}
+                >
+                  <CloseOutlined style={{ fontSize: "20px" }} />
+                </Button>
+                <Button
+                  sx={{
+                    width: "100%",
+                    height: "40px",
+                    color: "black",
+                    background: "#00d084",
+                    marginTop: "10px",
+                    "&:hover": {
+                      background: "#00d084",
+                    },
+                  }}
+                  onClick={() => {
+                    setShowPopup(false);
+                    setResult(null);
+                  }}
+                >
+                  Continue to place the order
+                </Button>
+              </>
+            )}
           </Box>
         </Box>
       )}
