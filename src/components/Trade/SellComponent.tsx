@@ -310,8 +310,9 @@ export default function SellComponent(progs: TabProps) {
               width: "100%",
               height: "45px",
               borderRadius: "15px",
-              fontSize: { xs: "10px", sm: "14px" },
+              fontSize: { xs: "14px", sm: "14px" },
               fontWeight: "bold",
+              textTransform: "capitalize",
               "&:hover": {
                 background: "#fff",
               },

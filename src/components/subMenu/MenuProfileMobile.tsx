@@ -342,6 +342,7 @@ export default function MenuProfileMobile(data: userProps) {
                   borderRadius: "15px",
                   background: "#fff",
                   border: "1px solid #000",
+                  textTransform: "capitalize",
                   color: "black",
                   "&:hover": {
                     background: "white",
@@ -358,6 +359,7 @@ export default function MenuProfileMobile(data: userProps) {
                   borderRadius: "15px",
                   background: "#909090",
                   border: "1px solid #000",
+                  textTransform: "capitalize",
                   color: "black",
                   "&:hover": {
                     background: "#909090",

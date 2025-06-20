@@ -290,7 +290,7 @@ export default function Stakingdetail(data: userProps) {
             color: "black",
             borderRadius: "10px",
             fontSize: "14px",
-
+            textTransform: "capitalize",
             "&:hover": {
               backgroundColor: "#fff",
             },

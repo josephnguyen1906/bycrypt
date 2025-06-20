@@ -177,6 +177,7 @@ export default function StakingPage() {
               height: "45px",
               borderRadius: "10px",
               marginTop: "20px",
+              textTransform: "capitalize",
               "&:hover": {
                 backgroundColor: "lightgray",
                 color: "#000",

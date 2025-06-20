@@ -153,6 +153,7 @@ export default function ExcavatorPage() {
               height: "45px",
               borderRadius: "10px",
               marginTop: "20px",
+              textTransform: "capitalize",
               "&:hover": {
                 backgroundColor: "lightgray",
                 color: "#000",
@@ -208,11 +209,13 @@ export default function ExcavatorPage() {
                   },
 
                   "& .MuiTab-root": {
+                    textTransform: "capitalize",
                     color: "gray",
                     fontSize: "18px",
                     fontWeight: 500,
                     "&:hover": { color: "gray" },
                     "&.Mui-selected": {
+                      textTransform: "capitalize",
                       color: "#fff",
                       fontWeight: 700,
                     },
@@ -327,6 +330,7 @@ export default function ExcavatorPage() {
                             background: "#fff",
                             color: "black",
                             borderRadius: "10px",
+                            textTransform: "capitalize",
                             "&:hover": {
                               backgroundColor: "#fff",
                             },
@@ -442,6 +446,7 @@ export default function ExcavatorPage() {
                             background: "#fff",
                             color: "black",
                             borderRadius: "10px",
+                            textTransform: "capitalize",
                             "&:hover": {
                               backgroundColor: "#fff",
                             },
@@ -557,6 +562,7 @@ export default function ExcavatorPage() {
                             background: "#fff",
                             color: "black",
                             borderRadius: "10px",
+                            textTransform: "capitalize",
                             "&:hover": {
                               backgroundColor: "#fff",
                             },
