@@ -528,7 +528,7 @@ export default function BuyComponent(progs: TabProps) {
                       textTransform: "capitalize",
                     }}
                   >
-                    {formatCurrency(result.num, "USD", "USD")}
+                    {formatCurrency(Number(result.num), "USD", "USD")}
                   </Typography>
                 </Box>
                 <Box
@@ -557,7 +557,7 @@ export default function BuyComponent(progs: TabProps) {
                       textTransform: "capitalize",
                     }}
                   >
-                    {formatCurrency(result.ploss, "USD", "USD")}
+                    {formatCurrency(Number(result.ploss), "USD", "USD")}
                   </Typography>
                 </Box>
                 <Button
