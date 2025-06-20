@@ -351,10 +351,37 @@ export default function BuySellPage() {
                         fontSize: "12px",
                       }}
                     >
-                      Please place the order
+                      Place the order
                     </Typography>
                   )}
-
+                  <Divider
+                    orientation="vertical"
+                    variant="middle"
+                    flexItem
+                    sx={{ background: "gray" }}
+                  />
+                  <Button
+                    type="button"
+                    sx={{
+                      width: "80px",
+                      height: "35px",
+                      background: "none",
+                      color: "white",
+                      display: "flex",
+                      gap: "5px",
+                      justifyContent: "center",
+                      textAlign: "center",
+                      fontSize: "10px",
+                      textTransform: "capitalize",
+                      "&:hover": {
+                        background: "none",
+                      },
+                    }}
+                    href="/bill"
+                  >
+                    <HistoryIcon fill="white" />
+                    History
+                  </Button>
                   <Button
                     onClick={() => setValue(1)}
                     sx={{
@@ -384,7 +411,7 @@ export default function BuySellPage() {
                   sx={{
                     width: "100px",
                     height: "35px",
-                    background: "#909090",
+                    background: "white",
                     color: "black",
                     display: "flex",
                     gap: "5px",
@@ -394,7 +421,7 @@ export default function BuySellPage() {
                     marginTop: "8px",
                     borderRadius: "10px",
                     "&:hover": {
-                      background: "#909090",
+                      background: "white",
                     },
                   }}
                   href="/bill"
@@ -538,7 +565,6 @@ export default function BuySellPage() {
                 >
                   Buy
                 </Button>
-
                 {trade ? (
                   <Box
                     sx={{
@@ -575,10 +601,37 @@ export default function BuySellPage() {
                       fontSize: "12px",
                     }}
                   >
-                    Please place the order
+                    Place the order
                   </Typography>
                 )}
-
+                <Divider
+                  orientation="vertical"
+                  variant="middle"
+                  flexItem
+                  sx={{ background: "gray" }}
+                />
+                <Button
+                  type="button"
+                  sx={{
+                    width: "80px",
+                    height: "35px",
+                    background: "none",
+                    color: "white",
+                    display: "flex",
+                    gap: "5px",
+                    justifyContent: "center",
+                    textAlign: "center",
+                    fontSize: "10px",
+                    textTransform: "capitalize",
+                    "&:hover": {
+                      background: "none",
+                    },
+                  }}
+                  href="/bill"
+                >
+                  <HistoryIcon fill="white" />
+                  History
+                </Button>
                 <Button
                   onClick={() => setValue(1)}
                   sx={{
@@ -602,29 +655,7 @@ export default function BuySellPage() {
                 </Button>
               </Box>
             </Tabs>
-            <Button
-              type="button"
-              sx={{
-                width: "100px",
-                height: "35px",
-                background: "#909090",
-                color: "black",
-                display: "flex",
-                gap: "5px",
-                justifyContent: "center",
-                margin: "auto",
-                textAlign: "center",
-                marginTop: "8px",
-                borderRadius: "10px",
-                "&:hover": {
-                  background: "#909090",
-                },
-              }}
-              href="/bill"
-            >
-              <HistoryIcon />
-              History
-            </Button>
+
             <CustomTabPanel value={value} index={0}>
               <BuyComponent
                 user={user}
