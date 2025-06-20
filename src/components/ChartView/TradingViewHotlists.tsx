@@ -33,10 +33,10 @@ const TradingViewHotlists: React.FC = () => {
           title: "Favorite",
           symbols: [
             {
-              s: "BITSTAMP:BTCUSD",
+              s: "CRYPTOCAP:BTC",
             },
             {
-              s: "COINBASE:ETHUSD",
+              s: "CRYPTOCAP:ETH",
             },
             {
               s: "OKX:PIUSD",

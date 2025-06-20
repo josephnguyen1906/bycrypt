@@ -26,8 +26,9 @@ import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import useAuth from "@/hook/useAuth";
 import TradingViewHotlists from "@/components/ChartView/TradingViewHotlists";
 import { CoinIcon, SearchIcon } from "@/shared/Svgs/Svg.component";
-import { Search } from "@mui/icons-material";
+import { CloseOutlined, Search } from "@mui/icons-material";
 import { formatCurrency } from "@/utils/formatMoney";
+import { getWebsiteConfig } from "@/services/User.service";
 const responsiveSettings = [
   {
     breakpoint: 500,
@@ -47,21 +48,37 @@ const responsiveSettings = [
 
 export default function HomePage() {
   const { user, loading } = useAuth();
+  const [showPopup, setShowPopup] = useState(false);
+  const [websiteConfig, setWebsiteConfig] = useState<any>(null);
   const route = useRouter();
+  useEffect(() => {
+    const referral = async () => {
+      try {
+        const buySellConfig: any = await getWebsiteConfig();
+        if (buySellConfig) {
+          setWebsiteConfig(buySellConfig.data);
+        }
 
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const scrollPosition = window.scrollY;
-  //     const windowHeight = window.innerHeight;
-  //     const documentHeight = document.documentElement.scrollHeight;
-  //     const isNearBottom = scrollPosition > documentHeight - windowHeight - 800;
-  //     setIsFixed(scrollPosition > 300 && !isNearBottom);
-  //   };
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
+        const hasShownPopup = sessionStorage.getItem("popupShown");
+
+        if (user && !hasShownPopup) {
+          setShowPopup(true);
+          sessionStorage.setItem("popupShown", "true");
+
+          // Auto close sau 10 giây (tuỳ chỉnh)
+          setTimeout(() => {
+            setShowPopup(false);
+          }, 10000);
+        }
+      } catch (errors: any) {
+        // toast.error(errors?.message);
+      }
+    };
+
+    if (!loading) {
+      referral();
+    }
+  }, [user, loading]);
 
   return (
     <div className="home">
@@ -739,6 +756,73 @@ export default function HomePage() {
                   </AccordionDetails>
                 </Accordion>
               </Box>
+              {showPopup && (
+                <Box
+                  sx={{
+                    position: "fixed",
+                    top: "0",
+                    left: "0",
+                    width: "100vw",
+                    height: "100vh",
+                    background: "rgba(0,0,0,0.5)",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    zIndex: 1000,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      background: "white",
+                      borderRadius: "10px",
+                      padding: "20px",
+                      width: "90%",
+                      textAlign: "center",
+                      position: "relative",
+                      marginTop: "-20%",
+                    }}
+                  >
+                    <>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontSize: "25px",
+                          fontWeight: "bold",
+                          padding: "5px",
+                        }}
+                      >
+                        Notification
+                      </Typography>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontSize: "16px",
+                          padding: "5px",
+                        }}
+                      >
+                        {(websiteConfig && websiteConfig?.checkin_notify) ||
+                          "Welcome to Staking"}
+                      </Typography>
+                      <Button
+                        sx={{
+                          position: "absolute",
+                          top: "10px",
+                          right: "5px",
+                          color: "black",
+                          "&:hover": {
+                            background: "none",
+                          },
+                        }}
+                        onClick={() => {
+                          setShowPopup(false);
+                        }}
+                      >
+                        <CloseOutlined style={{ fontSize: "20px" }} />
+                      </Button>
+                    </>
+                  </Box>
+                </Box>
+              )}
             </Box>
           )}
         </div>

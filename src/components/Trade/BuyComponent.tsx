@@ -562,6 +562,25 @@ export default function BuyComponent(progs: TabProps) {
                 </Box>
                 <Button
                   sx={{
+                    width: "100%",
+                    height: "40px",
+                    color: "black",
+                    background: "#00d084",
+                    marginTop: "10px",
+                    fontSize: "15px",
+                    "&:hover": {
+                      background: "#00d084",
+                    },
+                  }}
+                  onClick={() => {
+                    setShowPopup(false);
+                    setResult(null);
+                  }}
+                >
+                  Continue to place the order
+                </Button>
+                <Button
+                  sx={{
                     position: "absolute",
                     top: "10px",
                     right: "5px",

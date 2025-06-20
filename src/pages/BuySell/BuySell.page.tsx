@@ -92,98 +92,6 @@ export default function BuySellPage() {
           height: "900px",
         }}
       >
-        <Box
-          sx={{
-            display: {
-              xs: "flex",
-              sm: "block",
-            },
-          }}
-        >
-          <Box
-            sx={{
-              width: "90%",
-              display: {
-                xs: "block",
-                sm: "none",
-              },
-              margin: "auto",
-              paddingTop: "10px",
-            }}
-          >
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              aria-label="basic tabs example"
-              TabIndicatorProps={{ style: { display: "none" } }} // ẩn gạch dưới
-              sx={{
-                backgroundColor: "#2c2c2c",
-                borderRadius: "999px", // bo tròn toàn bộ khung
-                minHeight: "30px",
-                width: "fit-content",
-                margin: "auto",
-                display: "flex",
-                color: "#ffffff",
-                "& .MuiButtonBase-root-MuiTab-root": {
-                  "& .Mui-selected": {
-                    color: "white",
-                  },
-                },
-                "& .MuiTab-root": {
-                  textTransform: "none",
-                  borderRadius: "999px",
-                  minHeight: "30px",
-                  minWidth: "80px",
-                  px: 3,
-                  fontWeight: 500,
-                  color: "white",
-                  backgroundColor: "transparent",
-                  transition: "0.3s",
-                },
-
-                "& .Mui-selected": {
-                  backgroundColor: value === 1 ? "red" : "#00c853", // xanh lá
-                  color: "white",
-                  fontWeight: 600,
-                },
-                "& .MuiTabs-flexContainer": {
-                  color: "white", // màu chữ của tab
-                },
-              }}
-            >
-              <Tab
-                label="Buy"
-                {...a11yProps(0)}
-                sx={{
-                  color: "white",
-                  "&.Mui-selected": {
-                    backgroundColor: "#00c853",
-                    color: "white",
-                    fontWeight: 600,
-                  },
-                }}
-              />
-              <Tab
-                label="Sell"
-                {...a11yProps(1)}
-                sx={{
-                  color: "white",
-                  "&.Mui-selected": {
-                    backgroundColor: "red",
-                    color: "white",
-                    fontWeight: 600,
-                  },
-                }}
-              />
-            </Tabs>
-            <CustomTabPanel value={value} index={0}>
-              <BuyComponent user={user} value={symbol} />
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={1}>
-              <SellComponent user={user} value={symbol} />
-            </CustomTabPanel>
-          </Box>
-        </Box>
         <FormControl
           variant="standard"
           sx={{
@@ -226,7 +134,6 @@ export default function BuySellPage() {
               ))}
           </Select>
         </FormControl>
-
         <Box
           sx={{
             display: {
@@ -234,7 +141,6 @@ export default function BuySellPage() {
               sm: "flex",
             },
             gap: "10px",
-            paddingBottom: "100px",
           }}
         >
           <Box
@@ -355,6 +261,99 @@ export default function BuySellPage() {
                 <SellComponent user={user} value={symbol} />
               </CustomTabPanel>
             </Box>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            display: {
+              xs: "flex",
+              sm: "block",
+            },
+            paddingBottom: "100px",
+          }}
+        >
+          <Box
+            sx={{
+              width: "90%",
+              display: {
+                xs: "block",
+                sm: "none",
+              },
+              margin: "auto",
+              paddingTop: "10px",
+            }}
+          >
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="basic tabs example"
+              TabIndicatorProps={{ style: { display: "none" } }} // ẩn gạch dưới
+              sx={{
+                backgroundColor: "#2c2c2c",
+                borderRadius: "999px", // bo tròn toàn bộ khung
+                minHeight: "30px",
+                width: "fit-content",
+                margin: "auto",
+                display: "flex",
+                color: "#ffffff",
+                "& .MuiButtonBase-root-MuiTab-root": {
+                  "& .Mui-selected": {
+                    color: "white",
+                  },
+                },
+                "& .MuiTab-root": {
+                  textTransform: "none",
+                  borderRadius: "999px",
+                  minHeight: "30px",
+                  minWidth: "80px",
+                  px: 3,
+                  fontWeight: 500,
+                  color: "white",
+                  backgroundColor: "transparent",
+                  transition: "0.3s",
+                },
+
+                "& .Mui-selected": {
+                  backgroundColor: value === 1 ? "red" : "#00c853", // xanh lá
+                  color: "white",
+                  fontWeight: 600,
+                },
+                "& .MuiTabs-flexContainer": {
+                  color: "white", // màu chữ của tab
+                },
+              }}
+            >
+              <Tab
+                label="Buy"
+                {...a11yProps(0)}
+                sx={{
+                  color: "white",
+                  "&.Mui-selected": {
+                    backgroundColor: "#00c853",
+                    color: "white",
+                    fontWeight: 600,
+                  },
+                }}
+              />
+              <Tab
+                label="Sell"
+                {...a11yProps(1)}
+                sx={{
+                  color: "white",
+                  "&.Mui-selected": {
+                    backgroundColor: "red",
+                    color: "white",
+                    fontWeight: 600,
+                  },
+                }}
+              />
+            </Tabs>
+            <CustomTabPanel value={value} index={0}>
+              <BuyComponent user={user} value={symbol} />
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={1}>
+              <SellComponent user={user} value={symbol} />
+            </CustomTabPanel>
           </Box>
         </Box>
       </Box>
