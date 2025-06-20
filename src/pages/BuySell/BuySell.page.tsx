@@ -230,19 +230,6 @@ export default function BuySellPage() {
               gap: "10px",
             }}
           >
-            <Box
-              sx={{
-                padding: "10px",
-                height: "360px",
-              }}
-              aria-label="main mailbox folders"
-            >
-              <TradingViewSymbolInfo
-                width="100%"
-                height={"360"}
-                symbol={coin}
-              />
-            </Box>
             <Box sx={{ width: "100%", padding: "10px" }}>
               <Tabs
                 value={value}
@@ -399,11 +386,25 @@ export default function BuySellPage() {
                     console.log("Order result:", orderData);
                     if (orderData) {
                       setTrade(orderData);
-                      setCountdown(orderData.time);
+                      // setCountdown(orderData.time);
+                      setCountdown(30);
                     }
                   }}
                 />
               </CustomTabPanel>
+            </Box>
+            <Box
+              sx={{
+                padding: "10px",
+                height: "360px",
+              }}
+              aria-label="main mailbox folders"
+            >
+              <TradingViewSymbolInfo
+                width="100%"
+                height={"360"}
+                symbol={coin}
+              />
             </Box>
           </Box>
         </Box>
@@ -570,7 +571,8 @@ export default function BuySellPage() {
                   console.log("Order result:", orderData);
                   if (orderData) {
                     setTrade(orderData);
-                    setCountdown(orderData.time);
+                    // setCountdown(orderData.time);
+                    setCountdown(30);
                   }
                 }}
               />
