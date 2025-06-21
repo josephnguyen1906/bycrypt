@@ -204,22 +204,103 @@ export default function StakingPage() {
           <img src="/images/F695CAF106522D37.png" style={{ height: "300px" }} />
         </Box>
       </Box>
-      <Box sx={{ width: "90%", margin: "auto" }}>
+      <Box sx={{ width: "90%", margin: "auto", textAlign: "center" }}>
         <img
-          src={websiteConfig && websiteConfig?.websildeb}
-          style={{ width: "100%", borderRadius: "15px" }}
+          src={websiteConfig && websiteConfig?.websildea}
+          style={{
+            width: "100%",
+            height: "150px",
+            objectFit: "cover",
+            borderRadius: "15px",
+          }}
         />
       </Box>
       <Box
         sx={{
+          width: "90%",
+          margin: "0 auto",
+          display: "grid",
+        }}
+      >
+        <Typography
+          variant="h6"
+          sx={{
+            fontSize: "18px",
+            fontWeight: "bold",
+            color: "white",
+          }}
+        >
+          Consignment promotion:
+        </Typography>
+        <Typography
+          variant="h6"
+          sx={{
+            fontSize: "12px",
+            fontWeight: 550,
+            padding: "5px",
+            color: "white",
+          }}
+        >
+          1. Milestone: From 1,000 Pi to 10,000 Pi with a monthly profit of 10%
+        </Typography>
+        <Typography
+          variant="h6"
+          sx={{
+            fontSize: "12px",
+            fontWeight: 550,
+            padding: "5px",
+            color: "white",
+          }}
+        >
+          2. Milestone: From 10,000 Pi to 50,000 Pi with a monthly profit of 20%
+        </Typography>
+        <Typography
+          variant="h6"
+          sx={{
+            fontSize: "12px",
+            fontWeight: 550,
+            padding: "5px",
+            color: "white",
+          }}
+        >
+          3. Milestone: From 100.000 Pi to 150.000 Pi with a monthly profit of
+          25%
+        </Typography>
+        <Typography
+          variant="h6"
+          sx={{
+            fontSize: "12px",
+            fontWeight: 550,
+            padding: "5px",
+            color: "white",
+          }}
+        >
+          4. Milestone: From 150.000 Pi to 300.000 Pi with a monthly profit of
+          30%
+        </Typography>
+        <Typography
+          variant="h6"
+          sx={{
+            fontSize: "12px",
+            fontWeight: 550,
+            padding: "5px 0px 0px 5px",
+            color: "white",
+          }}
+        >
+          5. Milestone: From 300,000 Pi and above, the monthly interest is 45%.
+        </Typography>
+      </Box>
+      <Box
+        sx={{
           background: "#000",
-          padding: "20px 0",
+          // padding: "20px 0",
+          paddingTop: "10px",
         }}
       >
         <Typography
           sx={{
             textAlign: "center",
-            padding: "20px 0",
+            // padding: "20px 0",
             color: "#fff",
             fontSize: {
               xs: "20px",
@@ -392,7 +473,7 @@ export default function StakingPage() {
           <img src="/images/F695CAF106522D37.png" style={{ height: "300px" }} />
         </Box>
       </Box>
-      {showPopup && (
+      {/* {showPopup && (
         <Box
           sx={{
             position: "fixed",
@@ -512,7 +593,7 @@ export default function StakingPage() {
             </>
           </Box>
         </Box>
-      )}
+      )} */}
     </Box>
   );
 }
