@@ -19,12 +19,12 @@ interface TabProps {
 }
 
 export default function SellComponent(progs: TabProps) {
-  const [valueAmount, setValueAmount] = useState(0);
-  const [amount, setAmount] = useState("100");
-  const [price, setPrice] = useState<Number | null>(100);
+  const [valueAmount, setValueAmount] = useState<any>(null);
+  const [amount, setAmount] = useState<any>(null);
+  const [price, setPrice] = useState<Number | null>(null);
   const [type, setType] = useState(0);
-  const [hytime, setHytime] = useState("5");
-  const [hyykbl, setHyykbl] = useState("15");
+  const [hytime, setHytime] = useState<any>(null);
+  const [hyykbl, setHyykbl] = useState<any>(null);
   const router = useRouter();
   const [buySellConfig, setBuySellConfig] = useState<any>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -62,10 +62,11 @@ export default function SellComponent(progs: TabProps) {
             hy_tzed: data.hy_tzed?.split(",") || [],
             hy_min: data.hy_min?.split(",") || [],
           };
-          setHytime(buySellConfig.hy_time?.[0] || "0");
-          setHyykbl(buySellConfig.hy_ykbl?.[0] || "0");
-          setAmount(buySellConfig.hy_tzed?.[0] || "100");
-          setPrice(Number(buySellConfig.hy_tzed?.[0]) || 100);
+          setType(0);
+          setHytime(processedData.hy_time?.[0] || "3");
+          setHyykbl(processedData.hy_ykbl?.[0] || "15");
+          setAmount(processedData.hy_tzed?.[0] || "200");
+          setPrice(Number(processedData.hy_tzed?.[0]) || 200);
           setBuySellConfig(processedData);
         }
       } catch (errors: any) {

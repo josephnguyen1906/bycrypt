@@ -331,7 +331,7 @@ export default function BuySellPage() {
                         sx={{
                           color: "#909090",
                           textAlign: "center",
-                          fontSize: "12px",
+                          fontSize: "10px",
                         }}
                       >
                         Result wating
@@ -352,7 +352,7 @@ export default function BuySellPage() {
                       sx={{
                         color: "white",
                         textAlign: "center",
-                        fontSize: "12px",
+                        fontSize: "10px",
                       }}
                     >
                       Place the order
@@ -557,7 +557,7 @@ export default function BuySellPage() {
                       sx={{
                         color: "#909090",
                         textAlign: "center",
-                        fontSize: "12px",
+                        fontSize: "10px",
                       }}
                     >
                       Result wating
@@ -566,7 +566,7 @@ export default function BuySellPage() {
                       sx={{
                         color: "white",
                         textAlign: "center",
-                        fontSize: "13px",
+                        fontSize: "12px",
                         fontWeight: "bold",
                       }}
                     >
@@ -578,7 +578,7 @@ export default function BuySellPage() {
                     sx={{
                       color: "white",
                       textAlign: "center",
-                      fontSize: "12px",
+                      fontSize: "10px",
                     }}
                   >
                     Place the order

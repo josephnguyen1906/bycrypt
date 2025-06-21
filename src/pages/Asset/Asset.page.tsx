@@ -449,7 +449,7 @@ export default function AssetPage() {
                                   fontWeight: 600,
                                 }}
                               >
-                                + {formatCurrency(item.num, "en", "USD")}
+                                + {formatCurrency(item.ploss, "en", "USD")}
                               </Typography>
                             ) : (
                               <Typography
@@ -460,7 +460,7 @@ export default function AssetPage() {
                                   fontWeight: 600,
                                 }}
                               >
-                                - {formatCurrency(item.num, "en", "USD")}
+                                - {formatCurrency(item.ploss, "en", "USD")}
                               </Typography>
                             )}
                           </Box>
