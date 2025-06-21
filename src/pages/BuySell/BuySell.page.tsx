@@ -686,6 +686,7 @@ export default function BuySellPage() {
                   width: "90%",
                   maxWidth: "300px",
                   borderRadius: "10px",
+                  marginTop: "-20%",
                 }}
               >
                 {/* Ảnh nền */}

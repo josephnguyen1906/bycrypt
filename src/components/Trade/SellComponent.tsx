@@ -62,7 +62,10 @@ export default function SellComponent(progs: TabProps) {
             hy_tzed: data.hy_tzed?.split(",") || [],
             hy_min: data.hy_min?.split(",") || [],
           };
-          setAmount(processedData.hy_tzed?.[0] || "100");
+          setHytime(buySellConfig.hy_time?.[0] || "0");
+          setHyykbl(buySellConfig.hy_ykbl?.[0] || "0");
+          setAmount(buySellConfig.hy_tzed?.[0] || "100");
+          setPrice(Number(buySellConfig.hy_tzed?.[0]) || 100);
           setBuySellConfig(processedData);
         }
       } catch (errors: any) {
