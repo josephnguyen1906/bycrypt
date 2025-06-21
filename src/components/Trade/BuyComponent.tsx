@@ -65,6 +65,7 @@ export default function BuyComponent(progs: TabProps) {
             hy_min: data.hy_min?.split(",") || [],
           };
           setType(0);
+          setValueAmount(0);
           setHytime(processedData.hy_time?.[0] || "3");
           setHyykbl(processedData.hy_ykbl?.[0] || "15");
           setAmount(processedData.hy_tzed?.[0] || "200");
@@ -160,7 +161,7 @@ export default function BuyComponent(progs: TabProps) {
                     setHytime(item);
                     setHyykbl(buySellConfig.hy_ykbl?.[index] || "0");
                     setValueAmount(index);
-                    setAmount(buySellConfig.hy_tzed?.[index] || "100");
+                    setAmount(buySellConfig.hy_tzed?.[index] || "200");
                     setPrice(Number(buySellConfig.hy_tzed?.[index]) || 100);
                   }}
                 >

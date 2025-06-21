@@ -63,6 +63,7 @@ export default function SellComponent(progs: TabProps) {
             hy_min: data.hy_min?.split(",") || [],
           };
           setType(0);
+          setValueAmount(0);
           setHytime(processedData.hy_time?.[0] || "3");
           setHyykbl(processedData.hy_ykbl?.[0] || "15");
           setAmount(processedData.hy_tzed?.[0] || "200");
