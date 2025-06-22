@@ -97,7 +97,7 @@ export default function BuySellPage() {
         ]);
 
         // Xử lý danh sách coin
-        if (resCoin.status === 1) {
+        if (resCoin) {
           setListCoin(resCoin.data);
         }
 
