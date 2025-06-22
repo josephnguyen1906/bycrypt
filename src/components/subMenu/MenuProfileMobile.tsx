@@ -55,6 +55,7 @@ import {
   menuItems,
 } from "@/datafake/Menu";
 import TranslateGoogle from "../GgTranstale/TranslateContext.component";
+import LanguageSwitcher from "../Language/LanguageSwitcher";
 
 export interface userProps {
   user: userResponse | null;
@@ -519,7 +520,7 @@ export default function MenuProfileMobile(data: userProps) {
                 width: "120px",
               }}
             >
-              <TranslateGoogle onLanguageChange={handleLanguageChange} />
+              <LanguageSwitcher />
             </Menu>
           </Box>
         </Box>

@@ -41,6 +41,7 @@ import {
   QuestionIcon,
 } from "@/shared/Svgs/Svg.component";
 import TranslateGoogle from "../../components/GgTranstale/TranslateContext.component";
+import LanguageSwitcher from "@/components/Language/LanguageSwitcher";
 
 interface propUser {
   user: userResponse | null;
@@ -191,7 +192,7 @@ export default function HeaderPage(props: propUser) {
         <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
           Select language
         </Typography>
-        <TranslateGoogle />
+        <LanguageSwitcher />
       </Box>
     </Box>
   );
@@ -423,6 +424,7 @@ export default function HeaderPage(props: propUser) {
                     <QuestionIcon />
                   </button>
                   <button
+                    onClick={handleLangMenuOpen}
                     style={{
                       background: "none",
                       border: "none",

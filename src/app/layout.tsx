@@ -5,8 +5,9 @@ import PrimaryLayoutComponent from "@/components/PrimaryLayout/PrimaryLayout.com
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-multi-carousel/lib/styles.css";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Analytics } from "@vercel/analytics/react";
+
+// import { SpeedInsights } from "@vercel/speed-insights/next";
+// import { Analytics } from "@vercel/analytics/react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -31,11 +32,7 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <PrimaryLayoutComponent>
-          {children}
-          <SpeedInsights />
-          <Analytics />
-        </PrimaryLayoutComponent>
+        <PrimaryLayoutComponent>{children}</PrimaryLayoutComponent>
         <ToastContainer />
       </body>
     </html>
