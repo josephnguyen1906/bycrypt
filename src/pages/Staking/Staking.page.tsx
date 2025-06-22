@@ -235,7 +235,7 @@ export default function StakingPage() {
         <Typography
           variant="h6"
           sx={{
-            fontSize: "10px",
+            fontSize: "11px",
             fontWeight: 550,
             padding: "5px",
             color: "white",
@@ -246,7 +246,7 @@ export default function StakingPage() {
         <Typography
           variant="h6"
           sx={{
-            fontSize: "10px",
+            fontSize: "11px",
             fontWeight: 550,
             padding: "5px",
             color: "white",
@@ -257,7 +257,7 @@ export default function StakingPage() {
         <Typography
           variant="h6"
           sx={{
-            fontSize: "10px",
+            fontSize: "11px",
             fontWeight: 550,
             padding: "5px",
             color: "white",
@@ -268,7 +268,7 @@ export default function StakingPage() {
         <Typography
           variant="h6"
           sx={{
-            fontSize: "10px",
+            fontSize: "11px",
             fontWeight: 550,
             padding: "5px",
             color: "white",
@@ -279,7 +279,7 @@ export default function StakingPage() {
         <Typography
           variant="h6"
           sx={{
-            fontSize: "10px",
+            fontSize: "11px",
             fontWeight: 550,
             padding: "5px 0px 0px 5px",
             color: "white",
