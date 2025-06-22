@@ -71,17 +71,14 @@ export default function HomePage() {
       <div className="home-webiste">
         <div className="home-join">
           <div className="home-join-left">
-            <h2>
-              Join the all-in-one crypto app in <br /> Vietnam
-            </h2>
-            <h2>{t("HomePage.title")}</h2>
+            <h2>{t("HomePage.join_title")}</h2>
             <div className="send-mail">
               <input
                 type="text"
                 placeholder="Enter Email"
                 style={{ color: "#fff" }}
               />
-              <button type="button">Try Staking</button>
+              <button type="button">{t("HomePage.what_is_button")}</button>
             </div>
             <div className="join-img">
               <img
@@ -120,10 +117,8 @@ export default function HomePage() {
         </div>
         <div className="trade-like">
           <div className="trade-like-title">
-            <h2>Trade like a pro</h2>
-            <p>
-              Get the lowest fees, fastest transactions, powerful APIs, and more
-            </p>
+            <h2>{t("HomePage.trade_like_title")}</h2>
+            <p>{t("HomePage.trade_like_description")}</p>
           </div>
           <video
             src="./images/882D5049A31E763B.mp4"
@@ -135,12 +130,8 @@ export default function HomePage() {
         </div>
         <div className="trade-way">
           <div className="trade-way-title">
-            <h2>With you every step of the way</h2>
-            <p>
-              From making your first crypto trade to becoming a seasoned trader,
-              you’ll have us to guide you through the process. No question is
-              too small. No sleepless nights. Have confidence in your crypto.
-            </p>
+            <h2>{t("HomePage.trade_way_title")}</h2>
+            <p>{t("HomePage.trade_way_description")}</p>
           </div>
           <video
             src="./images/D47D930F643E7A00.webm"
@@ -153,12 +144,9 @@ export default function HomePage() {
         <div className="what-is">
           <div className="what-is-top">
             <div className="what-is-left">
-              <h2>What is Staking?</h2>
-              <p>
-                Find out why we{"'"}re your new favorite crypto app with some
-                help from our world-class partners
-              </p>
-              <button type="button">Find out</button>
+              <h2>{t("HomePage.what_is_title")}</h2>
+              <p>{t("HomePage.what_is_description")}</p>
+              <button type="button">{t("HomePage.what_is_button")}</button>
             </div>
             <div className="what-is-right">
               <Image
@@ -183,9 +171,9 @@ export default function HomePage() {
                   <track kind="captions" />
                 </video>
                 <div className="video-text" id=":Rk:">
-                  <p className="video-title">Coach Pep Guardiola</p>
+                  <p className="video-title">{t("HomePage.video_1_title")}</p>
                   <p className="video-desc">
-                    Explains “crazy football formation”
+                    {t("HomePage.video_1_description")}
                   </p>
                 </div>
               </div>
@@ -201,8 +189,10 @@ export default function HomePage() {
                   <track kind="captions" />
                 </video>
                 <div className="video-text" id=":RkH1:">
-                  <p className="video-title">Rewrite the system</p>
-                  <p className="video-desc">Welcome to Web3</p>
+                  <p className="video-title">{t("HomePage.video_2_title")}</p>
+                  <p className="video-desc">
+                    {t("HomePage.video_2_description")}
+                  </p>
                 </div>
               </div>
               <div className="video-item">
@@ -217,25 +207,23 @@ export default function HomePage() {
                   <track kind="captions" />
                 </video>
                 <div className="video-text" id=":RkH2:">
-                  <p className="video-title">Snowboarder Scotty James</p>
-                  <p className="video-desc">Brings in the whole family</p>
+                  <p className="video-title">{t("HomePage.video_3_title")}</p>
+                  <p className="video-desc">
+                    {t("HomePage.video_3_description")}
+                  </p>
                 </div>
               </div>
             </section>
           </div>
           <div className="question">
-            <h2>Questions? We’ve got answers.</h2>
+            <h2>{t("HomePage.questions_title")}</h2>
             <Accordion
               sx={{
                 backgroundColor: "#000",
                 borderBottom: "1px solid #fff",
                 color: "#fff",
-                "& .MuiAccordionSummary-root": {
-                  color: "#fff", // Đảm bảo tiêu đề có màu trắng
-                },
-                "& .MuiAccordionDetails-root": {
-                  color: "gray", // Đảm bảo nội dung có màu trắng
-                },
+                "& .MuiAccordionSummary-root": { color: "#fff" },
+                "& .MuiAccordionDetails-root": { color: "gray" },
               }}
             >
               <AccordionSummary
@@ -252,17 +240,11 @@ export default function HomePage() {
                   component="span"
                   sx={{ fontSize: 35, padding: "50px 0px" }}
                 >
-                  What products does Staking provide?
+                  {t("HomePage.accordion_1_title")}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails sx={{ fontSize: 28, color: "gray" }}>
-                Staking is an innovative cryptocurrency exchange with advanced
-                financial offerings. We offer cutting-edge crypto trading and
-                earning services to millions of users globally in more than 180
-                regions. With Staking, you can: Trade a wide variety of tokens
-                and trading pairs. Connect to the world-famous TradingView
-                Platform and trade crypto directly with their supercharged
-                charts.
+                {t("HomePage.accordion_1_description")}
               </AccordionDetails>
             </Accordion>
             <Accordion
@@ -270,12 +252,8 @@ export default function HomePage() {
                 backgroundColor: "#000",
                 borderBottom: "1px solid #fff",
                 color: "#fff",
-                "& .MuiAccordionSummary-root": {
-                  color: "#fff",
-                },
-                "& .MuiAccordionDetails-root": {
-                  color: "gray",
-                },
+                "& .MuiAccordionSummary-root": { color: "#fff" },
+                "& .MuiAccordionDetails-root": { color: "gray" },
               }}
             >
               <AccordionSummary
@@ -292,18 +270,11 @@ export default function HomePage() {
                   component="span"
                   sx={{ fontSize: 35, padding: "50px 0px" }}
                 >
-                  How do I buy Bitcoin and other cryptocurrencies on Staking?
+                  {t("HomePage.accordion_2_title")}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails sx={{ fontSize: 28, color: "gray" }}>
-                Easily buy Bitcoin within minutes with GBP, EUR, USD, or your
-                local currency. Staking supports various popular payment
-                methods, including Visa, Mastercard, and ApplePay credit cards.
-                To get started, check out our latest guide on how to buy Bitcoin
-                on Staking. Want to buy, sell, or hold other coins that are
-                gaining traction in the crypto ecosystem? Kickstart your journey
-                with Staking and explore prices and other information for
-                cryptos such as Bitcoin (BTC), Ethereum (ETH) and more!
+                {t("HomePage.accordion_2_description")}
               </AccordionDetails>
             </Accordion>
             <Accordion
@@ -311,12 +282,8 @@ export default function HomePage() {
                 backgroundColor: "#000",
                 borderBottom: "1px solid #fff",
                 color: "#fff",
-                "& .MuiAccordionSummary-root": {
-                  color: "#fff",
-                },
-                "& .MuiAccordionDetails-root": {
-                  color: "gray",
-                },
+                "& .MuiAccordionSummary-root": { color: "#fff" },
+                "& .MuiAccordionDetails-root": { color: "gray" },
               }}
             >
               <AccordionSummary
@@ -333,15 +300,11 @@ export default function HomePage() {
                   component="span"
                   sx={{ fontSize: 35, padding: "50px 0px" }}
                 >
-                  What is crypto?
+                  {t("HomePage.accordion_3_title")}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails sx={{ fontSize: 28, color: "gray" }}>
-                Cryptocurrency is a decentralized digital currency that operates
-                on blockchain technology. Its key features include transparency,
-                borderless transactions and immutability. Some of the most
-                popular cryptocurrencies, by market capitalization, include
-                Bitcoin, Ethereum, Tether, which can be traded on Staking.
+                {t("HomePage.accordion_3_description")}
               </AccordionDetails>
             </Accordion>
           </div>
@@ -364,7 +327,7 @@ export default function HomePage() {
                   color: "white",
                 }}
               >
-                A New Alternative
+                {t("HomePage.mobile_new_alternative")}
               </Typography>
               <Typography
                 sx={{
@@ -374,26 +337,20 @@ export default function HomePage() {
                   color: "white",
                 }}
               >
-                To your Cryto Jouney
+                {t("HomePage.mobile_crypto_journey")}
               </Typography>
               <Box
                 sx={{ width: "100%", textAlign: "center", padding: "20px 0" }}
               >
                 <img
                   src="/images/7889D86ACE77574B.png"
-                  style={{
-                    height: "350px",
-                    objectFit: "contain",
-                  }}
+                  style={{ height: "350px", objectFit: "contain" }}
                 />
               </Box>
               <Box
                 sx={{
                   display: "flex",
                   gap: 2,
-                  // position: "fixed",
-                  // margin: "auto",
-                  // bottom: "100px",
                   justifyContent: "center",
                   justifyItems: "center",
                 }}
@@ -405,13 +362,11 @@ export default function HomePage() {
                     color: "white",
                     borderRadius: "20px",
                     textTransform: "capitalize",
-                    "&:hover": {
-                      backgroundColor: "#909090",
-                    },
+                    "&:hover": { backgroundColor: "#909090" },
                   }}
                   onClick={() => route.push("/login")}
                 >
-                  Login
+                  {t("HomePage.mobile_login")}
                 </Button>
                 <Button
                   sx={{
@@ -420,13 +375,11 @@ export default function HomePage() {
                     color: "#000",
                     borderRadius: "20px",
                     textTransform: "capitalize",
-                    "&:hover": {
-                      backgroundColor: "white",
-                    },
+                    "&:hover": { backgroundColor: "white" },
                   }}
                   onClick={() => route.push("/signup")}
                 >
-                  Sign Up
+                  {t("HomePage.mobile_signup")}
                 </Button>
               </Box>
             </Box>
@@ -437,11 +390,9 @@ export default function HomePage() {
                   sx={{ color: "white", position: "absolute", margin: "5px" }}
                 />
                 <TextField
-                  placeholder="🔥Newly listed USDG assets"
-                  variant="standard" // hoặc "filled" tùy mục đích, để tránh border mặc định
-                  InputProps={{
-                    disableUnderline: true, // ẩn gạch chân nếu dùng "standard"
-                  }}
+                  placeholder={t("HomePage.mobile_search_placeholder")}
+                  variant="standard"
+                  InputProps={{ disableUnderline: true }}
                   sx={{
                     width: "90%",
                     height: "35px",
@@ -471,16 +422,10 @@ export default function HomePage() {
                   }}
                 />
               </Box>
-              <Box
-                sx={{
-                  width: "100%",
-                  display: "flex",
-                  padding: "5px 20px",
-                }}
-              >
+              <Box sx={{ width: "100%", display: "flex", padding: "5px 20px" }}>
                 <Box sx={{ width: "100%", textAlign: "left" }}>
                   <Typography sx={{ color: "#909090", padding: "5px 0" }}>
-                    Estimated total value
+                    {t("HomePage.mobile_estimated_value")}
                   </Typography>
                   <Box
                     sx={{
@@ -505,7 +450,7 @@ export default function HomePage() {
                     </Typography>
                   </Box>
                   <Typography sx={{ color: "#909090", padding: "5px 0" }}>
-                    PNL today $0.00(0.00%)
+                    {t("HomePage.mobile_pnl_today")}
                   </Typography>
                 </Box>
               </Box>
@@ -526,12 +471,10 @@ export default function HomePage() {
                     background: "#bafc42",
                     color: "black",
                     textTransform: "capitalize",
-                    "&:hover": {
-                      background: "#bafc42",
-                    },
+                    "&:hover": { background: "#bafc42" },
                   }}
                 >
-                  Deposit USDT
+                  {t("HomePage.mobile_deposit")}
                 </Button>
                 <Button
                   href="/withdraw"
@@ -542,12 +485,10 @@ export default function HomePage() {
                     background: "#bafc42",
                     textTransform: "capitalize",
                     color: "black",
-                    "&:hover": {
-                      background: "#bafc42",
-                    },
+                    "&:hover": { background: "#bafc42" },
                   }}
                 >
-                  withdraw
+                  {t("HomePage.mobile_withdraw")}
                 </Button>
               </Box>
               <Box
@@ -579,7 +520,7 @@ export default function HomePage() {
                         fontWeight: "550",
                       }}
                     >
-                      Welcome Reward!
+                      {t("HomePage.mobile_welcome_reward_title")}
                     </Typography>
                     <Typography
                       sx={{
@@ -588,9 +529,7 @@ export default function HomePage() {
                         fontWeight: "500",
                       }}
                     >
-                      Increase the number of Pi Coins by staking without limits
-                      in the Staking section. Maximum profit up to 45%, act fast
-                      or you might miss out.
+                      {t("HomePage.mobile_welcome_reward_description")}
                     </Typography>
                   </Box>
                 </Box>
@@ -606,19 +545,15 @@ export default function HomePage() {
                 }}
               >
                 <h2 style={{ color: "white" }}>
-                  Questions? We’ve got answers.
+                  {t("HomePage.questions_title")}
                 </h2>
                 <Accordion
                   sx={{
                     backgroundColor: "#000",
                     borderBottom: "1px solid gray",
                     color: "white",
-                    "& .MuiAccordionSummary-root": {
-                      color: "white", // Đảm bảo tiêu đề có màu trắng
-                    },
-                    "& .MuiAccordionDetails-root": {
-                      color: "grwhiteay", // Đảm bảo nội dung có màu trắng
-                    },
+                    "& .MuiAccordionSummary-root": { color: "white" },
+                    "& .MuiAccordionDetails-root": { color: "grwhiteay" },
                   }}
                 >
                   <AccordionSummary
@@ -638,17 +573,11 @@ export default function HomePage() {
                         color: "white",
                       }}
                     >
-                      What products does Staking provide?
+                      {t("HomePage.accordion_1_title")}
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails sx={{ fontSize: 18, color: "gray" }}>
-                    Staking is an innovative cryptocurrency exchange with
-                    advanced financial offerings. We offer cutting-edge crypto
-                    trading and earning services to millions of users globally
-                    in more than 180 regions. With Staking, you can: Trade a
-                    wide variety of tokens and trading pairs. Connect to the
-                    world-famous TradingView Platform and trade crypto directly
-                    with their supercharged charts.
+                    {t("HomePage.accordion_1_description")}
                   </AccordionDetails>
                 </Accordion>
                 <Accordion
@@ -656,12 +585,8 @@ export default function HomePage() {
                     backgroundColor: "#000",
                     borderBottom: "1px solid #fff",
                     color: "white",
-                    "& .MuiAccordionSummary-root": {
-                      color: "white",
-                    },
-                    "& .MuiAccordionDetails-root": {
-                      color: "gray",
-                    },
+                    "& .MuiAccordionSummary-root": { color: "white" },
+                    "& .MuiAccordionDetails-root": { color: "gray" },
                   }}
                 >
                   <AccordionSummary
@@ -681,20 +606,11 @@ export default function HomePage() {
                         color: "white",
                       }}
                     >
-                      How do I buy Bitcoin and other cryptocurrencies on
-                      Staking?
+                      {t("HomePage.accordion_2_title")}
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails sx={{ fontSize: 18, color: "gray" }}>
-                    Easily buy Bitcoin within minutes with GBP, EUR, USD, or
-                    your local currency. Staking supports various popular
-                    payment methods, including Visa, Mastercard, and ApplePay
-                    credit cards. To get started, check out our latest guide on
-                    how to buy Bitcoin on Staking. Want to buy, sell, or hold
-                    other coins that are gaining traction in the crypto
-                    ecosystem? Kickstart your journey with Staking and explore
-                    prices and other information for cryptos such as Bitcoin
-                    (BTC), Ethereum (ETH) and more!
+                    {t("HomePage.accordion_2_description")}
                   </AccordionDetails>
                 </Accordion>
                 <Accordion
@@ -702,12 +618,8 @@ export default function HomePage() {
                     backgroundColor: "#000",
                     borderBottom: "1px solid gray",
                     color: "#000",
-                    "& .MuiAccordionSummary-root": {
-                      color: "#000",
-                    },
-                    "& .MuiAccordionDetails-root": {
-                      color: "gray",
-                    },
+                    "& .MuiAccordionSummary-root": { color: "#000" },
+                    "& .MuiAccordionDetails-root": { color: "gray" },
                   }}
                 >
                   <AccordionSummary
@@ -727,16 +639,11 @@ export default function HomePage() {
                         color: "white",
                       }}
                     >
-                      What is crypto?
+                      {t("HomePage.accordion_3_title")}
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails sx={{ fontSize: 18, color: "gray" }}>
-                    Cryptocurrency is a decentralized digital currency that
-                    operates on blockchain technology. Its key features include
-                    transparency, borderless transactions and immutability. Some
-                    of the most popular cryptocurrencies, by market
-                    capitalization, include Bitcoin, Ethereum, Tether, which can
-                    be traded on Staking.
+                    {t("HomePage.accordion_3_description")}
                   </AccordionDetails>
                 </Accordion>
               </Box>
@@ -775,7 +682,7 @@ export default function HomePage() {
                           padding: "5px",
                         }}
                       >
-                        Notification
+                        {t("HomePage.popup_notification_title")}
                       </Typography>
                       <img
                         src={
@@ -786,13 +693,10 @@ export default function HomePage() {
                       />
                       <Typography
                         variant="h6"
-                        sx={{
-                          fontSize: "18px",
-                          padding: "5px",
-                        }}
+                        sx={{ fontSize: "18px", padding: "5px" }}
                       >
                         {(websiteConfig && websiteConfig?.checkin_notify) ||
-                          "Welcome to Staking"}
+                          t("HomePage.popup_welcome_message")}
                       </Typography>
                       <Button
                         sx={{
@@ -800,13 +704,9 @@ export default function HomePage() {
                           top: "10px",
                           right: "5px",
                           color: "black",
-                          "&:hover": {
-                            background: "none",
-                          },
+                          "&:hover": { background: "none" },
                         }}
-                        onClick={() => {
-                          setShowPopup(false);
-                        }}
+                        onClick={() => setShowPopup(false)}
                       >
                         <CloseOutlined style={{ fontSize: "20px" }} />
                       </Button>

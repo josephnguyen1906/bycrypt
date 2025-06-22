@@ -27,6 +27,7 @@ export default function BuyComponent(progs: TabProps) {
   const [type, setType] = useState<any>(null);
   const [hytime, setHytime] = useState<any>(null);
   const [hyykbl, setHyykbl] = useState<any>(null);
+  const [result, setResult] = useState<any>(null);
   const [progressContract, setProgressContract] = useState<any>(null);
   const router = useRouter();
   const [buySellConfig, setBuySellConfig] = useState<any>(null);
@@ -108,6 +109,7 @@ export default function BuyComponent(progs: TabProps) {
       await createOrder(formData).then((res) => {
         if (progs.onSuccess) {
           progs.onSuccess(res.data);
+          setResult(res.data);
         }
       });
       toast.success("Order created successfully");
@@ -115,6 +117,7 @@ export default function BuyComponent(progs: TabProps) {
       toast.error(error.message || "Order created failed, please check again!");
     }
   };
+  console.log("progressContract", progressContract);
 
   return (
     <div>
@@ -332,7 +335,7 @@ export default function BuyComponent(progs: TabProps) {
           </Typography>
           <Button
             type="button"
-            disabled={progressContract}
+            disabled={progressContract?.length > 0 || result}
             sx={{
               background: "#fff",
               color: "black",

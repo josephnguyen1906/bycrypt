@@ -189,9 +189,6 @@ export default function HeaderPage(props: propUser) {
           alignItems: "center",
         }}
       >
-        <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
-          Select language
-        </Typography>
         <LanguageSwitcher />
       </Box>
     </Box>
@@ -251,75 +248,70 @@ export default function HeaderPage(props: propUser) {
                       onClose={handleMouseLeave}
                       anchorOrigin={{
                         vertical: "bottom",
-                        horizontal: "center", // Căn giữa theo chiều ngang
+                        horizontal: "center",
                       }}
                       transformOrigin={{
                         vertical: "top",
-                        horizontal: "center", // Căn giữa điểm gốc
+                        horizontal: "center",
                       }}
                       MenuListProps={{
                         onMouseEnter: handleMenuMouseEnter,
                         onMouseLeave: handleMouseLeave,
                       }}
                     >
-                      {item.item.map(
-                        (
-                          subItem: any,
-                          index // Sửa item.item thành item.items
-                        ) => (
-                          <MenuItem
-                            key={index}
-                            onClick={handleMouseLeave}
-                            sx={{
-                              width: 330,
-                            }} // Đặt độ rộng tối thiểu và xuống dòng
+                      {item.item.map((subItem: any, index: number) => (
+                        <MenuItem
+                          key={index}
+                          onClick={handleMouseLeave}
+                          sx={{
+                            width: 330,
+                          }}
+                        >
+                          <Link
+                            href={subItem.link}
+                            style={{
+                              textDecoration: "none",
+                              color: "inherit",
+                              display: "flex",
+                              width: "100%",
+                              alignItems: "center",
+                            }}
                           >
-                            <Link
-                              href={subItem.link}
+                            {subItem.icon}
+                            <div
                               style={{
-                                textDecoration: "none",
-                                color: "inherit",
-                                display: "flex",
-                                width: "100%",
-                                alignItems: "center",
+                                marginLeft: 8,
+                                width: "calc(100% - 24px)",
                               }}
                             >
-                              {subItem.icon}
-                              <div
-                                style={{
-                                  marginLeft: 8,
-                                  width: "calc(100% - 24px)",
+                              <Typography
+                                variant="body1"
+                                sx={{
+                                  width: "100%",
+                                  wordBreak: "break-word",
+                                  overflowWrap: "break-word",
+                                  fontWeight: "600",
                                 }}
                               >
+                                {subItem.title}
+                              </Typography>
+                              {subItem.note && (
                                 <Typography
-                                  variant="body1"
+                                  variant="caption"
                                   sx={{
                                     width: "100%",
                                     wordBreak: "break-word",
-                                    overflowWrap: "break-word",
-                                    fontWeight: "600",
+                                    overflowWrap: "anywhere",
+                                    whiteSpace: "normal",
                                   }}
                                 >
-                                  {subItem.title}
+                                  {subItem.note}
                                 </Typography>
-                                {subItem.note && (
-                                  <Typography
-                                    variant="caption"
-                                    sx={{
-                                      width: "100%",
-                                      wordBreak: "break-word",
-                                      overflowWrap: "anywhere",
-                                      whiteSpace: "normal",
-                                    }}
-                                  >
-                                    {subItem.note}
-                                  </Typography>
-                                )}
-                              </div>
-                            </Link>
-                          </MenuItem>
-                        )
-                      )}
+                              )}
+                            </div>
+                          </Link>
+                        </MenuItem>
+                      ))}
                     </StyledMenu>
                   )}
                 </li>
@@ -334,7 +326,6 @@ export default function HeaderPage(props: propUser) {
                   placeholder="Tìm kiếm tiền mã hoá"
                   className="search-bar"
                 />
-
                 <MenuProfile user={user} />
                 <button
                   style={{
@@ -367,94 +358,145 @@ export default function HeaderPage(props: propUser) {
                 >
                   <InternetIcon />
                 </button>
+                <StyledMenu
+                  id="language-menu"
+                  anchorEl={langAnchorEl}
+                  open={isLangMenuOpen}
+                  onClose={handleLangMenuClose}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "center",
+                  }}
+                  MenuListProps={{
+                    onMouseEnter: handleMenuMouseEnter,
+                    onMouseLeave: handleLangMenuClose,
+                  }}
+                  sx={{
+                    "& .MuiPaper-root": {
+                      width: "200px", // Adjust width for language menu
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      padding: "10px",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                    <LanguageSwitcher />
+                  </Box>
+                </StyledMenu>
               </div>
             ) : (
-              <div className="header-right">
-                <div className="header-right-menu">
-                  <input
-                    type="text"
-                    placeholder="Tìm kiếm tiền mã hoá"
-                    className="search-bar"
-                  />
-                  <a
-                    style={{
-                      background: "none",
-                      fontSize: "14px",
-                      border: "none",
-                      padding: 0,
-                      color: "#fff",
-                      width: "70px",
-                    }}
-                    href="/login"
-                  >
-                    Đăng nhập
-                  </a>
-                  <a
-                    style={{
-                      background: "none",
-                      fontSize: "14px",
+              <div className="header-right-menu">
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm tiền mã hoá"
+                  className="search-bar"
+                />
+                <a
+                  style={{
+                    background: "none",
+                    fontSize: "14px",
+                    border: "none",
+                    padding: 0,
+                    color: "#fff",
+                    width: "70px",
+                  }}
+                  href="/login"
+                >
+                  Đăng nhập
+                </a>
+                <a
+                  style={{
+                    background: "none",
+                    fontSize: "14px",
+                    padding: "5px",
+                    color: "#fff",
+                    border: "1px solid #fff",
+                    borderRadius: "10px",
+                    width: "60px",
+                  }}
+                  href="/signup"
+                >
+                  Đăng kí
+                </a>
+                <button
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    cursor: "pointer",
+                  }}
+                >
+                  <NotiIcon />
+                </button>
+                <button
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    cursor: "pointer",
+                  }}
+                >
+                  <QuestionIcon />
+                </button>
+                <button
+                  onClick={handleLangMenuOpen}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    cursor: "pointer",
+                  }}
+                >
+                  <InternetIcon />
+                </button>
+                <StyledMenu
+                  id="language-menu"
+                  anchorEl={langAnchorEl}
+                  open={isLangMenuOpen}
+                  onClose={handleLangMenuClose}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "center",
+                  }}
+                  MenuListProps={{
+                    onMouseEnter: handleMenuMouseEnter,
+                    onMouseLeave: handleLangMenuClose,
+                  }}
+                  sx={{
+                    "& .MuiPaper-root": {
+                      width: "200px", // Adjust width for language menu
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{
                       padding: "5px",
-                      color: "#fff",
-                      border: "1px solid #fff",
-                      borderRadius: "10px",
-                      width: "60px",
-                    }}
-                    href="/signup"
-                  >
-                    Đăng kí
-                  </a>
-                  <button
-                    style={{
-                      background: "none",
-                      border: "none",
-                      padding: 0,
-                      cursor: "pointer",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
                     }}
                   >
-                    <NotiIcon />
-                  </button>
-                  <button
-                    style={{
-                      background: "none",
-                      border: "none",
-                      padding: 0,
-                      cursor: "pointer",
-                    }}
-                  >
-                    <QuestionIcon />
-                  </button>
-                  <button
-                    onClick={handleLangMenuOpen}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      padding: 0,
-                      cursor: "pointer",
-                    }}
-                  >
-                    <InternetIcon />
-                  </button>
-                </div>
+                    <LanguageSwitcher />
+                  </Box>
+                </StyledMenu>
               </div>
             )}
           </div>
         </div>
       </div>
-      <Dialog
-        open={isLangMenuOpen}
-        onClose={handleLangMenuClose}
-        PaperProps={{
-          style: {
-            width: "80%",
-            backgroundColor: "#909090",
-            color: "#fff",
-            borderRadius: "8px",
-            marginTop: "10%",
-          },
-        }}
-      >
-        {menuTranslate()}
-      </Dialog>
     </header>
   );
 }
