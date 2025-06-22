@@ -204,7 +204,7 @@ export default function StakingPage() {
           <img src="/images/F695CAF106522D37.png" style={{ height: "300px" }} />
         </Box>
       </Box>
-      <Box sx={{ width: "90%", margin: "auto", textAlign: "center" }}>
+      <Box sx={{ width: "95%", margin: "auto", textAlign: "center" }}>
         <img
           src={websiteConfig && websiteConfig?.websildea}
           style={{
@@ -217,7 +217,7 @@ export default function StakingPage() {
       </Box>
       <Box
         sx={{
-          width: "90%",
+          width: "95%",
           margin: "0 auto",
           display: "grid",
         }}
@@ -235,7 +235,7 @@ export default function StakingPage() {
         <Typography
           variant="h6"
           sx={{
-            fontSize: "12px",
+            fontSize: "10px",
             fontWeight: 550,
             padding: "5px",
             color: "white",
@@ -246,7 +246,7 @@ export default function StakingPage() {
         <Typography
           variant="h6"
           sx={{
-            fontSize: "12px",
+            fontSize: "10px",
             fontWeight: 550,
             padding: "5px",
             color: "white",
@@ -257,7 +257,7 @@ export default function StakingPage() {
         <Typography
           variant="h6"
           sx={{
-            fontSize: "12px",
+            fontSize: "10px",
             fontWeight: 550,
             padding: "5px",
             color: "white",
@@ -268,7 +268,7 @@ export default function StakingPage() {
         <Typography
           variant="h6"
           sx={{
-            fontSize: "12px",
+            fontSize: "10px",
             fontWeight: 550,
             padding: "5px",
             color: "white",
@@ -279,7 +279,7 @@ export default function StakingPage() {
         <Typography
           variant="h6"
           sx={{
-            fontSize: "12px",
+            fontSize: "10px",
             fontWeight: 550,
             padding: "5px 0px 0px 5px",
             color: "white",
