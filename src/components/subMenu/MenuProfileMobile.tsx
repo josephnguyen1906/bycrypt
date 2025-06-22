@@ -488,18 +488,11 @@ export default function MenuProfileMobile(data: userProps) {
             <Tooltip title="Hot">
               <StarIcon width="25px" height="25px" />
             </Tooltip>
-            <Tooltip title="Notification">
-              <Badge
-                badgeContent={4}
-                color="error"
-                overlap="circular"
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-              >
-                <MessageIcon width="20px" height="20px" />
-              </Badge>
+            <Tooltip
+              title="Notification"
+              onClick={() => router.push("https://direct.lc.chat/19194779/")}
+            >
+              <img src="/images/live-chat.png" width="24px" height="24px" />
             </Tooltip>
             <Tooltip title="Language">
               <IconButton

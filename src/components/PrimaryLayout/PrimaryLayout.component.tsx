@@ -212,7 +212,7 @@ export default function PrimaryLayoutComponent({
             onClose={() => setOpenSupport(false)}
             title="Support"
           />
-          <LiveChatWidget />
+          {/* <LiveChatWidget /> */}
         </div>
       )}
     </>

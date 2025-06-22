@@ -241,7 +241,7 @@ export default function StakingPage() {
             color: "white",
           }}
         >
-          1. Milestone: From 1,000 Pi to 10,000 Pi with a monthly profit of 10%
+          Vip 1: From 1,000 Pi to 10,000 Pi with a monthly profit of 10%
         </Typography>
         <Typography
           variant="h6"
@@ -252,7 +252,7 @@ export default function StakingPage() {
             color: "white",
           }}
         >
-          2. Milestone: From 10,000 Pi to 50,000 Pi with a monthly profit of 20%
+          Vip 2: From 10,000 Pi to 50,000 Pi with a monthly profit of 20%
         </Typography>
         <Typography
           variant="h6"
@@ -263,8 +263,7 @@ export default function StakingPage() {
             color: "white",
           }}
         >
-          3. Milestone: From 100.000 Pi to 150.000 Pi with a monthly profit of
-          25%
+          Vip 3: From 100.000 Pi to 150.000 Pi with a monthly profit of 25%
         </Typography>
         <Typography
           variant="h6"
@@ -275,8 +274,7 @@ export default function StakingPage() {
             color: "white",
           }}
         >
-          4. Milestone: From 150.000 Pi to 300.000 Pi with a monthly profit of
-          30%
+          Vip 4: From 150.000 Pi to 300.000 Pi with a monthly profit of 30%
         </Typography>
         <Typography
           variant="h6"
@@ -287,7 +285,7 @@ export default function StakingPage() {
             color: "white",
           }}
         >
-          5. Milestone: From 300,000 Pi and above, the monthly interest is 45%.
+          Vip 5: From 300,000 Pi and above, the monthly interest is 45%.
         </Typography>
       </Box>
       <Box
