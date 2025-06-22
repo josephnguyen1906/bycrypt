@@ -136,7 +136,7 @@ const DailyRewards = () => {
                     sx={{ fontSize: "10px" }}
                   >
                     {match
-                      ? `${formatCurrency(Number(match.reward), "en", "USD")}`
+                      ? `${parseFloat(match.reward).toLocaleString()}Pi`
                       : "--"}
                   </Typography>
                 </Paper>

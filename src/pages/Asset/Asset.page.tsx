@@ -235,11 +235,7 @@ export default function AssetPage() {
                     }}
                   >
                     {user?.balance?.usdt
-                      ? `${formatCurrency(
-                          Number(user?.balance?.usdt),
-                          "USD",
-                          "USD"
-                        )} `
+                      ? `${parseFloat(user.balance.usdt).toLocaleString()} USDT`
                       : "0 "}
                   </Typography>
                 </Box>
@@ -396,7 +392,7 @@ export default function AssetPage() {
                     textAlign: "right",
                   }}
                 >
-                  {parseFloat(user.balance.pi).toLocaleString()} PI
+                  {parseFloat(user.balance.pi).toLocaleString()} Pi
                 </Typography>
               </Box>
             </Box>

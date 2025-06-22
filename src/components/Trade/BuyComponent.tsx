@@ -320,7 +320,9 @@ export default function BuyComponent(progs: TabProps) {
             }}
           >
             Current balance:{" "}
-            {formatCurrency(Number(progs.user?.balance.usdt), "en", "USD")}
+            {progs.user?.balance.usdt
+              ? `${parseFloat(progs.user?.balance.usdt).toLocaleString()} USDT`
+              : "0 "}
           </Typography>
           <Button
             type="button"

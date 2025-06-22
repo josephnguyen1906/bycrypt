@@ -29,24 +29,10 @@ import { CoinIcon, SearchIcon } from "@/shared/Svgs/Svg.component";
 import { CloseOutlined, Search } from "@mui/icons-material";
 import { formatCurrency } from "@/utils/formatMoney";
 import { getWebsiteConfig } from "@/services/User.service";
-const responsiveSettings = [
-  {
-    breakpoint: 500,
-    settings: {
-      slidesToShow: 1,
-      slidesToScroll: 1,
-    },
-  },
-  {
-    breakpoint: 500,
-    settings: {
-      slidesToShow: 1,
-      slidesToScroll: 1,
-    },
-  },
-];
+import { useTranslation } from "react-i18next";
 
 export default function HomePage() {
+  const { t, i18n } = useTranslation();
   const { user, loading } = useAuth();
   const [showPopup, setShowPopup] = useState(false);
   const [websiteConfig, setWebsiteConfig] = useState<any>(null);
@@ -88,7 +74,7 @@ export default function HomePage() {
             <h2>
               Join the all-in-one crypto app in <br /> Vietnam
             </h2>
-
+            <h2>{t("HomePage.title")}</h2>
             <div className="send-mail">
               <input
                 type="text"
@@ -512,11 +498,9 @@ export default function HomePage() {
                       }}
                     >
                       {user?.balance?.usdt
-                        ? `${formatCurrency(
-                            Number(user?.balance?.usdt),
-                            "USD",
-                            "USD"
-                          )} `
+                        ? `${parseFloat(
+                            user.balance.usdt
+                          ).toLocaleString()} USDT`
                         : "0 "}
                     </Typography>
                   </Box>

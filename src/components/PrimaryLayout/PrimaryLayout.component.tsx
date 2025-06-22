@@ -27,7 +27,8 @@ import { Button } from "@mui/material";
 import useAuth from "@/hook/useAuth";
 import { IUser } from "@/shared/interfaces";
 import MenuProfileMobile from "../subMenu/MenuProfileMobile";
-
+import "../../i18n";
+import LiveChatWidget from "../LIveChat/LiveChat";
 const FooterPage = dynamic(() => import("@/pages/Footer/Footer.page"), {
   ssr: false,
 });
@@ -211,6 +212,7 @@ export default function PrimaryLayoutComponent({
             onClose={() => setOpenSupport(false)}
             title="Support"
           />
+          <LiveChatWidget />
         </div>
       )}
     </>
