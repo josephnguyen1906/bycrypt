@@ -265,7 +265,14 @@ export default function StakingPage() {
                   borderRadius: "10px",
                 }}
               />
-              <Box>
+              <Box
+                sx={{
+                  width: {
+                    xs: "100%",
+                    sm: "50%",
+                  },
+                }}
+              >
                 <Typography
                   variant="h6"
                   sx={{ marginTop: "10px", color: "#fff" }}
@@ -275,7 +282,10 @@ export default function StakingPage() {
                 <Box
                   sx={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(2, 1fr)",
+                    gridTemplateColumns: {
+                      xs: "100%",
+                      sm: "repeat(2, 1fr)",
+                    },
                     gap: "10px",
                   }}
                 >
@@ -283,13 +293,19 @@ export default function StakingPage() {
                     variant="body1"
                     sx={{ color: "#666", fontSize: "14px" }}
                   >
-                    Minimum purchase: {item.min}
+                    Minimum purchase:{" "}
+                    {item.min
+                      ? `${parseFloat(item.min).toLocaleString()} Pi`
+                      : "0 "}
                   </Typography>
                   <Typography
                     variant="body1"
                     sx={{ color: "#666", fontSize: "14px" }}
                   >
-                    Maximum purchase : {item.max}
+                    Maximum purchase :{" "}
+                    {item.max
+                      ? `${parseFloat(item.max).toLocaleString()} Pi`
+                      : "0 "}
                   </Typography>
                   {user ? <Stakingdetail staking={item} /> : ""}
                 </Box>
