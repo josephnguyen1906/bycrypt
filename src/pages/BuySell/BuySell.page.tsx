@@ -22,6 +22,7 @@ import {
   getBuySellConfig,
   getListCoin,
   getOrderResult,
+  getProgressContract,
 } from "@/services/User.service";
 import { toast } from "react-toastify";
 import useAuth from "@/hook/useAuth";
@@ -33,7 +34,6 @@ import {
 } from "@mui/icons-material";
 import TradingViewSymbolInfo from "@/components/ChartView/SymbolDetail";
 import { formatCurrency } from "@/utils/formatMoney";
-import { CircleCountdown } from "@/components/CountdownCircle/CountdownCircle";
 import {
   ArrowTrendDownIcon,
   ArrowTrendUpIcon,
@@ -76,27 +76,59 @@ export default function BuySellPage() {
   const [coinTitle, setCoinTitle] = useState<any>("BTC/USDT");
   const [value, setValue] = useState(0);
   const [result, setResult] = useState<any>(null);
+  const [progressContract, setProgressContract] = useState<any>(null);
   const [trade, setTrade] = useState<any>(null);
   const [countdown, setCountdown] = useState<number | null>(null);
   const [showPopup, setShowPopup] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
   useEffect(() => {
-    const referral = async () => {
+    const fetchData = async () => {
       try {
-        const res: any = await getListCoin();
-        const buySellConfig: any = await getBuySellConfig();
-        if (res.status === true) {
-          setListCoin(res.data);
+        // Gọi API lấy danh sách coin và cấu hình mua bán
+        const [resCoin, buySellConfig, result] = await Promise.all([
+          getListCoin(),
+          getBuySellConfig(),
+          getProgressContract(),
+        ]);
+
+        // Xử lý danh sách coin
+        if (resCoin.status === 1) {
+          setListCoin(resCoin.data);
         }
-      } catch (errors: any) {
-        // toast.error(errors?.message);
+
+        // Xử lý progress contract
+        if (result && result.data) {
+          const fixedSellTimeStr = result.data.selltime.replace(
+            /\.\d{6}Z$/,
+            "Z"
+          );
+          const sellTime = new Date(fixedSellTimeStr).getTime();
+          const now = Date.now();
+          const remainingSeconds = Math.floor((sellTime - now) / 1000);
+
+          if (remainingSeconds > 0) {
+            setProgressContract(result.data);
+            setCountdown(remainingSeconds);
+          } else {
+            setProgressContract(null);
+            setCountdown(null);
+          }
+        } else {
+          setProgressContract(null);
+          setCountdown(null);
+        }
+      } catch (error: any) {
+        // console.error("Error fetching data:", error);
+        // toast.error(error?.message || "Failed to fetch data");
       }
     };
-    referral();
+
+    fetchData();
   }, []);
   const handleClick = (coin: any) => {
     if (coin) {
@@ -319,7 +351,7 @@ export default function BuySellPage() {
                     Buy <ArrowTrendUpIcon fill="white" />
                   </Button>
 
-                  {trade ? (
+                  {countdown ? (
                     <Box
                       sx={{
                         display: "flex",
@@ -545,7 +577,7 @@ export default function BuySellPage() {
                 >
                   Buy <ArrowTrendUpIcon fill="white" />
                 </Button>
-                {trade ? (
+                {countdown ? (
                   <Box
                     sx={{
                       display: "flex",

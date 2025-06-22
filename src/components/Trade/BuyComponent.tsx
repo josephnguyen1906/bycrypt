@@ -4,6 +4,7 @@ import {
   createOrder,
   getBuySellConfig,
   getOrderResult,
+  getProgressContract,
 } from "@/services/User.service";
 import { IUser } from "@/shared/interfaces";
 import { Box, Button, Divider, TextField, Typography } from "@mui/material";
@@ -26,6 +27,7 @@ export default function BuyComponent(progs: TabProps) {
   const [type, setType] = useState<any>(null);
   const [hytime, setHytime] = useState<any>(null);
   const [hyykbl, setHyykbl] = useState<any>(null);
+  const [progressContract, setProgressContract] = useState<any>(null);
   const router = useRouter();
   const [buySellConfig, setBuySellConfig] = useState<any>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -53,6 +55,7 @@ export default function BuyComponent(progs: TabProps) {
     const referral = async () => {
       try {
         const buySellConfig: any = await getBuySellConfig();
+        const res: any = await getProgressContract();
 
         if (buySellConfig.status === true) {
           const data = buySellConfig.data;
@@ -71,6 +74,9 @@ export default function BuyComponent(progs: TabProps) {
           setAmount(processedData.hy_tzed?.[0] || "200");
           setPrice(Number(processedData.hy_tzed?.[0]) || 200);
           setBuySellConfig(processedData);
+        }
+        if (res.data) {
+          setProgressContract(res.data);
         }
       } catch (errors: any) {
         // toast.error(errors?.message);
@@ -326,6 +332,7 @@ export default function BuyComponent(progs: TabProps) {
           </Typography>
           <Button
             type="button"
+            disabled={progressContract}
             sx={{
               background: "#fff",
               color: "black",
@@ -337,6 +344,10 @@ export default function BuyComponent(progs: TabProps) {
               fontWeight: "bold",
               "&:hover": {
                 background: "#fff",
+              },
+              "&:disabled": {
+                background: "gray",
+                color: "white",
               },
             }}
             onClick={handleSubmit}

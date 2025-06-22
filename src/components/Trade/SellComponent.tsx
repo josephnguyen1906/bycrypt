@@ -3,6 +3,7 @@ import {
   createOrder,
   getBuySellConfig,
   getOrderResult,
+  getProgressContract,
 } from "@/services/User.service";
 import { IUser } from "@/shared/interfaces";
 import { formatCurrency } from "@/utils/formatMoney";
@@ -25,6 +26,7 @@ export default function SellComponent(progs: TabProps) {
   const [type, setType] = useState(0);
   const [hytime, setHytime] = useState<any>(null);
   const [hyykbl, setHyykbl] = useState<any>(null);
+  const [progressContract, setProgressContract] = useState<any>(null);
   const router = useRouter();
   const [buySellConfig, setBuySellConfig] = useState<any>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -51,7 +53,7 @@ export default function SellComponent(progs: TabProps) {
     const referral = async () => {
       try {
         const buySellConfig: any = await getBuySellConfig();
-
+        const res: any = await getProgressContract();
         if (buySellConfig.status === true) {
           const data = buySellConfig.data;
 
@@ -69,6 +71,9 @@ export default function SellComponent(progs: TabProps) {
           setAmount(processedData.hy_tzed?.[0] || "200");
           setPrice(Number(processedData.hy_tzed?.[0]) || 200);
           setBuySellConfig(processedData);
+        }
+        if (res.data) {
+          setProgressContract(res.data);
         }
       } catch (errors: any) {
         // toast.error(errors?.message);
@@ -324,6 +329,7 @@ export default function SellComponent(progs: TabProps) {
           </Typography>
           <Button
             type="button"
+            disabled={progressContract}
             sx={{
               background: "#fff",
               color: "black",
@@ -331,10 +337,14 @@ export default function SellComponent(progs: TabProps) {
               height: "45px",
               borderRadius: "15px",
               fontSize: { xs: "14px", sm: "14px" },
-              fontWeight: "bold",
               textTransform: "capitalize",
+              fontWeight: "bold",
               "&:hover": {
                 background: "#fff",
+              },
+              "&:disabled": {
+                background: "gray",
+                color: "white",
               },
             }}
             onClick={handleSubmit}

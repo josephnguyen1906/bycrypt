@@ -156,7 +156,9 @@ const fetchCheckinData = () => {
 const postDaily = () => {
   return contentInstance.post(`/api/checkin`);
 };
-
+const getProgressContract = () => {
+  return contentInstance.get("/api/contract/progress-contract");
+};
 export {
   loginUser,
   signupUser,
@@ -189,4 +191,5 @@ export {
   getOrderResult,
   fetchCheckinData,
   postDaily,
+  getProgressContract,
 };
