@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import { log } from "console";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -39,27 +40,8 @@ const CryptoTable = styled("div")({
   },
 });
 
-const Announcements = [
-  {
-    date: "06/10/2025",
-    title: "Staking to delist several perpetual futures",
-  },
-  {
-    date: "06/10/2025",
-    title: "Staking to list perpetual for RESOLV crypto",
-  },
-  {
-    date: "06/10/2025",
-    title:
-      "Announcement from Staking regarding the delay of RESOLV (Resolv) listing",
-  },
-  {
-    date: "06/10/2025",
-    title: "Staking to adjust position tiers of several futures",
-  },
-];
-
 export default function OverviewPage() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
   const [noti, setNoti] = useState<any>(null);
@@ -196,7 +178,7 @@ export default function OverviewPage() {
             </Box>
             <Box sx={{ display: "grid", alignItems: "center" }}>
               <Typography sx={{ color: "gray", fontSize: "13px" }}>
-                Identity verification
+                {t("ProfilePage.Identity")}
               </Typography>
               {user?.rzstatus === 0 ? (
                 <Typography
@@ -209,7 +191,7 @@ export default function OverviewPage() {
                     gap: "5px",
                   }}
                 >
-                  <WarningIcon /> The customer account has not been verified.
+                  <WarningIcon /> {t("ProfilePage.Identity1")}
                 </Typography>
               ) : user?.rzstatus === 1 ? (
                 <Typography
@@ -222,7 +204,7 @@ export default function OverviewPage() {
                     gap: "5px",
                   }}
                 >
-                  <WarningIcon /> Pending approval
+                  <WarningIcon /> {t("ProfilePage.Identity2")}
                 </Typography>
               ) : user?.rzstatus === 2 ? (
                 <Typography
@@ -235,7 +217,7 @@ export default function OverviewPage() {
                     gap: "5px",
                   }}
                 >
-                  <VerifiedIcon /> Account has been verified
+                  <VerifiedIcon /> {t("ProfilePage.Identity3")}
                 </Typography>
               ) : (
                 <Typography
@@ -248,13 +230,13 @@ export default function OverviewPage() {
                     gap: "5px",
                   }}
                 >
-                  <WarningIcon /> Verified failed
+                  <WarningIcon /> {t("ProfilePage.Identity4")}
                 </Typography>
               )}
             </Box>
             <Box sx={{ display: "grid", alignItems: "center" }}>
               <Typography sx={{ color: "gray", fontSize: "13px" }}>
-                Country/Region
+                {t("ProfilePage.country")}
               </Typography>
               <Typography sx={{ color: "#fff" }}>{user?.addr} </Typography>
             </Box>
@@ -268,9 +250,11 @@ export default function OverviewPage() {
               }}
             >
               <Typography sx={{ color: "gray", fontSize: "13px" }}>
-                Trading fee tier
+                {t("ProfilePage.Trading")}
               </Typography>
-              <Typography sx={{ color: "#fff" }}>Regular user</Typography>
+              <Typography sx={{ color: "#fff" }}>
+                {t("ProfilePage.Regular")}
+              </Typography>
             </Box>
           </Box>
         </Box>
@@ -289,10 +273,10 @@ export default function OverviewPage() {
                 <Typography
                   sx={{ fontSize: "25px", fontWeight: "bold", color: "#fff" }}
                 >
-                  Account balance details
+                  {t("ProfilePage.balance")}
                 </Typography>
                 <Typography sx={{ color: "#fff", fontSize: "15px" }}>
-                  Below is the balance information in the wallet.
+                  {t("ProfilePage.balance_note")}
                 </Typography>
                 <Box
                   sx={{
@@ -334,10 +318,10 @@ export default function OverviewPage() {
                   variant="h2"
                   sx={{ fontSize: "30px", fontWeight: "bold", color: "#fff" }}
                 >
-                  Get verified to secure your account
+                  {t("ProfilePage.verified")}
                 </Typography>
                 <Typography sx={{ color: "#fff" }}>
-                  Provide your ID, a selfie, and personal information.
+                  {t("ProfilePage.your_ID")}
                 </Typography>
                 <Button
                   type="button"
@@ -356,7 +340,7 @@ export default function OverviewPage() {
                   }}
                   href="/verified"
                 >
-                  Get verified
+                  {t("ProfilePage.button_verified")}
                 </Button>
               </StyledPaper>
             )}
@@ -367,7 +351,7 @@ export default function OverviewPage() {
                 variant="h4"
                 sx={{ fontSize: "25px", fontWeight: "bold", color: "#fff" }}
               >
-                Today’s crypto prices
+                {t("ProfilePage.today")}
               </Typography>
               <Box sx={{ overflowX: "auto", background: "#000" }}>
                 <MarketDataWidget2 width={750} height={450} theme="dark" />
@@ -389,7 +373,7 @@ export default function OverviewPage() {
                 variant="h3"
                 sx={{ fontSize: "28px", fontWeight: "bold", color: "#fff" }}
               >
-                Notification
+                {t("ProfilePage.noti")}
               </Typography>
               {noti &&
                 noti.map((announcement: any, index: number) => (

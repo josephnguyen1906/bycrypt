@@ -21,8 +21,10 @@ import {
 import { toast } from "react-toastify";
 import { fetchCheckinData, postDaily } from "@/services/User.service";
 import { formatCurrency } from "@/utils/formatMoney";
+import { useTranslation } from "react-i18next";
 
 const DailyRewards = () => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [checkinData, setCheckinData] = useState<any>(null);
 
@@ -80,11 +82,11 @@ const DailyRewards = () => {
         gutterBottom
         textAlign="center"
       >
-        Daily Check-in Rewards
+        {t("DailyRewardsPage.title")}
       </Typography>
 
       <Typography variant="body1" textAlign="center" mb={2}>
-        Current streak:{" "}
+        {t("DailyRewardsPage.Current")}:{" "}
         <strong>{checkinData && checkinData?.current_streak}</strong> days
       </Typography>
       <Box
@@ -166,7 +168,7 @@ const DailyRewards = () => {
           }}
           onClick={handleCheckin}
         >
-          Take attendance now
+          {t("DailyRewardsPage.button")}
         </Button>
       </Box>
     </Box>

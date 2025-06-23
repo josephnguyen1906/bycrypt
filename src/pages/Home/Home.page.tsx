@@ -47,7 +47,11 @@ export default function HomePage() {
 
         const hasShownPopup = sessionStorage.getItem("popupShown");
 
-        if (user && !hasShownPopup) {
+        if (
+          user &&
+          !hasShownPopup &&
+          buySellConfig.data.checkin_notify_status === 1
+        ) {
           setShowPopup(true);
           sessionStorage.setItem("popupShown", "true");
 

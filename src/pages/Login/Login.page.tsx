@@ -13,8 +13,10 @@ import {
 } from "@mui/material";
 import { loginUser } from "@/services/User.service";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 export default function LoginPage() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loadding, setLoadding] = useState<boolean>(false);
@@ -84,7 +86,7 @@ export default function LoginPage() {
             gutterBottom
             sx={{ mt: 4, textAlign: "center" }}
           >
-            Trade with confidence
+            {t("LoginPage.title")}
           </Typography>
           <Typography
             variant="body2"
@@ -95,8 +97,7 @@ export default function LoginPage() {
               margin: "0 auto",
             }}
           >
-            We don’t lend out customer funds, which is verified through our
-            regularly published Proof of Reserves audits.
+            {t("LoginPage.decription")}
           </Typography>
         </Box>
         <Box sx={{ mb: 4, mt: 2 }}>
@@ -128,11 +129,10 @@ export default function LoginPage() {
             color="textSecondary"
             sx={{ color: "white", fontSize: "20px" }}
           >
-            Join our Telegram group
+            {t("LoginPage.join_tele")}
           </Typography>
           <Typography variant="body2" color="gray">
-            Ask questions, get answers, and chat with other traders to shape the
-            crypto future together
+            {t("LoginPage.note")}
           </Typography>
         </Box>
       </Box>
@@ -153,13 +153,13 @@ export default function LoginPage() {
       >
         <Box sx={{ maxWidth: "400px", width: "100%" }}>
           <Typography variant="h4" gutterBottom>
-            Log in
+            {t("HomePage.mobile_login")}
           </Typography>
           <form>
-            <InputLabel>Email / username </InputLabel>
+            <InputLabel>{t("LoginPage.title1")} </InputLabel>
             <TextField
               fullWidth
-              placeholder="Enter Email / username"
+              placeholder={t("LoginPage.value1")}
               variant="outlined"
               value={email}
               type="email"
@@ -167,10 +167,10 @@ export default function LoginPage() {
               sx={{ mb: 2, borderRadius: "15px", mt: 1 }}
             />
 
-            <InputLabel>Password </InputLabel>
+            <InputLabel>{t("LoginPage.title2")} </InputLabel>
             <TextField
               fullWidth
-              placeholder="Enter Password"
+              placeholder={t("LoginPage.value2")}
               variant="outlined"
               type="password"
               value={password}
@@ -189,15 +189,15 @@ export default function LoginPage() {
                 "&:hover": { backgroundColor: "#000", color: "white" },
               }}
             >
-              Log in
+              {t("HomePage.mobile_login")}
             </Button>
             <Typography variant="body2" align="center" sx={{ mb: 2 }}>
-              Don’t have an account?{" "}
+              {t("LoginPage.sub_title")}{" "}
               <a href="/signup" style={{ color: "#1976d2" }}>
-                Sign up
+                {t("HomePage.mobile_signup")}
               </a>
             </Typography>
-            <Grid container spacing={2} justifyContent="center" sx={{ mb: 2 }}>
+            {/* <Grid container spacing={2} justifyContent="center" sx={{ mb: 2 }}>
               <Grid item>
                 <Button
                   variant="outlined"
@@ -213,7 +213,6 @@ export default function LoginPage() {
                     alt="Google"
                     style={{ width: "24px", height: "24px" }}
                   />{" "}
-                  {/* Replace with actual icon path */}
                 </Button>
               </Grid>
               <Grid item>
@@ -231,7 +230,7 @@ export default function LoginPage() {
                     alt="Apple"
                     style={{ width: "24px", height: "24px" }}
                   />{" "}
-                  {/* Replace with actual icon path */}
+                  
                 </Button>
               </Grid>
               <Grid item>
@@ -249,7 +248,7 @@ export default function LoginPage() {
                     alt="Wallet"
                     style={{ width: "24px", height: "24px" }}
                   />{" "}
-                  {/* Replace with actual icon path */}
+                 
                 </Button>
               </Grid>
             </Grid>
@@ -259,7 +258,7 @@ export default function LoginPage() {
               <a href="#" style={{ color: "#1976d2" }}>
                 Learn more
               </a>
-            </Typography>
+            </Typography> */}
           </form>
         </Box>
       </Box>

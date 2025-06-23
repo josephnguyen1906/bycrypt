@@ -13,8 +13,10 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { signupUser } from "@/services/User.service";
+import { useTranslation } from "react-i18next";
 
 export default function SignupPage() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [invit, setInvit] = useState("");
@@ -81,7 +83,7 @@ export default function SignupPage() {
             gutterBottom
             sx={{ mt: 4, textAlign: "center" }}
           >
-            Trade with confidence
+            {t("LoginPage.title")}
           </Typography>
           <Typography
             variant="body2"
@@ -92,8 +94,7 @@ export default function SignupPage() {
               margin: "0 auto",
             }}
           >
-            We don’t lend out customer funds, which is verified through our
-            regularly published Proof of Reserves audits.
+            {t("LoginPage.decription")}
           </Typography>
         </Box>
         <Box sx={{ mb: 4, mt: 2 }}>
@@ -125,11 +126,10 @@ export default function SignupPage() {
             color="textSecondary"
             sx={{ color: "white", fontSize: "20px" }}
           >
-            Join our Telegram group
+            {t("LoginPage.join_tele")}
           </Typography>
           <Typography variant="body2" color="gray">
-            Ask questions, get answers, and chat with other traders to shape the
-            crypto future together
+            {t("LoginPage.note")}
           </Typography>
         </Box>
       </Box>
@@ -150,7 +150,7 @@ export default function SignupPage() {
       >
         <Box sx={{ maxWidth: "400px", width: "100%" }}>
           <Typography variant="h4" gutterBottom>
-            Enter your email
+            {t("HomePage.mobile_signup")}
           </Typography>
           <form>
             <InputLabel>Email* </InputLabel>
@@ -163,7 +163,7 @@ export default function SignupPage() {
               sx={{ mb: 2, borderRadius: "15px", mt: 1 }}
             />
 
-            <InputLabel>Password* </InputLabel>
+            <InputLabel> {t("LoginPage.title2")}* </InputLabel>
             <TextField
               fullWidth
               variant="outlined"
@@ -172,7 +172,7 @@ export default function SignupPage() {
               onChange={handlePassword}
               sx={{ mb: 2, borderRadius: "15px", mt: 1 }}
             />
-            <InputLabel>Referral code* </InputLabel>
+            <InputLabel>{t("LoginPage.Referral")}* </InputLabel>
             <TextField
               fullWidth
               variant="outlined"
@@ -193,9 +193,9 @@ export default function SignupPage() {
               }}
               onClick={signup}
             >
-              Sign up
+              {t("HomePage.mobile_signup")}
             </Button>
-            <div
+            {/* <div
               className="ThirdPartyLogin_title__wLNO7"
               style={{ textAlign: "center", padding: "10px 0" }}
             >
@@ -217,7 +217,7 @@ export default function SignupPage() {
                     alt="Google"
                     style={{ width: "24px", height: "24px" }}
                   />{" "}
-                  {/* Replace with actual icon path */}
+                
                 </Button>
               </Grid>
               <Grid item>
@@ -235,7 +235,7 @@ export default function SignupPage() {
                     alt="Apple"
                     style={{ width: "24px", height: "24px" }}
                   />{" "}
-                  {/* Replace with actual icon path */}
+                 
                 </Button>
               </Grid>
               <Grid item>
@@ -253,10 +253,10 @@ export default function SignupPage() {
                     alt="Wallet"
                     style={{ width: "24px", height: "24px" }}
                   />{" "}
-                  {/* Replace with actual icon path */}
+                 
                 </Button>
               </Grid>
-            </Grid>
+            </Grid> */}
           </form>
         </Box>
       </Box>

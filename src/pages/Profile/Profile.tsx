@@ -9,6 +9,7 @@ import InvitationPage from "./Invitation";
 import useAuth from "@/hook/useAuth";
 import { useRouter } from "next/navigation";
 import BillPage from "./Bill";
+import { useTranslation } from "react-i18next";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -40,6 +41,7 @@ function a11yProps(index: number) {
   };
 }
 export default function ProfilePage(props: TabProps) {
+  const { t } = useTranslation();
   const [value, setValue] = useState(props.value || 0);
   const { user } = useAuth();
   const router = useRouter();
@@ -96,12 +98,12 @@ export default function ProfilePage(props: TabProps) {
             },
           }}
         >
-          <Tab label="Overview" {...a11yProps(0)} />
-          <Tab label="Profile" {...a11yProps(1)} />
-          <Tab label="Security setting" {...a11yProps(2)} />
-          <Tab label="Account verification" {...a11yProps(3)} />
-          <Tab label="Referral" {...a11yProps(4)} />
-          <Tab label="Bill" {...a11yProps(5)} />
+          <Tab label={t("ProfilePage.menu0")} {...a11yProps(0)} />
+          <Tab label={t("ProfilePage.menu1")} {...a11yProps(1)} />
+          <Tab label={t("ProfilePage.menu2")} {...a11yProps(2)} />
+          <Tab label={t("ProfilePage.menu3")} {...a11yProps(3)} />
+          <Tab label={t("ProfilePage.menu4")} {...a11yProps(4)} />
+          <Tab label={t("ProfilePage.menu5")} {...a11yProps(5)} />
         </Tabs>
       </Box>
 

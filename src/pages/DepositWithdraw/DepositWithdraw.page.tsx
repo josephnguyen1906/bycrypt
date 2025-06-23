@@ -34,6 +34,7 @@ import {
   Visibility,
   VisibilityOff,
 } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -55,17 +56,17 @@ interface CountryType {
 const medthod = [
   {
     id: 1,
-    name: "Bank Transfer",
+    name: "method1",
   },
   {
     id: 2,
-    name: "Transfer coins to the wallet",
+    name: "method2",
   },
 ];
 const medthodWallet = [
   {
     id: 2,
-    name: "Transfer coins to the wallet",
+    name: "method2",
   },
 ];
 
@@ -93,6 +94,7 @@ function a11yProps(index: number) {
 }
 
 export default function DepositWithdrawPage(props: TabProps) {
+  const { t } = useTranslation();
   const [amount, setAmount] = useState("");
   const [address, setAddress] = useState("");
   const [coin, setCoin] = useState<string>();
@@ -240,7 +242,7 @@ export default function DepositWithdrawPage(props: TabProps) {
               textAlign: "center",
             }}
           >
-            Buy crypto in a few steps
+            {t("DepositWithdrawPage.title")}
           </Typography>
           <Typography
             sx={{
@@ -253,7 +255,7 @@ export default function DepositWithdrawPage(props: TabProps) {
               textAlign: "center",
             }}
           >
-            Bitcoin, Ethereum, Tether, Solana, and more popular crypto
+            {t("DepositWithdrawPage.decription")}
           </Typography>
         </Box>
         {user ? (
@@ -312,7 +314,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                 }}
               >
                 <Tab
-                  label="Deposit"
+                  label={t("DepositWithdrawPage.tab1")}
                   {...a11yProps(0)}
                   sx={{
                     color: "white",
@@ -324,7 +326,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                   }}
                 />
                 <Tab
-                  label="Withdraw"
+                  label={t("DepositWithdrawPage.tab2")}
                   {...a11yProps(1)}
                   sx={{
                     color: "white",
@@ -384,7 +386,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                       textAlign: "center",
                     }}
                   >
-                    Top-up information
+                    {t("DepositWithdrawPage.h2")}
                   </Typography>
 
                   {method === 1 && (
@@ -403,7 +405,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                             marginTop: "10px",
                           }}
                         >
-                          Bank name:
+                          {t("DepositWithdrawPage.bank_name")}:
                         </Typography>
                         <Typography
                           sx={{
@@ -429,7 +431,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                             marginTop: "10px",
                           }}
                         >
-                          Account number:
+                          {t("DepositWithdrawPage.back_acc")}:
                         </Typography>
                         <Typography
                           sx={{
@@ -476,7 +478,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                             marginTop: "10px",
                           }}
                         >
-                          Account name:
+                          {t("DepositWithdrawPage.acc_name")}:
                         </Typography>
                         <Typography
                           sx={{
@@ -502,7 +504,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                             marginTop: "10px",
                           }}
                         >
-                          Amount to be paid:
+                          {t("DepositWithdrawPage.amount")}:
                         </Typography>
                         <Typography
                           sx={{
@@ -522,8 +524,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                           marginTop: "10px",
                         }}
                       >
-                        Note: After completing the payment, please take a
-                        screenshot and confirm that the payment has been made.
+                        {t("DepositWithdrawPage.note")}
                       </Typography>
                     </Box>
                   )}
@@ -536,7 +537,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                           marginTop: "10px",
                         }}
                       >
-                        Transfer coins to the wallet
+                        {t("DepositWithdrawPage.transfer")}
                       </Typography>
                       <Box
                         sx={{
@@ -552,7 +553,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                             marginTop: "10px",
                           }}
                         >
-                          Wallet address:
+                          {t("DepositWithdrawPage.wallet")}:
                         </Typography>
                         <Typography
                           sx={{
@@ -599,7 +600,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                             marginTop: "10px",
                           }}
                         >
-                          Type of coin:
+                          {t("DepositWithdrawPage.type_code")}:
                         </Typography>
                         <Typography
                           sx={{
@@ -650,7 +651,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                             marginTop: "10px",
                           }}
                         >
-                          Coins to transfer:
+                          {t("DepositWithdrawPage.coins")}:
                         </Typography>
                         <Typography
                           sx={{
@@ -672,8 +673,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                           marginTop: "10px",
                         }}
                       >
-                        Note: After payment through the wallet, please take a
-                        picture of the confirmation receipt.
+                        {t("DepositWithdrawPage.note")}
                       </Typography>
                     </Box>
                   )}
@@ -739,7 +739,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                     renderInput={(params: any) => (
                       <TextField
                         {...params}
-                        placeholder="Select currency"
+                        placeholder={t("DepositWithdrawPage.currency")}
                         variant="outlined"
                         InputLabelProps={{ style: { color: "white" } }}
                         sx={{
@@ -816,14 +816,14 @@ export default function DepositWithdrawPage(props: TabProps) {
                                 alt=""
                               />
                             )}
-                            {option.name}
+                            {t("DepositWithdrawPage." + option.name)}
                           </Box>
                         );
                       }}
                       renderInput={(params: any) => (
                         <TextField
                           {...params}
-                          placeholder="Method"
+                          placeholder={t("DepositWithdrawPage.method")}
                           variant="outlined"
                           InputLabelProps={{ style: { color: "white" } }}
                           sx={{
@@ -901,14 +901,14 @@ export default function DepositWithdrawPage(props: TabProps) {
                                 alt=""
                               />
                             )}
-                            {option.name}
+                            {t("DepositWithdrawPage." + option.name)}
                           </Box>
                         );
                       }}
                       renderInput={(params: any) => (
                         <TextField
                           {...params}
-                          placeholder="Method"
+                          placeholder={t("DepositWithdrawPage.method")}
                           variant="outlined"
                           InputLabelProps={{ style: { color: "white" } }}
                           sx={{
@@ -948,7 +948,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                   )}
                   <TextField
                     id="outlined-basic"
-                    placeholder="Amount"
+                    placeholder={t("DepositWithdrawPage.amount_name")}
                     variant="outlined"
                     onChange={(e) => setAmount(e.target.value)}
                     sx={{
@@ -993,7 +993,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                       textAlign: "left",
                     }}
                   >
-                    Upload transaction images
+                    {t("DepositWithdrawPage.upload")}
                   </Typography>
                   <TextField
                     id="outlined-basic"
@@ -1061,7 +1061,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                       }}
                       onClick={handleSubmit}
                     >
-                      Deposit
+                      {t("DepositWithdrawPage.tab1")}
                     </Button>
                   </Box>
                 </Box>
@@ -1099,7 +1099,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                       textAlign: "center",
                     }}
                   >
-                    Top-up information
+                    {t("DepositWithdrawPage.h2")}
                   </Typography>
 
                   {method === 1 && (
@@ -1118,7 +1118,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                             marginTop: "10px",
                           }}
                         >
-                          Bank name:
+                          {t("DepositWithdrawPage.bank_name")}:
                         </Typography>
                         <Typography
                           sx={{
@@ -1144,7 +1144,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                             marginTop: "10px",
                           }}
                         >
-                          Account number:
+                          {t("DepositWithdrawPage.back_acc")}:
                         </Typography>
                         <Typography
                           sx={{
@@ -1191,7 +1191,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                             marginTop: "10px",
                           }}
                         >
-                          Account name:
+                          {t("DepositWithdrawPage.acc_name")}:
                         </Typography>
                         <Typography
                           sx={{
@@ -1217,7 +1217,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                             marginTop: "10px",
                           }}
                         >
-                          Amount to be paid:
+                          {t("DepositWithdrawPage.amount")}:
                         </Typography>
                         <Typography
                           sx={{
@@ -1237,8 +1237,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                           marginTop: "10px",
                         }}
                       >
-                        Note: After completing the payment, please take a
-                        screenshot and confirm that the payment has been made.
+                        {t("DepositWithdrawPage.note")}:
                       </Typography>
                     </Box>
                   )}
@@ -1251,7 +1250,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                           marginTop: "10px",
                         }}
                       >
-                        Transfer coins to the wallet
+                        {t("DepositWithdrawPage.transfer")}:
                       </Typography>
                       <Box
                         sx={{
@@ -1267,7 +1266,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                             marginTop: "10px",
                           }}
                         >
-                          Wallet address:
+                          {t("DepositWithdrawPage.wallet")}:
                         </Typography>
                         <Typography
                           sx={{
@@ -1314,7 +1313,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                             marginTop: "10px",
                           }}
                         >
-                          Type of coin:
+                          {t("DepositWithdrawPage.type_code")}:
                         </Typography>
                         <Typography
                           sx={{
@@ -1365,7 +1364,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                             marginTop: "10px",
                           }}
                         >
-                          Coins to transfer:
+                          {t("DepositWithdrawPage.coins")}:
                         </Typography>
                         <Typography
                           sx={{
@@ -1387,8 +1386,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                           marginTop: "10px",
                         }}
                       >
-                        Note: After payment through the wallet, please take a
-                        picture of the confirmation receipt.
+                        {t("DepositWithdrawPage.note")}
                       </Typography>
                     </Box>
                   )}
@@ -1458,7 +1456,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                     renderInput={(params: any) => (
                       <TextField
                         {...params}
-                        label="Select currency"
+                        label={t("DepositWithdrawPage.currency")}
                         variant="outlined"
                         InputLabelProps={{ style: { color: "white" } }}
                         sx={{
@@ -1524,14 +1522,14 @@ export default function DepositWithdrawPage(props: TabProps) {
                                 alt=""
                               />
                             )}
-                            {option.name}
+                            {t("DepositWithdrawPage." + option.name)}
                           </Box>
                         );
                       }}
                       renderInput={(params: any) => (
                         <TextField
                           {...params}
-                          label="Method"
+                          label={t("DepositWithdrawPage.method")}
                           variant="outlined"
                           InputLabelProps={{ style: { color: "white" } }}
                           sx={{
@@ -1597,14 +1595,14 @@ export default function DepositWithdrawPage(props: TabProps) {
                                 alt=""
                               />
                             )}
-                            {option.name}
+                            {t("DepositWithdrawPage." + option.name)}
                           </Box>
                         );
                       }}
                       renderInput={(params: any) => (
                         <TextField
                           {...params}
-                          label="Method"
+                          label={t("DepositWithdrawPage.method")}
                           variant="outlined"
                           InputLabelProps={{ style: { color: "white" } }}
                           sx={{
@@ -1637,7 +1635,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                   )}
                   <TextField
                     id="outlined-basic"
-                    label="Amount"
+                    label={t("DepositWithdrawPage.amount_name")}
                     variant="outlined"
                     onChange={(e) => setAmount(e.target.value)}
                     sx={{
@@ -1666,7 +1664,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                   />
                   <TextField
                     id="outlined-basic"
-                    label="Payment Password"
+                    label={t("DepositWithdrawPage.Password")}
                     variant="outlined"
                     type={showPassword ? "text" : "password"}
                     value={password}
@@ -1732,7 +1730,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                       }}
                       onClick={handleSubmitSell}
                     >
-                      Withdraw
+                      {t("DepositWithdrawPage.tab2")}
                     </Button>
                   </Box>
                 </Box>
@@ -1747,7 +1745,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                       textAlign: "center",
                     }}
                   >
-                    You have not created a payment password.
+                    {t("DepositWithdrawPage.log_is")}
                   </Typography>
                   <Button
                     type="button"
@@ -1765,7 +1763,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                       },
                     }}
                   >
-                    Add Password Payment
+                    {t("DepositWithdrawPage.add_pass")}
                   </Button>
                 </Box>
               )}
@@ -1792,12 +1790,12 @@ export default function DepositWithdrawPage(props: TabProps) {
               <Typography
                 sx={{ color: "white", fontSize: "30px", fontWeight: 600 }}
               >
-                You are not logged in
+                {t("DepositWithdrawPage.log_title")}
               </Typography>
               <Typography
                 sx={{ color: "white", fontSize: "20px", fontWeight: 600 }}
               >
-                Please log in to deposit / withdraw coins.
+                {t("DepositWithdrawPage.log_note")}
               </Typography>
               <Button
                 type="button"
@@ -1815,7 +1813,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                   },
                 }}
               >
-                Login
+                {t("HomePage.mobile_login")}
               </Button>
             </Box>
           </Box>
