@@ -203,7 +203,7 @@ export default function MenuProfileMobile(data: userProps) {
                     margin: "auto",
                     borderRadius: "10px",
                     "&:hover": {
-                      background: "lightgray",
+                      background: "none",
                     },
                   }}
                 >
@@ -259,7 +259,7 @@ export default function MenuProfileMobile(data: userProps) {
                     margin: "auto",
                     borderRadius: "10px",
                     "&:hover": {
-                      background: "lightgray",
+                      background: "none",
                     },
                   }}
                 >
