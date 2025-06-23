@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { CircleCountdown } from "../CountdownCircle/CountdownCircle";
 import { formatCurrency } from "@/utils/formatMoney";
 import { CloseOutlined } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 interface TabProps {
   user: IUser | null;
   dataProcess: any;
@@ -22,6 +23,7 @@ interface TabProps {
 }
 
 export default function BuyComponent(progs: TabProps) {
+  const { t } = useTranslation();
   const [valueAmount, setValueAmount] = useState<any>(null);
   const [amount, setAmount] = useState<any>(null);
   const [price, setPrice] = useState<Number | null>(null);
@@ -125,7 +127,7 @@ export default function BuyComponent(progs: TabProps) {
               // marginTop: "10px",
             }}
           >
-            Type
+            {t("BuySellPage.type")}
           </Typography>
           <Box
             sx={{
@@ -176,7 +178,7 @@ export default function BuyComponent(progs: TabProps) {
                       textTransform: "capitalize",
                     }}
                   >
-                    {item} minute
+                    {item} {t("BuySellPage.minute")}
                   </Typography>
                   <Typography
                     sx={{
@@ -185,7 +187,7 @@ export default function BuyComponent(progs: TabProps) {
                       textTransform: "capitalize",
                     }}
                   >
-                    Profit
+                    {t("BuySellPage.profit")}
                   </Typography>
                   <Typography
                     sx={{
@@ -206,7 +208,7 @@ export default function BuyComponent(progs: TabProps) {
               marginTop: "10px",
             }}
           >
-            Amount
+            {t("BuySellPage.amount")}
           </Typography>
           <Box
             sx={{
@@ -259,7 +261,7 @@ export default function BuyComponent(progs: TabProps) {
               padding: "10px 0",
             }}
           >
-            Custom amount
+            {t("BuySellPage.cust_amount")}
           </Typography>
           <TextField
             id="outlined-basic"
@@ -323,7 +325,7 @@ export default function BuyComponent(progs: TabProps) {
               },
             }}
           >
-            Current balance:{" "}
+            {t("BuySellPage.balance")}:{" "}
             {progs.user?.balance.usdt
               ? `${parseFloat(progs.user?.balance.usdt).toLocaleString()} USDT`
               : "0 "}
@@ -350,7 +352,7 @@ export default function BuyComponent(progs: TabProps) {
             }}
             onClick={handleSubmit}
           >
-            Buy
+            {t("BuySellPage.buy")}
           </Button>
         </Box>
       ) : (
@@ -378,7 +380,7 @@ export default function BuyComponent(progs: TabProps) {
                 fontWeight: 600,
               }}
             >
-              You are not logged in
+              {t("BuySellPage.title")}
             </Typography>
             <Typography
               sx={{
@@ -387,7 +389,7 @@ export default function BuyComponent(progs: TabProps) {
                 fontWeight: 600,
               }}
             >
-              Please log in to buy / sell coins.
+              {t("BuySellPage.decription")}
             </Typography>
             <Button
               type="button"
@@ -406,7 +408,7 @@ export default function BuyComponent(progs: TabProps) {
                 },
               }}
             >
-              Login
+              {t("HomePage.mobile_login")}
             </Button>
           </Box>
         </Box>

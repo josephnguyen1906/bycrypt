@@ -23,6 +23,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
 interface TabPanelProps {
@@ -54,6 +55,7 @@ function a11yProps(index: number) {
 }
 
 export default function StakingPage() {
+  const { t } = useTranslation();
   const [orepool, setOrepool] = useState<any>(null);
   const [value, setValue] = React.useState(0);
   const [websiteConfig, setWebsiteConfig] = useState<any>(null);
@@ -153,7 +155,7 @@ export default function StakingPage() {
             color={"#e5f663"}
             sx={{ fontSize: { xs: "18px", sm: "30px" } }}
           >
-            Staking
+            {t("StakingPage.title")}
           </Typography>
           <Typography
             variant="h3"
@@ -164,7 +166,7 @@ export default function StakingPage() {
               padding: "10px 0",
             }}
           >
-            Earn passive income with your crypto
+            {t("StakingPage.decription")}
           </Typography>
           <Typography
             sx={{
@@ -177,9 +179,7 @@ export default function StakingPage() {
               margin: "0 auto",
             }}
           >
-            Turn your idle crypto into a steady source of income with just a few
-            simple steps. Staking allows you to lock tokens to support the
-            operation of the blockchain network and receive periodic rewards.
+            {t("StakingPage.note")}
           </Typography>
           <Button
             type="button"
@@ -197,7 +197,7 @@ export default function StakingPage() {
               },
             }}
           >
-            Read more
+            {t("StakingPage.button")}
           </Button>
         </Box>
         <Box sx={{ display: { xs: "none", sm: "block" } }}>
@@ -230,7 +230,7 @@ export default function StakingPage() {
             color: "white",
           }}
         >
-          Consignment promotion:
+          {t("StakingPage.staking_Consignment")}
         </Typography>
         <Typography
           variant="h6"
@@ -241,7 +241,7 @@ export default function StakingPage() {
             color: "white",
           }}
         >
-          Vip 1: From 1,000 Pi to 10,000 Pi with a monthly profit of 10%
+          {t("StakingPage.staking_Consignment1")}
         </Typography>
         <Typography
           variant="h6"
@@ -252,7 +252,7 @@ export default function StakingPage() {
             color: "white",
           }}
         >
-          Vip 2: From 10,000 Pi to 50,000 Pi with a monthly profit of 20%
+          {t("StakingPage.staking_Consignment2")}
         </Typography>
         <Typography
           variant="h6"
@@ -263,7 +263,7 @@ export default function StakingPage() {
             color: "white",
           }}
         >
-          Vip 3: From 100.000 Pi to 150.000 Pi with a monthly profit of 25%
+          {t("StakingPage.staking_Consignment3")}
         </Typography>
         <Typography
           variant="h6"
@@ -274,7 +274,7 @@ export default function StakingPage() {
             color: "white",
           }}
         >
-          Vip 4: From 150.000 Pi to 300.000 Pi with a monthly profit of 30%
+          {t("StakingPage.staking_Consignment4")}
         </Typography>
         <Typography
           variant="h6"
@@ -285,7 +285,7 @@ export default function StakingPage() {
             color: "white",
           }}
         >
-          Vip 5: From 300,000 Pi and above, the monthly interest is 45%.
+          {t("StakingPage.staking_Consignment5")}
         </Typography>
       </Box>
       <Box
@@ -308,7 +308,7 @@ export default function StakingPage() {
           }}
           variant="h3"
         >
-          Staking list
+          {t("StakingPage.staking_list")}
         </Typography>
         <Box
           sx={{
@@ -372,7 +372,7 @@ export default function StakingPage() {
                     variant="body1"
                     sx={{ color: "#666", fontSize: "14px" }}
                   >
-                    Minimum purchase:{" "}
+                    {t("StakingPage.staking_list1")}{" "}
                     {item.min
                       ? `${parseFloat(item.min).toLocaleString()} Pi`
                       : "0 "}
@@ -381,7 +381,7 @@ export default function StakingPage() {
                     variant="body1"
                     sx={{ color: "#666", fontSize: "14px" }}
                   >
-                    Maximum purchase :{" "}
+                    {t("StakingPage.staking_list2")}{" "}
                     {item.max
                       ? `${parseFloat(item.max).toLocaleString()} Pi`
                       : "0 "}
@@ -435,7 +435,7 @@ export default function StakingPage() {
             color={"#e5f663"}
             sx={{ fontSize: { xs: "18px", sm: "30px" } }}
           >
-            Staking
+            {t("StakingPage.title")}
           </Typography>
           <Typography
             variant="h3"
@@ -446,7 +446,7 @@ export default function StakingPage() {
               padding: "10px 0",
             }}
           >
-            Earn passive income with your crypto
+            {t("StakingPage.decription")}
           </Typography>
           <Typography
             sx={{
@@ -459,9 +459,7 @@ export default function StakingPage() {
               margin: "0 auto",
             }}
           >
-            Turn your idle crypto into a steady source of income with just a few
-            simple steps. Staking allows you to lock tokens to support the
-            operation of the blockchain network and receive periodic rewards.
+            {t("StakingPage.note")}
           </Typography>
           <Button
             type="button"
@@ -480,7 +478,7 @@ export default function StakingPage() {
               },
             }}
           >
-            Read more
+            {t("StakingPage.button")}
           </Button>
         </Box>
         <Box>

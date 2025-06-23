@@ -34,6 +34,7 @@ import AssetChartView from "@/components/ChartView/AssetChartView";
 import TablePagination from "@mui/material/TablePagination";
 
 import { formatDateTime } from "@/utils/formatDateTime";
+import { useTranslation } from "react-i18next";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -90,6 +91,7 @@ function a11yProps(index: number) {
 }
 
 export default function AssetPage() {
+  const { t } = useTranslation();
   const [bill, setBill] = useState<any>(null);
   const { user } = useAuth();
   const [page, setPage] = useState(0);
@@ -217,7 +219,7 @@ export default function AssetPage() {
             >
               <Box sx={{ width: "100%", textAlign: "left" }}>
                 <Typography sx={{ color: "#909090", padding: "5px 0" }}>
-                  Estimated total value
+                  {t("HomePage.mobile_estimated_value")}
                 </Typography>
                 <Box
                   sx={{
@@ -240,7 +242,7 @@ export default function AssetPage() {
                   </Typography>
                 </Box>
                 <Typography sx={{ color: "#909090", padding: "5px 0" }}>
-                  PNL today $0.00(0.00%)
+                  {t("HomePage.mobile_pnl_today")}
                 </Typography>
               </Box>
             </Box>
@@ -270,7 +272,7 @@ export default function AssetPage() {
                     height: "50px",
                   }}
                 />
-                Deposit
+                {t("AssetPage.menu2")}
               </Button>
               <Button
                 href="/withdraw"
@@ -290,7 +292,7 @@ export default function AssetPage() {
                     height: "50px",
                   }}
                 />
-                Withdraw
+                {t("AssetPage.menu3")}
               </Button>
               <Button
                 href="/buysell"
@@ -310,7 +312,7 @@ export default function AssetPage() {
                     height: "50px",
                   }}
                 />
-                Transfer
+                {t("AssetPage.menu4")}
               </Button>
               <Button
                 href="/bill"
@@ -330,14 +332,14 @@ export default function AssetPage() {
                     height: "50px",
                   }}
                 />
-                History
+                {t("AssetPage.history")}
               </Button>
             </Box>
             <Box sx={{ width: "95%", margin: "auto" }}>
               <Typography
                 sx={{ fontSize: "16px", color: "white", fontWeight: "600" }}
               >
-                Asset
+                {t("AssetPage.asset")}
               </Typography>
               <Box
                 sx={{
@@ -348,7 +350,7 @@ export default function AssetPage() {
                 }}
               >
                 <Typography sx={{ fontSize: "14px", color: "#909090" }}>
-                  Name
+                  {t("AssetPage.name")}
                 </Typography>
                 <Typography
                   sx={{
@@ -357,7 +359,7 @@ export default function AssetPage() {
                     textAlign: "right",
                   }}
                 >
-                  Quantity
+                  {t("AssetPage.quantity")}
                 </Typography>
               </Box>
               <Box
@@ -400,7 +402,7 @@ export default function AssetPage() {
               <Typography
                 sx={{ fontSize: "16px", color: "white", fontWeight: "600" }}
               >
-                Recent history
+                {t("AssetPage.recent")}
               </Typography>
               {bill ? (
                 <Box>
@@ -487,7 +489,7 @@ export default function AssetPage() {
                     textAlign: "Center",
                   }}
                 >
-                  No transactions have occurred yet.
+                  {t("AssetPage.no_tran")}
                 </Typography>
               )}
             </Box>
@@ -513,12 +515,12 @@ export default function AssetPage() {
               <Typography
                 sx={{ color: "white", fontSize: "30px", fontWeight: 600 }}
               >
-                You are not logged in
+                {t("AssetPage.log_title")}
               </Typography>
               <Typography
                 sx={{ color: "white", fontSize: "20px", fontWeight: 600 }}
               >
-                Please log in to deposit / withdraw coins.
+                {t("AssetPage.log_decription")}
               </Typography>
               <Button
                 type="button"
@@ -536,7 +538,7 @@ export default function AssetPage() {
                   },
                 }}
               >
-                Login
+                {t("HomePage.mobile_login")}
               </Button>
             </Box>
           </Box>

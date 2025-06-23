@@ -4,14 +4,16 @@ import { initReactI18next } from "react-i18next";
 
 import en from "@/messages/en.json";
 import vi from "@/messages/vi.json";
+import zh from "@/messages/zh.json";
 
 i18n.use(initReactI18next).init({
   resources: {
     en: { translation: en },
     vi: { translation: vi },
+    zh: { translation: zh },
   },
-  lng: "en",
-  fallbackLng: "en",
+  lng: "vi",
+  fallbackLng: "vi",
   interpolation: {
     escapeValue: false,
   },

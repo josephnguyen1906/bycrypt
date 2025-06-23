@@ -6,6 +6,7 @@ import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -36,6 +37,7 @@ function a11yProps(index: number) {
   };
 }
 export default function ExcavatorPage() {
+  const { t } = useTranslation();
   const [orepool, setOrepool] = useState<any>(null);
   const [value, setValue] = React.useState(0);
   const { user } = useAuth();
@@ -124,25 +126,24 @@ export default function ExcavatorPage() {
             color={"#e5f663"}
             sx={{ fontSize: { xs: "18px", sm: "20px" } }}
           >
-            Now available
+            {t("MiningPage.title1")}
           </Typography>
           <Typography
             variant="h6"
             color={"#e5f663"}
             sx={{ fontSize: { xs: "18px", sm: "20px" } }}
           >
-            For institutional clients
+            {t("MiningPage.title2")}
           </Typography>
           <Typography
             variant="h3"
             color={"white"}
             sx={{ fontSize: { xs: "20px", sm: "35px" } }}
           >
-            Rent an excavator
+            {t("MiningPage.title3")}
           </Typography>
           <Typography sx={{ color: "white", fontSize: "16px", width: "300px" }}>
-            Rent a mining machine to speed up your coin mining. Increase your
-            earning rate.
+            {t("MiningPage.title4")}
           </Typography>
           <Button
             type="button"
@@ -160,7 +161,7 @@ export default function ExcavatorPage() {
               },
             }}
           >
-            Read more
+            {t("MiningPage.button")}
           </Button>
         </Box>
       </Box>
@@ -186,7 +187,7 @@ export default function ExcavatorPage() {
           }}
           variant="h3"
         >
-          List of machines for rent
+          {t("MiningPage.title")}
         </Typography>
         <Box
           sx={{
@@ -225,9 +226,9 @@ export default function ExcavatorPage() {
                   },
                 }}
               >
-                <Tab label="Overview" {...a11yProps(0)} />
-                <Tab label="Exclusive" {...a11yProps(1)} />
-                <Tab label="Shared" {...a11yProps(2)} />
+                <Tab label={t("MiningPage.tab1")} {...a11yProps(0)} />
+                <Tab label={t("MiningPage.tab2")} {...a11yProps(1)} />
+                <Tab label={t("MiningPage.tab3")} {...a11yProps(2)} />
               </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
@@ -295,32 +296,37 @@ export default function ExcavatorPage() {
                           variant="body1"
                           sx={{ color: "#666", fontSize: "14px" }}
                         >
-                          Rental price: {item.pricenum} USDT
+                          {t("MiningPage.price")}: {item.pricenum} USDT
                         </Typography>
                         <Typography
                           variant="body1"
                           sx={{ color: "#666", fontSize: "14px" }}
                         >
-                          Type : {item.type === 1 ? "Personal" : "Share"}
+                          {t("MiningPage.type")}:{" "}
+                          {item.type === 1
+                            ? `${t("MiningPage.type2")}`
+                            : `${t("MiningPage.type3")}`}
                         </Typography>
                         <Typography
                           variant="body1"
                           sx={{ color: "#666", fontSize: "14px" }}
                         >
-                          Type currency received : {item.outcoin}
+                          {t("MiningPage.type1")}: {item.outcoin}
                         </Typography>
                         <Typography
                           variant="body1"
                           sx={{ color: "#666", fontSize: "14px" }}
                         >
-                          Output the machine:{" "}
-                          {item.dayoutnum + " " + item.outcoin}/Day
+                          {t("MiningPage.output")}:{" "}
+                          {item.dayoutnum + " " + item.outcoin}/
+                          {t("MiningPage.day")}
                         </Typography>
                         <Typography
                           variant="body1"
                           sx={{ color: "#666", fontSize: "14px" }}
                         >
-                          Method: Automation
+                          {t("MiningPage.method")}:{" "}
+                          {t("MiningPage.methodValue")}
                         </Typography>
                         <Button
                           type="button"
@@ -337,7 +343,7 @@ export default function ExcavatorPage() {
                           }}
                           onClick={() => handleSubmit(item)}
                         >
-                          Rent now
+                          {t("MiningPage.button2")}
                         </Button>
                       </Box>
                       <LinearWithValueLabel value={item.suanl} />
@@ -411,32 +417,37 @@ export default function ExcavatorPage() {
                           variant="body1"
                           sx={{ color: "#666", fontSize: "14px" }}
                         >
-                          Rental price: {item.pricenum}
+                          {t("MiningPage.price")}: {item.pricenum}
                         </Typography>
                         <Typography
                           variant="body1"
                           sx={{ color: "#666", fontSize: "14px" }}
                         >
-                          Type : {item.type === 1 ? "Personal" : "Share"}
+                          {t("MiningPage.type")}:{" "}
+                          {item.type === 1
+                            ? `${t("MiningPage.type2")}`
+                            : `${t("MiningPage.type3")}`}
                         </Typography>
                         <Typography
                           variant="body1"
                           sx={{ color: "#666", fontSize: "14px" }}
                         >
-                          Type currency received : {item.outcoin}
+                          {t("MiningPage.type1")}: {item.outcoin}
                         </Typography>
                         <Typography
                           variant="body1"
                           sx={{ color: "#666", fontSize: "14px" }}
                         >
-                          Output the machine:{" "}
-                          {item.dayoutnum + " " + item.outcoin}/Day
+                          {t("MiningPage.output")}:{" "}
+                          {item.dayoutnum + " " + item.outcoin}/
+                          {t("MiningPage.day")}
                         </Typography>
                         <Typography
                           variant="body1"
                           sx={{ color: "#666", fontSize: "14px" }}
                         >
-                          Method: Automation
+                          {t("MiningPage.method")}:{" "}
+                          {t("MiningPage.methodValue")}
                         </Typography>
                         <Button
                           type="button"
@@ -453,7 +464,7 @@ export default function ExcavatorPage() {
                           }}
                           onClick={() => handleSubmit(item)}
                         >
-                          Rent now
+                          {t("MiningPage.tab1")}
                         </Button>
                       </Box>
                       <LinearWithValueLabel value={item.suanl} />
@@ -527,32 +538,37 @@ export default function ExcavatorPage() {
                           variant="body1"
                           sx={{ color: "#666", fontSize: "14px" }}
                         >
-                          Rental price: {item.pricenum}
+                          {t("MiningPage.price")}: {item.pricenum}
                         </Typography>
                         <Typography
                           variant="body1"
                           sx={{ color: "#666", fontSize: "14px" }}
                         >
-                          Type : {item.type === 1 ? "Personal" : "Share"}
+                          {t("MiningPage.type")}:{" "}
+                          {item.type === 1
+                            ? `${t("MiningPage.type2")}`
+                            : `${t("MiningPage.type3")}`}
                         </Typography>
                         <Typography
                           variant="body1"
                           sx={{ color: "#666", fontSize: "14px" }}
                         >
-                          Type currency received : {item.outcoin}
+                          {t("MiningPage.type1")}: {item.outcoin}
                         </Typography>
                         <Typography
                           variant="body1"
                           sx={{ color: "#666", fontSize: "14px" }}
                         >
-                          Output the machine:{" "}
-                          {item.dayoutnum + " " + item.outcoin}/Day
+                          {t("MiningPage.output")}:{" "}
+                          {item.dayoutnum + " " + item.outcoin}/
+                          {t("MiningPage.day")}
                         </Typography>
                         <Typography
                           variant="body1"
                           sx={{ color: "#666", fontSize: "14px" }}
                         >
-                          Method: Automation
+                          {t("MiningPage.method")}:{" "}
+                          {t("MiningPage.methodValue")}
                         </Typography>
                         <Button
                           type="button"
@@ -569,7 +585,7 @@ export default function ExcavatorPage() {
                           }}
                           onClick={() => handleSubmit(item)}
                         >
-                          Rent now
+                          {t("MiningPage.tab1")}
                         </Button>
                       </Box>
                       <LinearWithValueLabel value={item.suanl} />

@@ -39,6 +39,7 @@ import {
   ArrowTrendUpIcon,
   HistoryIcon,
 } from "@/shared/Svgs/Svg.component";
+import { useTranslation } from "react-i18next";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -69,6 +70,7 @@ function a11yProps(index: number) {
   };
 }
 export default function BuySellPage() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [listCoin, setListCoin] = useState<any>(null);
   const [coin, setCoin] = useState<any>("BTCUSDT");
@@ -391,7 +393,7 @@ export default function BuySellPage() {
                       },
                     }}
                   >
-                    Buy <ArrowTrendUpIcon fill="white" />
+                    {t("BuySellPage.buy")} <ArrowTrendUpIcon fill="white" />
                   </Button>
 
                   {countdown ? (
@@ -409,7 +411,7 @@ export default function BuySellPage() {
                           fontSize: "10px",
                         }}
                       >
-                        Result wating
+                        {t("BuySellPage.result")}
                       </Typography>
                       <Typography
                         sx={{
@@ -430,7 +432,7 @@ export default function BuySellPage() {
                         fontSize: "10px",
                       }}
                     >
-                      Place the order
+                      {t("BuySellPage.trade")}
                     </Typography>
                   )}
                   <Divider
@@ -459,7 +461,7 @@ export default function BuySellPage() {
                     href="/asset"
                   >
                     <HistoryIcon fill="white" />
-                    History
+                    {t("BuySellPage.history")}
                   </Button>
                   <Button
                     onClick={() => setValue(1)}
@@ -480,7 +482,7 @@ export default function BuySellPage() {
                       },
                     }}
                   >
-                    Sell <ArrowTrendDownIcon fill="white" />
+                    {t("BuySellPage.sell")} <ArrowTrendDownIcon fill="white" />
                   </Button>
                 </Box>
               </Tabs>
@@ -622,7 +624,7 @@ export default function BuySellPage() {
                     },
                   }}
                 >
-                  Buy <ArrowTrendUpIcon fill="white" />
+                  {t("BuySellPage.buy")} <ArrowTrendUpIcon fill="white" />
                 </Button>
                 {countdown ? (
                   <Box
@@ -639,7 +641,7 @@ export default function BuySellPage() {
                         fontSize: "10px",
                       }}
                     >
-                      Result wating
+                      {t("BuySellPage.result")}
                     </Typography>
                     <Typography
                       sx={{
@@ -660,7 +662,7 @@ export default function BuySellPage() {
                       fontSize: "10px",
                     }}
                   >
-                    Place the order
+                    {t("BuySellPage.trade")}
                   </Typography>
                 )}
                 <Divider
@@ -689,7 +691,7 @@ export default function BuySellPage() {
                   href="/asset"
                 >
                   <HistoryIcon fill="white" />
-                  History
+                  {t("BuySellPage.history")}
                 </Button>
                 <Button
                   onClick={() => setValue(1)}
@@ -710,7 +712,7 @@ export default function BuySellPage() {
                     },
                   }}
                 >
-                  Sell <ArrowTrendDownIcon fill="white" />
+                  {t("BuySellPage.sell")} <ArrowTrendDownIcon fill="white" />
                 </Button>
               </Box>
             </Tabs>

@@ -56,6 +56,7 @@ import {
 } from "@/datafake/Menu";
 import TranslateGoogle from "../GgTranstale/TranslateContext.component";
 import LanguageSwitcher from "../Language/LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 export interface userProps {
   user: userResponse | null;
@@ -68,6 +69,7 @@ export default function MenuProfileMobile(data: userProps) {
     null
   );
   const isLangMenuOpen = Boolean(langAnchorEl);
+  const { t, i18n } = useTranslation();
   const open1 = Boolean(anchorEl1);
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -144,7 +146,7 @@ export default function MenuProfileMobile(data: userProps) {
                   {data.user?.username || "huyn19e6bffa5"}
                 </Typography>
                 <Typography sx={{ fontSize: "13px", color: "white" }}>
-                  Profile and settings
+                  {t("MenuMobile.title1")}
                 </Typography>
               </Box>
             </Box>
@@ -165,11 +167,11 @@ export default function MenuProfileMobile(data: userProps) {
           <Typography
             sx={{ fontSize: "18px", fontWeight: "600", padding: "10px" }}
           >
-            Shortcuts
+            {t("MenuMobile.title2")}
           </Typography>
           {/* Menu Items */}
           <List sx={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-            {menuItemMobile2.map((item) => (
+            {menuItemMobile2.map((item, index) => (
               <ListItem
                 key={item.text}
                 disablePadding
@@ -207,7 +209,7 @@ export default function MenuProfileMobile(data: userProps) {
                 >
                   {item.icon}
                   <Typography sx={{ fontSize: "13px", textAlign: "center" }}>
-                    {item.text}
+                    {t(`MenuMobile.Shortcuts.menu` + index)}
                   </Typography>
                 </ListItemButton>
               </ListItem>
@@ -221,11 +223,11 @@ export default function MenuProfileMobile(data: userProps) {
               borderTop: "1px solid lightgrey",
             }}
           >
-            Manage assset
+            {t("MenuMobile.title3")}
           </Typography>
           {/* Menu Items */}
           <List sx={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-            {MenuAset2.map((item) => (
+            {MenuAset2.map((item, index) => (
               <ListItem
                 key={item.title}
                 disablePadding
@@ -263,7 +265,7 @@ export default function MenuProfileMobile(data: userProps) {
                 >
                   {item.icon}
                   <Typography sx={{ fontSize: "13px", textAlign: "center" }}>
-                    {item.title}
+                    {t(`MenuMobile.assets.menu` + index)}
                   </Typography>
                 </ListItemButton>
               </ListItem>
@@ -301,7 +303,7 @@ export default function MenuProfileMobile(data: userProps) {
               }}
             >
               <LogoutMenuIcon fill="#fff" />
-              Log out
+              {t("MenuMobile.title7")}
             </Button>
           </Box>
         </Box>
@@ -321,10 +323,10 @@ export default function MenuProfileMobile(data: userProps) {
               variant="h2"
               sx={{ fontSize: "30px", fontWeight: "600", color: "white" }}
             >
-              Welcome to Staking
+              {t("MenuMobile.title4")}
             </Typography>
             <Typography sx={{ fontSize: "16px", color: "#fff" }}>
-              Experience lightning-fast trading and low fees
+              {t("MenuMobile.title5")}
             </Typography>
             <Box
               sx={{
@@ -350,7 +352,7 @@ export default function MenuProfileMobile(data: userProps) {
                   },
                 }}
               >
-                Log in
+                {t("HomePage.mobile_login")}
               </Button>
               <Button
                 href="/signup"
@@ -367,7 +369,7 @@ export default function MenuProfileMobile(data: userProps) {
                   },
                 }}
               >
-                Sign up
+                {t("HomePage.mobile_signup")}
               </Button>
             </Box>
             <IconButton
@@ -404,7 +406,7 @@ export default function MenuProfileMobile(data: userProps) {
             <Box sx={{ display: "flex", alignItems: "center", gap: "12px" }}>
               <WarningIcon width="25px" height="25px" fill="#fff" />
               <Typography sx={{ fontSize: "16px", fontWeight: 500 }}>
-                About Staking
+                {t("MenuMobile.title6")}
               </Typography>
             </Box>
             <Typography

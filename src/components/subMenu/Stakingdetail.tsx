@@ -57,12 +57,14 @@ import {
 } from "@/datafake/Menu";
 import { toast } from "react-toastify";
 import { buySubscribe } from "@/services/User.service";
+import { useTranslation } from "react-i18next";
 
 export interface userProps {
   staking: any | null;
 }
 
 export default function Stakingdetail(data: userProps) {
+  const { t } = useTranslation();
   const [anchorEl1, setAnchorEl1] = React.useState<null | HTMLElement>(null);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [amount, setAmount] = React.useState<string | null>(null);
@@ -179,7 +181,7 @@ export default function Stakingdetail(data: userProps) {
               opacity: 1, // để không bị mờ
             },
           }}
-          placeholder="Staking Amount"
+          placeholder={t("StakingPage.amount")}
           variant="outlined"
           InputProps={{
             startAdornment: <IconButton>{<CoinIcon />}</IconButton>,
@@ -195,7 +197,8 @@ export default function Stakingdetail(data: userProps) {
             margin: "16px auto",
             height: "45px",
             borderRadius: "15px",
-            fontSize: { xs: "10px", sm: "14px" },
+            fontSize: { xs: "13px", sm: "14px" },
+            textTransform: "capitalize",
             fontWeight: "bold",
             "&:hover": {
               background: "#fff",
@@ -203,7 +206,7 @@ export default function Stakingdetail(data: userProps) {
           }}
           onClick={handleSubmit}
         >
-          Staking
+          {t("StakingPage.title")}
         </Button>
         <Box
           sx={{
@@ -242,12 +245,14 @@ export default function Stakingdetail(data: userProps) {
               <Typography
                 sx={{ fontSize: "16px", fontWeight: "600", color: "black" }}
               >
-                Amount Buy Min: {data.staking.min}
+                {t("StakingPage.amont_min")}:
+                {parseFloat(data.staking.min).toLocaleString()}
               </Typography>
               <Typography
                 sx={{ fontSize: "16px", fontWeight: "600", color: "black" }}
               >
-                Amount Buy Max: {data.staking.max}
+                {t("StakingPage.amont_max")}:{" "}
+                {parseFloat(data.staking.max).toLocaleString()}
               </Typography>
             </Box>
             <Box
@@ -260,13 +265,12 @@ export default function Stakingdetail(data: userProps) {
               <Typography
                 sx={{ fontSize: "16px", fontWeight: "600", color: "black" }}
               >
-                Opening time from to finish:
-                {data.staking.open}
+                {t("StakingPage.opent_time")}:{data.staking.open}
               </Typography>
               <Typography
                 sx={{ fontSize: "16px", fontWeight: "600", color: "black" }}
               >
-                Achievement rate: {data.staking.percent}%
+                {t("StakingPage.rate")}: {data.staking.percent}%
               </Typography>
             </Box>
             <Typography sx={{ fontSize: "16px", color: "black" }}>
@@ -297,7 +301,7 @@ export default function Stakingdetail(data: userProps) {
           }}
           onClick={handleClick}
         >
-          Join now
+          {t("StakingPage.button_join")}
         </Button>
       </Box>
       <Drawer
