@@ -1824,30 +1824,53 @@ export default function DepositWithdrawPage(props: TabProps) {
                       marginTop: "20px",
                     }}
                   >
-                    {(method === 1 && user.bank_acc_no) ||
-                    (method === 2 && user.wallet) ? (
-                      <Button
-                        type="button"
-                        sx={{
-                          background: "#fff",
-                          color: "black",
-                          width: "80%",
-                          height: "45px",
-                          borderRadius: "15px",
-                          fontSize: { xs: "10px", sm: "14px" },
-                          fontWeight: "bold",
-                          "&:hover": {
+                    {method === 1 || method === 2 ? (
+                      (method === 1 && user.bank_acc_no) ||
+                      (method === 2 && user.wallet) ? (
+                        <Button
+                          type="button"
+                          sx={{
                             background: "#fff",
-                          },
-                        }}
-                        onClick={handleSubmitSell}
-                      >
-                        {t("DepositWithdrawPage.tab2")}
-                      </Button>
+                            color: "black",
+                            width: "80%",
+                            height: "45px",
+                            borderRadius: "15px",
+                            fontSize: { xs: "10px", sm: "14px" },
+                            fontWeight: "bold",
+                            "&:hover": {
+                              background: "#fff",
+                            },
+                          }}
+                          onClick={handleSubmitSell}
+                        >
+                          {t("DepositWithdrawPage.tab2")}
+                        </Button>
+                      ) : (
+                        <Button
+                          type="button"
+                          href={method === 1 ? "/addbank" : "/addwallet"}
+                          sx={{
+                            background: "#fff",
+                            color: "black",
+                            width: "250px",
+                            height: "45px",
+                            borderRadius: "15px",
+                            marginTop: "20px",
+                            fontWeight: 600,
+                            "&:hover": {
+                              background: "#fff",
+                            },
+                          }}
+                        >
+                          {method === 1
+                            ? t("DepositWithdrawPage.bank_link")
+                            : t("DepositWithdrawPage.wallet_link")}
+                        </Button>
+                      )
                     ) : (
                       <Button
                         type="button"
-                        href={method === 1 ? "/addbank" : "/addwallet"}
+                        disabled
                         sx={{
                           background: "#fff",
                           color: "black",
@@ -1859,11 +1882,13 @@ export default function DepositWithdrawPage(props: TabProps) {
                           "&:hover": {
                             background: "#fff",
                           },
+                          "&:disabled": {
+                            background: "gray",
+                            color: "black",
+                          },
                         }}
                       >
-                        {method === 1
-                          ? t("DepositWithdrawPage.bank_link")
-                          : t("DepositWithdrawPage.wallet_link")}
+                        {t("DepositWithdrawPage.tab2")}
                       </Button>
                     )}
                   </Box>
