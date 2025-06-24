@@ -11,6 +11,7 @@ import OverdueMin from "./OverdueMin";
 import NormalIssue from "./NormalIssue";
 import OverDueIssue from "./OverDueIssue";
 import MyStaking from "./MyStaking";
+import { useTranslation } from "react-i18next";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -42,6 +43,7 @@ function a11yProps(index: number) {
   };
 }
 export default function HistoryPage(props: TabProps) {
+  const { t } = useTranslation();
   const [value, setValue] = useState(props.value || 0);
   const { user } = useAuth();
   const router = useRouter();
@@ -63,13 +65,7 @@ export default function HistoryPage(props: TabProps) {
       });
     }
   }, [value]);
-  const tabLabels = [
-    "Open command",
-    "Close command",
-    "Excavator operating",
-    "Excavator expired",
-    "My Staking",
-  ];
+  const tabLabels = ["tab1", "tab2", "tab3", "tab4", "tab5"];
   return (
     <Box
       sx={{
@@ -121,7 +117,7 @@ export default function HistoryPage(props: TabProps) {
           {tabLabels.map((label, index) => (
             <Tab
               key={index}
-              label={label}
+              label={t("HistoryPage." + label)}
               {...a11yProps(index)}
               ref={(el) => (tabRefs.current[index] = el)}
             />

@@ -32,6 +32,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -39,6 +40,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 export default function MyStaking() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [history, setHisstory] = useState<any>(null);
   useEffect(() => {
@@ -168,7 +170,7 @@ export default function MyStaking() {
             </Box>
             <Box sx={{ display: "grid", alignItems: "center" }}>
               <Typography sx={{ color: "gray", fontSize: "13px" }}>
-                Identity verification
+                {t("ProfilePage.Identity")}
               </Typography>
               {user?.rzstatus === 0 ? (
                 <Typography
@@ -181,7 +183,7 @@ export default function MyStaking() {
                     gap: "5px",
                   }}
                 >
-                  <WarningIcon /> The customer account has not been verified.
+                  <WarningIcon /> {t("ProfilePage.Identity1")}
                 </Typography>
               ) : user?.rzstatus === 1 ? (
                 <Typography
@@ -194,7 +196,7 @@ export default function MyStaking() {
                     gap: "5px",
                   }}
                 >
-                  <WarningIcon /> Pending approval
+                  <WarningIcon /> {t("ProfilePage.Identity2")}
                 </Typography>
               ) : user?.rzstatus === 2 ? (
                 <Typography
@@ -207,7 +209,7 @@ export default function MyStaking() {
                     gap: "5px",
                   }}
                 >
-                  <VerifiedIcon /> Account has been verified
+                  <VerifiedIcon /> {t("ProfilePage.Identity3")}
                 </Typography>
               ) : (
                 <Typography
@@ -220,13 +222,13 @@ export default function MyStaking() {
                     gap: "5px",
                   }}
                 >
-                  <WarningIcon /> Verified failed
+                  <WarningIcon /> {t("ProfilePage.Identity4")}
                 </Typography>
               )}
             </Box>
             <Box sx={{ display: "grid", alignItems: "center" }}>
               <Typography sx={{ color: "gray", fontSize: "13px" }}>
-                Country/Region
+                {t("ProfilePage.country")}
               </Typography>
               <Typography sx={{ color: "#fff" }}>{user?.addr} </Typography>
             </Box>
@@ -240,9 +242,11 @@ export default function MyStaking() {
               }}
             >
               <Typography sx={{ color: "gray", fontSize: "13px" }}>
-                Trading fee tier
+                {t("ProfilePage.Trading")}
               </Typography>
-              <Typography sx={{ color: "#fff" }}>Regular user</Typography>
+              <Typography sx={{ color: "#fff" }}>
+                {t("ProfilePage.Regular")}
+              </Typography>
             </Box>
           </Box>
         </Box>
@@ -266,7 +270,7 @@ export default function MyStaking() {
                   color: "#fff",
                 }}
               >
-                My Staking
+                {t("HistoryPage.tab5")}
               </Typography>
               {history && history.length > 0 ? (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
@@ -303,40 +307,43 @@ export default function MyStaking() {
                             variant="body1"
                             sx={{ color: "#666", fontSize: "14px" }}
                           >
-                            Purchase: {item.num}
+                            {t("HistoryPage.Purchase")}: {item.num}
                           </Typography>
                           <Typography
                             variant="body1"
                             sx={{ color: "#666", fontSize: "14px" }}
                           >
-                            Amount percent : {item.percent}%
+                            {t("HistoryPage.Amount")}: {item.percent}%
                           </Typography>
                           <Typography
                             variant="body1"
                             sx={{ color: "#666", fontSize: "14px" }}
                           >
-                            Add time : {formatDateTime(item.addtime)}
+                            {t("HistoryPage.Add_time")}:{" "}
+                            {formatDateTime(item.addtime)}
                           </Typography>
                           <Typography
                             variant="body1"
                             sx={{ color: "#666", fontSize: "14px" }}
                           >
-                            End time : {formatDateTime(item.endtime)}
+                            {t("HistoryPage.End_time")}:{" "}
+                            {formatDateTime(item.endtime)}
                           </Typography>
                           <Typography
                             variant="body1"
                             sx={{ color: "#666", fontSize: "14px" }}
                           >
-                            End day : {formatDateTime(item.endday)}
+                            {t("HistoryPage.End_day")}:{" "}
+                            {formatDateTime(item.endday)}
                           </Typography>
                           <Typography
                             variant="body1"
                             sx={{ color: "#666", fontSize: "14px" }}
                           >
-                            Status:{" "}
+                            {t("HistoryPage.status")}:{" "}
                             {item.status === 1
-                              ? "Currently staking"
-                              : "Completed"}
+                              ? t("HistoryPage.staking_status1")
+                              : t("HistoryPage.staking_status2")}
                           </Typography>
                         </Box>
                       </Box>
@@ -352,7 +359,7 @@ export default function MyStaking() {
                     variant="h6"
                     sx={{ color: "#fff", textAlign: "center" }}
                   >
-                    No overdue mining activities found.
+                    {t("HistoryPage.staking_status3")}
                   </Typography>
                 </Box>
               )}

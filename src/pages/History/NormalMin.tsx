@@ -29,6 +29,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -36,6 +37,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 export default function NormalMin() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [history, setHisstory] = useState<any>(null);
   useEffect(() => {
@@ -165,7 +167,7 @@ export default function NormalMin() {
             </Box>
             <Box sx={{ display: "grid", alignItems: "center" }}>
               <Typography sx={{ color: "gray", fontSize: "13px" }}>
-                Identity verification
+                {t("ProfilePage.Identity")}
               </Typography>
               {user?.rzstatus === 0 ? (
                 <Typography
@@ -178,7 +180,7 @@ export default function NormalMin() {
                     gap: "5px",
                   }}
                 >
-                  <WarningIcon /> The customer account has not been verified.
+                  <WarningIcon /> {t("ProfilePage.Identity1")}
                 </Typography>
               ) : user?.rzstatus === 1 ? (
                 <Typography
@@ -191,7 +193,7 @@ export default function NormalMin() {
                     gap: "5px",
                   }}
                 >
-                  <WarningIcon /> Pending approval
+                  <WarningIcon /> {t("ProfilePage.Identity2")}
                 </Typography>
               ) : user?.rzstatus === 2 ? (
                 <Typography
@@ -204,7 +206,7 @@ export default function NormalMin() {
                     gap: "5px",
                   }}
                 >
-                  <VerifiedIcon /> Account has been verified
+                  <VerifiedIcon /> {t("ProfilePage.Identity3")}
                 </Typography>
               ) : (
                 <Typography
@@ -217,13 +219,13 @@ export default function NormalMin() {
                     gap: "5px",
                   }}
                 >
-                  <WarningIcon /> Verified failed
+                  <WarningIcon /> {t("ProfilePage.Identity4")}
                 </Typography>
               )}
             </Box>
             <Box sx={{ display: "grid", alignItems: "center" }}>
               <Typography sx={{ color: "gray", fontSize: "13px" }}>
-                Country/Region
+                {t("ProfilePage.country")}
               </Typography>
               <Typography sx={{ color: "#fff" }}>{user?.addr} </Typography>
             </Box>
@@ -237,9 +239,11 @@ export default function NormalMin() {
               }}
             >
               <Typography sx={{ color: "gray", fontSize: "13px" }}>
-                Trading fee tier
+                {t("ProfilePage.Trading")}
               </Typography>
-              <Typography sx={{ color: "#fff" }}>Regular user</Typography>
+              <Typography sx={{ color: "#fff" }}>
+                {t("ProfilePage.Regular")}
+              </Typography>
             </Box>
           </Box>
         </Box>
@@ -263,7 +267,7 @@ export default function NormalMin() {
                   color: "#fff",
                 }}
               >
-                Excavator operating
+                {t("HistoryPage.tab3")}
               </Typography>
               {history && history.length > 0 ? (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
@@ -310,8 +314,10 @@ export default function NormalMin() {
                             paddingBottom: "10px",
                           }}
                         >
-                          Type:{" "}
-                          {item.type === 1 ? "Private ownership" : "Shared"}
+                          {t("MiningPage.type")}:{" "}
+                          {item.type === 1
+                            ? t("MiningPage.type2")
+                            : t("MiningPage.type3")}
                         </Typography>
                         <Box
                           sx={{
@@ -324,54 +330,55 @@ export default function NormalMin() {
                             variant="body1"
                             sx={{ color: "#666", fontSize: "10px" }}
                           >
-                            exploitation cycle: {item.cycle}
+                            {t("HistoryPage.cycle")}: {item.cycle}
                           </Typography>
                           <Typography
                             variant="body1"
                             sx={{ color: "#666", fontSize: "10px" }}
                           >
-                            Common usage rate: {item.sharebl || 0} %
+                            {t("HistoryPage.rate")}: {item.sharebl || 0} %
                           </Typography>
                           <Typography
                             variant="body1"
                             sx={{ color: "#666", fontSize: "10px" }}
                           >
-                            Revenue: {item.synum}
+                            {t("HistoryPage.Revenue")}: {item.synum}
                           </Typography>
                           <Typography
                             variant="body1"
                             sx={{ color: "#666", fontSize: "10px" }}
                           >
-                            Status :{" "}
+                            {t("HistoryPage.status")} :{" "}
                             {item.type === 1
-                              ? "Normal"
+                              ? t("HistoryPage.mining1")
                               : item.type === 2
-                              ? "Stop producing money"
-                              : "Expired"}
+                              ? t("HistoryPage.mining2")
+                              : t("HistoryPage.mining3")}
                           </Typography>
                           <Typography
                             variant="body1"
                             sx={{ color: "#666", fontSize: "10px" }}
                           >
-                            Oput Type : {item.outcoin}
+                            {t("HistoryPage.Output")} : {item.outcoin}
                           </Typography>
                           <Typography
                             variant="body1"
                             sx={{ color: "#666", fontSize: "10px" }}
                           >
-                            Produce: {item.outnum} coin
+                            {t("HistoryPage.Produce")}: {item.outnum} coin
                           </Typography>
                           <Typography
                             variant="body1"
                             sx={{ color: "#666", fontSize: "10px" }}
                           >
-                            Produce: {item.outusdt} usdt
+                            {t("HistoryPage.Produce")}: {item.outusdt} usdt
                           </Typography>
                           <Typography
                             variant="body1"
                             sx={{ color: "#666", fontSize: "10px" }}
                           >
-                            Freeze money: {item.djout === 1 ? "No" : "Yes"}
+                            {t("HistoryPage.Freeze")}:{" "}
+                            {item.djout === 1 ? "No" : "Yes"}
                           </Typography>
                         </Box>
                       </Box>
@@ -387,7 +394,7 @@ export default function NormalMin() {
                     variant="h6"
                     sx={{ color: "#fff", textAlign: "center" }}
                   >
-                    No mining activity found
+                    {t("HistoryPage.mining_status")}
                   </Typography>
                 </Box>
               )}

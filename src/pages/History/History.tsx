@@ -28,6 +28,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -35,6 +36,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 export default function History() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [history, setHisstory] = useState<any>(null);
   useEffect(() => {
@@ -164,7 +166,7 @@ export default function History() {
             </Box>
             <Box sx={{ display: "grid", alignItems: "center" }}>
               <Typography sx={{ color: "gray", fontSize: "13px" }}>
-                Identity verification
+                {t("ProfilePage.Identity")}
               </Typography>
               {user?.rzstatus === 0 ? (
                 <Typography
@@ -177,7 +179,7 @@ export default function History() {
                     gap: "5px",
                   }}
                 >
-                  <WarningIcon /> The customer account has not been verified.
+                  <WarningIcon /> {t("ProfilePage.Identity1")}
                 </Typography>
               ) : user?.rzstatus === 1 ? (
                 <Typography
@@ -190,7 +192,7 @@ export default function History() {
                     gap: "5px",
                   }}
                 >
-                  <WarningIcon /> Pending approval
+                  <WarningIcon /> {t("ProfilePage.Identity2")}
                 </Typography>
               ) : user?.rzstatus === 2 ? (
                 <Typography
@@ -203,7 +205,7 @@ export default function History() {
                     gap: "5px",
                   }}
                 >
-                  <VerifiedIcon /> Account has been verified
+                  <VerifiedIcon /> {t("ProfilePage.Identity3")}
                 </Typography>
               ) : (
                 <Typography
@@ -216,13 +218,13 @@ export default function History() {
                     gap: "5px",
                   }}
                 >
-                  <WarningIcon /> Verified failed
+                  <WarningIcon /> {t("ProfilePage.Identity4")}
                 </Typography>
               )}
             </Box>
             <Box sx={{ display: "grid", alignItems: "center" }}>
               <Typography sx={{ color: "gray", fontSize: "13px" }}>
-                Country/Region
+                {t("ProfilePage.country")}
               </Typography>
               <Typography sx={{ color: "#fff" }}>{user?.addr} </Typography>
             </Box>
@@ -236,9 +238,11 @@ export default function History() {
               }}
             >
               <Typography sx={{ color: "gray", fontSize: "13px" }}>
-                Trading fee tier
+                {t("ProfilePage.Trading")}
               </Typography>
-              <Typography sx={{ color: "#fff" }}>Regular user</Typography>
+              <Typography sx={{ color: "#fff" }}>
+                {t("ProfilePage.Regular")}
+              </Typography>
             </Box>
           </Box>
         </Box>
@@ -262,23 +266,34 @@ export default function History() {
                   color: "#fff",
                 }}
               >
-                History of finance
+                {t("ProfilePage.History_finance")}
               </Typography>
               <TableContainer component={Paper} sx={{ background: "#000" }}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                   <TableHead>
                     <TableRow>
                       <TableCell sx={{ color: "#fff" }}>
-                        Transaction pair
+                        {t("ProfilePage.tran_pair")}
                       </TableCell>
                       <TableCell sx={{ color: "#fff" }}>
-                        Transaction type
+                        {t("ProfilePage.tran_type")}
                       </TableCell>
-                      <TableCell sx={{ color: "#fff" }}>status</TableCell>
-                      <TableCell sx={{ color: "#fff" }}>Command</TableCell>
-                      <TableCell sx={{ color: "#fff" }}>Limit</TableCell>
-                      <TableCell sx={{ color: "#fff" }}>Commission</TableCell>
-                      <TableCell sx={{ color: "#fff" }}>Activi</TableCell>
+                      <TableCell sx={{ color: "#fff" }}>
+                        {" "}
+                        {t("HistoryPage.status")}
+                      </TableCell>
+                      <TableCell sx={{ color: "#fff" }}>
+                        {t("HistoryPage.Command")}
+                      </TableCell>
+                      <TableCell sx={{ color: "#fff" }}>
+                        {t("HistoryPage.Limit")}
+                      </TableCell>
+                      <TableCell sx={{ color: "#fff" }}>
+                        {t("HistoryPage.Commission")}
+                      </TableCell>
+                      <TableCell sx={{ color: "#fff" }}>
+                        {t("HistoryPage.Activi")}
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>

@@ -25,6 +25,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -32,6 +33,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 export default function CloseCommand() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [history, setHisstory] = useState<any>(null);
   useEffect(() => {
@@ -161,7 +163,7 @@ export default function CloseCommand() {
             </Box>
             <Box sx={{ display: "grid", alignItems: "center" }}>
               <Typography sx={{ color: "gray", fontSize: "13px" }}>
-                Identity verification
+                {t("ProfilePage.Identity")}
               </Typography>
               {user?.rzstatus === 0 ? (
                 <Typography
@@ -174,7 +176,7 @@ export default function CloseCommand() {
                     gap: "5px",
                   }}
                 >
-                  <WarningIcon /> The customer account has not been verified.
+                  <WarningIcon /> {t("ProfilePage.Identity1")}
                 </Typography>
               ) : user?.rzstatus === 1 ? (
                 <Typography
@@ -187,7 +189,7 @@ export default function CloseCommand() {
                     gap: "5px",
                   }}
                 >
-                  <WarningIcon /> Pending approval
+                  <WarningIcon /> {t("ProfilePage.Identity2")}
                 </Typography>
               ) : user?.rzstatus === 2 ? (
                 <Typography
@@ -200,7 +202,7 @@ export default function CloseCommand() {
                     gap: "5px",
                   }}
                 >
-                  <VerifiedIcon /> Account has been verified
+                  <VerifiedIcon /> {t("ProfilePage.Identity3")}
                 </Typography>
               ) : (
                 <Typography
@@ -213,13 +215,13 @@ export default function CloseCommand() {
                     gap: "5px",
                   }}
                 >
-                  <WarningIcon /> Verified failed
+                  <WarningIcon /> {t("ProfilePage.Identity4")}
                 </Typography>
               )}
             </Box>
             <Box sx={{ display: "grid", alignItems: "center" }}>
               <Typography sx={{ color: "gray", fontSize: "13px" }}>
-                Country/Region
+                {t("ProfilePage.country")}
               </Typography>
               <Typography sx={{ color: "#fff" }}>{user?.addr} </Typography>
             </Box>
@@ -233,9 +235,11 @@ export default function CloseCommand() {
               }}
             >
               <Typography sx={{ color: "gray", fontSize: "13px" }}>
-                Trading fee tier
+                {t("ProfilePage.Trading")}
               </Typography>
-              <Typography sx={{ color: "#fff" }}>Regular user</Typography>
+              <Typography sx={{ color: "#fff" }}>
+                {t("ProfilePage.Regular")}
+              </Typography>
             </Box>
           </Box>
         </Box>
@@ -259,28 +263,34 @@ export default function CloseCommand() {
                   color: "#fff",
                 }}
               >
-                Closed commands
+                {t("HistoryPage.tab2")}
               </Typography>
               <TableContainer component={Paper} sx={{ background: "#000" }}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                   <TableHead>
                     <TableRow>
                       <TableCell sx={{ color: "#fff" }}>
-                        Transaction pair
+                        {t("ProfilePage.tran_pair")}
                       </TableCell>
                       <TableCell sx={{ color: "#fff" }}>
-                        Transaction type
-                      </TableCell>
-                      <TableCell sx={{ color: "#fff" }}>status</TableCell>
-                      <TableCell sx={{ color: "#fff" }}>
-                        status Command
+                        {t("ProfilePage.tran_type")}
                       </TableCell>
                       <TableCell sx={{ color: "#fff" }}>
-                        Opening price{" "}
+                        {" "}
+                        {t("HistoryPage.status")}
                       </TableCell>
-                      <TableCell sx={{ color: "#fff" }}>Closed time </TableCell>
                       <TableCell sx={{ color: "#fff" }}>
-                        profit / loss
+                        {t("HistoryPage.status_Command")}
+                      </TableCell>
+                      <TableCell sx={{ color: "#fff" }}>
+                        {t("HistoryPage.Open")}
+                      </TableCell>
+                      <TableCell sx={{ color: "#fff" }}>
+                        {" "}
+                        {t("HistoryPage.close")}
+                      </TableCell>
+                      <TableCell sx={{ color: "#fff" }}>
+                        {t("HistoryPage.profit")}
                       </TableCell>
                     </TableRow>
                   </TableHead>
@@ -305,10 +315,10 @@ export default function CloseCommand() {
                           </TableCell>
                           <TableCell sx={{ color: "#fff" }}>
                             {user?.status === 1
-                              ? "Payment Watting "
+                              ? t("HistoryPage.status1")
                               : user?.status === 2
-                              ? "Paymented"
-                              : "Invalid payment"}
+                              ? t("HistoryPage.status2")
+                              : t("HistoryPage.status3")}
                           </TableCell>
                           <TableCell sx={{ color: "#fff" }}>
                             {row.is_win === 1 ? "Win" : "Lose"}
