@@ -33,7 +33,8 @@
     "change_pass8": "更新银行信息失败",
     "change_pass9": "更新银行信息成功",
     "verifide1": "验证已成功发送！",
-    "verifide2": "无法发送验证。请重试。"
+    "verifide2": "无法发送验证。请重试。",
+    "file": "下载应用"
   },
   "MenuWebsite": {
     "menu1": "买入与卖出",

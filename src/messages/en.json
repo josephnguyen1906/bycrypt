@@ -33,7 +33,8 @@
     "change_pass8": "Failed to update bank. Please try again.",
     "change_pass9": "Update bank changed successfully!.",
     "verifide1": "Verification submitted successfully!",
-    "verifide2": "Failed to submit verification. Please try again."
+    "verifide2": "Failed to submit verification. Please try again.",
+    "file": "Download app"
   },
   "MenuWebsite": {
     "menu1": "Buy & Sell",

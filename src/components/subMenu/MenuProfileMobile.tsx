@@ -58,6 +58,7 @@ import {
 import TranslateGoogle from "../GgTranstale/TranslateContext.component";
 import LanguageSwitcher from "../Language/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
+import AddToHomeScreenButton from "../Button/AddToHomeScreenButton";
 
 export interface userProps {
   user: userResponse | null;
@@ -602,17 +603,20 @@ export default function MenuProfileMobile(data: userProps) {
             justifyContent: "space-between",
           }}
         >
-          <Tooltip title="Account settings">
-            <IconButton
-              onClick={handleClick}
-              size="small"
-              aria-controls={drawerOpen ? "account-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={drawerOpen ? "true" : undefined}
-            >
-              <DashboardIcon fill="#fff" />
-            </IconButton>
-          </Tooltip>
+          <Box sx={{ display: "flex", gap: "15px", alignItems: "center" }}>
+            <Tooltip title="Account settings">
+              <IconButton
+                onClick={handleClick}
+                size="small"
+                aria-controls={drawerOpen ? "account-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={drawerOpen ? "true" : undefined}
+              >
+                <DashboardIcon fill="#fff" />
+              </IconButton>
+            </Tooltip>
+            <AddToHomeScreenButton />
+          </Box>
           <Box
             sx={{
               display: "flex",

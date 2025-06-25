@@ -33,7 +33,8 @@
     "change_pass8": "Cập nhập ngân hàng thất bại",
     "change_pass9": "Cập nhập ngân hàng thành công",
     "verifide1": "Xác minh đã được gửi thành công!",
-    "verifide2": "Không thể gửi xác minh. Vui lòng thử lại."
+    "verifide2": "Không thể gửi xác minh. Vui lòng thử lại.",
+    "file": "Tải app"
   },
   "MenuWebsite": {
     "menu1": "Mua và bán",
