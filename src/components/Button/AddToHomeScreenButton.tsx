@@ -22,9 +22,9 @@ const AddToHomeScreenButton = () => {
       script.async = true;
       script.onload = () => {
         window.AddToHomeScreenInstance = window.AddToHomeScreen({
-          appName: "68BET",
-          appNameDisplay: "standalone",
-          appIconUrl: "/apple-touch-icon.png",
+          appName: "Staking",
+          appNameDisplay: "Staking",
+          appIconUrl: "/images/tronvuongtron.png",
           assetUrl:
             "https://cdn.jsdelivr.net/gh/philfung/add-to-homescreen@3.2/dist/assets/img/",
           maxModalDisplayCount: -1,
