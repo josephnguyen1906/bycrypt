@@ -232,7 +232,8 @@
     "log_note": "请登录以进行充值/提现",
     "bankTransfer": "请登录以进行充值/提现",
     "wallet_link": "链接钱包",
-    "bank_link": "链接银行"
+    "bank_link": "链接银行",
+    "copy": "已复制"
   },
   "DailyRewardsPage": {
     "title": "签到领取奖励",

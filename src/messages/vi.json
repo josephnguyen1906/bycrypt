@@ -232,7 +232,8 @@
     "log_note": "Vui lòng đăng nhập để Nạp / Rút coin",
     "bankTransfer": "Vui lòng đăng nhập để Nạp / Rút coin",
     "wallet_link": "Liên kết ví",
-    "bank_link": "Liên kết ngân hàng"
+    "bank_link": "Liên kết ngân hàng",
+    "copy": "Đã copy"
   },
   "DailyRewardsPage": {
     "title": "Điểm danh nhận thưởng",

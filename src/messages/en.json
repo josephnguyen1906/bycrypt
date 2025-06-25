@@ -233,7 +233,8 @@
     "log_note": "Please log in to deposit / withdraw coins.",
     "bankTransfer": "Please log in to Deposit / Withdraw coins",
     "wallet_link": "Wallet link",
-    "bank_link": "Bank link"
+    "bank_link": "Bank link",
+    "copy": "Copied"
   },
   "DailyRewardsPage": {
     "title": " Daily Check-in Rewards",

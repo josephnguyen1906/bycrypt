@@ -462,6 +462,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                                 navigator.clipboard.writeText(
                                   configs.bank_acc_no || ""
                                 );
+                                toast.success(t("DepositWithdrawPage.copy"));
                               }}
                               sx={{ color: "white" }}
                             >
@@ -581,6 +582,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                               size="small"
                               onClick={() => {
                                 navigator.clipboard.writeText(address || "");
+                                toast.success(t("DepositWithdrawPage.copy"));
                               }}
                               sx={{ color: "white" }}
                             >
@@ -1179,6 +1181,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                                 navigator.clipboard.writeText(
                                   configs.bank_acc_no || ""
                                 );
+                                toast.success(t("DepositWithdrawPage.copy"));
                               }}
                               sx={{ color: "white" }}
                             >
@@ -1298,6 +1301,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                               size="small"
                               onClick={() => {
                                 navigator.clipboard.writeText(address || "");
+                                toast.success(t("DepositWithdrawPage.copy"));
                               }}
                               sx={{ color: "white" }}
                             >
