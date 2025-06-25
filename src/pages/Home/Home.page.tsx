@@ -690,8 +690,7 @@ export default function HomePage() {
                       </Typography>
                       <img
                         src={
-                          websiteConfig.websildea ||
-                          "/images/photo_2025-06-18_15-01-46-removebg-preview.png"
+                          websiteConfig.websildea || "/images/6852b28e33382.png"
                         }
                         style={{ width: "100%", borderRadius: "15px" }}
                       />

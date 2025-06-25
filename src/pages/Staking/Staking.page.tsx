@@ -185,7 +185,7 @@ export default function StakingPage() {
         }}
       >
         <img
-          src={websiteConfig && websiteConfig?.websildea}
+          src="/images/6852b28e33382.png"
           style={{
             width: "100%",
             height: "150px",
