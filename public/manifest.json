@@ -1,0 +1,14 @@
+{
+  "name": "Staking",
+  "short_name": "Staking",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#fff",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
