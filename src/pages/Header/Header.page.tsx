@@ -405,6 +405,7 @@ export default function HeaderPage(props: propUser) {
                               display: "flex",
                               flexDirection: "column",
                               gap: "5px",
+                              color: "black",
                             }}
                           >
                             <Typography variant="body2" color="black">
@@ -415,7 +416,7 @@ export default function HeaderPage(props: propUser) {
                             </Typography>
 
                             <Typography
-                              color="gray"
+                              color="black"
                               sx={{ fontSize: "14px", fontWeight: "400" }}
                             >
                               {announcement.content}
