@@ -1,6 +1,7 @@
 "use client";
 import MarketDataWidget from "@/components/ChartView/MarketDataWidget";
 import MarketDataWidget2 from "@/components/ChartView/MarketDataWidget2";
+import TradingViewHotlists from "@/components/ChartView/TradingViewHotlists";
 import useAuth from "@/hook/useAuth";
 import { getMyWallet, getNotification } from "@/services/User.service";
 import {
@@ -354,7 +355,8 @@ export default function OverviewPage() {
                 {t("ProfilePage.today")}
               </Typography>
               <Box sx={{ overflowX: "auto", background: "#000" }}>
-                <MarketDataWidget2 width={750} height={450} theme="dark" />
+                {/* <MarketDataWidget2 width={750} height={450} theme="dark" /> */}
+                <TradingViewHotlists />
               </Box>
             </StyledPaper>
           </Grid>
