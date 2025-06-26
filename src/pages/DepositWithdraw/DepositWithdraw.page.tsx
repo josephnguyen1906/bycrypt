@@ -208,7 +208,7 @@ export default function DepositWithdrawPage(props: TabProps) {
       await sellCoins(formData);
       toast.success(t("Toast.Desposit6"));
     } catch (error: any) {
-      toast.error(t("Toast.Desposit7"));
+      toast.error(error.message || t("Toast.Desposit7"));
     }
   };
   return (
