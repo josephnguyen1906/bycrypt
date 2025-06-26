@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, TextField, Button, Typography, Tabs, Tab } from "@mui/material";
 import {
   updateBank,
@@ -61,6 +61,14 @@ export default function ChangePassword(props: Tab) {
   const [value, setValue] = useState(props.tab || 0);
   const [subTab, setSubTab] = useState(props.subTab || 0);
 
+  useEffect(() => {
+    if (user) {
+      setBankName(user.bank_name);
+      setbankAccName(user.bank_acc_name);
+      setbankAccNo(user.bank_acc_no);
+      setWallet(user.wallet);
+    }
+  }, [user]);
   const handleChangeSubTab = (
     event: React.SyntheticEvent,
     newValue: number
@@ -836,7 +844,7 @@ export default function ChangePassword(props: Tab) {
                   fullWidth
                   label={t("ProfilePage.change_label4")}
                   type="text"
-                  value={user?.bank_name || bankName}
+                  value={bankName}
                   onChange={(e) => setBankName(e.target.value)}
                   margin="normal"
                   required
@@ -879,7 +887,7 @@ export default function ChangePassword(props: Tab) {
                   fullWidth
                   label={t("ProfilePage.change_label5")}
                   type="text"
-                  value={user?.bank_acc_no || bankAccNo}
+                  value={bankAccNo}
                   onChange={(e) => setbankAccNo(e.target.value)}
                   margin="normal"
                   required
@@ -922,7 +930,7 @@ export default function ChangePassword(props: Tab) {
                   fullWidth
                   label={t("ProfilePage.change_label6")}
                   type="text"
-                  value={user?.bank_acc_name || bankAccName}
+                  value={bankAccName}
                   onChange={(e) => setbankAccName(e.target.value)}
                   margin="normal"
                   required
@@ -988,7 +996,7 @@ export default function ChangePassword(props: Tab) {
                   fullWidth
                   label={t("ProfilePage.change_label7")}
                   type="text"
-                  value={user?.wallet || wallet}
+                  value={wallet}
                   onChange={(e) => setWallet(e.target.value)}
                   margin="normal"
                   required

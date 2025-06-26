@@ -65,6 +65,7 @@ export default function StakingPage() {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [showPopup, setShowPopup] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const land = window.localStorage.getItem("lang");
 
   useEffect(() => {
     const referral = async () => {
@@ -232,7 +233,7 @@ export default function StakingPage() {
         <Typography
           variant="h6"
           sx={{
-            fontSize: "13px",
+            fontSize: land === "vi" || land === "zh" ? "13px" : "11px",
             textAlign: "justify",
             fontWeight: 550,
             padding: "5px",
@@ -244,7 +245,7 @@ export default function StakingPage() {
         <Typography
           variant="h6"
           sx={{
-            fontSize: "13px",
+            fontSize: land === "vi" || land === "zh" ? "13px" : "11px",
             textAlign: "justify",
             fontWeight: 550,
             padding: "5px",
@@ -256,7 +257,7 @@ export default function StakingPage() {
         <Typography
           variant="h6"
           sx={{
-            fontSize: "13px",
+            fontSize: land === "vi" || land === "zh" ? "13px" : "11px",
             textAlign: "justify",
             fontWeight: 550,
             padding: "5px",
@@ -268,7 +269,7 @@ export default function StakingPage() {
         <Typography
           variant="h6"
           sx={{
-            fontSize: "13px",
+            fontSize: land === "vi" || land === "zh" ? "13px" : "11px",
             textAlign: "justify",
             fontWeight: 550,
             padding: "5px",
@@ -277,7 +278,7 @@ export default function StakingPage() {
         >
           {t("StakingPage.staking_Consignment4")}
         </Typography>
-        <Typography
+        {/* <Typography
           variant="h6"
           sx={{
             fontSize: "13px",
@@ -288,7 +289,7 @@ export default function StakingPage() {
           }}
         >
           {t("StakingPage.staking_Consignment5")}
-        </Typography>
+        </Typography> */}
       </Box>
       <Box
         sx={{
