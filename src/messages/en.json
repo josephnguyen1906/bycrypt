@@ -20,6 +20,7 @@
     "Desposit5": "Please select and enter all required information.",
     "Desposit6": "Coin withdrawal command created successfully",
     "Desposit7": "withdraw command failed, please check again!",
+    "Desposit8": "Your balance is not enough to withdraw.",
     "mining1": "Please login to rent a machine.",
     "mining2": "Buy mining machine successfully.",
     "mining3": "An error occurred while renting the machine.",

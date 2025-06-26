@@ -190,6 +190,14 @@ export default function DepositWithdrawPage(props: TabProps) {
       router.push("/addwallet");
       return;
     }
+    if (method === 1 && Number(user?.balance.usdt) < Number(amount)) {
+      toast.warning(t("Toast.Desposit8"));
+      return;
+    }
+    if (method === 2 && Number(user?.balance.pi) < Number(amount)) {
+      toast.warning(t("Toast.Desposit8"));
+      return;
+    }
     try {
       const formData = new FormData();
       formData.append("cid", coin);
