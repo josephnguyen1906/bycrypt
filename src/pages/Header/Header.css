@@ -203,10 +203,7 @@ header {
     color: var(--theme-jackpot-num-bg-shadow-color-0);
 }
 
-.header-right span {
-    height: 30px;
-    margin-left: 10px;
-}
+
 
 .profile {
     display: grid;
