@@ -60,7 +60,7 @@ import LanguageSwitcher from "../Language/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 import AddToHomeScreenButton from "../Button/AddToHomeScreenButton";
 import { Visibility } from "@mui/icons-material";
-/** them thong bao **/
+/** fixx them thong bao **/
 export interface userProps {
   user: userResponse | null;
   noti: any | null;
