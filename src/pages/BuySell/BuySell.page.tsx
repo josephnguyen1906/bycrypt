@@ -147,19 +147,24 @@ export default function BuySellPage() {
   useEffect(() => {
     if (countdown === null || countdown <= 0) return;
 
-    const interval = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev && prev <= 1) {
-          clearInterval(interval);
-          fetchResult();
-          setProgressContract(null); // Đặt progressContract về null khi countdown về 0
-          return 0;
-        }
-        return (prev ?? 0) - 1;
-      });
-    }, 1000);
+    // Delay 2 giây trước khi bắt đầu countdown
+    const delayTimeout = setTimeout(() => {
+      const interval = setInterval(() => {
+        setCountdown((prev) => {
+          if (prev && prev <= 1) {
+            clearInterval(interval);
+            fetchResult();
+            setProgressContract(null);
+            return 0;
+          }
+          return (prev ?? 0) - 1;
+        });
+      }, 1000);
 
-    return () => clearInterval(interval);
+      return () => clearInterval(interval);
+    }, 2000);
+
+    return () => clearTimeout(delayTimeout);
   }, [countdown]);
 
   const preloadImage = (src: string): Promise<void> => {
