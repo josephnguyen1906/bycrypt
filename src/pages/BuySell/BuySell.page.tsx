@@ -147,24 +147,23 @@ export default function BuySellPage() {
   useEffect(() => {
     if (countdown === null || countdown <= 0) return;
 
-    // Delay 2 giây trước khi bắt đầu countdown
-    const delayTimeout = setTimeout(() => {
-      const interval = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev && prev <= 1) {
-            clearInterval(interval);
+    const interval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev && prev <= 1) {
+          clearInterval(interval);
+          setProgressContract(null);
+
+          setTimeout(() => {
             fetchResult();
-            setProgressContract(null);
-            return 0;
-          }
-          return (prev ?? 0) - 1;
-        });
-      }, 1000);
+          }, 4000);
 
-      return () => clearInterval(interval);
-    }, 2000);
+          return 0;
+        }
+        return (prev ?? 0) - 1;
+      });
+    }, 1000);
 
-    return () => clearTimeout(delayTimeout);
+    return () => clearInterval(interval);
   }, [countdown]);
 
   const preloadImage = (src: string): Promise<void> => {
@@ -173,7 +172,6 @@ export default function BuySellPage() {
       img.src = src;
       img.onload = () => resolve();
       img.onerror = () => {
-        console.warn(`Failed to preload image: ${src}`);
         resolve(); // Tiếp tục thực thi thay vì reject
       };
     });
@@ -182,15 +180,12 @@ export default function BuySellPage() {
   const fetchResult = async () => {
     try {
       const tradeId = window.localStorage.getItem("tradeId");
-      console.log("tradeId:", tradeId);
-      console.log("progressContract.id:", progressContract?.id);
 
       if (!tradeId || !progressContract?.id) {
         throw new Error("Missing trade ID or progress contract ID");
       }
 
       const res = await getOrderResult(progressContract.id);
-      console.log("getOrderResult response:", res); // Log toàn bộ response
 
       setResult(res.data);
       setCountdown(null);
@@ -198,7 +193,6 @@ export default function BuySellPage() {
       await preloadImage("/images/thongbao.png");
       setShowPopup(true);
     } catch (error: any) {
-      console.error("Error in fetchResult:", error); // Log chi tiết lỗi
       toast.error(t("Toast.buysell"));
     }
   };
