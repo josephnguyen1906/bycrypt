@@ -379,7 +379,7 @@ export default function OverviewPage() {
                 {t("ProfilePage.noti")}
               </Typography>
               {noti &&
-                noti.map((announcement: any, index: number) => (
+                noti?.notices.map((announcement: any, index: number) => (
                   <Box key={index}>
                     {/* <Divider sx={{ my: 1 }} /> */}
                     <Box
