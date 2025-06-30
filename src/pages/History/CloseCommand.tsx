@@ -88,7 +88,7 @@ export default function CloseCommand() {
             }}
           >
             <Avatar
-              src={user?.username} // Replace with actual profile image path
+              src={user?.username} // Replace with actual profile image pathh
               alt={user?.username}
               sx={{
                 width: {
