@@ -348,7 +348,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                     fontWeight: 600,
                   },
                   "& .MuiTabs-flexContainer": {
-                    color: "#ffffff", // có thể bỏ nếu không cần
+                    color: "#ffffff", // có thể bỏ nếu không cầnn
                   },
                 }}
               >
