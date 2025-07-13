@@ -185,7 +185,7 @@ export default function MenuProfileMobile(data: userProps) {
           >
             {t("MenuMobile.title2")}
           </Typography>
-          {/* Menu Items */}
+          {/* Menu Itemss */}
           <List sx={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
             {menuItemMobile2.map((item, index) => (
               <ListItem

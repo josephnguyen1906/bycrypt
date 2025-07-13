@@ -138,7 +138,7 @@
     "mobile_deposit": "Deposit USDT",
     "mobile_withdraw": "withdraw",
     "mobile_welcome_reward_title": "Welcome Reward!",
-    "mobile_welcome_reward_description": "Increase the number of Pi Coins by staking without limits in the Staking section. Maximum profit up to 45%, act fast or you might miss out.",
+    "mobile_welcome_reward_description": "Increase the number of Pi Coins by staking without limits in the Staking section. Maximum profit up to 25%, act fast or you might miss out.",
     "popup_notification_title": "Notification",
     "popup_welcome_message": "Welcome to Staking"
   },
@@ -155,10 +155,10 @@
     "staking_list2": "Maximum purchase:",
     "button_join": "Join now",
     "staking_Consignment": "Consignment promotion:",
-    "staking_Consignment1": "7-day Consignment: Deposit 500 Pi to 4,999 Pi for a 3% interest rate.",
-    "staking_Consignment2": "15-day Consignment: Deposit 5,000 Pi to 9,999 Pi for a 6% interest rate.",
-    "staking_Consignment3": "30-day Consignment: Deposit 10,000 Pi to 99,999 Pi for a 15% interest rate.",
-    "staking_Consignment4": "45-day Consignment: Deposit 100,000 Pi to 999,999 Pi for a 25% interest rate.",
+    "staking_Consignment1": "3-day Consignment: Deposit 500 Pi to 4,999 Pi for a 3% interest rate.",
+    "staking_Consignment2": "7-day Consignment: Deposit 5,000 Pi to 9,999 Pi for a 6% interest rate.",
+    "staking_Consignment3": "15-day Consignment: Deposit 10,000 Pi to 99,999 Pi for a 15% interest rate.",
+    "staking_Consignment4": "30-day Consignment: Deposit 100,000 Pi to 999,999 Pi for a 25% interest rate.",
     "decription": "Earn passive income with your crypto",
     "note": "Turn your idle crypto into a steady source of income with just a few simple steps. Staking allows you to lock tokens to support the operation of the blockchain network and receive periodic rewards."
   },
