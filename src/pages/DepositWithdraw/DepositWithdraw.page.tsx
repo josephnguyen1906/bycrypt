@@ -593,7 +593,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                             marginTop: "10px",
                           }}
                         >
-                          {t("DepositWithdrawPage.wallet")}` (TRC20)`:
+                          {t("DepositWithdrawPage.wallet")} (TRC20):
                         </Typography>
                         <Typography
                           sx={{
@@ -1321,7 +1321,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                             marginTop: "10px",
                           }}
                         >
-                          {t("DepositWithdrawPage.wallet")}` (TRC20)`:
+                          {t("DepositWithdrawPage.wallet")} (TRC20):
                         </Typography>
                         <Typography
                           sx={{
