@@ -141,7 +141,7 @@ export default function VerifiedPage() {
             >
               {t("ProfilePage.verified_title")}
             </Typography>
-            <Box
+            {/* <Box
               sx={{
                 display: {
                   xs: "block",
@@ -203,7 +203,7 @@ export default function VerifiedPage() {
                   {t("ProfilePage.after")}
                 </Typography>
               </Box>
-            </Box>
+            </Box> */}
           </Box>
         ) : (
           <Box sx={{ mt: 4 }}>
