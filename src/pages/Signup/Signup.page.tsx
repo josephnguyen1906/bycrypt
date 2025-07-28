@@ -10,10 +10,12 @@ import {
   InputLabel,
   FormControl,
   Grid,
+  IconButton,
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { signupUser } from "@/services/User.service";
 import { useTranslation } from "react-i18next";
+import { VisibilityOff } from "@mui/icons-material";
 
 export default function SignupPage() {
   const { t } = useTranslation();
@@ -21,10 +23,11 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [invit, setInvit] = useState("");
   const [loadding, setLoadding] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const handlePassword = (e: any) => setPassword(e.target.value);
   const handleUsername = (e: any) => setEmail(e.target.value);
   const handleinvit = (e: any) => setInvit(e.target.value);
-
+  const toggleShowPassword = () => setShowPassword(!showPassword);
   const signup = (e: React.FormEvent) => {
     // e.preventDefault();
     if (email !== "" && password !== "") {
@@ -164,14 +167,44 @@ export default function SignupPage() {
             />
 
             <InputLabel> {t("LoginPage.title2")}* </InputLabel>
-            <TextField
-              fullWidth
-              variant="outlined"
-              type="password"
-              value={password}
-              onChange={handlePassword}
-              sx={{ mb: 2, borderRadius: "15px", mt: 1 }}
-            />
+            <Box
+              sx={{
+                mb: 2,
+                borderRadius: "15px",
+                mt: 1,
+                width: "100%",
+                height: "56px",
+                position: "relative",
+              }}
+            >
+              <TextField
+                fullWidth
+                placeholder={t("LoginPage.value2")}
+                variant="outlined"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={handlePassword}
+                sx={{ mb: 2, borderRadius: "15px", mt: 1 }}
+              />
+
+              <IconButton
+                onClick={toggleShowPassword}
+                style={{
+                  position: "absolute",
+                  right: "4px",
+                  top: "65%",
+                  transform: "translateY(-50%)",
+                  padding: 4,
+                  color: "black", // Màu trắng như bạn yêu cầu
+                }}
+              >
+                {showPassword ? (
+                  <VisibilityOff fontSize="small" />
+                ) : (
+                  <VisibilityOff fontSize="small" />
+                )}
+              </IconButton>
+            </Box>
             <InputLabel>{t("LoginPage.Referral")}* </InputLabel>
             <TextField
               fullWidth
@@ -195,68 +228,6 @@ export default function SignupPage() {
             >
               {t("HomePage.mobile_signup")}
             </Button>
-            {/* <div
-              className="ThirdPartyLogin_title__wLNO7"
-              style={{ textAlign: "center", padding: "10px 0" }}
-            >
-              <span>or continue with</span>
-            </div>
-            <Grid container spacing={2} justifyContent="center" sx={{ mb: 2 }}>
-              <Grid item>
-                <Button
-                  variant="outlined"
-                  style={{
-                    borderRadius: "50%",
-                    minWidth: "50px",
-                    height: "50px",
-                    border: "0.5px solid #000",
-                  }}
-                >
-                  <img
-                    src="/images/google.webp"
-                    alt="Google"
-                    style={{ width: "24px", height: "24px" }}
-                  />{" "}
-                
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="outlined"
-                  style={{
-                    borderRadius: "50%",
-                    minWidth: "50px",
-                    height: "50px",
-                    border: "0.5px solid #000",
-                  }}
-                >
-                  <img
-                    src="/images/apple.webp"
-                    alt="Apple"
-                    style={{ width: "24px", height: "24px" }}
-                  />{" "}
-                 
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="outlined"
-                  style={{
-                    borderRadius: "50%",
-                    minWidth: "50px",
-                    height: "50px",
-                    border: "0.5px solid #000",
-                  }}
-                >
-                  <img
-                    src="/images/wallet.webp"
-                    alt="Wallet"
-                    style={{ width: "24px", height: "24px" }}
-                  />{" "}
-                 
-                </Button>
-              </Grid>
-            </Grid> */}
           </form>
         </Box>
       </Box>

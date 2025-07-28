@@ -10,20 +10,22 @@ import {
   InputLabel,
   FormControl,
   Grid,
+  IconButton,
 } from "@mui/material";
 import { loginUser } from "@/services/User.service";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import { VisibilityOff } from "@mui/icons-material";
 
 export default function LoginPage() {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loadding, setLoadding] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const handlePassword = (e: any) => setPassword(e.target.value);
   const handleUsername = (e: any) => setEmail(e.target.value);
-  console.log(email);
-  console.log(password);
+  const toggleShowPassword = () => setShowPassword(!showPassword);
 
   // Login handler
   const login = async (e: React.FormEvent) => {
@@ -168,7 +170,7 @@ export default function LoginPage() {
             />
 
             <InputLabel>{t("LoginPage.title2")} </InputLabel>
-            <TextField
+            {/* <TextField
               fullWidth
               placeholder={t("LoginPage.value2")}
               variant="outlined"
@@ -176,7 +178,45 @@ export default function LoginPage() {
               value={password}
               onChange={handlePassword}
               sx={{ mb: 2, borderRadius: "15px", mt: 1 }}
-            />
+            /> */}
+            <Box
+              sx={{
+                mb: 2,
+                borderRadius: "15px",
+                mt: 1,
+                width: "100%",
+                height: "56px",
+                position: "relative",
+              }}
+            >
+              <TextField
+                fullWidth
+                placeholder={t("LoginPage.value2")}
+                variant="outlined"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={handlePassword}
+                sx={{ mb: 2, borderRadius: "15px", mt: 1 }}
+              />
+
+              <IconButton
+                onClick={toggleShowPassword}
+                style={{
+                  position: "absolute",
+                  right: "4px",
+                  top: "65%",
+                  transform: "translateY(-50%)",
+                  padding: 4,
+                  color: "black", // Màu trắng như bạn yêu cầu
+                }}
+              >
+                {showPassword ? (
+                  <VisibilityOff fontSize="small" />
+                ) : (
+                  <VisibilityOff fontSize="small" />
+                )}
+              </IconButton>
+            </Box>
             <Button
               type="submit"
               fullWidth
