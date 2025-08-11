@@ -651,7 +651,7 @@ export default function HomePage() {
                   </AccordionDetails>
                 </Accordion>
               </Box>
-              {showPopup && (
+              {!showPopup && (
                 <Box
                   sx={{
                     position: "fixed",
@@ -694,13 +694,22 @@ export default function HomePage() {
                         }
                         style={{ width: "100%", borderRadius: "15px" }}
                       />
-                      <Typography
-                        variant="h6"
-                        sx={{ fontSize: "18px", padding: "5px" }}
-                      >
-                        {(websiteConfig && websiteConfig?.checkin_notify) ||
-                          t("HomePage.popup_welcome_message")}
-                      </Typography>
+
+                      {(websiteConfig && (
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: websiteConfig.checkin_notify,
+                          }}
+                        />
+                      )) || (
+                        <Typography
+                          variant="h6"
+                          sx={{ fontSize: "18px", padding: "5px" }}
+                        >
+                          {t("HomePage.popup_welcome_message")}
+                        </Typography>
+                      )}
+
                       <Button
                         sx={{
                           position: "absolute",
