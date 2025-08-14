@@ -135,7 +135,7 @@ export default function CloseCommand() {
                   color: "lightgrey",
                 }}
               >
-                {user?.phone}
+                {`*******${user?.phone?.slice(-3)}` || "*******727"}
               </Typography>
             </Box>
           </Box>

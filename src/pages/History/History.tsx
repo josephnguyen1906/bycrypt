@@ -138,7 +138,7 @@ export default function History() {
                   color: "lightgrey",
                 }}
               >
-                {user?.phone}
+                {`*******${user?.phone?.slice(-3)}` || "*******727"}
               </Typography>
             </Box>
           </Box>

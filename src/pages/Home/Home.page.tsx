@@ -651,7 +651,7 @@ export default function HomePage() {
                   </AccordionDetails>
                 </Accordion>
               </Box>
-              {showPopup && (
+              {!showPopup && (
                 <Box
                   sx={{
                     position: "fixed",
@@ -690,13 +690,15 @@ export default function HomePage() {
                       </Typography>
                       <img
                         src={
-                          websiteConfig.websildea || "/images/6852b28e33382.png"
+                          websiteConfig?.websildea ||
+                          "/images/6852b28e33382.png"
                         }
                         style={{ width: "100%", borderRadius: "15px" }}
                       />
 
                       {(websiteConfig && (
-                        <div
+                        <Typography
+                          sx={{ padding: "5px" }}
                           dangerouslySetInnerHTML={{
                             __html: websiteConfig.checkin_notify,
                           }}

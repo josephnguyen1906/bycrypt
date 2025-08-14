@@ -95,7 +95,7 @@ export default function AccountPage() {
               {t("ProfilePage.Phone")}
             </Typography>
             <Typography sx={{ color: "#fff", fontSize: "16px" }}>
-              {user?.phone || "0918188172727"}
+              {`*******${user?.phone?.slice(-3)}` || "*******727"}
             </Typography>
           </Box>
           <Typography
