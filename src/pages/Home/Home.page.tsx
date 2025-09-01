@@ -154,10 +154,10 @@ export default function HomePage() {
             </div>
             <div className="what-is-right">
               <Image
-                src="./images/DBDC29AD98D75479.webp"
+                src="./images/logo1.png"
                 alt="what-is"
-                width={400}
-                height={400}
+                width={200}
+                height={200}
               />
             </div>
           </div>
@@ -453,9 +453,6 @@ export default function HomePage() {
                         : "0 "}
                     </Typography>
                   </Box>
-                  <Typography sx={{ color: "#909090", padding: "5px 0" }}>
-                    {t("HomePage.mobile_pnl_today")}
-                  </Typography>
                 </Box>
               </Box>
               <Box

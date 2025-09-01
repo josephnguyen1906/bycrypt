@@ -74,10 +74,10 @@ export default function FooterPage() {
                 <Link href="#">Law enforcement</Link>
               </li>
               <li>
-                <Link href="#">Convert app</Link>
+                <Link href="#">DoiUSDTapp</Link>
               </li>
               <li>
-                <Link href="#">Convert TR</Link>
+                <Link href="#">DoiUSDTTR</Link>
               </li>
               <li>
                 <Link href="#">xBTC</Link>
@@ -229,12 +229,12 @@ export default function FooterPage() {
             <div style={{ width: "100px", margin: "auto" }}>
               <img
                 src="/images/qr.png"
-                alt="Scan to download Convert app"
+                alt="Scan to download DoiUSDTapp"
                 style={{ width: "100px", height: "100px", marginTop: "-50px" }}
               />
             </div>
             <p style={{ textAlign: "center", marginTop: "-40px" }}>
-              Scan to download Convert app
+              Scan to download DoiUSDTapp
             </p>
           </div>
         </div>
