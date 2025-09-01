@@ -47,7 +47,7 @@ const AddToHomeScreenButton = () => {
   return (
     <Button
       sx={{
-        background: "#d7fe65",
+        background: "#fcd534",
         height: "20px",
         display: "flex",
         alignItems: "center",
@@ -56,7 +56,7 @@ const AddToHomeScreenButton = () => {
         fontSize: "12px",
         textTransform: "capitalize",
         "&:hover": {
-          background: "#d7fe65",
+          background: "#fcd534",
         },
       }}
       onClick={handleClick}

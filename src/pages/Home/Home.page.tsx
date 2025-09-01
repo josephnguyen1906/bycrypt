@@ -464,12 +464,13 @@ export default function HomePage() {
                   display: "flex",
                   justifyContent: "space-around",
                   margin: "auto",
+                  gap: "10px",
                 }}
               >
                 <Button
                   href="/deposit"
                   sx={{
-                    width: "45%",
+                    width: "35%",
                     height: "35px",
                     borderRadius: "15px",
                     background: "#fcd534",
@@ -481,9 +482,23 @@ export default function HomePage() {
                   {t("HomePage.mobile_deposit")}
                 </Button>
                 <Button
+                  href="/deposit"
+                  sx={{
+                    width: "35%",
+                    height: "35px",
+                    borderRadius: "15px",
+                    background: "#fcd534",
+                    color: "black",
+                    textTransform: "capitalize",
+                    "&:hover": { background: "#fcd534" },
+                  }}
+                >
+                  {t("BuySellPage.trade")}
+                </Button>
+                <Button
                   href="/withdraw"
                   sx={{
-                    width: "45%",
+                    width: "35%",
                     height: "35px",
                     borderRadius: "15px",
                     background: "#fcd534",
@@ -548,7 +563,13 @@ export default function HomePage() {
                   background: "#000",
                 }}
               >
-                <h2 style={{ color: "white" }}>
+                <h2
+                  style={{
+                    color: "white",
+                    fontSize: "22px",
+                    textAlign: "center",
+                  }}
+                >
                   {t("HomePage.questions_title")}
                 </h2>
                 <Accordion
@@ -564,7 +585,7 @@ export default function HomePage() {
                     expandIcon={
                       <ControlPointIcon
                         sx={{ color: "white" }}
-                        style={{ fontSize: 40 }}
+                        style={{ fontSize: 20 }}
                       />
                     }
                     aria-controls="panel1-content"
@@ -572,7 +593,7 @@ export default function HomePage() {
                   >
                     <Typography
                       sx={{
-                        fontSize: "20px",
+                        fontSize: "16px",
                         padding: "10px 0px",
                         color: "white",
                       }}
@@ -580,14 +601,13 @@ export default function HomePage() {
                       {t("HomePage.accordion_1_title")}
                     </Typography>
                   </AccordionSummary>
-                  <AccordionDetails sx={{ fontSize: 18, color: "gray" }}>
+                  <AccordionDetails sx={{ fontSize: 14, color: "gray" }}>
                     {t("HomePage.accordion_1_description")}
                   </AccordionDetails>
                 </Accordion>
                 <Accordion
                   sx={{
                     backgroundColor: "#000",
-                    borderBottom: "1px solid #fff",
                     color: "white",
                     "& .MuiAccordionSummary-root": { color: "white" },
                     "& .MuiAccordionDetails-root": { color: "gray" },
@@ -597,7 +617,7 @@ export default function HomePage() {
                     expandIcon={
                       <ControlPointIcon
                         sx={{ color: "white" }}
-                        style={{ fontSize: 40 }}
+                        style={{ fontSize: 20 }}
                       />
                     }
                     aria-controls="panel2-content"
@@ -605,7 +625,7 @@ export default function HomePage() {
                   >
                     <Typography
                       sx={{
-                        fontSize: "20px",
+                        fontSize: "16px",
                         padding: "10px 0px",
                         color: "white",
                       }}
@@ -613,14 +633,13 @@ export default function HomePage() {
                       {t("HomePage.accordion_2_title")}
                     </Typography>
                   </AccordionSummary>
-                  <AccordionDetails sx={{ fontSize: 18, color: "gray" }}>
+                  <AccordionDetails sx={{ fontSize: 14, color: "gray" }}>
                     {t("HomePage.accordion_2_description")}
                   </AccordionDetails>
                 </Accordion>
                 <Accordion
                   sx={{
                     backgroundColor: "#000",
-                    borderBottom: "1px solid gray",
                     color: "#000",
                     "& .MuiAccordionSummary-root": { color: "#000" },
                     "& .MuiAccordionDetails-root": { color: "gray" },
@@ -630,7 +649,7 @@ export default function HomePage() {
                     expandIcon={
                       <ControlPointIcon
                         sx={{ color: "white" }}
-                        style={{ fontSize: 40 }}
+                        style={{ fontSize: 20 }}
                       />
                     }
                     aria-controls="panel2-content"
@@ -638,7 +657,7 @@ export default function HomePage() {
                   >
                     <Typography
                       sx={{
-                        fontSize: "20px",
+                        fontSize: "14px",
                         padding: "10px 0px",
                         color: "white",
                       }}
@@ -646,7 +665,7 @@ export default function HomePage() {
                       {t("HomePage.accordion_3_title")}
                     </Typography>
                   </AccordionSummary>
-                  <AccordionDetails sx={{ fontSize: 18, color: "gray" }}>
+                  <AccordionDetails sx={{ fontSize: 14, color: "gray" }}>
                     {t("HomePage.accordion_3_description")}
                   </AccordionDetails>
                 </Accordion>

@@ -155,7 +155,7 @@ export default function StakingPage() {
           <Button
             type="button"
             sx={{
-              background: "#d7fe65",
+              background: "#fcd53",
               color: "#000",
               width: "150px",
               height: "45px",
@@ -213,7 +213,7 @@ export default function StakingPage() {
           sx={{
             fontSize: "18px",
             fontWeight: "bold",
-            color: "#d7fe65",
+            color: "#fcd53",
           }}
         >
           {t("StakingPage.staking_Consignment")}
@@ -470,7 +470,7 @@ export default function StakingPage() {
             type="button"
             onClick={() => setShowPopup(true)}
             sx={{
-              background: "#d7fe65",
+              background: "#fcd53",
               color: "#000",
               width: "150px",
               height: "45px",
