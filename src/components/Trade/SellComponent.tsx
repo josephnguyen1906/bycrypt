@@ -236,21 +236,7 @@ export default function SellComponent(progs: TabProps) {
               },
             }}
           />
-          <Typography
-            sx={{
-              color: "white",
-              padding: "10px 0",
-              fontSize: {
-                xs: "13px",
-                sm: "14px",
-              },
-            }}
-          >
-            {t("BuySellPage.balance")}:{" "}
-            {progs.user?.balance.usdt
-              ? `${parseFloat(progs.user?.balance.usdt).toLocaleString()} USDT`
-              : "0 "}
-          </Typography>
+
           <Button
             disabled={progs.dataProcess}
             type="button"
