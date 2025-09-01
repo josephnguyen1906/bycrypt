@@ -155,7 +155,7 @@ export default function BuyComponent(progs: TabProps) {
                   sx={{
                     background: valueAmount === index ? "#fff" : "#909090",
                     color: "black",
-                    width: "50px",
+                    width: "55px",
                     height: "30px",
                     borderRadius: "15px",
                     fontWeight: 600,
@@ -248,7 +248,7 @@ export default function BuyComponent(progs: TabProps) {
               color: "black",
               width: "100%",
               mt: "10px",
-              height: "45px",
+              height: "40px",
               borderRadius: "15px",
               fontSize: { xs: "14px", sm: "14px" },
               textTransform: "capitalize",

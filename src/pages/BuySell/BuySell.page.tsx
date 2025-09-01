@@ -311,7 +311,7 @@ export default function BuySellPage() {
               width: "100%",
             }}
           >
-            <TradeChart height="350" symbols={coin} />
+            <TradeChart height="320" symbols={coin} />
           </Box>
           <Box
             width="30%"
