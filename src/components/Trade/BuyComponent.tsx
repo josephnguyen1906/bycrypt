@@ -25,106 +25,25 @@ interface TabProps {
 export default function BuyComponent(progs: TabProps) {
   const { t } = useTranslation();
   const [valueAmount, setValueAmount] = useState<any>(null);
-  const [amount, setAmount] = useState<any>(null);
+  const [amount, setAmount] = useState<number>(0);
   const [price, setPrice] = useState<any>(null);
-  const [type, setType] = useState<any>(null);
-  const [hytime, setHytime] = useState<any>(null);
-  const [hyykbl, setHyykbl] = useState<any>(null);
-  const [result, setResult] = useState<any>(null);
-  const [progressContract, setProgressContract] = useState<any>({});
   const router = useRouter();
-  const [buySellConfig, setBuySellConfig] = useState<any>(null);
+  const [buySellConfig, setBuySellConfig] = useState<any>([
+    50000, 100000, 200000, 500000, 1000000,
+  ]);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const timeButtonRefs = useRef<(HTMLButtonElement | null)[]>([]);
-
-  useEffect(() => {
-    if (timeButtonRefs.current[type]) {
-      timeButtonRefs.current[type]?.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
-    }
-  }, [type]);
-  useEffect(() => {
-    if (buttonRefs.current[valueAmount]) {
-      buttonRefs.current[valueAmount]?.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
-    }
-  }, [valueAmount]);
-  useEffect(() => {
-    const referral = async () => {
-      try {
-        const buySellConfig: any = await getBuySellConfig();
-
-        if (buySellConfig.status === true) {
-          const data = buySellConfig.data;
-
-          const processedData = {
-            ...data,
-            hy_time: data.hy_time?.split(",") || [],
-            hy_ykbl: data.hy_ykbl?.split(",") || [],
-            hy_tzed: data.hy_tzed?.split(",") || [],
-            hy_min: data.hy_min?.split(",") || [],
-          };
-          setType(0);
-          setValueAmount(0);
-          setHytime(processedData.hy_time?.[0] || "3");
-          setHyykbl(processedData.hy_ykbl?.[0] || "15");
-          setAmount(processedData.hy_tzed?.[0] || "200");
-          setPrice(Number(processedData.hy_tzed?.[0]) || 200);
-          setBuySellConfig(processedData);
-        }
-      } catch (errors: any) {
-        // toast.error(errors?.message);
-      }
-    };
-    referral();
-  }, []);
-
-  const handleSubmit = async () => {
-    if (progs.user?.rzstatus !== 2) {
-      toast.error(t("Toast.buysell5"));
-      return;
-    }
-    if (!hytime || !amount) {
-      toast.error(t("Toast.buysell1"));
-      return;
-    }
-    if (Number(price) < Number(amount)) {
-      toast.error(t("Toast.buysell2"));
-      return;
-    }
-    if (parseFloat(amount) > parseFloat(progs.user?.balance.usdt || "0")) {
-      router.push("/asset");
-      return;
-    }
-    try {
-      const formData = new FormData();
-      formData.append("ctime", hytime);
-      formData.append("amount", price);
-      formData.append("coinname", progs.value);
-      formData.append("method", "1");
-      formData.append("uprate", hyykbl);
-
-      await createOrder(formData).then((res) => {
-        if (progs.onSuccess) {
-          progs.onSuccess(res.data);
-        }
-      });
-      toast.success(t("Toast.buysell3"));
-    } catch (error: any) {
-      toast.error(t("Toast.buysell4"));
-    }
-  };
 
   return (
     <div>
       {progs.user ? (
-        <Box sx={{ width: "100%", height: "100%", overflowY: "auto" }}>
+        <Box
+          sx={{
+            width: "90%",
+            height: "100%",
+            overflowY: "auto",
+            margin: "0 auto",
+          }}
+        >
           <Typography
             sx={{
               color: "white",
@@ -148,7 +67,7 @@ export default function BuyComponent(progs: TabProps) {
             }}
           >
             {buySellConfig &&
-              buySellConfig.hy_tzed.map((item: string, index: number) => (
+              buySellConfig.map((item: string, index: number) => (
                 <Button
                   key={index}
                   ref={(el) => (buttonRefs.current[index] = el)}
@@ -165,13 +84,8 @@ export default function BuyComponent(progs: TabProps) {
                     },
                   }}
                   onClick={() => {
-                    if (index < type) {
-                      toast.error(t("Toast.buysell2"));
-                    } else {
-                      setValueAmount(index);
-                      setAmount(item);
-                      setPrice(Number(item));
-                    }
+                    setValueAmount(index);
+                    setAmount(Number(item));
                   }}
                 >
                   {item}
@@ -189,10 +103,10 @@ export default function BuyComponent(progs: TabProps) {
           </Typography>
           <TextField
             id="outlined-basic"
-            placeholder="Amount"
+            placeholder={t("BuySellPage.cust_amount")}
             variant="outlined"
-            value={price}
-            onChange={(e) => setPrice(Number(e.target.value))}
+            value={amount.toLocaleString()}
+            onChange={(e) => setAmount(Number(e.target.value))}
             sx={{
               width: "100%",
               background: "#5e5e5e",
@@ -261,7 +175,6 @@ export default function BuyComponent(progs: TabProps) {
                 color: "white",
               },
             }}
-            onClick={handleSubmit}
           >
             {t("BuySellPage.buy")}
           </Button>

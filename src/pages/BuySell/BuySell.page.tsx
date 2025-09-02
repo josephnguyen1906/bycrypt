@@ -248,11 +248,12 @@ export default function BuySellPage() {
                     sx={{
                       backgroundColor: value === 0 ? "#00c853" : "#909090",
                       color: "white",
-                      fontWeight: "bold",
+                      fontWeight: "500",
                       borderRadius: "12px",
                       padding: "8px 15px",
                       minWidth: "75px",
                       textTransform: "capitalize",
+                      fontSize: "10px",
                       border:
                         value === 0
                           ? "2px solid #00c853"
@@ -311,11 +312,12 @@ export default function BuySellPage() {
                     sx={{
                       backgroundColor: value === 1 ? "#ff3b30" : "#909090",
                       color: "white",
-                      fontWeight: "bold",
+                      fontWeight: "500",
                       borderRadius: "12px",
                       padding: "8px 15px",
                       minWidth: "75px",
                       textTransform: "capitalize",
+                      fontSize: "10px",
                       border:
                         value === 1
                           ? "2px solid #ff3b30"
@@ -387,7 +389,7 @@ export default function BuySellPage() {
         >
           <Box
             sx={{
-              width: "90%",
+              width: "100%",
               display: {
                 xs: "block",
                 sm: "none",
@@ -450,11 +452,12 @@ export default function BuySellPage() {
                   sx={{
                     backgroundColor: value === 0 ? "#00c853" : "#909090",
                     color: "white",
-                    fontWeight: "bold",
+                    fontWeight: "500",
                     borderRadius: "12px",
                     padding: "8px 15px",
                     minWidth: "75px",
                     textTransform: "capitalize",
+                    fontSize: "10px",
                     border:
                       value === 0
                         ? "2px solid #00c853"
@@ -514,9 +517,10 @@ export default function BuySellPage() {
                   sx={{
                     backgroundColor: value === 1 ? "#ff3b30" : "#909090",
                     color: "white",
-                    fontWeight: "bold",
+                    fontWeight: "500",
                     borderRadius: "12px",
                     padding: "8px 15px",
+                    fontSize: "10px",
                     minWidth: "75px",
                     textTransform: "capitalize",
                     border:
