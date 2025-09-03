@@ -1,6 +1,6 @@
 {
   "Toast": {
-    "staking1": "Vui lòng nhập một số tiền ký gửi hợp lệ",
+    "staking1": "Vui lòng nhập một số tiền hợp lệ",
     "staking2": "Số tiền Ký gửi phải lớn hơn số tiền tối thiểu.",
     "staking3": "Ký gửi thành công",
     "staking4": "Ký gửi thất bại",
@@ -44,7 +44,12 @@
     "toastSeeAll": "Bạn đã đọc hết tin nhắn mới",
     "convert1": " Vui lòng nhập số tiền hợp lệ",
     "convert2": "Chuyển đổi sang USDT thành công",
-    "convert3": "Chuyển đổi sang USDT thất bại"
+    "convert3": "Chuyển đổi sang USDT thất bại",
+    "Safe1": "Rút tiền từ két sắt thành công",
+    "Safe2": "Rút tiền từ két sắt thất bại",
+    "Safe3": "Đã huỷ rút tiền từ két sắt",
+    "Safe4": "Gửi tiền vào két sắt thành công",
+    "Safe5": "Gửi tiền vào két sắt thất bại"
   },
   "MenuWebsite": {
     "menu1": "Mua và bán",
@@ -146,6 +151,8 @@
   },
   "StakingPage": {
     "title": "Ký gửi",
+    "title1": "Danh sách két sắt",
+    "title2": "của bạn",
     "amount": "Số tiền gửi",
     "amont_min": "Mua tối thiểu",
     "amont_max": "Mua tối đa",
@@ -184,6 +191,9 @@
     "title1": "Két sắt VNĐ",
     "title2": "Két sắt USDT",
     "rate": "Lãi xuất",
+    "rateM": "Lãi xuất tháng",
+    "amount": "Tiền lãi",
+    "status": "Đã rút tiền",
     "time": "Thời gian",
     "date": "Ngày",
     "note": "Không giới hạn tiền gửi",

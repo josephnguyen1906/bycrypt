@@ -185,6 +185,22 @@ const ConvertUSDT = (formData: FormData) => {
   });
 };
 
+const WithdrawSafe = (formData: FormData) => {
+  return contentInstance.post("/api/orepool/cashout-safe", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+const SendSafe = (formData: FormData) => {
+  return contentInstance.post("/api/orepool/purchase-safe", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
 export {
   loginUser,
   signupUser,
@@ -223,4 +239,6 @@ export {
   seeAllNoti,
   ConvertUSDT,
   getSafeActive,
+  WithdrawSafe,
+  SendSafe,
 };

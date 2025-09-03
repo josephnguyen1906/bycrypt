@@ -1,54 +1,49 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Tooltip from "@mui/material/Tooltip";
 import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
-import SavingsOutlinedIcon from "@mui/icons-material/SavingsOutlined";
-import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
-import LoyaltyOutlinedIcon from "@mui/icons-material/LoyaltyOutlined";
-import HistoryEduOutlinedIcon from "@mui/icons-material/HistoryEduOutlined";
-import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
-import Logout from "@mui/icons-material/Logout";
-import FolderIcon from "@mui/icons-material/Folder";
 import CloseIcon from "@mui/icons-material/Close";
-import { userResponse } from "@/interface/user.interface";
-import { Badge, Button, TextField } from "@mui/material";
+import { Badge, Button, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { formatCurrency } from "@/utils/formatMoney";
-import Image from "next/image";
 import { CoinIcon } from "@/shared/Svgs/Svg.component";
 import { toast } from "react-toastify";
-import { buySubscribe } from "@/services/User.service";
+import {
+  buySubscribe,
+  getSafeActive,
+  SendSafe,
+  WithdrawSafe,
+} from "@/services/User.service";
 import { useTranslation } from "react-i18next";
+import Image from "next/image";
 
 export interface props {
-  type: any | null;
+  safe: any | null;
 }
 
-export default function Safedetail(type: props) {
+export default function Safedetail({ safe }: props) {
   const { t } = useTranslation();
   const [anchorEl1, setAnchorEl1] = React.useState<null | HTMLElement>(null);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [amount, setAmount] = React.useState<string | null>(null);
+  const [listSafe, setListSafe] = React.useState<any>(null);
   const open1 = Boolean(anchorEl1);
   const router = useRouter();
 
+  React.useEffect(() => {
+    getlistSafe();
+  }, []);
+
+  const getlistSafe = async () => {
+    getSafeActive(safe?.jlcoin).then((res: any) => {
+      if (res.status === true) {
+        setListSafe(res.data.data);
+      }
+    });
+  };
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setDrawerOpen(true);
   };
+  console.log("listSafe", listSafe);
 
   const handleDrawerClose = () => {
     setDrawerOpen(false);
@@ -56,9 +51,31 @@ export default function Safedetail(type: props) {
 
   const handleSubmit = async () => {
     if (!amount) {
-      console.log("Submit Clicked1");
       toast.error(t("Toast.staking1"));
       return;
+    }
+    try {
+      const formData = new FormData();
+      formData.append("id", safe?.id);
+      formData.append("amount", amount);
+      await SendSafe(formData);
+      toast.success(t("Toast.Safe4"));
+      await getlistSafe();
+      setAmount(null);
+    } catch (error: any) {
+      toast.error(t("Toast.Safe5"));
+    }
+  };
+
+  const handleSubmitWithdraw = async (id: string) => {
+    try {
+      const formData = new FormData();
+      formData.append("id", id);
+      await WithdrawSafe(formData);
+      toast.success(t("Toast.Safe1"));
+      await getlistSafe();
+    } catch (error: any) {
+      toast.error(t("Toast.Safe2"));
     }
   };
 
@@ -66,7 +83,10 @@ export default function Safedetail(type: props) {
     return (
       <Box
         sx={{
-          width: "100vw",
+          width: {
+            xs: "100vw",
+            sm: "30vw",
+          },
           background: "#000",
           color: "#fff",
           height: "100vh",
@@ -152,6 +172,148 @@ export default function Safedetail(type: props) {
         >
           {t("MiningPage.button")}
         </Button>
+        <Box
+          sx={{
+            height: "60%",
+            overflowY: "auto",
+            width: "80%",
+            margin: "auto",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "white",
+              fontSize: "20px",
+              textAlign: "center",
+              fontWeight: "600",
+            }}
+          >
+            {t("StakingPage.title1")} {safe?.jlcoin} {t("StakingPage.title2")}
+          </Typography>
+          <Box sx={{ pt: "10px" }}>
+            {listSafe &&
+              listSafe?.map((item: any, index: number) => (
+                <Box
+                  key={index}
+                  sx={{
+                    borderRadius: "10px",
+                    width: {
+                      xs: "100%",
+                      sm: "30%",
+                    },
+                    border: "1px solid gray",
+                    p: 1,
+                    display: "flex",
+                    mt: "10px",
+                    gap: "5px",
+                  }}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <Image
+                    src={"/images/iconket.png"}
+                    width={150}
+                    height={50}
+                    alt=""
+                    style={{
+                      objectFit: "contain",
+                      width: "100px",
+                      height: "100px",
+                    }}
+                  />
+                  <Box sx={{ display: "grid" }}>
+                    {item.coin == "vnd" ? (
+                      <Typography
+                        sx={{
+                          color: "white",
+                          fontWeight: "bold",
+                          fontSize: {
+                            xs: "15px",
+                            sm: "18px",
+                          },
+                        }}
+                      >
+                        {t("MiningPage.title1")}
+                      </Typography>
+                    ) : (
+                      <Typography
+                        sx={{
+                          color: "white",
+                          fontWeight: "bold",
+                          fontSize: {
+                            xs: "15px",
+                            sm: "18px",
+                          },
+                        }}
+                      >
+                        {t("MiningPage.title2")}
+                      </Typography>
+                    )}
+                    <Typography
+                      sx={{
+                        color: "white",
+                        fontSize: {
+                          xs: "14px",
+                          sm: "18px",
+                        },
+                      }}
+                    >
+                      {t("MiningPage.rateM")}: {Number(item.rate_month)}%
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "white",
+                        fontSize: {
+                          xs: "14px",
+                          sm: "18px",
+                        },
+                      }}
+                    >
+                      {t("MiningPage.amount")}:{" "}
+                      {Number(item.cashout).toLocaleString()}
+                    </Typography>
+                    {item.status == 1 ? (
+                      <Button
+                        type="button"
+                        sx={{
+                          width: "100%",
+                          height: "30px",
+                          background: "#fcd534",
+                          color: "black",
+                          borderRadius: "10px",
+                          fontSize: "14px",
+                          mt: "5px",
+                          textTransform: "capitalize",
+                          "&:hover": {
+                            backgroundColor: "#fcd534",
+                          },
+                        }}
+                        onClick={() => handleSubmitWithdraw(item.id)}
+                      >
+                        {t("DepositWithdrawPage.tab2")}
+                      </Button>
+                    ) : (
+                      <Typography
+                        sx={{
+                          borderRadius: "5px",
+                          textAlign: "center",
+                          mt: "5px",
+                          background: "green",
+                          color: "white",
+                          fontSize: {
+                            xs: "14px",
+                            sm: "18px",
+                          },
+                        }}
+                      >
+                        {t("MiningPage.status")}
+                      </Typography>
+                    )}
+                  </Box>
+                </Box>
+              ))}
+          </Box>
+        </Box>
       </Box>
     );
   };

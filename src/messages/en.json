@@ -44,7 +44,12 @@
     "toastSeeAll": "You have read all the new messages.",
     "convert1": "Please select the currency to convert.",
     "convert2": "Successfully converted to USDT",
-    "convert3": "Failed to convert to USDT"
+    "convert3": "Failed to convert to USDT",
+    "safe1": "Withdraw money from the safe successfully",
+    "safe2": "Failed to withdraw money from the safe",
+    "Safe3": "Money withdrawal from the safe has been cancelled.",
+    "Safe4": "Deposit money into the safe successfully",
+    "Safe5": "Failed to deposit money into the safe."
   },
   "MenuWebsite": {
     "menu1": "Buy & Sell",
@@ -147,6 +152,8 @@
   },
   "StakingPage": {
     "title": "Staking",
+    "title1": "List of safes",
+    "title2": "for you",
     "amount": "Amount",
     "amont_min": "Amount Buy Min",
     "amont_max": "Amount Buy Max",
@@ -185,6 +192,9 @@
     "title1": "VND safe",
     "title2": "USDT safe",
     "rate": "Interest rate",
+    "rateM": "Monthly interest rate",
+    "amount": "Interest",
+    "status": "Has withdrawn money",
     "time": "Time",
     "date": "day",
     "note": "Unlimited deposit",
