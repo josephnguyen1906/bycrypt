@@ -10,7 +10,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
@@ -39,9 +39,7 @@ interface CountryType {
 }
 export default function Deposit({ configs, wallet }: props) {
   const { t } = useTranslation();
-  const [amount, setAmount] = useState(
-    window.localStorage.getItem("amountBuy") || ""
-  );
+  const [amount, setAmount] = useState("");
   const [address, setAddress] = useState("");
   const [coin, setCoin] = useState<string>();
   const [bank, setbank] = useState(0);
@@ -57,6 +55,12 @@ export default function Deposit({ configs, wallet }: props) {
       setFrontImage(file);
     }
   };
+  useEffect(() => {
+    const storedAmount = window.localStorage.getItem("amountBuy");
+    if (storedAmount) {
+      setAmount(storedAmount);
+    }
+  }, []);
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
 

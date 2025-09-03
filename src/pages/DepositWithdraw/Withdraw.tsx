@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
@@ -55,9 +55,7 @@ interface CountryType {
 }
 export default function Withdraw({ wallet, user }: props) {
   const { t } = useTranslation();
-  const [amount, setAmount] = useState(
-    window.localStorage.getItem("amountSell") || ""
-  );
+  const [amount, setAmount] = useState("");
   const [address, setAddress] = useState("");
 
   const [depositMin, setDepositMin] = useState(0);
@@ -69,7 +67,6 @@ export default function Withdraw({ wallet, user }: props) {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
-
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
@@ -82,6 +79,13 @@ export default function Withdraw({ wallet, user }: props) {
       setAmount(String(newAmount));
     }
   };
+
+  useEffect(() => {
+    const storedAmount = window.localStorage.getItem("amountBuy");
+    if (storedAmount) {
+      setAmount(storedAmount);
+    }
+  }, []);
   const handleSubmitSell = async () => {
     if (!amount || !method || !coin || !password) {
       toast.warning(t("Toast.Desposit5"));
