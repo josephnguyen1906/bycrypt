@@ -31,7 +31,22 @@ export default function SellComponent(progs: TabProps) {
     50000, 100000, 200000, 500000, 1000000,
   ]);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const submit = () => {
+    window.localStorage.setItem("amountSell", amount.toString());
+    router.push("/withdraw");
+  };
 
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+
+    const sanitizedValue = inputValue.replace(/,/g, "");
+
+    const newAmount = Number(sanitizedValue);
+
+    if (!isNaN(newAmount)) {
+      setAmount(newAmount);
+    }
+  };
   return (
     <div>
       {progs.user ? (
@@ -105,7 +120,7 @@ export default function SellComponent(progs: TabProps) {
             placeholder="Amount"
             variant="outlined"
             value={amount.toLocaleString()}
-            onChange={(e) => setAmount(Number(e.target.value))}
+            onChange={handleAmountChange}
             sx={{
               width: "100%",
               background: "#5e5e5e",
@@ -154,8 +169,8 @@ export default function SellComponent(progs: TabProps) {
           />
 
           <Button
-            disabled={progs.dataProcess}
             type="button"
+            onClick={() => submit()}
             sx={{
               background: "#fff",
               color: "black",

@@ -1,3 +1,4 @@
+import { useDebounce } from "@/hook/useDebounce";
 import { ConvertUSDT, topUpCoins } from "@/services/User.service";
 import { formatCurrency } from "@/utils/formatMoney";
 import { CopyAllOutlined } from "@mui/icons-material";
@@ -10,25 +11,25 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
 export default function Convert() {
   const { t } = useTranslation();
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState<number>(0);
   const submit = () => {
     if (!amount || Number(amount) <= 0) {
       toast.error(t("Toast.convert1"));
       return;
     }
     const formData = new FormData();
-    formData.append("amount", amount);
+    formData.append("amount", String(amount));
     ConvertUSDT(formData)
       .then((res: any) => {
         if (res.status === true) {
           toast.success(t("Toast.convert2"));
-          setAmount("");
+          setAmount(0);
         } else {
           toast.error(res.message);
         }
@@ -37,6 +38,18 @@ export default function Convert() {
         toast.error(err?.message || t("Toast.convert3"));
       });
   };
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+
+    const sanitizedValue = inputValue.replace(/,/g, "");
+
+    const newAmount = Number(sanitizedValue);
+
+    if (!isNaN(newAmount)) {
+      setAmount(newAmount);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -57,11 +70,8 @@ export default function Convert() {
       <TextField
         id="outlined-basic"
         placeholder={t("DepositWithdrawPage.amount_name")}
-        variant="outlined"
-        onChange={(e) => setAmount(e.target.value)}
-        FormHelperTextProps={{
-          sx: { color: "#fff" }, // HelperText màu trắng
-        }}
+        value={amount.toLocaleString()}
+        onChange={handleAmountChange}
         sx={{
           width: "100%",
           "& .MuiOutlinedInput-root": {

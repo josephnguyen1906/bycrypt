@@ -274,6 +274,7 @@ export default function BuySellPage() {
                       background: "none",
                       border: "none",
                     }}
+                    href="/convert"
                   >
                     <TransferIcon width="18px" height="18px" />
                     {t("BuySellPage.trade")}
@@ -480,6 +481,7 @@ export default function BuySellPage() {
                     textTransform: "capitalize",
                     padding: 0,
                   }}
+                  href="/convert"
                 >
                   <TransferIcon width="18px" height="18px" fill="white" />
                   {t("BuySellPage.trade")}

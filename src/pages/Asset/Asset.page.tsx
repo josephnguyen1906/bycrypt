@@ -301,7 +301,7 @@ export default function AssetPage() {
                 {t("AssetPage.menu3")}
               </Button>
               <Button
-                href="/buysell"
+                href="/convert"
                 type="button"
                 sx={{
                   display: "flex",

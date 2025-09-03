@@ -55,7 +55,9 @@ interface CountryType {
 }
 export default function Withdraw({ wallet, user }: props) {
   const { t } = useTranslation();
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(
+    window.localStorage.getItem("amountSell") || ""
+  );
   const [address, setAddress] = useState("");
 
   const [depositMin, setDepositMin] = useState(0);
@@ -69,7 +71,17 @@ export default function Withdraw({ wallet, user }: props) {
   const [password, setPassword] = useState("");
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
 
+    const sanitizedValue = inputValue.replace(/,/g, "");
+
+    const newAmount = Number(sanitizedValue);
+
+    if (!isNaN(newAmount)) {
+      setAmount(String(newAmount));
+    }
+  };
   const handleSubmitSell = async () => {
     if (!amount || !method || !coin || !password) {
       toast.warning(t("Toast.Desposit5"));
@@ -117,6 +129,7 @@ export default function Withdraw({ wallet, user }: props) {
 
         await sellCoins(formData);
         toast.success(t("Toast.Desposit6"));
+        window.localStorage.removeItem("amountSell");
       } catch (error: any) {
         toast.error(error.message || t("Toast.Desposit7"));
       }
@@ -447,7 +460,8 @@ export default function Withdraw({ wallet, user }: props) {
             id="outlined-basic"
             label={t("DepositWithdrawPage.amount_name")}
             variant="outlined"
-            onChange={(e) => setAmount(e.target.value)}
+            value={Number(amount).toLocaleString()}
+            onChange={handleAmountChange}
             helperText={
               withdrawMin != 0 ? t("Toast.Desposit9") + withdrawMin : ""
             }

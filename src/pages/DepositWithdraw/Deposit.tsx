@@ -39,7 +39,9 @@ interface CountryType {
 }
 export default function Deposit({ configs, wallet }: props) {
   const { t } = useTranslation();
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(
+    window.localStorage.getItem("amountBuy") || ""
+  );
   const [address, setAddress] = useState("");
   const [coin, setCoin] = useState<string>();
   const [bank, setbank] = useState(0);
@@ -53,6 +55,17 @@ export default function Deposit({ configs, wallet }: props) {
     const file = event.target.files?.[0];
     if (file) {
       setFrontImage(file);
+    }
+  };
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+
+    const sanitizedValue = inputValue.replace(/,/g, "");
+
+    const newAmount = Number(sanitizedValue);
+
+    if (!isNaN(newAmount)) {
+      setAmount(String(newAmount));
     }
   };
   const handleSubmit = async () => {
@@ -76,6 +89,7 @@ export default function Deposit({ configs, wallet }: props) {
       formData.append("method", method.toString());
 
       await topUpCoins(formData);
+      window.localStorage.removeItem("amountBuy");
       toast.success(t("Toast.Desposit3"));
     } catch (error: any) {
       toast.error(t("Toast.Desposit4"));
@@ -254,7 +268,7 @@ export default function Deposit({ configs, wallet }: props) {
                   marginTop: "10px",
                 }}
               >
-                {formatCurrency(bank * Number(amount))}{" "}
+                {formatCurrency(Number(amount))}{" "}
               </Typography>
             </Box>
 
@@ -613,7 +627,8 @@ export default function Deposit({ configs, wallet }: props) {
           id="outlined-basic"
           placeholder={t("DepositWithdrawPage.amount_name")}
           variant="outlined"
-          onChange={(e) => setAmount(e.target.value)}
+          value={Number(amount).toLocaleString()}
+          onChange={handleAmountChange}
           helperText={depositMin != 0 ? t("Toast.Desposit11") + depositMin : ""}
           FormHelperTextProps={{
             sx: { color: "#fff" }, // HelperText màu trắng
