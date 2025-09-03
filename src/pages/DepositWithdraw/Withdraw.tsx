@@ -30,10 +30,6 @@ const medthod = [
     id: 1,
     name: "method1",
   },
-  {
-    id: 2,
-    name: "method2",
-  },
 ];
 const medthodWallet = [
   {
@@ -59,7 +55,7 @@ export default function Withdraw({ wallet, user }: props) {
   const [address, setAddress] = useState("");
 
   const [depositMin, setDepositMin] = useState(0);
-  const [coin, setCoin] = useState<string>();
+  const [coin, setCoin] = useState<string | null>(null);
   const [bank, setbank] = useState(0);
   const [method, setMethod] = useState(0);
   const [withdrawMin, setWithdrawMin] = useState(0);
@@ -81,7 +77,7 @@ export default function Withdraw({ wallet, user }: props) {
   };
 
   useEffect(() => {
-    const storedAmount = window.localStorage.getItem("amountBuy");
+    const storedAmount = window.localStorage.getItem("amountSell");
     if (storedAmount) {
       setAmount(storedAmount);
     }
@@ -133,6 +129,10 @@ export default function Withdraw({ wallet, user }: props) {
 
         await sellCoins(formData);
         toast.success(t("Toast.Desposit6"));
+        setAmount("");
+        setPassword("");
+        setCoin(null);
+        setMethod(0);
         window.localStorage.removeItem("amountSell");
       } catch (error: any) {
         toast.error(error.message || t("Toast.Desposit7"));
@@ -225,7 +225,7 @@ export default function Withdraw({ wallet, user }: props) {
               />
             )}
           />
-          {bank > 0 ? (
+          {coin == "1" ? (
             <Autocomplete
               id="country-select-demo"
               sx={{ padding: "20px 0px" }}
