@@ -495,7 +495,7 @@ export default function HomePage() {
                 </Button>
 
                 <Button
-                  href="/deposit"
+                  href="/convert"
                   sx={{
                     width: "35%",
                     height: "35px",
