@@ -401,13 +401,13 @@ export const menuItemMobile2 = [
 export const MenuAset2 = [
   {
     id: "1",
-    link: "/history",
+    link: "/safevnd",
     title: "History",
     icon: <SafeBoxIcon width="26px" height="26px" fill="#fff" />,
   },
   {
     id: "2",
-    link: "/mystaking",
+    link: "/safeusdt",
     title: "My Staking",
     icon: <SafeBoxIcon width="26px" height="26px" fill="#fff" />,
   },

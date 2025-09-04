@@ -213,6 +213,13 @@
     "log_decription": "Please log in to deposit / withdraw coins.",
     "no_tran": "No transactions have occurred yet."
   },
+  "SafeBox": {
+    "tab1": "VND Safe",
+    "tab2": "USDT Safe",
+    "safe_not_found": "No safe found",
+    "safe_amount": "Please deposit money into the safe and gain profit immediately.",
+    "safe_send": "Deposit money into the safe"
+  },
   "DepositWithdrawPage": {
     "method1": "Bank Transfer",
     "method2": "Transfer coins to the wallet",

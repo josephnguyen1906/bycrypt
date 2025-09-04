@@ -212,6 +212,13 @@
     "log_decription": "Vui lòng đăng nhập để nạp / rút tiền.",
     "no_tran": "Chưa có giao dịch nào xảy ra.."
   },
+  "SafeBox": {
+    "tab1": "Két sắt VNĐ",
+    "tab2": "Két sắt USDT",
+    "safe_not_found": "Không có két sắt nào",
+    "safe_amount": "Hãy gửi tiền vào két và sinh lời ngay",
+    "safe_send": "Gửi tiền vào két"
+  },
   "DepositWithdrawPage": {
     "method1": "Chuyển khoản ngân hàng",
     "method2": "Chuyển coin vào ví",
