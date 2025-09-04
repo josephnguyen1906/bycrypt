@@ -71,7 +71,7 @@ export default function Withdraw({ wallet, user }: props) {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const rawValue = e.target.value.replace(/,/g, ""); // bỏ dấu phẩy
+    const rawValue = e.target.value.replace(/./g, ""); // bỏ dấu phẩy
     const num = parseFloat(rawValue);
 
     if (!isNaN(num)) {
