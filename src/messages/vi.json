@@ -90,9 +90,9 @@
     "title1": "Hồ sơ và cài đặt",
     "title2": "Tiện ích",
     "title3": "Quản lý",
-    "title4": "Chào mừng bạn đến với Staking",
+    "title4": "Chào mừng bạn đến với DOIUSDT",
     "title5": "Trải nghiệm giao dịch nhanh như chớp và phí thấp",
-    "title6": "Về Staking",
+    "title6": "Về DOIUSDT",
     "title7": "Đăng xuất",
     "Shortcuts": {
       "menu0": "Tổng quan",
@@ -130,11 +130,11 @@
     "video_3_description": "Mang cả gia đình tham gia",
     "questions_title": "Câu hỏi? Chúng tôi có câu trả lời.",
     "accordion_1_title": "DoiUSDTcung cấp những sản phẩm nào?",
-    "accordion_1_description": "DoiUSDTlà sàn giao dịch tiền điện tử sáng tạo với các dịch vụ tài chính tiên tiến. Chúng tôi cung cấp dịch vụ giao dịch và kiếm tiền từ tiền điện tử tiên tiến cho hàng triệu người dùng trên toàn cầu tại hơn 180 khu vực. Với Staking, bạn có thể: Giao dịch nhiều loại token và cặp giao dịch. Kết nối với nền tảng TradingView nổi tiếng thế giới và giao dịch tiền điện tử trực tiếp với các biểu đồ siêu mạnh.",
-    "accordion_2_title": "Làm thế nào để mua Bitcoin và các loại tiền điện tử khác trên Staking?",
-    "accordion_2_description": "Dễ dàng mua Bitcoin trong vài phút bằng GBP, EUR, USD hoặc tiền tệ địa phương của bạn. DoiUSDThỗ trợ nhiều phương thức thanh toán phổ biến, bao gồm thẻ tín dụng Visa, Mastercard và ApplePay. Để bắt đầu, hãy xem hướng dẫn mới nhất của chúng tôi về cách mua Bitcoin trên Staking. Muốn mua, bán hoặc giữ các đồng tiền khác đang thu hút sự chú ý trong hệ sinh thái tiền điện tử? Bắt đầu hành trình của bạn với DoiUSDTvà khám phá giá cả cùng thông tin khác cho các loại tiền điện tử như Bitcoin (BTC), Ethereum (ETH) và hơn thế nữa!",
+    "accordion_1_description": "DoiUSDTlà sàn giao dịch tiền điện tử sáng tạo với các dịch vụ tài chính tiên tiến. Chúng tôi cung cấp dịch vụ giao dịch và kiếm tiền từ tiền điện tử tiên tiến cho hàng triệu người dùng trên toàn cầu tại hơn 180 khu vực. Với DOIUSDT, bạn có thể: Giao dịch nhiều loại token và cặp giao dịch. Kết nối với nền tảng TradingView nổi tiếng thế giới và giao dịch tiền điện tử trực tiếp với các biểu đồ siêu mạnh.",
+    "accordion_2_title": "Làm thế nào để mua Bitcoin và các loại tiền điện tử khác trên DOIUSDT?",
+    "accordion_2_description": "Dễ dàng mua Bitcoin trong vài phút bằng GBP, EUR, USD hoặc tiền tệ địa phương của bạn. DoiUSDThỗ trợ nhiều phương thức thanh toán phổ biến, bao gồm thẻ tín dụng Visa, Mastercard và ApplePay. Để bắt đầu, hãy xem hướng dẫn mới nhất của chúng tôi về cách mua Bitcoin trên DOIUSDT. Muốn mua, bán hoặc giữ các đồng tiền khác đang thu hút sự chú ý trong hệ sinh thái tiền điện tử? Bắt đầu hành trình của bạn với DoiUSDTvà khám phá giá cả cùng thông tin khác cho các loại tiền điện tử như Bitcoin (BTC), Ethereum (ETH) và hơn thế nữa!",
     "accordion_3_title": "Tiền điện tử là gì?",
-    "accordion_3_description": "Tiền điện tử là một loại tiền kỹ thuật số phi tập trung hoạt động trên công nghệ blockchain. Các đặc điểm chính của nó bao gồm tính minh bạch, giao dịch không biên giới và tính bất biến. Một số loại tiền điện tử phổ biến nhất, theo vốn hóa thị trường, bao gồm Bitcoin, Ethereum, Tether, có thể được giao dịch trên Staking.",
+    "accordion_3_description": "Tiền điện tử là một loại tiền kỹ thuật số phi tập trung hoạt động trên công nghệ blockchain. Các đặc điểm chính của nó bao gồm tính minh bạch, giao dịch không biên giới và tính bất biến. Một số loại tiền điện tử phổ biến nhất, theo vốn hóa thị trường, bao gồm Bitcoin, Ethereum, Tether, có thể được giao dịch trên DOIUSDT.",
     "mobile_new_alternative": "Một lựa chọn mới",
     "mobile_crypto_journey": "Cho hành trình tiền điện tử của bạn",
     "mobile_login": "Đăng nhập",
@@ -147,7 +147,7 @@
     "mobile_welcome_reward_title": "Hệ thống nạp đổi USDT!",
     "mobile_welcome_reward_description": "Gửi Tiền tăng lợi ích hàng ngày, hàng tháng. Rút tiền nhanh chóng 24/24",
     "popup_notification_title": "Thông báo",
-    "popup_welcome_message": "Chào mừng đến với Staking"
+    "popup_welcome_message": "Chào mừng đến với DOIUSDT"
   },
   "StakingPage": {
     "title": "Ký gửi",
