@@ -223,6 +223,7 @@
     "tab3": "Convert",
     "h2": "Top-up information",
     "bank_name": "Bank name",
+    "convert_name": "Conversion rate of USDT",
     "back_acc": "Account number",
     "acc_name": "Account name",
     "amount": "Amount to be paid",

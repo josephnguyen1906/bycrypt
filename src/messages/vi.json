@@ -224,6 +224,7 @@
     "bank_name": "Tên ngân hàng",
     "back_acc": "Số Tài khoản",
     "acc_name": "Tên Tài khoản ",
+    "convert_name": "Tỉ giá quy đổi USDT",
     "amount": "Số Tiền cẩn chuyển khoản",
     "note": "Lưu ý: Sau khi hoàn tất thanh toán, vui lòng chụp màn hình và xác nhận rằng thanh toán đã được thực hiện. ",
     "transfer": "Chuyển coin vào ví",

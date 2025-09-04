@@ -1,5 +1,5 @@
 import { useDebounce } from "@/hook/useDebounce";
-import { ConvertUSDT, topUpCoins } from "@/services/User.service";
+import { ConvertUSDT, getMyWallet, topUpCoins } from "@/services/User.service";
 import { formatCurrency } from "@/utils/formatMoney";
 import { CopyAllOutlined } from "@mui/icons-material";
 import {
@@ -17,7 +17,23 @@ import { toast } from "react-toastify";
 
 export default function Convert() {
   const { t } = useTranslation();
-  const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<number | null>(null);
+  const [displayValue, setDisplayValue] = useState<string>("");
+  const [price, setPrice] = useState<string>("");
+  const [wallet, setWallet] = useState<any>();
+
+  useEffect(() => {
+    const referral = async () => {
+      const res: any = await getMyWallet();
+      if (res.status === true) {
+        const data = res.data.find((item: any) => item.name === "usdt");
+
+        setWallet(data);
+      }
+    };
+    referral();
+  }, []);
+
   const submit = () => {
     if (!amount || Number(amount) <= 0) {
       toast.error(t("Toast.convert1"));
@@ -38,18 +54,25 @@ export default function Convert() {
         toast.error(err?.message || t("Toast.convert3"));
       });
   };
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-
-    const sanitizedValue = inputValue.replace(/,/g, "");
-
-    const newAmount = Number(sanitizedValue);
-
-    if (!isNaN(newAmount)) {
-      setAmount(newAmount);
-    }
+  const formatNumber = (value: number) => {
+    return value.toLocaleString(); // 100000000 => "100,000,000"
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/,/g, ""); // bỏ dấu phẩy
+    const num = parseFloat(rawValue);
+
+    if (!isNaN(num)) {
+      const price = num / Number(wallet?.bank || 0);
+      setAmount(num); // state lưu số
+      setDisplayValue(formatNumber(num));
+      setPrice(formatNumber(price));
+    } else {
+      setAmount(null);
+      setPrice("");
+      setDisplayValue("");
+    }
+  };
   return (
     <Box
       sx={{
@@ -69,13 +92,19 @@ export default function Convert() {
     >
       <TextField
         id="outlined-basic"
-        placeholder={t("DepositWithdrawPage.amount_name")}
-        value={amount.toLocaleString()}
-        onChange={handleAmountChange}
+        label={t("DepositWithdrawPage.convert_name")}
+        value={price}
         sx={{
           width: "100%",
+          "& .MuiInputLabel-root": {
+            color: "white", // màu chữ label
+          },
+          "& .MuiInputLabel-root.Mui-focused": {
+            color: "white", // màu khi focus
+          },
           "& .MuiOutlinedInput-root": {
             color: "white",
+            mb: "20px",
             height: {
               xs: "52px",
               sm: "45px",
@@ -93,16 +122,65 @@ export default function Convert() {
           },
           "& .MuiInputBase-input": {
             width: "100%",
-            padding: "0 14px", // chỉnh padding trái phải
+            padding: "0 14px",
             display: "flex",
-            alignItems: "center", // quan trọng để căn giữa
-            height: "90%", // full chiều cao TextField
+            color: "white",
+            alignItems: "center",
+            height: "90%",
             boxSizing: "border-box",
           },
           "& .MuiInputBase-input::placeholder": {
             color: "white",
             fontSize: "16px",
-            opacity: 1, // để không bị mờ
+            opacity: 1,
+          },
+        }}
+      />
+
+      <TextField
+        id="outlined-basic"
+        label={t("DepositWithdrawPage.amount_name")}
+        value={displayValue}
+        onChange={handleChange}
+        sx={{
+          width: "100%",
+          "& .MuiInputLabel-root": {
+            color: "white", // màu chữ label
+          },
+          "& .MuiInputLabel-root.Mui-focused": {
+            color: "white", // màu khi focus
+          },
+          "& .MuiOutlinedInput-root": {
+            color: "white",
+            mb: "20px",
+            height: {
+              xs: "52px",
+              sm: "45px",
+            },
+            fontSize: "16px",
+            "& fieldset": {
+              borderColor: "white",
+            },
+            "&:hover fieldset": {
+              borderColor: "white",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "white",
+            },
+          },
+          "& .MuiInputBase-input": {
+            width: "100%",
+            padding: "0 14px",
+            display: "flex",
+            color: "white",
+            alignItems: "center",
+            height: "90%",
+            boxSizing: "border-box",
+          },
+          "& .MuiInputBase-input::placeholder": {
+            color: "white",
+            fontSize: "16px",
+            opacity: 1,
           },
         }}
       />

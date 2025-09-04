@@ -51,7 +51,9 @@ interface CountryType {
 }
 export default function Withdraw({ wallet, user }: props) {
   const { t } = useTranslation();
-  const [amount, setAmount] = useState("");
+
+  const [amount, setAmount] = useState<number | null>(null);
+  const [displayValue, setDisplayValue] = useState<string>("");
   const [address, setAddress] = useState("");
 
   const [depositMin, setDepositMin] = useState(0);
@@ -64,22 +66,28 @@ export default function Withdraw({ wallet, user }: props) {
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
   const handleClickShowPassword = () => setShowPassword(!showPassword);
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
+  const formatNumber = (value: number) => {
+    return value.toLocaleString(); // 100000000 => "100,000,000"
+  };
 
-    const sanitizedValue = inputValue.replace(/,/g, "");
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/,/g, ""); // bỏ dấu phẩy
+    const num = parseFloat(rawValue);
 
-    const newAmount = Number(sanitizedValue);
-
-    if (!isNaN(newAmount)) {
-      setAmount(String(newAmount));
+    if (!isNaN(num)) {
+      setAmount(num); // state lưu số
+      setDisplayValue(formatNumber(num)); // state hiển thị chuỗi có dấu phẩy
+    } else {
+      setAmount(null);
+      setDisplayValue("");
     }
   };
 
   useEffect(() => {
     const storedAmount = window.localStorage.getItem("amountSell");
     if (storedAmount) {
-      setAmount(storedAmount);
+      setAmount(Number(storedAmount));
+      setDisplayValue(formatNumber(Number(storedAmount)));
     }
   }, []);
   const handleSubmitSell = async () => {
@@ -123,13 +131,13 @@ export default function Withdraw({ wallet, user }: props) {
       try {
         const formData = new FormData();
         formData.append("cid", coin);
-        formData.append("amount", amount);
+        formData.append("amount", String(amount));
         formData.append("method", method.toString());
         formData.append("paypassword", password);
 
         await sellCoins(formData);
         toast.success(t("Toast.Desposit6"));
-        setAmount("");
+        setAmount(null);
         setPassword("");
         setCoin(null);
         setMethod(0);
@@ -464,8 +472,8 @@ export default function Withdraw({ wallet, user }: props) {
             id="outlined-basic"
             label={t("DepositWithdrawPage.amount_name")}
             variant="outlined"
-            value={Number(amount).toLocaleString()}
-            onChange={handleAmountChange}
+            value={displayValue}
+            onChange={handleChange}
             helperText={
               withdrawMin != 0 ? t("Toast.Desposit9") + withdrawMin : ""
             }

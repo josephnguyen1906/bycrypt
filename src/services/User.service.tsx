@@ -182,7 +182,6 @@ const getWithdrawHistory = () => {
 const seeAllNoti = () => {
   return contentInstance.post("/api/user/notices/mark-all-read");
 };
-
 const ConvertUSDT = (formData: FormData) => {
   return contentInstance.post("/api/finance/convert-usdt", formData, {
     headers: {

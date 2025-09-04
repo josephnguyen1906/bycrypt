@@ -39,7 +39,8 @@ interface CountryType {
 }
 export default function Deposit({ configs, wallet }: props) {
   const { t } = useTranslation();
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState<number | null>(null);
+  const [displayValue, setDisplayValue] = useState<string>("");
   const [address, setAddress] = useState("");
   const [coin, setCoin] = useState<string>();
   const [bank, setbank] = useState(0);
@@ -58,18 +59,24 @@ export default function Deposit({ configs, wallet }: props) {
   useEffect(() => {
     const storedAmount = window.localStorage.getItem("amountBuy");
     if (storedAmount) {
-      setAmount(storedAmount);
+      setAmount(Number(storedAmount));
+      setDisplayValue(formatNumber(Number(storedAmount)));
     }
   }, []);
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
+  const formatNumber = (value: number) => {
+    return value.toLocaleString(); // 100000000 => "100,000,000"
+  };
 
-    const sanitizedValue = inputValue.replace(/,/g, "");
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/,/g, ""); // bỏ dấu phẩy
+    const num = parseFloat(rawValue);
 
-    const newAmount = Number(sanitizedValue);
-
-    if (!isNaN(newAmount)) {
-      setAmount(String(newAmount));
+    if (!isNaN(num)) {
+      setAmount(num); // state lưu số
+      setDisplayValue(formatNumber(num)); // state hiển thị chuỗi có dấu phẩy
+    } else {
+      setAmount(null);
+      setDisplayValue("");
     }
   };
   const handleSubmit = async () => {
@@ -88,11 +95,12 @@ export default function Deposit({ configs, wallet }: props) {
     try {
       const formData = new FormData();
       formData.append("cid", coin);
-      formData.append("amount", amount);
+      formData.append("amount", String(amount));
       formData.append("payimg", frontImage);
       formData.append("method", method.toString());
 
       await topUpCoins(formData);
+      setAmount(null);
       window.localStorage.removeItem("amountBuy");
       toast.success(t("Toast.Desposit3"));
     } catch (error: any) {
@@ -631,8 +639,8 @@ export default function Deposit({ configs, wallet }: props) {
           id="outlined-basic"
           placeholder={t("DepositWithdrawPage.amount_name")}
           variant="outlined"
-          value={Number(amount).toLocaleString()}
-          onChange={handleAmountChange}
+          value={displayValue}
+          onChange={handleChange}
           helperText={depositMin != 0 ? t("Toast.Desposit11") + depositMin : ""}
           FormHelperTextProps={{
             sx: { color: "#fff" }, // HelperText màu trắng

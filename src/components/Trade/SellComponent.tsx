@@ -24,27 +24,31 @@ interface TabProps {
 export default function SellComponent(progs: TabProps) {
   const { t } = useTranslation();
   const [valueAmount, setValueAmount] = useState<any>(null);
-  const [amount, setAmount] = useState<number>(0);
-  const [price, setPrice] = useState<any>(null);
+  const [amount, setAmount] = useState<number | null>(null);
+  const [displayValue, setDisplayValue] = useState<string>("");
   const router = useRouter();
   const [buySellConfig, setBuySellConfig] = useState<any>([
-    50000, 100000, 200000, 500000, 1000000,
+    500000, 1000000, 5000000, 10000000, 50000000,
   ]);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const submit = () => {
-    window.localStorage.setItem("amountSell", amount.toString());
+    window.localStorage.setItem("amountSell", String(amount));
     router.push("/withdraw");
   };
+  const formatNumber = (value: number) => {
+    return value.toLocaleString(); // 100000000 => "100,000,000"
+  };
 
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/,/g, ""); // bỏ dấu phẩy
+    const num = parseFloat(rawValue);
 
-    const sanitizedValue = inputValue.replace(/,/g, "");
-
-    const newAmount = Number(sanitizedValue);
-
-    if (!isNaN(newAmount)) {
-      setAmount(newAmount);
+    if (!isNaN(num)) {
+      setAmount(num); // state lưu số
+      setDisplayValue(formatNumber(num)); // state hiển thị chuỗi có dấu phẩy
+    } else {
+      setAmount(null);
+      setDisplayValue("");
     }
   };
   return (
@@ -84,15 +88,16 @@ export default function SellComponent(progs: TabProps) {
               buySellConfig.map((item: string, index: number) => (
                 <Button
                   key={index}
+                  type="button"
                   ref={(el) => (buttonRefs.current[index] = el)}
                   sx={{
                     background: valueAmount === index ? "#fff" : "#909090",
                     color: "black",
-                    width: "55px",
+                    minWidth: "80px",
                     height: "30px",
                     borderRadius: "15px",
                     fontWeight: 600,
-                    fontSize: { xs: "13px", sm: "16px" },
+                    fontSize: { xs: "12px", sm: "16px" },
                     "&:hover": {
                       background: valueAmount === index ? "#fff" : "#909090",
                     },
@@ -100,9 +105,10 @@ export default function SellComponent(progs: TabProps) {
                   onClick={() => {
                     setValueAmount(index);
                     setAmount(Number(item));
+                    setDisplayValue(formatNumber(Number(item)));
                   }}
                 >
-                  {item}
+                  {Number(item).toLocaleString()}
                 </Button>
               ))}
           </Box>
@@ -117,10 +123,10 @@ export default function SellComponent(progs: TabProps) {
           </Typography>
           <TextField
             id="outlined-basic"
-            placeholder="Amount"
             variant="outlined"
-            value={amount.toLocaleString()}
-            onChange={handleAmountChange}
+            value={displayValue}
+            onChange={handleChange}
+            placeholder={t("BuySellPage.cust_amount")}
             sx={{
               width: "100%",
               background: "#5e5e5e",
