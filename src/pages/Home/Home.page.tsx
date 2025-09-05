@@ -517,39 +517,60 @@ export default function HomePage() {
                   borderRadius: "10px",
                   marginTop: "20px",
                   marginBottom: "20px",
+                  p: "10px",
                 }}
               >
                 <Box
                   sx={{
                     display: "flex",
-                    gap: "15px",
-                    alignItems: "center",
-                    justifyContent: "Center",
-                    justifyItems: "center",
-                    padding: "10px",
+                    gap: "5px",
                   }}
                 >
-                  <CoinIcon fill="white" width="150px" height="100px" />
-                  <Box>
-                    <Typography
-                      sx={{
-                        color: "gray",
-                        fontSize: "20px",
-                        fontWeight: "550",
-                      }}
-                    >
-                      {t("HomePage.mobile_welcome_reward_title")}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "white",
-                        fontSize: "11px",
-                        fontWeight: "500",
-                      }}
-                    >
-                      {t("HomePage.mobile_welcome_reward_description")}
-                    </Typography>
-                  </Box>
+                  <Typography
+                    sx={{
+                      color: "white",
+                      fontSize: "14px",
+                      minWidth: "80px",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {t("Toast.Wallet")} &nbsp; VND:
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: "#fcd534",
+                      fontSize: "14px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {Number(user.balance.vnd).toLocaleString()}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: "5px",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "white",
+                      fontSize: "14px",
+                      minWidth: "80px",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {t("Toast.Wallet")} &nbsp; USDT:
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: "#fcd534",
+                      fontSize: "14px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {Number(user.balance.usdt)}
+                  </Typography>
                 </Box>
               </Box>
               <Box sx={{ width: "90%", margin: "auto" }}>
