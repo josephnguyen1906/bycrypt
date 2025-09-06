@@ -156,6 +156,14 @@ export default function Deposit({ configs, wallet }: props) {
                   },
                 },
                 "& .MuiInputBase-input": {
+                  color: "white",
+                  background: "transparent",
+                  // Fix autofill background
+                  "&:-webkit-autofill": {
+                    WebkitBoxShadow: "0 0 0 1000px black inset", // chỉnh màu nền
+                    WebkitTextFillColor: "white",
+                    transition: "background-color 5000s ease-in-out 0s",
+                  },
                   width: "100%",
                   padding: "0 14px", // chỉnh padding trái phải
                   display: "flex",

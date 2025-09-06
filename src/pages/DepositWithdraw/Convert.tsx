@@ -124,10 +124,17 @@ export default function Convert() {
             },
           },
           "& .MuiInputBase-input": {
+            color: "white",
+            background: "transparent",
+            // Fix autofill background
+            "&:-webkit-autofill": {
+              WebkitBoxShadow: "0 0 0 1000px black inset", // chỉnh màu nền
+              WebkitTextFillColor: "white",
+              transition: "background-color 5000s ease-in-out 0s",
+            },
             width: "100%",
             padding: "0 14px",
             display: "flex",
-            color: "white",
             alignItems: "center",
             height: "90%",
             boxSizing: "border-box",
@@ -172,10 +179,17 @@ export default function Convert() {
             },
           },
           "& .MuiInputBase-input": {
+            color: "white",
+            background: "transparent",
+            // Fix autofill background
+            "&:-webkit-autofill": {
+              WebkitBoxShadow: "0 0 0 1000px black inset", // chỉnh màu nền
+              WebkitTextFillColor: "white",
+              transition: "background-color 5000s ease-in-out 0s",
+            },
             width: "100%",
             padding: "0 14px",
             display: "flex",
-            color: "white",
             alignItems: "center",
             height: "90%",
             boxSizing: "border-box",

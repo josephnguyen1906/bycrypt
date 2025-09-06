@@ -507,6 +507,13 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
               mt: "20px",
               "& .MuiInputBase-input": {
                 color: "white",
+                background: "transparent",
+                // Fix autofill background
+                "&:-webkit-autofill": {
+                  WebkitBoxShadow: "0 0 0 1000px black inset", // chỉnh màu nền
+                  WebkitTextFillColor: "white",
+                  transition: "background-color 5000s ease-in-out 0s",
+                },
               },
               marginBottom: "20px",
               "& .MuiInputBase-input.Mui-disabled": {
@@ -547,6 +554,13 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
               width: "100%",
               "& .MuiInputBase-input": {
                 color: "white",
+                background: "transparent",
+                // Fix autofill background
+                "&:-webkit-autofill": {
+                  WebkitBoxShadow: "0 0 0 1000px black inset", // chỉnh màu nền
+                  WebkitTextFillColor: "white",
+                  transition: "background-color 5000s ease-in-out 0s",
+                },
               },
               marginBottom: "20px",
               "& .MuiInputBase-input.Mui-disabled": {
@@ -589,6 +603,13 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
               width: "100%",
               "& .MuiInputBase-input": {
                 color: "white",
+                background: "transparent",
+                // Fix autofill background
+                "&:-webkit-autofill": {
+                  WebkitBoxShadow: "0 0 0 1000px black inset", // chỉnh màu nền
+                  WebkitTextFillColor: "white",
+                  transition: "background-color 5000s ease-in-out 0s",
+                },
               },
               "& .MuiInputLabel-root": {
                 color: "white",

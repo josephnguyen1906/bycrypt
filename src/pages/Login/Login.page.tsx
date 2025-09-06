@@ -166,7 +166,21 @@ export default function LoginPage() {
               value={email}
               type="email"
               onChange={handleUsername}
-              sx={{ mb: 2, borderRadius: "15px", mt: 1 }}
+              sx={{
+                mb: 2,
+                borderRadius: "15px",
+                mt: 1,
+                "& .MuiInputBase-input": {
+                  color: "black",
+                  background: "transparent",
+                  // Fix autofill background
+                  "&:-webkit-autofill": {
+                    WebkitBoxShadow: "0 0 0 1000px white inset", // chỉnh màu nền
+                    WebkitTextFillColor: "black",
+                    transition: "background-color 5000s ease-in-out 0s",
+                  },
+                },
+              }}
             />
 
             <InputLabel>{t("LoginPage.title2")} </InputLabel>
@@ -196,7 +210,20 @@ export default function LoginPage() {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={handlePassword}
-                sx={{ mb: 2, borderRadius: "15px", mt: 1 }}
+                sx={{
+                  mb: 2,
+                  borderRadius: "15px",
+                  mt: 1,
+                  "& .MuiInputBase-input": {
+                    background: "transparent",
+                    // Fix autofill background
+                    "&:-webkit-autofill": {
+                      WebkitBoxShadow: "0 0 0 1000px black inset", // chỉnh màu nền
+                      WebkitTextFillColor: "white",
+                      transition: "background-color 5000s ease-in-out 0s",
+                    },
+                  },
+                }}
               />
 
               <IconButton
