@@ -153,7 +153,8 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
             .catch((error) => {
               toast.error(error.message);
             });
-        } else {
+        }
+        if (frontImage && method == 1) {
           const formDatas = new FormData();
           if (frontImage) formDatas.append("bank_qr", frontImage);
           await updateBank(formDatas)
@@ -173,6 +174,7 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
 
         await refetchUser();
         setAmount(null);
+        setDisplayValue("");
         setPassword("");
         setCoin(null);
         setMethod(0);

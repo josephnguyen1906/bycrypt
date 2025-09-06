@@ -46,6 +46,8 @@ export default function Convert() {
         if (res.status === true) {
           toast.success(t("Toast.convert2"));
           setAmount(0);
+          setDisplayValue("");
+          setPrice("");
         } else {
           toast.error(res.message);
         }
