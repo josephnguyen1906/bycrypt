@@ -24,10 +24,31 @@ export default function Safedetail({ safe }: props) {
   const { t } = useTranslation();
   const [anchorEl1, setAnchorEl1] = React.useState<null | HTMLElement>(null);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const [amount, setAmount] = React.useState<string | null>(null);
+
+  const [amount, setAmount] = React.useState<number | null>(null);
+
+  const [displayValue, setDisplayValue] = React.useState<string>("");
   const [listSafe, setListSafe] = React.useState<any>(null);
   const open1 = Boolean(anchorEl1);
   const router = useRouter();
+
+  const formatNumber = (value: number) => {
+    return value.toLocaleString("vi-VN");
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/[,.]/g, "");
+
+    const num = parseFloat(rawValue);
+
+    if (!isNaN(num)) {
+      setAmount(num); // state lưu số
+      setDisplayValue(formatNumber(num)); // state hiển thị chuỗi có dấu phẩy
+    } else {
+      setAmount(null);
+      setDisplayValue("");
+    }
+  };
 
   React.useEffect(() => {
     getlistSafe();
@@ -57,7 +78,7 @@ export default function Safedetail({ safe }: props) {
     try {
       const formData = new FormData();
       formData.append("id", safe?.id);
-      formData.append("amount", amount);
+      formData.append("amount", String(amount));
       await SendSafe(formData);
       toast.success(t("Toast.Safe4"));
       await getlistSafe();
@@ -121,10 +142,8 @@ export default function Safedetail({ safe }: props) {
           </IconButton>
         </Box>
         <TextField
-          value={amount}
-          onChange={(e: any) => {
-            setAmount(e.target.value);
-          }}
+          value={displayValue}
+          onChange={handleChange}
           sx={{
             width: "90%",
             margin: "16px auto",

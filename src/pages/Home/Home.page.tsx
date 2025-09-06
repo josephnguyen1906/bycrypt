@@ -522,55 +522,101 @@ export default function HomePage() {
               >
                 <Box
                   sx={{
-                    display: "flex",
+                    width: {
+                      xs: "100%",
+                      sm: "90%",
+                    },
+                    display: "grid",
+                    gridTemplateColumns: "1fr",
+                    margin: "0 auto",
+                    paddingTop: "10px",
                     gap: "5px",
+                    p: {
+                      xs: "15px 0px",
+                      sm: "15px 0px",
+                    },
                   }}
                 >
-                  <Typography
+                  <Box
                     sx={{
-                      color: "white",
-                      fontSize: "14px",
-                      minWidth: "80px",
-                      fontWeight: 500,
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: "10px",
+                      alignItems: "Center",
                     }}
                   >
-                    {t("Toast.Wallet")} &nbsp; VND:
-                  </Typography>
-                  <Typography
+                    <Box
+                      sx={{
+                        display: "flex",
+                        gap: "10px",
+                        alignItems: "Center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <img src="/images/vietnam.png" width={30} height={30} />
+                      <Typography sx={{ fontSize: "14px", color: "white" }}>
+                        {t("Toast.Wallet")} VND
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        gap: "10px",
+                        alignItems: "Center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <img src="/images/usdt.png" width={30} height={30} />
+                      <Typography sx={{ fontSize: "14px", color: "white" }}>
+                        {t("Toast.Wallet")} USDT
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box
                     sx={{
-                      color: "#fcd534",
-                      fontSize: "14px",
-                      fontWeight: "bold",
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: "10px",
+                      alignItems: "Center",
                     }}
                   >
-                    {Number(user.balance.vnd).toLocaleString()}
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    gap: "5px",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      color: "white",
-                      fontSize: "14px",
-                      minWidth: "80px",
-                      fontWeight: 500,
-                    }}
-                  >
-                    {t("Toast.Wallet")} &nbsp; USDT:
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: "#fcd534",
-                      fontSize: "14px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {Number(user.balance.usdt)}
-                  </Typography>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        gap: "10px",
+                        alignItems: "Center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: "15px",
+                          color: "#fcd534",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {parseFloat(user.balance.vnd).toLocaleString()} VND
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        gap: "10px",
+                        alignItems: "Center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: "15px",
+                          color: "#fcd534",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {parseFloat(user.balance.usdt).toLocaleString()} USDT
+                      </Typography>
+                    </Box>
+                  </Box>
                 </Box>
               </Box>
               <Box sx={{ width: "90%", margin: "auto" }}>
