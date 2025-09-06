@@ -2,28 +2,33 @@
 import { getMe } from "@/services/User.service";
 import { IUser } from "@/shared/interfaces";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 export default function useAuth() {
   const [user, setUser] = useState<IUser | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res: any = await getMe();
-        if (res.status === true) {
-          setUser(res.data);
-
-          setLoading(false);
-        }
-        setLoading(false);
-      } catch (error: any) {
-        setLoading(false);
+  const fetchUser = useCallback(async () => {
+    try {
+      setLoading(true);
+      const res: any = await getMe();
+      if (res.status === true) {
+        setUser(res.data);
+      } else {
+        setUser(null);
       }
-    };
+    } catch (error) {
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
     fetchUser();
-  }, [router]);
-  return { user, loading };
+  }, [fetchUser, router]);
+
+  // 🔥 return thêm hàm fetchUser để gọi lại khi cần
+  return { user, loading, refetchUser: fetchUser };
 }

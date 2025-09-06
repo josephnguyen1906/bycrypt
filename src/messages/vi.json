@@ -326,7 +326,7 @@
     "change_label7": "Địa chỉ ví",
     "helper_text7": "Ví dụ: AGBAHJJ1",
     "change_label8": "Hình mã QR ngân hàng",
-    "change_label9": "Nhập mạng lưới",
+    "change_label9": "Chọn mạng lưới",
     "helper_text9": "Ví dụ: TRC20",
     "change_label10": "Hình mã QR Ví",
     "button_save": "Cập nhập",
@@ -355,7 +355,8 @@
     "balance_tran": "Số dư sau giao dịch",
     "imp_date": "Ngày thực hiện",
     "tab_bank": "Cập nhập ngân hàng",
-    "tab_wallet": "Cập nhập địa chỉ ví"
+    "tab_wallet": "Cập nhập địa chỉ ví",
+    "lan": "Mạng"
   },
   "HistoryPage": {
     "tab1": "Lệnh mở",

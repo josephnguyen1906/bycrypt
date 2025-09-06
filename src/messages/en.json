@@ -99,10 +99,9 @@
       "menu0": "Overview",
       "menu1": "Account",
       "menu2": "Security",
-      "menu3": "Verified",
-      "menu4": "Referral",
-      "menu5": "My invoice",
-      "menu6": "Log out"
+      "menu3": "Referral",
+      "menu4": "My invoice",
+      "menu5": "Log out"
     },
     "assets": {
       "menu0": "VND safe",
@@ -357,7 +356,8 @@
     "balance_tran": "Balance after transaction",
     "imp_date": "Implementation date",
     "tab_bank": "Add/Update Bank",
-    "tab_wallet": "Add/update Wallet"
+    "tab_wallet": "Add/update Wallet",
+    "lan": "Network"
   },
   "HistoryPage": {
     "tab1": "Open command",

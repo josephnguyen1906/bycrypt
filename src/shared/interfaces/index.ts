@@ -90,6 +90,14 @@ export interface IUser {
     usdt: string;
     vnd: string;
   };
+  TRC20: {
+    wallet: string;
+    wallet_qr: string;
+  };
+  BEP20: {
+    wallet: string;
+    wallet_qr: string;
+  };
 }
 
 export interface IProfile {

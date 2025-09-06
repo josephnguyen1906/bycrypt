@@ -25,16 +25,14 @@ export interface props {
   wallet: CountryType[];
 }
 
-const medthod = [
+const walletType = [
   {
-    id: 1,
-    name: "method1",
+    id: "TRC20",
+    name: "TRC20",
   },
-];
-const medthodWallet = [
   {
-    id: 2,
-    name: "method2",
+    id: "BEP20",
+    name: "BEP20",
   },
 ];
 
@@ -65,6 +63,7 @@ export default function Withdraw({ wallet, user }: props) {
   const [method, setMethod] = useState(0);
   const [withdrawMin, setWithdrawMin] = useState(0);
   const [withdrawMax, setWithdrawMax] = useState(0);
+  const [walletNetwork, setWalletNetwork] = useState<string | null>(null);
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
@@ -78,9 +77,11 @@ export default function Withdraw({ wallet, user }: props) {
     const num = parseFloat(rawValue);
 
     if (!isNaN(num)) {
+      const fee = num * withdrawFee; // withdrawFee = 0.05 => 5%
+      const receive = num - fee;
       setAmount(num); // state lưu số
       setDisplayValue(formatNumber(num));
-      setAmountReceive(formatNumber(num - withdrawFee));
+      setAmountReceive(formatNumber(receive));
     } else {
       setAmount(null);
       setDisplayValue("");
@@ -99,22 +100,7 @@ export default function Withdraw({ wallet, user }: props) {
       toast.warning(t("Toast.Desposit5"));
       return;
     }
-    if (
-      method === 1 &&
-      (user?.bank_acc_no === undefined ||
-        user.bank_acc_no === null ||
-        user.bank_acc_no == "")
-    ) {
-      router.push("/addbank");
-      return;
-    }
-    if (
-      method === 2 &&
-      (user?.wallet === undefined || user.wallet === null || user.wallet == "")
-    ) {
-      router.push("/addwallet");
-      return;
-    }
+
     if (coin == "2" && Number(user?.balance.usdt) < Number(amount)) {
       toast.warning(t("Toast.Desposit8"));
       return;
@@ -138,6 +124,7 @@ export default function Withdraw({ wallet, user }: props) {
         formData.append("amount", String(amount));
         formData.append("method", method.toString());
         formData.append("paypassword", password);
+        if (walletNetwork) formData.append("wallet", walletNetwork);
 
         await sellCoins(formData);
         toast.success(t("Toast.Desposit6"));
@@ -174,12 +161,14 @@ export default function Withdraw({ wallet, user }: props) {
               setWithdrawMax(newValue?.withdraw_max || 0);
               setDepositMin(newValue?.deposit_min || 0);
               if (amount && amount > 0) {
-                console.log("amount ", amount);
-                console.log(" withdrawFee", newValue?.withdraw_fee);
-
-                setAmountReceive(
-                  formatNumber(amount - Number(newValue?.withdraw_fee || 0))
-                );
+                const fee = amount * Number(newValue?.withdraw_fee || 0); // withdrawFee = 0.05 => 5%
+                const receive = amount - fee;
+                setAmountReceive(formatNumber(receive));
+                if (newValue?.name == "vnd") {
+                  setMethod(1);
+                } else {
+                  setMethod(2);
+                }
               }
             }}
             renderOption={(props, option) => {
@@ -245,157 +234,7 @@ export default function Withdraw({ wallet, user }: props) {
               />
             )}
           />
-          {coin == "1" ? (
-            <Autocomplete
-              id="country-select-demo"
-              sx={{ padding: "20px 0px" }}
-              options={medthod}
-              autoHighlight
-              getOptionLabel={(option) =>
-                t("DepositWithdrawPage." + option.name)
-              }
-              onChange={(event, newValue) => {
-                setMethod(newValue?.id || 2);
-              }}
-              renderOption={(props, option) => {
-                const { ...optionProps } = props;
-                return (
-                  <Box
-                    key={option.id}
-                    component="li"
-                    sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                    {...optionProps}
-                  >
-                    {option.id === 1 ? (
-                      <img
-                        loading="lazy"
-                        width="20"
-                        srcSet={`/images/bank.png`}
-                        src="/images/bank.png"
-                        alt=""
-                      />
-                    ) : (
-                      <img
-                        loading="lazy"
-                        width="20"
-                        srcSet={`/images/wallet.png`}
-                        src="/images/wallet.png"
-                        alt=""
-                      />
-                    )}
-                    {t("DepositWithdrawPage." + option.name)}
-                  </Box>
-                );
-              }}
-              renderInput={(params: any) => (
-                <TextField
-                  {...params}
-                  label={t("DepositWithdrawPage.method")}
-                  variant="outlined"
-                  InputLabelProps={{ style: { color: "white" } }}
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      color: "white",
-                      "& fieldset": {
-                        borderColor: "white",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "white",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "white",
-                      },
-                    },
 
-                    "& .MuiInputLabel-root": {
-                      color: "white",
-                    },
-                  }}
-                  slotProps={{
-                    htmlInput: {
-                      ...params.inputProps,
-                      autoComplete: "new-password",
-                    },
-                  }}
-                />
-              )}
-            />
-          ) : (
-            <Autocomplete
-              id="country-select-demo"
-              sx={{ padding: "20px 0px" }}
-              options={medthodWallet}
-              autoHighlight
-              getOptionLabel={(option) =>
-                t("DepositWithdrawPage." + option.name)
-              }
-              onChange={(event, newValue) => {
-                setMethod(newValue?.id || 2);
-              }}
-              renderOption={(props, option) => {
-                const { ...optionProps } = props;
-                return (
-                  <Box
-                    key={option.id}
-                    component="li"
-                    sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                    {...optionProps}
-                  >
-                    {option.id === 1 ? (
-                      <img
-                        loading="lazy"
-                        width="20"
-                        srcSet={`/images/bank.png`}
-                        src="/images/bank.png"
-                        alt=""
-                      />
-                    ) : (
-                      <img
-                        loading="lazy"
-                        width="20"
-                        srcSet={`/images/wallet.png`}
-                        src="/images/wallet.png"
-                        alt=""
-                      />
-                    )}
-                    {t("DepositWithdrawPage." + option.name)}
-                  </Box>
-                );
-              }}
-              renderInput={(params: any) => (
-                <TextField
-                  {...params}
-                  label={t("DepositWithdrawPage.method")}
-                  variant="outlined"
-                  InputLabelProps={{ style: { color: "white" } }}
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      color: "white",
-                      "& fieldset": {
-                        borderColor: "white",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "white",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "white",
-                      },
-                    },
-
-                    "& .MuiInputLabel-root": {
-                      color: "white",
-                    },
-                  }}
-                  slotProps={{
-                    htmlInput: {
-                      ...params.inputProps,
-                      autoComplete: "new-password",
-                    },
-                  }}
-                />
-              )}
-            />
-          )}
           {method && method === 1 && user.bank_acc_no ? (
             <TextField
               id="outlined-basic"
@@ -405,10 +244,10 @@ export default function Withdraw({ wallet, user }: props) {
               disabled={true}
               sx={{
                 width: "100%",
+                mt: "20px",
                 "& .MuiInputBase-input": {
                   color: "white",
                 },
-                marginBottom: "20px",
                 "& .MuiInputBase-input.Mui-disabled": {
                   color: "gray",
                   WebkitTextFillColor: "gray",
@@ -438,19 +277,90 @@ export default function Withdraw({ wallet, user }: props) {
           ) : (
             ""
           )}
-          {method && method === 2 && user.wallet ? (
+          {method && method === 2 ? (
+            <Autocomplete
+              id="country-select-demo"
+              sx={{ mt: "20px" }}
+              options={walletType}
+              autoHighlight
+              getOptionLabel={(option) => option.name}
+              onChange={(event, newValue) => {
+                setWalletNetwork(newValue?.name || "TRC20");
+              }}
+              renderOption={(props, option) => {
+                const { ...optionProps } = props;
+                return (
+                  <Box
+                    key={option.id}
+                    component="li"
+                    sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                    {...optionProps}
+                  >
+                    {t("ProfilePage.lan") + " " + option.name}
+                  </Box>
+                );
+              }}
+              renderInput={(params: any) => (
+                <TextField
+                  {...params}
+                  label={t("ProfilePage.change_label9")}
+                  variant="outlined"
+                  InputLabelProps={{
+                    shrink: true,
+                    style: { color: "white" },
+                  }}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      color: "white",
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
+                    },
+
+                    "& .MuiInputLabel-root": {
+                      color: "white",
+                    },
+                  }}
+                  slotProps={{
+                    htmlInput: {
+                      ...params.inputProps,
+                      autoComplete: "new-password",
+                    },
+                  }}
+                />
+              )}
+            />
+          ) : (
+            ""
+          )}
+          {method && method === 2 && walletNetwork == "TRC20" ? (
             <TextField
               id="outlined-basic"
               label={t("ProfilePage.change_label7")}
               variant="outlined"
-              value={user.wallet}
+              value={user?.TRC20?.wallet || ""}
               disabled={true} // hoặc condition
+              InputLabelProps={{
+                shrink: true,
+                sx: {
+                  color: "#fff",
+                  "&.Mui-focused": {
+                    color: "#fff", // giữ màu trắng khi label floating
+                  },
+                }, // Label màu trắng
+              }}
               sx={{
                 width: "100%",
+                mt: "20px",
                 "& .MuiInputBase-input": {
                   color: "white",
                 },
-                marginBottom: "20px",
                 "& .MuiInputBase-input.Mui-disabled": {
                   color: "gray",
                   WebkitTextFillColor: "gray",
@@ -478,7 +388,53 @@ export default function Withdraw({ wallet, user }: props) {
               }}
             />
           ) : (
-            ""
+            <TextField
+              id="outlined-basic"
+              label={t("ProfilePage.change_label7")}
+              variant="outlined"
+              value={user?.BEP20?.wallet || ""}
+              disabled={true} // hoặc condition
+              InputLabelProps={{
+                shrink: true,
+                sx: {
+                  color: "#fff",
+                  "&.Mui-focused": {
+                    color: "#fff", // giữ màu trắng khi label floating
+                  },
+                }, // Label màu trắng
+              }}
+              sx={{
+                width: "100%",
+                mt: "20px",
+                "& .MuiInputBase-input": {
+                  color: "white",
+                },
+                "& .MuiInputBase-input.Mui-disabled": {
+                  color: "gray",
+                  WebkitTextFillColor: "gray",
+                },
+                "& .MuiInputLabel-root": {
+                  color: "white",
+                },
+                "& .MuiInputLabel-root.Mui-disabled": {
+                  color: "gray",
+                },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "white",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "white",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "white",
+                  },
+                  "&.Mui-disabled fieldset": {
+                    borderColor: "gray",
+                  },
+                },
+              }}
+            />
           )}
           <TextField
             id="outlined-basic"
@@ -494,6 +450,7 @@ export default function Withdraw({ wallet, user }: props) {
             }}
             sx={{
               width: "100%",
+              mt: "20px",
               "& .MuiInputBase-input": {
                 color: "white",
               },
@@ -621,7 +578,10 @@ export default function Withdraw({ wallet, user }: props) {
           >
             {method === 1 || method === 2 ? (
               (method === 1 && user.bank_acc_no) ||
-              (method === 2 && user.wallet) ? (
+              (method === 2 &&
+                walletNetwork &&
+                user?.[walletNetwork] &&
+                user?.[walletNetwork].wallet) ? (
                 <Button
                   type="button"
                   sx={{
