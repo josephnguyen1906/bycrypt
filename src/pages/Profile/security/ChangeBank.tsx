@@ -40,7 +40,6 @@ export default function ChangeBank({ subTabs }: iProps) {
   const frontFileInput = useRef<HTMLInputElement>(null);
   const [frontImage, setFrontImage] = useState<File>();
   const [walletNetwork, setWalletNetwork] = useState<string | null>(null);
-
   const [subTab, setSubTab] = useState(subTabs || 0);
   const handleFrontChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

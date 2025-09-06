@@ -36,6 +36,8 @@
     "change_pass7": "Failed to change password. Please try again.",
     "change_pass8": "Failed to update bank. Please try again.",
     "change_pass9": "Update bank changed successfully!.",
+    "change_pass10": "Update QR code for withdrawal successful",
+    "change_pass11": "Failed to update QR withdrawal image",
     "verifide1": "Verification submitted successfully!",
     "verifide2": "Failed to submit verification. Please try again.",
     "file": "Download app",

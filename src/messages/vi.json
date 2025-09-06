@@ -36,6 +36,8 @@
     "change_pass7": "Thay đổi mật khẩu thất bại.",
     "change_pass8": "Cập nhập ngân hàng thất bại",
     "change_pass9": "Cập nhập ngân hàng thành công",
+    "change_pass10": "Cập nhập hình QR rút tiền thành công",
+    "change_pass11": "Cập nhập hình QR rút tiền thất bại",
     "verifide1": "Xác minh đã được gửi thành công!",
     "verifide2": "Không thể gửi xác minh. Vui lòng thử lại.",
     "file": "Tải app",

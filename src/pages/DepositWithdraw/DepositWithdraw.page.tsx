@@ -95,7 +95,7 @@ export default function DepositWithdrawPage(props: TabProps) {
   const [wallet, setWallet] = useState<CountryType[] | []>([]);
   const [walletBuy, setWalletBuy] = useState<CountryType>();
   const [configs, setConfigs] = useState<any>();
-  const { user } = useAuth();
+  const { user, refetchUser } = useAuth();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -294,43 +294,93 @@ export default function DepositWithdrawPage(props: TabProps) {
                   xs: "100%",
                   sm: "90%",
                 },
-                display: "flex",
-                flexWrap: "wrap",
-                margin: "auto",
+                display: "grid",
+                gridTemplateColumns: "1fr",
+                margin: "0 auto",
                 paddingTop: "10px",
-                justifyContent: "space-around",
+                gap: "5px",
                 p: {
                   xs: "15px 0px",
                   sm: "15px 0px",
                 },
               }}
             >
-              <Box>
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "10px",
+                  alignItems: "Center",
+                }}
+              >
                 <Box
                   sx={{
                     display: "flex",
                     gap: "10px",
                     alignItems: "Center",
+                    justifyContent: "center",
                   }}
                 >
                   <img src="/images/vietnam.png" width={30} height={30} />
                   <Typography sx={{ fontSize: "14px", color: "white" }}>
-                    {t("Toast.Wallet")} VND:{" "}
-                    {parseFloat(user.balance.vnd).toLocaleString()} VND
+                    {t("Toast.Wallet")} VND
                   </Typography>
                 </Box>
-              </Box>
-              <Box>
                 <Box
                   sx={{
                     display: "flex",
                     gap: "10px",
                     alignItems: "Center",
+                    justifyContent: "center",
                   }}
                 >
                   <img src="/images/usdt.png" width={30} height={30} />
                   <Typography sx={{ fontSize: "14px", color: "white" }}>
-                    {t("Toast.Wallet")} USDT:{" "}
+                    {t("Toast.Wallet")} USDT
+                  </Typography>
+                </Box>
+              </Box>
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "10px",
+                  alignItems: "Center",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: "10px",
+                    alignItems: "Center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "15px",
+                      color: "#fcd534",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {parseFloat(user.balance.vnd).toLocaleString()} VND
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: "10px",
+                    alignItems: "Center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "15px",
+                      color: "#fcd534",
+                      fontWeight: "bold",
+                    }}
+                  >
                     {parseFloat(user.balance.usdt).toLocaleString()} USDT
                   </Typography>
                 </Box>
@@ -343,7 +393,7 @@ export default function DepositWithdrawPage(props: TabProps) {
               <Convert />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
-              <Withdraw user={user} wallet={wallet} />
+              <Withdraw user={user} wallet={wallet} refetchUser={refetchUser} />
             </CustomTabPanel>
           </Box>
         ) : (

@@ -51,7 +51,6 @@ export default function ProfilePage(props: TabProps) {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  console.log("value", value);
 
   return (
     <Box

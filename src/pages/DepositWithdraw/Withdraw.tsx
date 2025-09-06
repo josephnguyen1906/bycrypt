@@ -1,4 +1,10 @@
-import { getMyWallet, sellCoins, topUpCoins } from "@/services/User.service";
+import {
+  getMyWallet,
+  sellCoins,
+  topUpCoins,
+  updateBank,
+} from "@/services/User.service";
+import { IUser } from "@/shared/interfaces";
 import { formatCurrency } from "@/utils/formatMoney";
 import {
   CopyAllOutlined,
@@ -23,6 +29,7 @@ import { toast } from "react-toastify";
 export interface props {
   user: any | null;
   wallet: CountryType[];
+  refetchUser: () => Promise<void>;
 }
 
 const walletType = [
@@ -48,14 +55,12 @@ interface CountryType {
   withdraw_fee: number;
   suggested?: boolean;
 }
-export default function Withdraw({ wallet, user }: props) {
+export default function Withdraw({ wallet, user, refetchUser }: props) {
   const { t } = useTranslation();
-
   const [amount, setAmount] = useState<number | null>(null);
   const [displayValue, setDisplayValue] = useState<string>("");
   const [amountReceive, setAmountReceive] = useState<string>("");
   const [address, setAddress] = useState("");
-
   const [depositMin, setDepositMin] = useState(0);
   const [coin, setCoin] = useState<string | null>(null);
   const [bank, setbank] = useState(0);
@@ -67,6 +72,14 @@ export default function Withdraw({ wallet, user }: props) {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
+  const frontFileInput = useRef<HTMLInputElement>(null);
+  const [frontImage, setFrontImage] = useState<File>();
+  const handleFrontChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setFrontImage(file);
+    }
+  };
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const formatNumber = (value: number) => {
     return value.toLocaleString("vi-VN");
@@ -125,18 +138,51 @@ export default function Withdraw({ wallet, user }: props) {
         formData.append("method", method.toString());
         formData.append("paypassword", password);
         if (walletNetwork) formData.append("wallet", walletNetwork);
-
+        if (frontImage && method == 2) {
+          const formDatas = new FormData();
+          if (walletNetwork) formDatas.append("wallet_type", walletNetwork);
+          if (frontImage) formDatas.append("wallet_qr", frontImage);
+          await updateBank(formDatas)
+            .then((response: any) => {
+              if (response.status === true) {
+                toast.success(t("Toast.change_pass10"));
+              } else {
+                toast.error(t("Toast.change_pass11"));
+              }
+            })
+            .catch((error) => {
+              toast.error(error.message);
+            });
+        } else {
+          const formDatas = new FormData();
+          if (frontImage) formDatas.append("bank_qr", frontImage);
+          await updateBank(formDatas)
+            .then((response: any) => {
+              if (response.status === true) {
+                toast.success(t("Toast.change_pass10"));
+              } else {
+                toast.error(t("Toast.change_pass11"));
+              }
+            })
+            .catch((error) => {
+              toast.error(error.message);
+            });
+        }
         await sellCoins(formData);
         toast.success(t("Toast.Desposit6"));
+
+        await refetchUser();
         setAmount(null);
         setPassword("");
         setCoin(null);
         setMethod(0);
+        setAmountReceive("");
         window.localStorage.removeItem("amountSell");
       } catch (error: any) {
         toast.error(error.message || t("Toast.Desposit7"));
       }
   };
+
   return (
     <>
       {user && user.wdstatus === 1 ? (
@@ -164,11 +210,11 @@ export default function Withdraw({ wallet, user }: props) {
                 const fee = amount * Number(newValue?.withdraw_fee || 0); // withdrawFee = 0.05 => 5%
                 const receive = amount - fee;
                 setAmountReceive(formatNumber(receive));
-                if (newValue?.name == "vnd") {
-                  setMethod(1);
-                } else {
-                  setMethod(2);
-                }
+              }
+              if (newValue?.id == 1) {
+                setMethod(1);
+              } else {
+                setMethod(2);
               }
             }}
             renderOption={(props, option) => {
@@ -575,6 +621,149 @@ export default function Withdraw({ wallet, user }: props) {
               ),
             }}
           />
+          {(user.bank_qr == "" || user.bank_qr == null) && (
+            <Box>
+              {" "}
+              <Typography
+                sx={{
+                  color: "white",
+                  marginTop: "10px",
+                  marginBottom: "10px",
+                  textAlign: "left",
+                }}
+              >
+                {t("ProfilePage.change_label10")}
+              </Typography>
+              <TextField
+                id="outlined-basic"
+                variant="outlined"
+                type="file"
+                ref={frontFileInput}
+                onChange={handleFrontChange}
+                InputProps={{
+                  sx: {
+                    color: "#fff", // Chữ nhập vào màu trắng
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "#fff", // Placeholder màu trắng
+                      opacity: 1,
+                    },
+                  },
+                }}
+                FormHelperTextProps={{
+                  sx: { color: "#fff" }, // HelperText màu trắng
+                }}
+                sx={{
+                  width: "100%",
+                  "& .MuiOutlinedInput-root": {
+                    color: "white",
+                    width: "100%",
+                    height: {
+                      xs: "52px",
+                      sm: "45px",
+                    },
+                    fontSize: { xs: "16px", sm: "14px" },
+                    lineHeight: {
+                      xs: "35px",
+                      sm: "45px",
+                    },
+                    "& fieldset": {
+                      borderColor: "white",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "white",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white",
+                    },
+                  },
+                  "& .MuiInputBase-input": {
+                    padding: "0 14px", // chỉnh padding trái phải
+                    display: "flex",
+                    alignItems: "center", // quan trọng để căn giữa
+                    height: "90%", // full chiều cao TextField
+                    boxSizing: "border-box",
+                  },
+                  "& .MuiInputBase-input::placeholder": {
+                    color: "white",
+                    opacity: 1, // để không bị mờ
+                  },
+                }}
+              />
+            </Box>
+          )}
+
+          {walletNetwork &&
+            (user?.[walletNetwork].wallet_qr == "" ||
+              user?.[walletNetwork].wallet_qr == null) && (
+              <Box>
+                {" "}
+                <Typography
+                  sx={{
+                    color: "white",
+                    marginTop: "10px",
+                    marginBottom: "10px",
+                    textAlign: "left",
+                  }}
+                >
+                  {t("ProfilePage.change_label10")}
+                </Typography>
+                <TextField
+                  id="outlined-basic"
+                  variant="outlined"
+                  type="file"
+                  ref={frontFileInput}
+                  onChange={handleFrontChange}
+                  InputProps={{
+                    sx: {
+                      color: "#fff", // Chữ nhập vào màu trắng
+                      "& .MuiInputBase-input::placeholder": {
+                        color: "#fff", // Placeholder màu trắng
+                        opacity: 1,
+                      },
+                    },
+                  }}
+                  FormHelperTextProps={{
+                    sx: { color: "#fff" }, // HelperText màu trắng
+                  }}
+                  sx={{
+                    width: "100%",
+                    "& .MuiOutlinedInput-root": {
+                      color: "white",
+                      width: "100%",
+                      height: {
+                        xs: "52px",
+                        sm: "45px",
+                      },
+                      fontSize: { xs: "16px", sm: "14px" },
+                      lineHeight: {
+                        xs: "35px",
+                        sm: "45px",
+                      },
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
+                    },
+                    "& .MuiInputBase-input": {
+                      padding: "0 14px", // chỉnh padding trái phải
+                      display: "flex",
+                      alignItems: "center", // quan trọng để căn giữa
+                      height: "90%", // full chiều cao TextField
+                      boxSizing: "border-box",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "white",
+                      opacity: 1, // để không bị mờ
+                    },
+                  }}
+                />
+              </Box>
+            )}
           <Box
             sx={{
               width: "100%",

@@ -57,6 +57,7 @@ export interface IUser {
   money: string;
   cardzm: string;
   cardfm: string;
+  bank_qr: string;
   rzstatus: number;
   level: number;
   invit_1: number;
