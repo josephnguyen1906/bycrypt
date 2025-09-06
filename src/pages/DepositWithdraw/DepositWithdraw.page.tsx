@@ -313,7 +313,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                     alignItems: "Center",
                   }}
                 >
-                  <img src="/images/business.png" width={30} height={30} />
+                  <img src="/images/vietnam.png" width={30} height={30} />
                   <Typography sx={{ fontSize: "14px", color: "white" }}>
                     {t("Toast.Wallet")} VND:{" "}
                     {parseFloat(user.balance.vnd).toLocaleString()} VND

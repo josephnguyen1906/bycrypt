@@ -180,12 +180,12 @@ export default function Withdraw({ wallet, user }: props) {
                   sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
                   {...optionProps}
                 >
-                  {option.name === "pi" ? (
+                  {option.name === "vnd" ? (
                     <img
                       loading="lazy"
                       width="20"
-                      srcSet={`/images/4f8f27a4de61fca0faca95298f6714c81fcfc22929d68e1062e396c4026452f9_200.webp`}
-                      src="/images/4f8f27a4de61fca0faca95298f6714c81fcfc22929d68e1062e396c4026452f9_200.webp"
+                      srcSet={`/images/vietnam.png`}
+                      src="/images/vietnam.png"
                       alt=""
                     />
                   ) : (

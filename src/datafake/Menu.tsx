@@ -290,22 +290,13 @@ export const menuItemMobile2 = [
     icon: <NapIcon fill="#fff" />,
     link: "/security",
   },
-  // {
-  //   text: "Verified",
-  //   icon: <RutIcon fill="#fff" />,
-  //   link: "/verified",
-  // },
+
   {
     text: "Referral",
     icon: <GiftMenuIcon fill="#fff" />,
     link: "/referral",
   },
 
-  // {
-  //   text: "Live chat 24/7",
-  //   icon: <LiveChatMenuIcon fill="#fff" />,
-  //   link: "#",
-  // },
   {
     text: "My invoice",
     icon: <InvoiceMenuIcon fill="#fff" />,

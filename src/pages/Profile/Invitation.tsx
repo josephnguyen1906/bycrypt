@@ -242,9 +242,9 @@ export default function InvitationPage() {
             </Box>
           </Box>
         </Box>
-        <Grid container spacing={2}>
+        <Grid container spacing={1}>
           {/* Left Section */}
-          <Grid item xs={12} sm={8}>
+          <Grid item xs={12} sm={12}>
             <StyledPaper
               sx={{
                 display: "grid",
@@ -389,34 +389,6 @@ export default function InvitationPage() {
             </StyledPaper>
           </Grid>
           {/* Right Section */}
-          <Grid item xs={12} sm={3}>
-            <StyledPaper
-              sx={{
-                display: "grid",
-                gap: 2,
-                background: "#000",
-                border: "1px solid gray",
-              }}
-            >
-              <Typography
-                variant="h4"
-                sx={{ fontSize: "20px", fontWeight: "bold", color: "#fff" }}
-              >
-                {t("ProfilePage.menu4")}
-              </Typography>
-              <Box sx={{ mt: 1, mb: 2, textAlign: "center" }}>
-                <Box
-                  component="img"
-                  src={referral?.qrcode_url}
-                  alt="QR Code"
-                  sx={{ width: 150, height: 150 }}
-                />
-                <Typography sx={{ fontSize: "16px", color: "#fff" }}>
-                  {t("ProfilePage.my_referral")}: {referral?.invit}
-                </Typography>
-              </Box>
-            </StyledPaper>
-          </Grid>
         </Grid>
       </Box>
     </Box>

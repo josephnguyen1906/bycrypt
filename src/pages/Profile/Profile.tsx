@@ -51,6 +51,7 @@ export default function ProfilePage(props: TabProps) {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+  console.log("value", value);
 
   return (
     <Box
@@ -118,9 +119,6 @@ export default function ProfilePage(props: TabProps) {
       <CustomTabPanel value={value} index={2}>
         <ChangePassword tab={props.tab || 0} subTab={props.subTab || 0} />
       </CustomTabPanel>
-      {/* <CustomTabPanel value={value} index={3}>
-        <VerifiedPage />
-      </CustomTabPanel> */}
       <CustomTabPanel value={value} index={3}>
         <InvitationPage />
       </CustomTabPanel>

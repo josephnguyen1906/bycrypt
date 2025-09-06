@@ -413,7 +413,7 @@ export default function AssetPage() {
                     alignItems: "Center",
                   }}
                 >
-                  <img src="/images/business.png" width={30} height={30} />
+                  <img src="/images/vietnam.png" width={30} height={30} />
                   <Typography sx={{ fontSize: "14px", color: "white" }}>
                     VND
                   </Typography>

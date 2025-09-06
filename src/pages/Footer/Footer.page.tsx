@@ -204,34 +204,6 @@ export default function FooterPage() {
               </li>
             </ul>
           </div>
-          <div style={{ display: "grid", gap: "10px" }}>
-            <h3>Trade on the go with Staking</h3>
-            <button
-              style={{
-                backgroundColor: "#fff",
-                color: "#000",
-                height: "57px",
-                border: "none",
-                borderRadius: "10px",
-                cursor: "pointer",
-                fontSize: "16px",
-                fontWeight: 600,
-                marginTop: "-60px",
-              }}
-            >
-              Register
-            </button>
-            <div style={{ width: "100px", margin: "auto" }}>
-              <img
-                src="/images/qr.png"
-                alt="Scan to download DoiUSDTapp"
-                style={{ width: "100px", height: "100px", marginTop: "-50px" }}
-              />
-            </div>
-            <p style={{ textAlign: "center", marginTop: "-40px" }}>
-              Scan to download DoiUSDTapp
-            </p>
-          </div>
         </div>
         <div
           className="footer-icon-socal"
