@@ -71,6 +71,7 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
   const [walletNetwork, setWalletNetwork] = useState<string | null>(null);
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [selectedWallet, setSelectedWallet] = useState<any>(null);
   const [password, setPassword] = useState("");
   const frontFileInput = useRef<HTMLInputElement>(null);
   const [frontImage, setFrontImage] = useState<File>();
@@ -178,12 +179,14 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
         setPassword("");
         setCoin(null);
         setMethod(0);
+        setSelectedWallet(null);
         setAmountReceive("");
         window.localStorage.removeItem("amountSell");
       } catch (error: any) {
         toast.error(error.message || t("Toast.Desposit7"));
       }
   };
+  console.log("method", method);
 
   return (
     <>
@@ -197,10 +200,12 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
                 sm: "20px 0px",
               },
             }}
+            value={selectedWallet}
             options={wallet}
             autoHighlight
             getOptionLabel={(option) => option.title}
             onChange={(event, newValue) => {
+              setSelectedWallet(newValue);
               setCoin(newValue?.id?.toString() || "2");
               setWithdrawFee(newValue?.withdraw_fee || 0);
               setbank(newValue?.bank || 0);
