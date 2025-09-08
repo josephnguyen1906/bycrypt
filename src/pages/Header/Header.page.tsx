@@ -7,7 +7,11 @@ import Link from "next/link";
 import { userResponse } from "@/interface/user.interface";
 import { useRouter } from "next/navigation";
 import swal from "sweetalert";
-import { getMe, getNotification } from "@/services/User.service";
+import {
+  getMe,
+  getNotification,
+  getWebsiteConfig,
+} from "@/services/User.service";
 import {
   alpha,
   Avatar,
@@ -103,6 +107,7 @@ export default function HeaderPage(props: propUser) {
   const [menuId, setMenuId] = React.useState<null | string>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [dataNoti, setDataNoti] = useState<any | null>(null);
+  const [configs, setConfigs] = useState<any | null>(null);
   const [popupOpen, setPopupOpen] = React.useState<null | HTMLElement>(null);
   const router = useRouter();
   const [langAnchorEl, setLangAnchorEl] = React.useState<null | HTMLElement>(
@@ -110,6 +115,21 @@ export default function HeaderPage(props: propUser) {
   );
   const isLangMenuOpen = Boolean(langAnchorEl);
   const isNotiOpen = Boolean(popupOpen);
+
+  useEffect(() => {
+    const referral = async () => {
+      try {
+        const config: any = await getWebsiteConfig();
+
+        if (config.status === true) {
+          setConfigs(config.data);
+        }
+      } catch (errors: any) {
+        console.log(errors?.message);
+      }
+    };
+    referral();
+  }, []);
 
   const handleLangMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setLangAnchorEl(event.currentTarget);
@@ -456,6 +476,11 @@ export default function HeaderPage(props: propUser) {
                   </Box>
                 </StyledMenu>
                 <button
+                  onClick={() => {
+                    if (configs && configs.cskh) {
+                      router.push(configs.cskh);
+                    }
+                  }}
                   style={{
                     background: "none",
                     border: "none",
@@ -463,7 +488,7 @@ export default function HeaderPage(props: propUser) {
                     cursor: "pointer",
                   }}
                 >
-                  <QuestionIcon />
+                  <img src="/images/live-chat.png" width="24px" height="24px" />
                 </button>
                 <button
                   onClick={handleLangMenuOpen}
@@ -558,6 +583,11 @@ export default function HeaderPage(props: propUser) {
                   <NotiIcon />
                 </button>
                 <button
+                  onClick={() => {
+                    if (configs && configs.cskh) {
+                      router.push(configs.cskh);
+                    }
+                  }}
                   style={{
                     background: "none",
                     border: "none",
@@ -565,7 +595,7 @@ export default function HeaderPage(props: propUser) {
                     cursor: "pointer",
                   }}
                 >
-                  <QuestionIcon />
+                  <img src="/images/live-chat.png" width="24px" height="24px" />
                 </button>
                 <button
                   onClick={handleLangMenuOpen}
