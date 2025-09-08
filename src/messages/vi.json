@@ -222,6 +222,7 @@
     "safe_send": "Gửi tiền vào két"
   },
   "DepositWithdrawPage": {
+    "note_wallet": "Cập nhật địa chỉ ví mới (Bảo mật + Thêm ngân hàng + Cập nhật địa chỉ ví)",
     "method1": "Chuyển khoản ngân hàng",
     "method2": "Chuyển coin vào ví",
     "title": "Mua tiền điện tử chỉ trong vài bước",

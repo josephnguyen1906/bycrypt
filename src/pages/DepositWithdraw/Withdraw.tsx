@@ -15,8 +15,12 @@ import {
   Autocomplete,
   Box,
   Button,
+  FormControl,
   IconButton,
   InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
   Tooltip,
   Typography,
@@ -192,7 +196,7 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
     <>
       {user && user.wdstatus === 1 ? (
         <Box sx={{ width: { xs: "100%", sm: "80%" }, margin: "0 auto" }}>
-          <Autocomplete
+          {/* <Autocomplete
             id="country-select-demo"
             sx={{
               padding: {
@@ -286,7 +290,113 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
                 }}
               />
             )}
-          />
+          /> */}
+          <FormControl fullWidth variant="standard" sx={{ color: "white" }}>
+            <InputLabel
+              id="demo-simple-select-standard-label"
+              sx={{
+                width: "120px",
+                height: "30px",
+                color: "white",
+                mt: "10px",
+                ml: "10px",
+                background: "#000",
+                zIndex: "1",
+                "&.Mui-focused": {
+                  color: "white",
+                },
+              }}
+            >
+              {t("DepositWithdrawPage.currency")}
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={selectedWallet}
+              onChange={(e) => setSelectedWallet(e.target.value)}
+              sx={{
+                color: "white",
+                width: "100%",
+                height: "50px",
+                borderRadius: "5px",
+                border: "1px solid white",
+                background: "#000",
+                // Bỏ border-bottom xanh khi focus
+                "&.MuiInputBase-root": {
+                  "&:before, &:after": {
+                    borderBottom: "none !important",
+                  },
+                },
+
+                "& .MuiSvgIcon-root": {
+                  color: "white",
+                },
+                "& .MuiSelect-select": {
+                  color: "white",
+                },
+              }}
+            >
+              {wallet &&
+                wallet.map((coin: any, index: number) => (
+                  <MenuItem
+                    key={index}
+                    value={coin.title}
+                    sx={{ color: "black" }}
+                    onClick={() => {
+                      console.log("coin", coin);
+                      setSelectedWallet(coin.name);
+                      setCoin(coin?.id?.toString() || "2");
+                      setWithdrawFee(coin?.withdraw_fee || 0);
+                      setbank(coin?.bank || 0);
+                      setAddress(coin?.addresss || "");
+                      setWithdrawMin(coin?.withdraw_min || 0);
+                      setWithdrawMax(coin?.withdraw_max || 0);
+                      setDepositMin(coin?.deposit_min || 0);
+                      if (amount && amount > 0) {
+                        const fee = amount * Number(coin?.withdraw_fee || 0);
+                        const receive = amount - fee;
+                        setAmountReceive(formatNumber(receive));
+                      }
+                      if (coin?.id == 1) {
+                        setMethod(1);
+                      } else {
+                        setMethod(2);
+                      }
+                    }}
+                  >
+                    <Box
+                      key={coin.id}
+                      component="li"
+                      sx={{
+                        "& > img": { mr: 2, flexShrink: 0 },
+                        display: "flex",
+                        alignItems: "center",
+                        pl: "10px",
+                      }}
+                    >
+                      {coin.name === "vnd" ? (
+                        <img
+                          loading="lazy"
+                          width="20"
+                          srcSet={`/images/vietnam.png`}
+                          src="/images/vietnam.png"
+                          alt=""
+                        />
+                      ) : (
+                        <img
+                          loading="lazy"
+                          width="20"
+                          srcSet={`/images/usdt.png`}
+                          src="/images/usdt.png"
+                          alt=""
+                        />
+                      )}
+                      {coin.title}
+                    </Box>
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
 
           {method && method === 1 && user.bank_acc_no ? (
             <TextField
@@ -396,53 +506,58 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
           method === 2 &&
           walletNetwork == "TRC20" &&
           user?.[walletNetwork]?.wallet ? (
-            <TextField
-              id="outlined-basic"
-              label={t("ProfilePage.change_label7")}
-              variant="outlined"
-              value={user?.TRC20?.wallet || ""}
-              disabled={true} // hoặc condition
-              InputLabelProps={{
-                shrink: true,
-                sx: {
-                  color: "#fff",
-                  "&.Mui-focused": {
-                    color: "#fff", // giữ màu trắng khi label floating
+            <>
+              <TextField
+                id="outlined-basic"
+                label={t("ProfilePage.change_label7")}
+                variant="outlined"
+                value={user?.TRC20?.wallet || ""}
+                disabled={true} // hoặc condition
+                InputLabelProps={{
+                  shrink: true,
+                  sx: {
+                    color: "#fff",
+                    "&.Mui-focused": {
+                      color: "#fff", // giữ màu trắng khi label floating
+                    },
+                  }, // Label màu trắng
+                }}
+                sx={{
+                  width: "100%",
+                  mt: "20px",
+                  "& .MuiInputBase-input": {
+                    color: "white",
                   },
-                }, // Label màu trắng
-              }}
-              sx={{
-                width: "100%",
-                mt: "20px",
-                "& .MuiInputBase-input": {
-                  color: "white",
-                },
-                "& .MuiInputBase-input.Mui-disabled": {
-                  color: "gray",
-                  WebkitTextFillColor: "gray",
-                },
-                "& .MuiInputLabel-root": {
-                  color: "white",
-                },
-                "& .MuiInputLabel-root.Mui-disabled": {
-                  color: "gray",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "white",
+                  "& .MuiInputBase-input.Mui-disabled": {
+                    color: "gray",
+                    WebkitTextFillColor: "gray",
                   },
-                  "&:hover fieldset": {
-                    borderColor: "white",
+                  "& .MuiInputLabel-root": {
+                    color: "white",
                   },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "white",
+                  "& .MuiInputLabel-root.Mui-disabled": {
+                    color: "gray",
                   },
-                  "&.Mui-disabled fieldset": {
-                    borderColor: "gray",
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "white",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "white",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white",
+                    },
+                    "&.Mui-disabled fieldset": {
+                      borderColor: "gray",
+                    },
                   },
-                },
-              }}
-            />
+                }}
+              />
+              <Typography sx={{ fontSize: "10px", color: "white", p: "5px" }}>
+                {t("DepositWithdrawPage.note_wallet")}
+              </Typography>
+            </>
           ) : (
             ""
           )}
@@ -451,53 +566,58 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
           method === 2 &&
           walletNetwork == "BEP20" &&
           user?.[walletNetwork]?.wallet ? (
-            <TextField
-              id="outlined-basic"
-              label={t("ProfilePage.change_label7")}
-              variant="outlined"
-              value={user?.BEP20?.wallet || ""}
-              disabled={true} // hoặc condition
-              InputLabelProps={{
-                shrink: true,
-                sx: {
-                  color: "#fff",
-                  "&.Mui-focused": {
-                    color: "#fff", // giữ màu trắng khi label floating
+            <>
+              <TextField
+                id="outlined-basic"
+                label={t("ProfilePage.change_label7")}
+                variant="outlined"
+                value={user?.BEP20?.wallet || ""}
+                disabled={true} // hoặc condition
+                InputLabelProps={{
+                  shrink: true,
+                  sx: {
+                    color: "#fff",
+                    "&.Mui-focused": {
+                      color: "#fff", // giữ màu trắng khi label floating
+                    },
+                  }, // Label màu trắng
+                }}
+                sx={{
+                  width: "100%",
+                  mt: "20px",
+                  "& .MuiInputBase-input": {
+                    color: "white",
                   },
-                }, // Label màu trắng
-              }}
-              sx={{
-                width: "100%",
-                mt: "20px",
-                "& .MuiInputBase-input": {
-                  color: "white",
-                },
-                "& .MuiInputBase-input.Mui-disabled": {
-                  color: "gray",
-                  WebkitTextFillColor: "gray",
-                },
-                "& .MuiInputLabel-root": {
-                  color: "white",
-                },
-                "& .MuiInputLabel-root.Mui-disabled": {
-                  color: "gray",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "white",
+                  "& .MuiInputBase-input.Mui-disabled": {
+                    color: "gray",
+                    WebkitTextFillColor: "gray",
                   },
-                  "&:hover fieldset": {
-                    borderColor: "white",
+                  "& .MuiInputLabel-root": {
+                    color: "white",
                   },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "white",
+                  "& .MuiInputLabel-root.Mui-disabled": {
+                    color: "gray",
                   },
-                  "&.Mui-disabled fieldset": {
-                    borderColor: "gray",
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "white",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "white",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white",
+                    },
+                    "&.Mui-disabled fieldset": {
+                      borderColor: "gray",
+                    },
                   },
-                },
-              }}
-            />
+                }}
+              />
+              <Typography sx={{ fontSize: "10px", color: "white", p: "5px" }}>
+                {t("DepositWithdrawPage.note_wallet")}
+              </Typography>
+            </>
           ) : (
             ""
           )}

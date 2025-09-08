@@ -223,6 +223,7 @@
     "safe_send": "Deposit money into the safe"
   },
   "DepositWithdrawPage": {
+    "note_wallet": "Update new wallet address (Security + Add bank + Update wallet address)",
     "method1": "Bank Transfer",
     "method2": "Transfer coins to the wallet",
     "title": "Buy crypto in a few steps",
