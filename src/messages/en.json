@@ -330,7 +330,7 @@
     "change_label7": "Wallet address",
     "helper_text7": "ex: AGBAHJJ1",
     "change_label8": "Bank QR code",
-    "change_label9": "Enter the network",
+    "change_label9": "Choose network",
     "helper_text9": "ex: TRC20",
     "change_label10": "Wallet QR code",
     "button_save": "Submit",
@@ -360,7 +360,10 @@
     "imp_date": "Implementation date",
     "tab_bank": "Add/Update Bank",
     "tab_wallet": "Add/update Wallet",
-    "lan": "Network"
+    "lan": "Network",
+    "type_wallet": "Choose type",
+    "NORMAL": "Normal wallet",
+    "TRUST": "Ví TRUST"
   },
   "HistoryPage": {
     "tab1": "Open command",

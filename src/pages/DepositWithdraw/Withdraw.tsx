@@ -36,7 +36,7 @@ export interface props {
   refetchUser: () => Promise<void>;
 }
 
-const walletType = [
+const wallets = [
   {
     id: "TRC20",
     name: "TRC20",
@@ -44,6 +44,17 @@ const walletType = [
   {
     id: "BEP20",
     name: "BEP20",
+  },
+];
+
+const walletTypes = [
+  {
+    id: "TRUST",
+    name: "TRUST",
+  },
+  {
+    id: "NORMAL",
+    name: "NORMAL",
   },
 ];
 
@@ -64,9 +75,8 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
   const [amount, setAmount] = useState<number | null>(null);
   const [displayValue, setDisplayValue] = useState<string>("");
   const [amountReceive, setAmountReceive] = useState<string>("");
-  const [address, setAddress] = useState("");
-  const [depositMin, setDepositMin] = useState(0);
   const [coin, setCoin] = useState<string | null>(null);
+  const [walletType, setWalletType] = useState<string | null>(null);
   const [bank, setbank] = useState(0);
   const [withdrawFee, setWithdrawFee] = useState(0);
   const [method, setMethod] = useState(0);
@@ -143,6 +153,8 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
         formData.append("method", method.toString());
         formData.append("paypassword", password);
         if (walletNetwork) formData.append("wallet", walletNetwork);
+        if (method == 2 && walletType)
+          formData.append("wallet_type", walletType);
         if (frontImage && method == 2) {
           const formDatas = new FormData();
           if (walletNetwork) formDatas.append("wallet_type", walletNetwork);
@@ -190,8 +202,6 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
         toast.error(error.message || t("Toast.Desposit7"));
       }
   };
-  console.log("method", method);
-
   return (
     <>
       {user && user.wdstatus === 1 ? (
@@ -248,15 +258,11 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
                     value={coin.title}
                     sx={{ color: "black" }}
                     onClick={() => {
-                      console.log("coin", coin);
                       setSelectedWallet(coin.name);
                       setCoin(coin?.id?.toString() || "2");
                       setWithdrawFee(coin?.withdraw_fee || 0);
-                      setbank(coin?.bank || 0);
-                      setAddress(coin?.addresss || "");
                       setWithdrawMin(coin?.withdraw_min || 0);
                       setWithdrawMax(coin?.withdraw_max || 0);
-                      setDepositMin(coin?.deposit_min || 0);
                       if (amount && amount > 0) {
                         const fee = amount * Number(coin?.withdraw_fee || 0);
                         const receive = amount - fee;
@@ -345,6 +351,8 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
           ) : (
             ""
           )}
+
+          {/* Check show chọn mạng */}
           {method && method === 2 ? (
             <FormControl fullWidth variant="standard" sx={{ color: "white" }}>
               <InputLabel
@@ -389,8 +397,8 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
                   },
                 }}
               >
-                {walletType &&
-                  walletType.map((item: any) => (
+                {wallets &&
+                  wallets.map((item: any) => (
                     <MenuItem
                       key={item.id}
                       value={item.id} // <-- FIX: đồng bộ value với id
@@ -415,6 +423,75 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
           ) : (
             ""
           )}
+          {method && method === 2 && walletNetwork && (
+            <FormControl fullWidth variant="standard" sx={{ color: "white" }}>
+              <InputLabel
+                id="demo-simple-select-standard-label"
+                sx={{
+                  width: "100px",
+                  height: "30px",
+                  color: "white",
+                  mt: "10px",
+                  ml: "10px",
+                  background: "#000",
+                  zIndex: "1",
+                  "&.Mui-focused": {
+                    color: "white",
+                  },
+                }}
+              >
+                {t("ProfilePage.type_wallet")}
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                value={walletType} // Lưu id
+                onChange={(e) => setWalletType(e.target.value)} // Cập nhật id
+                sx={{
+                  color: "white",
+                  width: "100%",
+                  height: "50px",
+                  borderRadius: "5px",
+                  border: "1px solid white",
+                  background: "#000",
+                  "&.MuiInputBase-root": {
+                    "&:before, &:after": {
+                      borderBottom: "none !important",
+                    },
+                  },
+                  "& .MuiSvgIcon-root": {
+                    color: "white",
+                  },
+                  "& .MuiSelect-select": {
+                    color: "white",
+                  },
+                }}
+              >
+                {walletTypes &&
+                  walletTypes.map((item: any) => (
+                    <MenuItem
+                      key={item.id}
+                      value={item.id} // <-- FIX: đồng bộ value với id
+                      sx={{ color: "black" }}
+                    >
+                      <Box
+                        key={item.id}
+                        component="li"
+                        sx={{
+                          "& > img": { mr: 2, flexShrink: 0 },
+                          display: "flex",
+                          alignItems: "center",
+                          pl: "10px",
+                        }}
+                      >
+                        {t("ProfilePage." + item.name)}
+                      </Box>
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+          )}
+          {/*  show địa chỉ Ví */}
           {method &&
           method === 2 &&
           walletNetwork == "TRC20" &&
@@ -534,6 +611,8 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
           ) : (
             ""
           )}
+
+          {/* Check show các field rút tiền */}
           {walletNetwork && user?.[walletNetwork]?.wallet && (
             <>
               <TextField
@@ -855,6 +934,7 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
               </>
             )}
 
+          {/* Check show Upload Hình */}
           {method === 1 &&
             !walletNetwork &&
             user.bank_acc_no &&

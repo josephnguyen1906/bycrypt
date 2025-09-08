@@ -359,7 +359,10 @@
     "imp_date": "Ngày thực hiện",
     "tab_bank": "Cập nhập ngân hàng",
     "tab_wallet": "Cập nhập địa chỉ ví",
-    "lan": "Mạng"
+    "lan": "Mạng",
+    "type_wallet": "Chọn loại ví",
+    "NORMAL": "Ví Thường",
+    "TRUST": "Ví TRUST"
   },
   "HistoryPage": {
     "tab1": "Lệnh mở",
