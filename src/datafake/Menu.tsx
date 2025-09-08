@@ -87,7 +87,7 @@ export const MenuWebsite = [
   },
   {
     id: "2",
-    link: "/staking",
+    link: "/trade",
     title: "menu2",
     item: [],
   },
@@ -99,7 +99,7 @@ export const MenuWebsite = [
   },
   {
     id: "5",
-    link: "/trade",
+    link: "/convert",
     title: "menu5",
     item: [],
   },

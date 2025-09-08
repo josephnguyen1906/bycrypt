@@ -276,7 +276,7 @@ export default function BuySellPage() {
                     }}
                     href="/convert"
                   >
-                    <TransferIcon width="18px" height="18px" />
+                    <TransferIcon width="18px" height="18px" fill="white" />
                     {t("BuySellPage.trade")}
                   </Button>
 
