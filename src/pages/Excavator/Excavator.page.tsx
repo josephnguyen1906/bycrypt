@@ -7,7 +7,7 @@ import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 interface TabPanelProps {
@@ -21,42 +21,37 @@ export default function ExcavatorPage() {
   const [orepool, setOrepool] = useState<any>(null);
   const [value, setValue] = React.useState(0);
   const [type, setType] = useState<string>("");
-  const { user } = useAuth();
+  const { user, refetchUser } = useAuth();
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
   const router = useRouter();
   useEffect(() => {
-    const referral = async () => {
-      try {
-        const res: any = await getOrepool();
-        if (res.status === true) {
-          setOrepool(res.data);
-        }
-      } catch (errors: any) {
-        toast.error(errors?.message);
-      }
-    };
     referral();
   }, []);
-  const handleSubmit = async (item: any) => {
-    if (!user) {
-      toast.error(t("Toast.mining1"));
-      return;
-    }
-    if (Number(user.balance.usdt) < Number(item.pricenum)) {
-      router.push("/asset");
-      return;
-    }
+
+  const referral = async () => {
     try {
-      const formData = new FormData();
-      formData.append("id", item.id);
-      await buyMining(formData);
-      toast.success(t("Toast.mining2"));
-    } catch (error: any) {
-      toast.error(t("Toast.mining3"));
+      const res: any = await getOrepool();
+      if (res.status === true) {
+        setOrepool(res.data);
+      }
+    } catch (errors: any) {
+      toast.error(errors?.message);
     }
   };
+  const fetchSafe = useCallback(async () => {
+    try {
+      const res: any = await getOrepool();
+      if (res.status === true) {
+        console.log("API data:", res.data);
+        setOrepool({ ...res.data }); // ép reference mới
+      }
+    } catch (errors: any) {
+      toast.error(errors?.message);
+    }
+  }, []);
+
   return (
     <Box sx={{ width: "100%", p: 1, backgroundColor: "#000", height: "100vh" }}>
       <Typography
@@ -182,7 +177,15 @@ export default function ExcavatorPage() {
                   {t("MiningPage.note")}
                 </Typography>
 
-                {user ? <Safedetail safe={item} user={user} /> : ""}
+                {user ? (
+                  <Safedetail
+                    safe={item}
+                    user={user}
+                    refetchUser={refetchUser}
+                  />
+                ) : (
+                  ""
+                )}
               </Box>
             </Box>
           ))}

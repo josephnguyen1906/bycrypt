@@ -169,9 +169,13 @@ const getProgressContract = () => {
 const getNotiDetail = (id: string) => {
   return contentInstance.get("/api/user/notices/" + id);
 };
-const getSafeActive = (id: string) => {
-  return contentInstance.get("/api/orepool/working?coin=" + id);
+const getSafeActive = (id: string, status?: string | null) => {
+  const url = `/api/orepool/working?coin=${id}${
+    status ? `&status=${status}` : ""
+  }`;
+  return contentInstance.get(url);
 };
+
 const getDepositHistory = () => {
   return contentInstance.get("/api/finance/deposit/history");
 };
