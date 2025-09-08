@@ -138,7 +138,7 @@ export default function ChangeBank({ subTabs }: iProps) {
           padding: "0px 10px",
           "& .MuiTab-root": {
             color: "#909090",
-            fontSize: "15px",
+            fontSize: "10px",
             fontWeight: 500,
             whiteSpace: "nowrap",
             "&:hover": { color: "#fff" },

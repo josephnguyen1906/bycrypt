@@ -91,7 +91,7 @@ export default function ChangePassword(props: Tab) {
             padding: "0px 10px",
             "& .MuiTab-root": {
               color: "#909090",
-              fontSize: "13px",
+              fontSize: "11px",
               fontWeight: 500,
               whiteSpace: "nowrap",
               "&:hover": { color: "#fff" },

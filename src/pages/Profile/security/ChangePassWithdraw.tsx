@@ -71,7 +71,7 @@ export default function ChangePassWithdraw({ user }: iProps) {
       <Typography
         variant="h4"
         gutterBottom
-        sx={{ fontWeight: "bold", color: "#fff" }}
+        sx={{ fontWeight: "bold", color: "#fff", fontSize: "18px" }}
       >
         {t("ProfilePage.change_pay_title")}
       </Typography>

@@ -83,10 +83,10 @@ export default function ProfilePage(props: TabProps) {
           sx={{
             width: "80%",
             margin: "0 auto",
-            minWidth: "600px", // Optional, giúp Tabs không bị bóp nhỏ
+            minWidth: "400px", // Optional, giúp Tabs không bị bóp nhỏ
             "& .MuiTab-root": {
               color: "#909090",
-              fontSize: "18px",
+              fontSize: "12px",
               fontWeight: 500,
               whiteSpace: "nowrap", // giữ chữ không xuống dòng
               "&:hover": { color: "#fff" },

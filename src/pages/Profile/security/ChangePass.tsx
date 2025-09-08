@@ -48,7 +48,7 @@ export default function ChangePass() {
       <Typography
         variant="h4"
         gutterBottom
-        sx={{ fontWeight: "bold", color: "#fff" }}
+        sx={{ fontWeight: "bold", color: "#fff", fontSize: "18px" }}
       >
         {t("ProfilePage.title_change")}
       </Typography>
