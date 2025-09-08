@@ -106,19 +106,18 @@ export default function ChangePassword(props: Tab) {
             },
           }}
         >
-          <Tab label={t("ProfilePage.tab_pass1")} {...a11yProps(0)} />
+          <Tab label={t("ProfilePage.tab_pass3")} {...a11yProps(0)} />
           <Tab label={t("ProfilePage.tab_pass2")} {...a11yProps(1)} />
-          <Tab label={t("ProfilePage.tab_pass3")} {...a11yProps(2)} />
+          <Tab label={t("ProfilePage.tab_pass1")} {...a11yProps(2)} />
         </Tabs>
         <CustomTabPanel value={value} index={0}>
-          <ChangePass />
+          <ChangeBank subTabs={props.subTab} />
         </CustomTabPanel>
-
         <CustomTabPanel value={value} index={1}>
           <ChangePassWithdraw user={user} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
-          <ChangeBank subTabs={props.subTab} />
+          <ChangePass />
         </CustomTabPanel>
       </Box>
     </Box>

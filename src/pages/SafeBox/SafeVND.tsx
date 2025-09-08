@@ -122,6 +122,17 @@ export default function SafeVND() {
                   },
                 }}
               >
+                {t("MiningPage.date_send")}: {item.day_progress}/{item.cycle}
+              </Typography>
+              <Typography
+                sx={{
+                  color: "white",
+                  fontSize: {
+                    xs: "14px",
+                    sm: "18px",
+                  },
+                }}
+              >
                 {t("MiningPage.amount_send")}:{" "}
                 {Number(item.amount).toLocaleString()}
               </Typography>

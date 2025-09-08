@@ -309,9 +309,11 @@ export default function BillPage() {
                         <TableCell sx={{ color: "#fff" }}>
                           {row.coinname}
                         </TableCell>
-                        <TableCell sx={{ color: "#fff" }}>{row.num}</TableCell>
                         <TableCell sx={{ color: "#fff" }}>
-                          {row.afternum}
+                          {Number(row.num).toLocaleString()}
+                        </TableCell>
+                        <TableCell sx={{ color: "#fff" }}>
+                          {Number(row.afternum).toLocaleString()}
                         </TableCell>
                         <TableCell sx={{ color: "#fff" }}>
                           {formatDateTime(row?.addtime)}

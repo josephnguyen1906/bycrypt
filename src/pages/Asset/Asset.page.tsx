@@ -38,6 +38,7 @@ import TablePagination from "@mui/material/TablePagination";
 
 import { formatDateTime } from "@/utils/formatDateTime";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -97,6 +98,7 @@ export default function AssetPage() {
   const { t } = useTranslation();
   const [bill, setBill] = useState<any>(null);
   const { user } = useAuth();
+  const router = useRouter();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(7);
   const [history, setHisstory] = useState<any>(null);
@@ -260,7 +262,7 @@ export default function AssetPage() {
             >
               <Button
                 type="button"
-                href="/deposit"
+                onClick={() => router.push("/deposit")}
                 sx={{
                   display: "flex",
                   flexDirection: "column",
@@ -279,7 +281,7 @@ export default function AssetPage() {
                 {t("AssetPage.menu2")}
               </Button>
               <Button
-                href="/withdraw"
+                onClick={() => router.push("/withdraw")}
                 type="button"
                 sx={{
                   display: "flex",
@@ -299,7 +301,7 @@ export default function AssetPage() {
                 {t("AssetPage.menu3")}
               </Button>
               <Button
-                href="/convert"
+                onClick={() => router.push("/convert")}
                 type="button"
                 sx={{
                   display: "flex",
@@ -319,7 +321,7 @@ export default function AssetPage() {
                 {t("AssetPage.menu4")}
               </Button>
               <Button
-                href="/bill"
+                onClick={() => router.push("/bill")}
                 type="button"
                 sx={{
                   display: "flex",

@@ -465,7 +465,7 @@ export default function HomePage() {
                 }}
               >
                 <Button
-                  href="/deposit"
+                  onClick={() => route.push("/deposit")}
                   sx={{
                     width: "35%",
                     height: "35px",
@@ -480,7 +480,7 @@ export default function HomePage() {
                 </Button>
 
                 <Button
-                  href="/withdraw"
+                  onClick={() => route.push("/withdraw")}
                   sx={{
                     width: "35%",
                     height: "35px",
@@ -495,7 +495,7 @@ export default function HomePage() {
                 </Button>
 
                 <Button
-                  href="/convert"
+                  onClick={() => route.push("/convert")}
                   sx={{
                     width: "35%",
                     height: "35px",

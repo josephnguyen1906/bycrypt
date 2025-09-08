@@ -189,7 +189,9 @@
     "cust_amount": "Custom amount",
     "balance": "Current balance",
     "title": "You are not logged in",
-    "decription": "Please log in to buy / sell coins."
+    "decription": "Please log in to buy / sell coins.",
+    "note": "Note:",
+    "note_title": "The system does not accept dirty money and funds from unallocated sources; customers should thoroughly check deposit and withdrawal accounts before confirming the transaction."
   },
   "MiningPage": {
     "title": "Safe",
@@ -198,6 +200,9 @@
     "rate": "Interest rate",
     "rateM": "Day interest rate",
     "amount": "Interest",
+    "date_send": "Number of Days",
+    "amount_send": "Total deposit",
+    "total_amount": "Total amount in safe",
     "status": "Has withdrawn money",
     "time": "Time",
     "date": "day",

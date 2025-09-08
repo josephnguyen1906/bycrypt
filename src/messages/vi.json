@@ -188,7 +188,9 @@
     "cust_amount": "Số tiền tuỳ chỉnh",
     "balance": "Số dư hiện tại",
     "title": "Bạn đang không đăng nhập",
-    "decription": "Vui lòng đăng nhập để mua / bán"
+    "decription": "Vui lòng đăng nhập để mua / bán",
+    "note": "Lưu ý:",
+    "note_title": "Hệ thống không nhận tiền bẩn và các nguồn tiền không chính chủ, tài khoản nạp rút khách hàng kiểm tra thật kỹ trước khi xác nhận lệnh."
   },
   "MiningPage": {
     "title": "Két sắt",
@@ -200,6 +202,7 @@
     "amount": "Tiền lãi",
     "total_amount": "Tổng tiền trong két",
     "status": "Đã rút tiền",
+    "date_send": "Số Ngày gửi:",
     "time": "Thời gian",
     "date": "Ngày",
     "note": "Không giới hạn tiền gửi",

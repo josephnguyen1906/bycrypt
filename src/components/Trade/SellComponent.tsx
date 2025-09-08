@@ -64,12 +64,10 @@ export default function SellComponent(progs: TabProps) {
           }}
         >
           <Typography sx={{ fontSize: "11px", color: "white" }}>
-            Lưu ý:
+            {t("BuySellPage.note")}
           </Typography>
           <Typography sx={{ fontSize: "11px", color: "red", pl: "5px" }}>
-            Hệ thống không nhận tiền bẩn và các nguồn tiền không chính chủ, tài
-            khoản nạp tiền phải trùng với thông tin đã xác minh khi đăng ký tài
-            khoản
+            {t("BuySellPage.note_title")}
           </Typography>
 
           <Typography
