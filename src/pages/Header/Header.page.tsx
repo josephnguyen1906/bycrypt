@@ -49,6 +49,7 @@ import TranslateGoogle from "../../components/GgTranstale/TranslateContext.compo
 import LanguageSwitcher from "@/components/Language/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 import { formatDateTime } from "@/utils/formatDateTime";
+import NavigationGame from "@/hook/NavigationGame";
 
 interface propUser {
   user: userResponse | null;
@@ -478,7 +479,7 @@ export default function HeaderPage(props: propUser) {
                 <button
                   onClick={() => {
                     if (configs && configs.cskh) {
-                      router.push(configs.cskh);
+                      NavigationGame(configs.cskh);
                     }
                   }}
                   style={{
@@ -585,7 +586,8 @@ export default function HeaderPage(props: propUser) {
                 <button
                   onClick={() => {
                     if (configs && configs.cskh) {
-                      router.push(configs.cskh);
+                      // router.push(configs.cskh);
+                      NavigationGame(configs.cskh);
                     }
                   }}
                   style={{

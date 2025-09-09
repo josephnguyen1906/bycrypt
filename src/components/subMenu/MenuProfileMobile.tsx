@@ -711,7 +711,7 @@ export default function MenuProfileMobile(data: userProps) {
             </Tooltip>
             <Tooltip
               title="Notification"
-              onClick={() => router.push(configs?.cskh)}
+              onClick={() => NavigationGame(configs.cskh)}
             >
               <img src="/images/live-chat.png" width="24px" height="24px" />
             </Tooltip>
