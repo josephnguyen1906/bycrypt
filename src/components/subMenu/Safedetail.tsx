@@ -238,7 +238,7 @@ export default function Safedetail({ safe, user, refetchUser }: props) {
         </Button>
         <Box
           sx={{
-            height: "60%",
+            height: "65%",
             overflowY: "auto",
             width: "80%",
             margin: "auto",
