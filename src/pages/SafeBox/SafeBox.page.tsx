@@ -195,6 +195,7 @@ export default function SafeBoxPage(props: TabProps) {
                 />
               </Tabs>
             </Box>
+
             <CustomTabPanel value={value} index={0}>
               <SafeVND />
             </CustomTabPanel>

@@ -166,6 +166,7 @@ export default function Safedetail({ safe, user, refetchUser }: props) {
             <CloseIcon sx={{ fontSize: "24px" }} />
           </IconButton>
         </Box>
+
         <TextField
           value={displayValue}
           onChange={handleChange}

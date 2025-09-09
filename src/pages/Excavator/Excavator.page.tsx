@@ -3,6 +3,7 @@ import LinearWithValueLabel from "@/components/Input/LinearWithValueLabel";
 import Safedetail from "@/components/subMenu/Safedetail";
 import useAuth from "@/hook/useAuth";
 import { buyMining, getOrepool } from "@/services/User.service";
+import { CloseOutlined } from "@mui/icons-material";
 import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -22,12 +23,16 @@ export default function ExcavatorPage() {
   const [value, setValue] = React.useState(0);
   const [type, setType] = useState<string>("");
   const { user, refetchUser } = useAuth();
+  const [showPopup, setShowPopup] = useState(true);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
   const router = useRouter();
   useEffect(() => {
     referral();
+    setTimeout(() => {
+      setShowPopup(false);
+    }, 10000);
   }, []);
 
   const referral = async () => {
@@ -189,6 +194,68 @@ export default function ExcavatorPage() {
               </Box>
             </Box>
           ))}
+        {showPopup && (
+          <Box
+            sx={{
+              position: "fixed",
+              top: "0",
+              left: "0",
+              width: "100vw",
+              height: "100vh",
+              background: "rgba(0,0,0,0.5)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 1000,
+            }}
+          >
+            <Box
+              sx={{
+                background: "white",
+                borderRadius: "10px",
+                padding: "20px",
+                width: "90%",
+                textAlign: "center",
+                position: "relative",
+                marginTop: "-20%",
+              }}
+            >
+              <>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontSize: "25px",
+                    fontWeight: "bold",
+                    padding: "5px",
+                  }}
+                >
+                  {t("HomePage.popup_notification_title")}
+                </Typography>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontSize: "16px",
+                    padding: "10px",
+                  }}
+                >
+                  {t("StakingPage.wellcome")}
+                </Typography>
+                <Button
+                  sx={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "5px",
+                    color: "black",
+                    "&:hover": { background: "none" },
+                  }}
+                  onClick={() => setShowPopup(false)}
+                >
+                  <CloseOutlined style={{ fontSize: "20px" }} />
+                </Button>
+              </>
+            </Box>
+          </Box>
+        )}
       </Box>
     </Box>
   );

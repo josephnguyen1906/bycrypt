@@ -39,6 +39,7 @@ import { useRouter } from "next/navigation";
 import Deposit from "./Deposit";
 import Convert from "./Convert";
 import Withdraw from "./Withdraw";
+import GuidePopup from "@/components/popup/GuidePopup";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -308,7 +309,7 @@ export default function DepositWithdrawPage(props: TabProps) {
               <Box
                 sx={{
                   display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
+                  gridTemplateColumns: "1fr 100px 1fr",
                   gap: "10px",
                   alignItems: "Center",
                 }}
@@ -326,6 +327,8 @@ export default function DepositWithdrawPage(props: TabProps) {
                     {t("Toast.Wallet")} VND
                   </Typography>
                 </Box>
+                <GuidePopup />
+
                 <Box
                   sx={{
                     display: "flex",
@@ -343,7 +346,7 @@ export default function DepositWithdrawPage(props: TabProps) {
               <Box
                 sx={{
                   display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
+                  gridTemplateColumns: "1fr  1fr",
                   gap: "10px",
                   alignItems: "Center",
                 }}
@@ -366,6 +369,7 @@ export default function DepositWithdrawPage(props: TabProps) {
                     {parseFloat(user.balance.vnd).toLocaleString()} VND
                   </Typography>
                 </Box>
+
                 <Box
                   sx={{
                     display: "flex",
