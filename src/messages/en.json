@@ -222,7 +222,7 @@
     "quantity": "Quantity",
     "name": "Name",
     "asset": "Asset",
-    "history": "History",
+    "history": "Bill",
     "log_decription": "Please log in to deposit / withdraw coins.",
     "no_tran": "No transactions have occurred yet."
   },
