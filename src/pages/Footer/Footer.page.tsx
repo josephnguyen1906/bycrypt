@@ -69,10 +69,10 @@ export default function FooterPage() {
                 <Link href="#">Law enforcement</Link>
               </li>
               <li>
-                <Link href="#">DoiUSDTapp</Link>
+                <Link href="#">DoiUSDT app</Link>
               </li>
               <li>
-                <Link href="#">DoiUSDTTR</Link>
+                <Link href="#">DoiUSDT TR</Link>
               </li>
               <li>
                 <Link href="#">xBTC</Link>
