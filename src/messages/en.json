@@ -245,6 +245,9 @@
     "tab4": "Confirm top-up",
     "h2": "Top-up information",
     "guide": "Guide",
+    "message": "Watting result",
+    "status_true": "Congratulations, you have successfully withdrawn money. Please check your account in a few minutes.",
+    "status_false": "Withdrawal request was denied. Please contact customer service.",
     "title1": "Deposit Instructions",
     "title2": "If you encounter an error message from ADMIN when transferring VND, please contact Customer Support immediately for assistance.",
     "title3": "Go to the deposit section, and once your payment is complete, take a screenshot of the successful transaction and submit it for the fastest approval.",
@@ -385,7 +388,8 @@
     "lan": "Network",
     "type_wallet": "Choose type",
     "NORMAL": "Normal Wallet",
-    "TRUST": "Trust Wallet"
+    "TRUST": "Trust Wallet",
+    "BINANCE": "Binance Wallet"
   },
   "HistoryPage": {
     "tab1": "Open command",

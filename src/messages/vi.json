@@ -244,6 +244,9 @@
     "tab4": "Xác nhận nạp tiền",
     "h2": "Thông tin nạp tiền",
     "guide": "Hướng dẫn",
+    "message": "Đang chờ xác nhận",
+    "status_true": "Chúc mừng bạn đã rút tiền thành công vui lòng kiểm tra tài khoản trong ít phút nữa",
+    "status_false": "Yêu cầu rút tiền bị từ chối. Vui lòng liên hệ Chăm sóc khách hàng",
     "title1": "Hướng dẫn nạp",
     "title2": "Khi bạn nạp tiền VND ngân hàng nhận ADMIN báo lỗi, hãy liên hệ ngay bộ phận CSKH để được hỗ trợ.",
     "title3": "Quý khách vào mục nạp tiền, khi thanh toán xong hãy chụp lại giao dịch thành công rồi nhấn gửi để hệ thống xét duyệt nhanh nhất.",
@@ -384,7 +387,8 @@
     "lan": "Mạng",
     "type_wallet": "Chọn loại ví",
     "NORMAL": "Ví Thường",
-    "TRUST": "Ví Trust"
+    "TRUST": "Ví Trust",
+    "BINANCE": "Ví Binance"
   },
   "HistoryPage": {
     "tab1": "Lệnh mở",

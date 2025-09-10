@@ -185,6 +185,9 @@ const getWithdrawHistory = () => {
 const seeAllNoti = () => {
   return contentInstance.post("/api/user/notices/mark-all-read");
 };
+const getCheck = (id: string) => {
+  return contentInstance.get("/api/finance/withdraw/detail/" + id);
+};
 const ConvertUSDT = (formData: FormData) => {
   return contentInstance.post("/api/finance/convert-usdt", formData, {
     headers: {
@@ -251,4 +254,5 @@ export {
   SendSafe,
   getDepositHistory,
   getWithdrawHistory,
+  getCheck,
 };

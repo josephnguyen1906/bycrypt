@@ -1,3 +1,4 @@
+import { Countdown } from "@/components/CountdownCircle/Countdown";
 import {
   getMyWallet,
   sellCoins,
@@ -7,6 +8,7 @@ import {
 import { IUser } from "@/shared/interfaces";
 import { formatCurrency } from "@/utils/formatMoney";
 import {
+  CloseOutlined,
   CopyAllOutlined,
   Visibility,
   VisibilityOff,
@@ -25,8 +27,9 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { Fireworks } from "@fireworks-js/react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
@@ -56,6 +59,10 @@ const walletTypes = [
     id: "NORMAL",
     name: "NORMAL",
   },
+  {
+    id: "BINANCE",
+    name: "BINANCE",
+  },
 ];
 
 interface CountryType {
@@ -73,15 +80,17 @@ interface CountryType {
 export default function Withdraw({ wallet, user, refetchUser }: props) {
   const { t } = useTranslation();
   const [amount, setAmount] = useState<number | null>(null);
+  const [numberCount, setNumberCount] = useState<number | null>(null);
   const [displayValue, setDisplayValue] = useState<string>("");
   const [amountReceive, setAmountReceive] = useState<string>("");
   const [coin, setCoin] = useState<string | null>(null);
   const [walletType, setWalletType] = useState<string | null>(null);
-  const [bank, setbank] = useState(0);
+  const [withdrawId, setWithdrawId] = useState<string | null>(null);
   const [withdrawFee, setWithdrawFee] = useState(0);
   const [method, setMethod] = useState(0);
   const [withdrawMin, setWithdrawMin] = useState(0);
   const [withdrawMax, setWithdrawMax] = useState(0);
+  const [status, setStatus] = useState(0);
   const [walletNetwork, setWalletNetwork] = useState<string | null>(null);
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
@@ -89,6 +98,9 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
   const [password, setPassword] = useState("");
   const frontFileInput = useRef<HTMLInputElement>(null);
   const [frontImage, setFrontImage] = useState<File>();
+  const [showPopup, setShowPopup] = useState(false);
+  const [fireworks, setFireworks] = useState(false);
+  const fireworksRef = useRef(null);
   const handleFrontChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -115,6 +127,17 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
       setDisplayValue("");
     }
   };
+
+  const handleCountdownComplete = useCallback((status: number) => {
+    if (status === 2) {
+      setStatus(2);
+    } else if (status === 3) {
+      setStatus(3);
+    }
+
+    setFireworks(true);
+    setNumberCount(0);
+  }, []);
 
   useEffect(() => {
     const storedAmount = window.localStorage.getItem("amountSell");
@@ -186,7 +209,7 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
               toast.error(error.message);
             });
         }
-        await sellCoins(formData);
+        const withdrawn = await sellCoins(formData);
         toast.success(t("Toast.Desposit6"));
 
         await refetchUser();
@@ -198,7 +221,13 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
         setWalletType(null);
         setSelectedWallet(null);
         setAmountReceive("");
+        setWalletNetwork(null);
         window.localStorage.removeItem("amountSell");
+        if (withdrawn.data) {
+          setShowPopup(true);
+          setNumberCount(60);
+          setWithdrawId(withdrawn.data.id);
+        }
       } catch (error: any) {
         toast.error(error.message || t("Toast.Desposit7"));
       }
@@ -1161,6 +1190,126 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
               </Button>
             )}
           </Box>
+          {showPopup && withdrawId && (
+            <Box
+              onClick={() => {
+                setShowPopup(false);
+                setFireworks(false);
+                setWithdrawId(null);
+                setStatus(0);
+              }}
+              sx={{
+                position: "fixed",
+                top: "0",
+                left: "0",
+                width: "100vw",
+                height: "100vh",
+                background: "rgba(0,0,0,0.5)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 1000,
+              }}
+            >
+              <Box sx={{ position: "absolute", top: "0", width: "80%" }}>
+                {fireworks && status == 2 && (
+                  <Fireworks
+                    ref={fireworksRef}
+                    options={{
+                      opacity: 0.7,
+                      particles: 200,
+                      explosion: 7,
+                      intensity: 70,
+                    }}
+                  />
+                )}
+              </Box>
+              <Box
+                sx={{
+                  position: "relative",
+                  width: "90%",
+                  maxWidth: "300px",
+                  borderRadius: "10px",
+                  marginTop: {
+                    xs: "-20%",
+                    sm: "0%",
+                  },
+                  overflow: "hidden",
+                }}
+              >
+                {/* Ảnh nền */}
+
+                <Box
+                  component="img"
+                  src="/images/thongbao1.png"
+                  alt="Thông báo"
+                  sx={{
+                    width: "100%",
+                    height: "auto",
+                    display: "block",
+                    borderRadius: "10px",
+                  }}
+                />
+
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    textAlign: "center",
+                    width: "100%",
+                    px: 2,
+                    zIndex: 3,
+                  }}
+                >
+                  {fireworks && status == 2 ? (
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontSize: "13px",
+                        color: "white",
+                        width: "80%",
+                        margin: "auto",
+                      }}
+                    >
+                      {t("DepositWithdrawPage.status_true")}
+                    </Typography>
+                  ) : fireworks && status == 3 ? (
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontSize: "13px",
+                        color: "white",
+                        width: "80%",
+                        margin: "auto",
+                      }}
+                    >
+                      {t("DepositWithdrawPage.status_false")}
+                    </Typography>
+                  ) : (
+                    <>
+                      <Countdown
+                        duration={numberCount || 60}
+                        id={withdrawId}
+                        onComplete={handleCountdownComplete}
+                      />
+
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontSize: "16px",
+                          color: "white",
+                        }}
+                      >
+                        {t("DepositWithdrawPage.message")}
+                      </Typography>
+                    </>
+                  )}
+                </Box>
+              </Box>
+            </Box>
+          )}
         </Box>
       ) : (
         <Box sx={{ width: "100%", margin: "auto", textAlign: "center" }}>

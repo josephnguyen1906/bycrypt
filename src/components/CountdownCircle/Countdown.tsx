@@ -1,14 +1,15 @@
 import { getCheck } from "@/services/User.service";
+import { Typography } from "@mui/material";
 import React, { useEffect, useState, useRef, useCallback } from "react";
 
 interface CircleCountdownProps {
   radius?: number; // bán kính vòng tròn
   duration: number; // tổng thời gian đếm ngược (giây)
   id: string; // id để gọi API check
-  onComplete?: () => void; // callback khi admin duyệt
+  onComplete?: (status: number) => void; // callback khi admin duyệt
 }
 
-export const CircleCountdown: React.FC<CircleCountdownProps> = ({
+export const Countdown: React.FC<CircleCountdownProps> = ({
   radius = 60,
   duration,
   id,
@@ -16,6 +17,7 @@ export const CircleCountdown: React.FC<CircleCountdownProps> = ({
 }) => {
   const [timeLeft, setTimeLeft] = useState(duration);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  console.log("duration", duration);
 
   const stroke = 5;
   const normalizedRadius = radius - stroke * 2;
@@ -28,11 +30,11 @@ export const CircleCountdown: React.FC<CircleCountdownProps> = ({
     if (!id) return;
     try {
       const res: any = await getCheck(id);
+      const status = res?.data?.status;
 
-      console.log(res?.data);
-      if (res?.data?.status == 2) {
+      if (status === 2 || status === 3) {
         if (timerRef.current) clearInterval(timerRef.current);
-        if (onComplete) onComplete();
+        if (onComplete) onComplete(status);
       }
     } catch (error) {
       console.error("Fetch status error:", error);
@@ -67,40 +69,15 @@ export const CircleCountdown: React.FC<CircleCountdownProps> = ({
   }, [fetchStatus]);
 
   return (
-    <svg height={radius * 2} width={radius * 2} style={{ fontWeight: "bold" }}>
-      {/* Vòng nền */}
-      <circle
-        stroke="#e6e6e6"
-        fill="transparent"
-        strokeWidth={stroke}
-        r={normalizedRadius}
-        cx={radius}
-        cy={radius}
-      />
-      {/* Vòng tiến trình */}
-      <circle
-        stroke="#00d084"
-        fill="transparent"
-        strokeWidth={stroke}
-        strokeDasharray={`${circumference} ${circumference}`}
-        strokeDashoffset={strokeDashoffset}
-        strokeLinecap="round"
-        r={normalizedRadius}
-        cx={radius}
-        cy={radius}
-        transform={`rotate(-90 ${radius} ${radius})`}
-      />
-      {/* Số đếm */}
-      <text
-        x="50%"
-        y="50%"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        fontSize="20"
-        fill="black"
-      >
-        {timeLeft}s
-      </text>
-    </svg>
+    <Typography
+      variant="h6"
+      sx={{
+        fontSize: "16px",
+        color: "white",
+        textAlign: "center",
+      }}
+    >
+      {timeLeft}s
+    </Typography>
   );
 };
