@@ -122,7 +122,7 @@ export default function SafeUSDT() {
                   },
                 }}
               >
-                {t("MiningPage.date_send")}: {item.day_progress}/{item.cycle}
+                {t("MiningPage.date_send")} {item.day_progress}/{item.cycle}
               </Typography>
               <Typography
                 sx={{
