@@ -306,7 +306,7 @@ export default function Safedetail({ safe, user, refetchUser }: props) {
             <Tab
               label={t("StakingPage.tab3")}
               {...a11yProps(1)}
-              onClick={() => setStatus("1")}
+              onClick={() => setStatus("2")}
               sx={{
                 color: "white",
                 "&.Mui-selected": {
@@ -319,7 +319,7 @@ export default function Safedetail({ safe, user, refetchUser }: props) {
             <Tab
               label={t("StakingPage.tab2")}
               {...a11yProps(2)}
-              onClick={() => setStatus("2")}
+              onClick={() => setStatus("1")}
               sx={{
                 color: "white",
                 "&.Mui-selected": {

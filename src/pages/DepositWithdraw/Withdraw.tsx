@@ -212,7 +212,7 @@ export default function Withdraw({ wallet, user, refetchUser }: props) {
             });
         }
         const withdrawn = await sellCoins(formData);
-        toast.success(t("Toast.Desposit6"));
+        // toast.success(t("Toast.Desposit6"));
 
         await refetchUser();
         setAmount(null);
