@@ -772,30 +772,15 @@ export default function HomePage() {
                       >
                         {t("HomePage.popup_notification_title")}
                       </Typography>
-                      <img
-                        src={
-                          websiteConfig?.websildea ||
-                          "/images/6852b28e33382.png"
-                        }
-                        style={{ width: "100%", borderRadius: "15px" }}
-                      />
-
-                      {(websiteConfig && (
-                        <Typography
-                          sx={{ padding: "5px" }}
-                          dangerouslySetInnerHTML={{
-                            __html: websiteConfig.checkin_notify,
-                          }}
-                        />
-                      )) || (
-                        <Typography
-                          variant="h6"
-                          sx={{ fontSize: "18px", padding: "5px" }}
-                        >
-                          {t("HomePage.popup_welcome_message")}
-                        </Typography>
-                      )}
-
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontSize: "16px",
+                          padding: "10px",
+                        }}
+                      >
+                        {t("StakingPage.wellcome")}
+                      </Typography>
                       <Button
                         sx={{
                           position: "absolute",

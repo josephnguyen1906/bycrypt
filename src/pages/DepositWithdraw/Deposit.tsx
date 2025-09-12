@@ -1,5 +1,7 @@
+import { CountdownDeposit } from "@/components/CountdownCircle/CountdownDeposit";
 import { topUpCoins } from "@/services/User.service";
 import { formatCurrency } from "@/utils/formatMoney";
+import Fireworks from "@fireworks-js/react";
 import { CopyAllOutlined } from "@mui/icons-material";
 import {
   Autocomplete,
@@ -11,9 +13,11 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+
+import CloseIcon from "@mui/icons-material/Close";
 
 export interface props {
   configs: any | null;
@@ -48,6 +52,12 @@ export default function Deposit({ configs, wallet }: props) {
   const [depositMin, setDepositMin] = useState(0);
   const frontFileInput = useRef<HTMLInputElement>(null);
   const [frontImage, setFrontImage] = useState<File>();
+  const [showPopup, setShowPopup] = useState(false);
+  const [fireworks, setFireworks] = useState(false);
+  const [status, setStatus] = useState(0);
+  const fireworksRef = useRef(null);
+  const [depositId, setDepositId] = useState<string | null>(null);
+  const [numberCount, setNumberCount] = useState<number | null>(null);
   const handleFrontChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -64,6 +74,16 @@ export default function Deposit({ configs, wallet }: props) {
   const formatNumber = (value: number) => {
     return value.toLocaleString("vi-VN");
   };
+  const handleCountdownComplete = useCallback((status: number) => {
+    if (status === 2) {
+      setStatus(2);
+    } else if (status === 3) {
+      setStatus(3);
+    }
+
+    setFireworks(true);
+    setNumberCount(0);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value.replace(/[,.]/g, "");
@@ -98,12 +118,16 @@ export default function Deposit({ configs, wallet }: props) {
       formData.append("payimg", frontImage);
       formData.append("method", method.toString());
 
-      await topUpCoins(formData);
+      const deposit = await topUpCoins(formData);
       setAmount(0);
       setDisplayValue("");
       setbank(false);
       window.localStorage.removeItem("amountBuy");
-      toast.success(t("Toast.Desposit3"));
+      if (deposit.data) {
+        setShowPopup(true);
+        setNumberCount(60);
+        setDepositId(deposit.data.id);
+      }
     } catch (error: any) {
       toast.error(t("Toast.Desposit4"));
     }
@@ -693,6 +717,139 @@ export default function Deposit({ configs, wallet }: props) {
           </Box>
         )}
       </Box>
+      {showPopup && depositId && (
+        <Box
+          sx={{
+            position: "fixed",
+            top: "0",
+            left: "0",
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(0,0,0,0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+          }}
+        >
+          <Box sx={{ position: "absolute", top: "0", width: "80%" }}>
+            {fireworks && status == 2 && (
+              <Fireworks
+                ref={fireworksRef}
+                options={{
+                  opacity: 0.7,
+                  particles: 200,
+                  explosion: 7,
+                  intensity: 70,
+                }}
+              />
+            )}
+          </Box>
+          <Box
+            sx={{
+              position: "relative",
+              width: "90%",
+              maxWidth: "300px",
+              borderRadius: "10px",
+              marginTop: {
+                xs: "-20%",
+                sm: "0%",
+              },
+              overflow: "hidden",
+            }}
+          >
+            {/* Ảnh nền */}
+
+            <Box
+              component="img"
+              src="/images/thongbao1.png"
+              alt="Thông báo"
+              sx={{
+                width: "100%",
+                height: "auto",
+                display: "block",
+                borderRadius: "10px",
+              }}
+            />
+
+            <Box
+              sx={{
+                position: "absolute",
+                top: "40%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                textAlign: "center",
+                width: "100%",
+                px: 2,
+                zIndex: 3,
+              }}
+            >
+              {fireworks && status == 2 ? (
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontSize: "13px",
+                    color: "white",
+                    width: "80%",
+                    margin: "auto",
+                  }}
+                >
+                  {t("DepositWithdrawPage.status_deposit_true")}
+                </Typography>
+              ) : fireworks && status == 3 ? (
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontSize: "13px",
+                    color: "white",
+                    width: "80%",
+                    margin: "auto",
+                  }}
+                >
+                  {t("DepositWithdrawPage.status_deposit_false")}
+                </Typography>
+              ) : (
+                <>
+                  <CountdownDeposit
+                    duration={numberCount || 60}
+                    id={depositId}
+                    onComplete={handleCountdownComplete}
+                  />
+
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "16px",
+                      color: "white",
+                    }}
+                  >
+                    {t("DepositWithdrawPage.message")}
+                  </Typography>
+                </>
+              )}
+            </Box>
+            <IconButton
+              onClick={() => {
+                setShowPopup(false);
+                setFireworks(false);
+                setDepositId(null);
+                setStatus(0);
+              }}
+              sx={{
+                color: "white",
+                background: "hsla(0, 0.00%, 100.00%, 0.00)",
+                borderRadius: "50%",
+                ml: "45%",
+                "&:hover": {
+                  background: "hsla(0, 0.00%, 100.00%, 0.00)",
+                },
+              }}
+            >
+              <CloseIcon sx={{ fontSize: "24px" }} />
+            </IconButton>
+          </Box>
+        </Box>
+      )}
     </Box>
   );
 }

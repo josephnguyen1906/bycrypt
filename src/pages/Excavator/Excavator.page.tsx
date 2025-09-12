@@ -2,7 +2,11 @@
 import LinearWithValueLabel from "@/components/Input/LinearWithValueLabel";
 import Safedetail from "@/components/subMenu/Safedetail";
 import useAuth from "@/hook/useAuth";
-import { buyMining, getOrepool } from "@/services/User.service";
+import {
+  buyMining,
+  getOrepool,
+  getWebsiteConfig,
+} from "@/services/User.service";
 import { CloseOutlined } from "@mui/icons-material";
 import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
 import Image from "next/image";
@@ -24,6 +28,7 @@ export default function ExcavatorPage() {
   const [type, setType] = useState<string>("");
   const { user, refetchUser } = useAuth();
   const [showPopup, setShowPopup] = useState(true);
+  const [websiteConfig, setWebsiteConfig] = useState<any>(null);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -37,6 +42,10 @@ export default function ExcavatorPage() {
 
   const referral = async () => {
     try {
+      const buySellConfig: any = await getWebsiteConfig();
+      if (buySellConfig) {
+        setWebsiteConfig(buySellConfig.data);
+      }
       const res: any = await getOrepool();
       if (res.status === true) {
         setOrepool(res.data);
@@ -231,15 +240,27 @@ export default function ExcavatorPage() {
                 >
                   {t("HomePage.popup_notification_title")}
                 </Typography>
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontSize: "16px",
-                    padding: "10px",
-                  }}
-                >
-                  {t("StakingPage.wellcome")}
-                </Typography>
+                <img
+                  src={websiteConfig?.websildea || "/images/6852b28e33382.png"}
+                  style={{ width: "100%", borderRadius: "15px" }}
+                />
+
+                {(websiteConfig && (
+                  <Typography
+                    sx={{ padding: "5px" }}
+                    dangerouslySetInnerHTML={{
+                      __html: websiteConfig.checkin_notify,
+                    }}
+                  />
+                )) || (
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "18px", padding: "5px" }}
+                  >
+                    {t("HomePage.popup_welcome_message")}
+                  </Typography>
+                )}
+
                 <Button
                   sx={{
                     position: "absolute",
