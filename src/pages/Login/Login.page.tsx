@@ -176,7 +176,7 @@ export default function LoginPage() {
                   // Fix autofill background
                   "&:-webkit-autofill": {
                     WebkitBoxShadow: "0 0 0 1000px white inset", // chỉnh màu nền
-                    WebkitTextFillColor: "black",
+                    WebkitTextFillColor: "white",
                     transition: "background-color 5000s ease-in-out 0s",
                   },
                 },

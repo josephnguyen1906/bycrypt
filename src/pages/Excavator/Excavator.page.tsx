@@ -223,10 +223,16 @@ export default function ExcavatorPage() {
                 background: "white",
                 borderRadius: "10px",
                 padding: "20px",
-                width: "90%",
+                width: {
+                  xs: "90%",
+                  sm: "500px",
+                },
                 textAlign: "center",
                 position: "relative",
-                marginTop: "-20%",
+                marginTop: {
+                  xs: "-20%",
+                  sm: "10px",
+                },
               }}
             >
               <>
