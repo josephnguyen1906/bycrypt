@@ -148,201 +148,79 @@ export default function HomePage() {
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-around",
-              mt: "20px",
-              alignItems: "center",
+              mt: 3,
+              alignItems: "flex-start",
             }}
           >
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                color: "white",
-                justifyContent: "center",
-                gap: "5px",
-              }}
-            >
+            {[
+              {
+                key: "service",
+                icon: "/images/icon-service.png",
+                link: "#",
+              },
+              {
+                key: "verified",
+                icon: "/images/verified.png",
+                link: "#",
+              },
+              {
+                key: "recharge",
+                icon: "/images/recharge.png",
+                link: "#",
+              },
+              {
+                key: "regulatory",
+                icon: "/images/wallet.png",
+                link: "#",
+              },
+              { key: "loan", icon: "/images/loan.png", link: "#" },
+            ].map((item) => (
               <Box
+                key={item.key}
                 sx={{
-                  width: "50px",
-                  height: "50px",
-                  border: "1px solid #22b65a",
-                  background: "#1f2937",
-                  borderRadius: "50%",
+                  flex: 1,
                   display: "flex",
-                  justifyContent: "center",
+                  flexDirection: "column",
                   alignItems: "center",
-                  margin: "auto",
+                  gap: 1,
+                }}
+                onClick={() => {
+                  if (item.link === "#") {
+                    swal("Notice", "This feature is coming soon!", "info");
+                  } else {
+                    route.push(item.link);
+                  }
                 }}
               >
-                <Image
-                  src={"/images/icon-service.png"}
-                  width={25}
-                  height={25}
-                  alt=""
-                  style={{ objectFit: "cover" }}
-                />
+                <Box
+                  sx={{
+                    width: 50,
+                    height: 50,
+                    border: "1px solid #22b65a",
+                    background: "#1f2937",
+                    borderRadius: "50%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image src={item.icon} width={25} height={25} alt="" />
+                </Box>
+
+                <Typography
+                  sx={{
+                    fontSize: "10px",
+                    color: "white",
+                    textAlign: "center",
+                    px: 1,
+                    lineHeight: 1.2,
+                    wordBreak: "break-word",
+                  }}
+                >
+                  {t(`HomePage.${item.key}`)}
+                </Typography>
               </Box>
-              <Typography
-                sx={{
-                  fontSize: 12,
-                  color: "white",
-                  textAlign: "center",
-                }}
-              >
-                {t("HomePage.service")}
-              </Typography>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                color: "white",
-                justifyContent: "center",
-                gap: "5px",
-              }}
-            >
-              <Box
-                sx={{
-                  width: "50px",
-                  height: "50px",
-                  border: "1px solid #22b65a",
-                  background: "#1f2937",
-                  borderRadius: "50%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  margin: "auto",
-                }}
-              >
-                <Image
-                  src={"/images/verified.png"}
-                  width={25}
-                  height={25}
-                  alt=""
-                  style={{ objectFit: "cover" }}
-                />
-              </Box>
-              <Typography
-                sx={{ fontSize: 12, color: "white", textAlign: "center" }}
-              >
-                {t("HomePage.verified")}
-              </Typography>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                color: "white",
-                justifyContent: "center",
-                gap: "5px",
-              }}
-            >
-              <Box
-                sx={{
-                  width: "50px",
-                  height: "50px",
-                  border: "1px solid #22b65a",
-                  background: "#1f2937",
-                  borderRadius: "50%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  margin: "auto",
-                }}
-              >
-                <Image
-                  src={"/images/recharge.png"}
-                  width={25}
-                  height={25}
-                  alt=""
-                  style={{ objectFit: "cover" }}
-                />
-              </Box>
-              <Typography
-                sx={{ fontSize: 12, color: "white", textAlign: "center" }}
-              >
-                {t("HomePage.recharge")}
-              </Typography>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                color: "white",
-                justifyContent: "center",
-                gap: "5px",
-              }}
-            >
-              <Box
-                sx={{
-                  width: "50px",
-                  height: "50px",
-                  border: "1px solid #22b65a",
-                  background: "#1f2937",
-                  borderRadius: "50%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  margin: "auto",
-                }}
-              >
-                <Image
-                  src={"/images/wallet.png"}
-                  width={25}
-                  height={25}
-                  alt=""
-                  style={{ objectFit: "cover" }}
-                />
-              </Box>
-              <Typography
-                sx={{
-                  fontSize: 12,
-                  color: "white",
-                  width: "70px",
-                  textAlign: "center",
-                  margin: "auto",
-                }}
-              >
-                {t("HomePage.regulatory")}
-              </Typography>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                color: "white",
-                justifyContent: "center",
-                gap: "5px",
-              }}
-            >
-              <Box
-                sx={{
-                  width: "50px",
-                  height: "50px",
-                  border: "1px solid #22b65a",
-                  background: "#1f2937",
-                  borderRadius: "50%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  margin: "auto",
-                }}
-              >
-                <Image
-                  src={"/images/loan.png"}
-                  width={25}
-                  height={25}
-                  alt=""
-                  style={{ objectFit: "cover" }}
-                />
-              </Box>
-              <Typography
-                sx={{ fontSize: 12, color: "white", textAlign: "center" }}
-              >
-                {t("HomePage.loan")}
-              </Typography>
-            </Box>
+            ))}
           </Box>
           <Box sx={{ width: "100%", margin: "auto" }}>
             <CoinPage />
