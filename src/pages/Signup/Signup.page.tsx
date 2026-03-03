@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -13,28 +13,64 @@ import {
   IconButton,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import { signupUser } from "@/services/User.service";
+import { sendCode, signupUser } from "@/services/User.service";
 import { useTranslation } from "react-i18next";
-import { VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { PreviousIcon } from "@/shared/Svgs/Svg.component";
+import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [invit, setInvit] = useState("");
+  const [inviteCode, setInviteCode] = useState("");
+  const [sending, setSending] = useState(false);
+  const [countdown, setCountdown] = useState(0);
   const [loadding, setLoadding] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const handlePassword = (e: any) => setPassword(e.target.value);
   const handleUsername = (e: any) => setEmail(e.target.value);
   const toggleShowPassword = () => setShowPassword(!showPassword);
+  const router = useRouter();
+
+  const handleSendInvite = async () => {
+    if (!email) return;
+
+    try {
+      setSending(true);
+      const formData = new FormData();
+      formData.append("email", email);
+      sendCode(formData)
+        .then((res: any) => {
+          if (res?.status === true) {
+            toast.success("Gửi mail thành công");
+          } else {
+            toast.error(res?.message);
+          }
+        })
+        .catch((err) => {
+          console.error("API error:", err);
+          toast.error(err?.message || "Lỗi không xác định");
+        });
+
+      // Nếu thành công → bắt đầu countdown
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setSending(false);
+    }
+  };
+
   const signup = (e: React.FormEvent) => {
     // e.preventDefault();
     if (email !== "" && password !== "") {
       setLoadding(true);
-      signupUser(email, password)
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("verification_code", inviteCode);
+      signupUser(formData)
         .then((res: any) => {
-          console.log(res.message);
-
           if (res?.status === true) {
             toast.success("Đăng ký thành công");
             window.location.href = "/login";
@@ -53,97 +89,15 @@ export default function SignupPage() {
   return (
     <Box
       sx={{
-        backgroundColor: "#fff",
+        backgroundColor: "#111827",
         paddingTop: "50px",
-        display: "flex",
-        alignItems: {
-          xs: "flex-start",
-          sm: "normal",
-        },
         height: "100vh",
       }}
     >
-      {/* Left Section */}
       <Box
         sx={{
-          width: "50%",
-          backgroundColor: "black",
-          color: "white",
-          p: 4,
-          display: {
-            xs: "none",
-            sm: "flex",
-          },
-          flexDirection: "column",
-          justifyContent: "center",
-          margin: "0 auto",
-        }}
-      >
-        <Box>
-          <Typography
-            variant="h4"
-            gutterBottom
-            sx={{ mt: 4, textAlign: "center" }}
-          >
-            {t("LoginPage.title")}
-          </Typography>
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            sx={{
-              color: "#909090",
-              width: "60%",
-              margin: "0 auto",
-            }}
-          >
-            {t("LoginPage.decription")}
-          </Typography>
-        </Box>
-        <Box sx={{ mb: 4, mt: 2 }}>
-          <img
-            src="/images/5AD5609D76BF42F4.webp"
-            alt="Trading App"
-            style={{
-              height: "323px",
-              margin: "0 auto",
-              display: "block",
-              borderRadius: "8px",
-              boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-              objectFit: "cover",
-            }}
-          />
-        </Box>
-        <Box
-          sx={{
-            backgroundColor: "#1a1a1a",
-            p: 2,
-            borderRadius: "8px",
-            width: "60%",
-            margin: "0 auto",
-            marginTop: "-30px",
-          }}
-        >
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            sx={{ color: "white", fontSize: "20px" }}
-          >
-            {t("LoginPage.join_tele")}
-          </Typography>
-          <Typography variant="body2" color="gray">
-            {t("LoginPage.note")}
-          </Typography>
-        </Box>
-      </Box>
-
-      {/* Right Section */}
-      <Box
-        sx={{
-          width: {
-            xs: "100%",
-            sm: "50%",
-          },
-          backgroundColor: "#fff",
+          width: "100%",
+          backgroundColor: "#111827",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -151,35 +105,75 @@ export default function SignupPage() {
         }}
       >
         <Box sx={{ maxWidth: "400px", width: "100%" }}>
-          <Typography variant="h4" gutterBottom>
-            {t("HomePage.mobile_signup")}
+          <IconButton
+            sx={{
+              background: "#1f2937",
+              position: "fixed",
+              top: "20px",
+              "&:hover": {
+                background: "#2a313aff",
+              },
+            }}
+            onClick={() => router.back()}
+          >
+            <PreviousIcon width="20px" height="20px" />
+          </IconButton>
+          <Typography variant="h4" gutterBottom sx={{ color: "white" }}>
+            {t("SignupPage.title")}
           </Typography>
+
           <form>
-            <InputLabel>Email* </InputLabel>
+            <InputLabel sx={{ color: "white", mt: "10px" }}>
+              {t("SignupPage.title1")}{" "}
+            </InputLabel>
             <TextField
               fullWidth
-              placeholder="Enter Email"
+              placeholder={t("LoginPage.value1")}
               variant="outlined"
               value={email}
+              type="email"
               onChange={handleUsername}
               sx={{
-                mb: 2,
-                borderRadius: "15px",
-                mt: 1,
+                mb: 3,
+
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "14px",
+                  backgroundColor: "#1e2a3a",
+                  color: "#fff",
+
+                  "& fieldset": {
+                    borderColor: "rgba(255,255,255,0.15)",
+                  },
+
+                  "&:hover fieldset": {
+                    borderColor: "rgba(255,255,255,0.3)",
+                  },
+
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#4ade80",
+                    borderWidth: "1px",
+                  },
+                },
+
                 "& .MuiInputBase-input": {
-                  color: "black",
-                  background: "transparent",
-                  // Fix autofill background
+                  color: "#fff",
+
+                  "&::placeholder": {
+                    color: "#7c8aa0",
+                    opacity: 1,
+                  },
+
                   "&:-webkit-autofill": {
-                    WebkitBoxShadow: "0 0 0 1000px white inset", // chỉnh màu nền
-                    WebkitTextFillColor: "black",
-                    transition: "background-color 5000s ease-in-out 0s",
+                    WebkitBoxShadow: "0 0 0 1000px #1e2a3a inset",
+                    WebkitTextFillColor: "#fff",
                   },
                 },
               }}
             />
 
-            <InputLabel> {t("LoginPage.title2")}* </InputLabel>
+            <InputLabel sx={{ color: "white" }}>
+              {t("SignupPage.title2")}
+            </InputLabel>
             <Box
               sx={{
                 mb: 2,
@@ -198,17 +192,38 @@ export default function SignupPage() {
                 value={password}
                 onChange={handlePassword}
                 sx={{
-                  mb: 2,
-                  borderRadius: "15px",
-                  mt: 1,
+                  mb: 3,
+
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "14px",
+                    backgroundColor: "#1e2a3a",
+                    color: "#fff",
+
+                    "& fieldset": {
+                      borderColor: "rgba(255,255,255,0.15)",
+                    },
+
+                    "&:hover fieldset": {
+                      borderColor: "rgba(255,255,255,0.3)",
+                    },
+
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#4ade80",
+                      borderWidth: "1px",
+                    },
+                  },
+
                   "& .MuiInputBase-input": {
-                    color: "black",
-                    background: "transparent",
-                    // Fix autofill background
+                    color: "#fff",
+
+                    "&::placeholder": {
+                      color: "#7c8aa0",
+                      opacity: 1,
+                    },
+
                     "&:-webkit-autofill": {
-                      WebkitBoxShadow: "0 0 0 1000px white inset", // chỉnh màu nền
-                      WebkitTextFillColor: "black",
-                      transition: "background-color 5000s ease-in-out 0s",
+                      WebkitBoxShadow: "0 0 0 1000px #1e2a3a inset",
+                      WebkitTextFillColor: "#fff",
                     },
                   },
                 }}
@@ -219,35 +234,118 @@ export default function SignupPage() {
                 style={{
                   position: "absolute",
                   right: "4px",
-                  top: "65%",
+                  top: "50%",
                   transform: "translateY(-50%)",
                   padding: 4,
-                  color: "black", // Màu trắng như bạn yêu cầu
+                  color: "white",
                 }}
               >
                 {showPassword ? (
-                  <VisibilityOff fontSize="small" />
+                  <Visibility fontSize="small" />
                 ) : (
                   <VisibilityOff fontSize="small" />
                 )}
               </IconButton>
             </Box>
+            {/* Invite code */}
+            <InputLabel sx={{ color: "white", mt: 2 }}>
+              {" "}
+              {t("SignupPage.title3")}
+            </InputLabel>
 
-            <Button
-              type="button"
-              fullWidth
-              sx={{
-                mb: 2,
-                mt: 2,
-                backgroundColor: "#fcd534",
-                borderRadius: "15px",
-                color: "black",
-                "&:hover": { backgroundColor: "#fcd534", color: "black" },
-              }}
-              onClick={signup}
-            >
-              {t("HomePage.mobile_signup")}
-            </Button>
+            <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
+              <TextField
+                fullWidth
+                placeholder={t("SignupPage.value3")}
+                value={inviteCode}
+                onChange={(e) => setInviteCode(e.target.value)}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "14px",
+                    backgroundColor: "#1e2a3a",
+                    color: "#fff",
+
+                    "& fieldset": {
+                      borderColor: "rgba(255,255,255,0.15)",
+                    },
+
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#4ade80",
+                    },
+                  },
+                }}
+              />
+
+              <Button
+                onClick={handleSendInvite}
+                disabled={email.length == 0 || sending}
+                sx={{
+                  minWidth: 80,
+                  borderRadius: "14px",
+                  background: "#5BFF00",
+                  color: "#000",
+                  fontWeight: 600,
+                  textTransform: "none",
+                  "&:disabled": {
+                    background: "#9aa4b2",
+                  },
+                  "&:hover": {
+                    background: "#4de000",
+                  },
+                }}
+              >
+                {t("SignupPage.button3")}
+              </Button>
+            </Box>
+            <Box mt={3}>
+              {/* Login */}
+              <Button
+                fullWidth
+                onClick={signup}
+                sx={{
+                  background: "#5BFF00",
+                  color: "#000",
+                  fontWeight: 600,
+                  borderRadius: "14px",
+                  height: 52,
+                  textTransform: "none",
+                  boxShadow: "0 0 20px rgba(91,255,0,0.4)",
+                  "&:hover": {
+                    background: "#4de000",
+                    boxShadow: "0 0 25px rgba(91,255,0,0.6)",
+                  },
+                }}
+              >
+                {t("SignupPage.button2")}
+              </Button>
+
+              <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <Typography
+                  textAlign="center"
+                  color="#9aa4b2"
+                  my={2}
+                  fontSize={14}
+                >
+                  {t("SignupPage.title4")}
+                </Typography>
+
+                <Button
+                  fullWidth
+                  onClick={() => router.push("/login")}
+                  sx={{
+                    background: "none",
+                    color: "#4ade80",
+                    fontWeight: 600,
+                    borderRadius: "14px",
+                    height: 52,
+                    width: 50,
+                    textTransform: "none",
+                  }}
+                >
+                  {t("SignupPage.button1")}
+                </Button>
+              </Box>
+            </Box>
           </form>
         </Box>
       </Box>

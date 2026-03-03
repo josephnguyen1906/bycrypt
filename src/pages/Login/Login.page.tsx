@@ -15,7 +15,9 @@ import {
 import { loginUser } from "@/services/User.service";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
-import { VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { NextIcon, PreviousIcon } from "@/shared/Svgs/Svg.component";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const { t } = useTranslation();
@@ -26,17 +28,20 @@ export default function LoginPage() {
   const handlePassword = (e: any) => setPassword(e.target.value);
   const handleUsername = (e: any) => setEmail(e.target.value);
   const toggleShowPassword = () => setShowPassword(!showPassword);
-
+  const router = useRouter();
   // Login handler
   const login = async (e: React.FormEvent) => {
     e.preventDefault();
     if (email !== "" && password !== "") {
       setLoadding(true);
-      await loginUser(email, password)
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("password", password);
+      await loginUser(formData)
         .then((res: any) => {
           if (res?.status === true) {
             toast.success("Đăng nhập thành công");
-            window.localStorage.setItem("tokenStaking", res.token);
+            window.localStorage.setItem("token", res.token);
             window.location.href = "/";
           } else {
             toast.error(res?.msg);
@@ -56,97 +61,15 @@ export default function LoginPage() {
   return (
     <Box
       sx={{
-        backgroundColor: "#fff",
+        backgroundColor: "#111827",
         paddingTop: "50px",
-        display: "flex",
-        alignItems: {
-          xs: "flex-start",
-          sm: "normal",
-        },
         height: "100vh",
       }}
     >
-      {/* Left Section */}
       <Box
         sx={{
-          width: "50%",
-          backgroundColor: "black",
-          color: "white",
-          p: 4,
-          display: {
-            xs: "none",
-            sm: "flex",
-          },
-          flexDirection: "column",
-          justifyContent: "center",
-          margin: "0 auto",
-        }}
-      >
-        <Box>
-          <Typography
-            variant="h4"
-            gutterBottom
-            sx={{ mt: 4, textAlign: "center" }}
-          >
-            {t("LoginPage.title")}
-          </Typography>
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            sx={{
-              color: "#909090",
-              width: "60%",
-              margin: "0 auto",
-            }}
-          >
-            {t("LoginPage.decription")}
-          </Typography>
-        </Box>
-        <Box sx={{ mb: 4, mt: 2 }}>
-          <img
-            src="/images/5AD5609D76BF42F4.webp"
-            alt="Trading App"
-            style={{
-              height: "323px",
-              margin: "0 auto",
-              display: "block",
-              borderRadius: "8px",
-              boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-              objectFit: "cover",
-            }}
-          />
-        </Box>
-        <Box
-          sx={{
-            backgroundColor: "#1a1a1a",
-            p: 2,
-            borderRadius: "8px",
-            width: "60%",
-            margin: "0 auto",
-            marginTop: "-30px",
-          }}
-        >
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            sx={{ color: "white", fontSize: "20px" }}
-          >
-            {t("LoginPage.join_tele")}
-          </Typography>
-          <Typography variant="body2" color="gray">
-            {t("LoginPage.note")}
-          </Typography>
-        </Box>
-      </Box>
-
-      {/* Right Section */}
-      <Box
-        sx={{
-          width: {
-            xs: "100%",
-            sm: "50%",
-          },
-          backgroundColor: "#fff",
+          width: "100%",
+          backgroundColor: "#111827",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -154,11 +77,33 @@ export default function LoginPage() {
         }}
       >
         <Box sx={{ maxWidth: "400px", width: "100%" }}>
-          <Typography variant="h4" gutterBottom>
-            {t("HomePage.mobile_login")}
+          <IconButton
+            sx={{
+              background: "#1f2937",
+              position: "fixed",
+              top: "20px",
+              "&:hover": {
+                background: "#2a313aff",
+              },
+            }}
+            onClick={() => router.back()}
+          >
+            <PreviousIcon width="20px" height="20px" />
+          </IconButton>
+          <Typography variant="h4" gutterBottom sx={{ color: "white" }}>
+            {t("LoginPage.title")}
+          </Typography>
+          <Typography
+            variant="caption"
+            gutterBottom
+            sx={{ color: "white", fontSize: "16px", mb: "20px" }}
+          >
+            {t("LoginPage.decription")}
           </Typography>
           <form>
-            <InputLabel>{t("LoginPage.title1")} </InputLabel>
+            <InputLabel sx={{ color: "white", mt: "10px" }}>
+              {t("LoginPage.title1")}{" "}
+            </InputLabel>
             <TextField
               fullWidth
               placeholder={t("LoginPage.value1")}
@@ -167,32 +112,47 @@ export default function LoginPage() {
               type="email"
               onChange={handleUsername}
               sx={{
-                mb: 2,
-                borderRadius: "15px",
-                mt: 1,
+                mb: 3,
+
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "14px",
+                  backgroundColor: "#1e2a3a",
+                  color: "#fff",
+
+                  "& fieldset": {
+                    borderColor: "rgba(255,255,255,0.15)",
+                  },
+
+                  "&:hover fieldset": {
+                    borderColor: "rgba(255,255,255,0.3)",
+                  },
+
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#4ade80",
+                    borderWidth: "1px",
+                  },
+                },
+
                 "& .MuiInputBase-input": {
-                  color: "black",
-                  background: "transparent",
-                  // Fix autofill background
+                  color: "#fff",
+
+                  "&::placeholder": {
+                    color: "#7c8aa0",
+                    opacity: 1,
+                  },
+
                   "&:-webkit-autofill": {
-                    WebkitBoxShadow: "0 0 0 1000px white inset", // chỉnh màu nền
-                    WebkitTextFillColor: "white",
-                    transition: "background-color 5000s ease-in-out 0s",
+                    WebkitBoxShadow: "0 0 0 1000px #1e2a3a inset",
+                    WebkitTextFillColor: "#fff",
                   },
                 },
               }}
             />
 
-            <InputLabel>{t("LoginPage.title2")} </InputLabel>
-            {/* <TextField
-              fullWidth
-              placeholder={t("LoginPage.value2")}
-              variant="outlined"
-              type="password"
-              value={password}
-              onChange={handlePassword}
-              sx={{ mb: 2, borderRadius: "15px", mt: 1 }}
-            /> */}
+            <InputLabel sx={{ color: "white" }}>
+              {" "}
+              {t("LoginPage.title2")}{" "}
+            </InputLabel>
             <Box
               sx={{
                 mb: 2,
@@ -211,16 +171,38 @@ export default function LoginPage() {
                 value={password}
                 onChange={handlePassword}
                 sx={{
-                  mb: 2,
-                  borderRadius: "15px",
-                  mt: 1,
+                  mb: 3,
+
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "14px",
+                    backgroundColor: "#1e2a3a",
+                    color: "#fff",
+
+                    "& fieldset": {
+                      borderColor: "rgba(255,255,255,0.15)",
+                    },
+
+                    "&:hover fieldset": {
+                      borderColor: "rgba(255,255,255,0.3)",
+                    },
+
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#4ade80",
+                      borderWidth: "1px",
+                    },
+                  },
+
                   "& .MuiInputBase-input": {
-                    background: "transparent",
-                    // Fix autofill background
+                    color: "#fff",
+
+                    "&::placeholder": {
+                      color: "#7c8aa0",
+                      opacity: 1,
+                    },
+
                     "&:-webkit-autofill": {
-                      WebkitBoxShadow: "0 0 0 1000px black inset", // chỉnh màu nền
-                      WebkitTextFillColor: "white",
-                      transition: "background-color 5000s ease-in-out 0s",
+                      WebkitBoxShadow: "0 0 0 1000px #1e2a3a inset",
+                      WebkitTextFillColor: "#fff",
                     },
                   },
                 }}
@@ -231,39 +213,100 @@ export default function LoginPage() {
                 style={{
                   position: "absolute",
                   right: "4px",
-                  top: "65%",
+                  top: "50%",
                   transform: "translateY(-50%)",
                   padding: 4,
-                  color: "black", // Màu trắng như bạn yêu cầu
+                  color: "white",
                 }}
               >
                 {showPassword ? (
-                  <VisibilityOff fontSize="small" />
+                  <Visibility fontSize="small" />
                 ) : (
                   <VisibilityOff fontSize="small" />
                 )}
               </IconButton>
             </Box>
-            <Button
-              type="submit"
-              fullWidth
-              onClick={login}
-              sx={{
-                mb: 2,
-                backgroundColor: "#fcd534",
-                borderRadius: "15px",
-                color: "black",
-                "&:hover": { backgroundColor: "#fcd534", color: "black" },
-              }}
-            >
-              {t("HomePage.mobile_login")}
-            </Button>
-            <Typography variant="body2" align="center" sx={{ mb: 2 }}>
-              {t("LoginPage.sub_title")}{" "}
-              <a href="/signup" style={{ color: "#1976d2" }}>
-                {t("HomePage.mobile_signup")}
-              </a>
-            </Typography>
+            <Box mt={3}>
+              {/* Login */}
+              <Button
+                fullWidth
+                onClick={login}
+                sx={{
+                  background: "#5BFF00",
+                  color: "#000",
+                  fontWeight: 600,
+                  borderRadius: "14px",
+                  height: 52,
+                  textTransform: "none",
+                  boxShadow: "0 0 20px rgba(91,255,0,0.4)",
+                  "&:hover": {
+                    background: "#4de000",
+                    boxShadow: "0 0 25px rgba(91,255,0,0.6)",
+                  },
+                }}
+              >
+                {t("LoginPage.button1")}
+              </Button>
+
+              {/* OR */}
+              <Typography
+                textAlign="center"
+                color="#9aa4b2"
+                my={2}
+                fontSize={14}
+              >
+                {t("LoginPage.title3")}
+              </Typography>
+
+              {/* Wallet login */}
+              <Button
+                fullWidth
+                sx={{
+                  background: "#5BFF00",
+                  color: "#000",
+                  fontWeight: 600,
+                  borderRadius: "14px",
+                  height: 52,
+                  textTransform: "none",
+                  boxShadow: "0 0 20px rgba(91,255,0,0.4)",
+                  "&:hover": {
+                    background: "#4de000",
+                    boxShadow: "0 0 25px rgba(91,255,0,0.6)",
+                  },
+                }}
+              >
+                {t("LoginPage.button2")}
+              </Button>
+
+              {/* OR */}
+              <Typography
+                textAlign="center"
+                color="#9aa4b2"
+                my={2}
+                fontSize={14}
+              >
+                {t("LoginPage.title3")}
+              </Typography>
+
+              {/* Create account */}
+              <Button
+                fullWidth
+                onClick={() => router.push("/signup")}
+                sx={{
+                  background: "#1e2a3a",
+                  color: "#fff",
+                  borderRadius: "14px",
+                  height: 52,
+                  textTransform: "none",
+                  fontWeight: 500,
+                  "&:hover": {
+                    background: "#253548",
+                  },
+                }}
+              >
+                {t("LoginPage.button3")}
+              </Button>
+            </Box>
           </form>
         </Box>
       </Box>

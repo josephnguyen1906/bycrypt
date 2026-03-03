@@ -299,17 +299,30 @@
     "button": " Take attendance now"
   },
   "LoginPage": {
-    "title": "Trade with confidence",
-    "decription": "We don’t lend out customer funds, which is verified through our regularly published Proof of Reserves audits.",
-    "join_tele": "Join our Telegram group",
-    "note": "Ask questions, get answers, and chat with other traders to shape the crypto future together",
-    "title1": "Email / username",
-    "value1": "Enter Email / username",
+    "title": "Welcome",
+    "decription": "sign in to continue",
+    "title1": "Account",
+    "value1": "Please input Email",
     "title2": "Password",
-    "value2": "Enter Password",
-    "sub_title": " Don’t have an account?",
-    "email_title": "Enter your email",
-    "Referral": "Referral code"
+    "value2": "Please enter Password",
+    "title3": "OR",
+    "button1":"Log in",
+    "button2":"Wallet login",
+    "button3":" Create an account"
+  },
+    "SignupPage": {
+    "title": "Email registration",
+    "decription": "sign in to continue",
+    "title1": "Email",
+    "value1": "Please input Email",
+    "title2": "Password",
+    "value2": "Please enter Password",
+    "value3": "Enter invite code",
+    "title3": "Verification code",
+    "title4": "Already have an account?",
+    "button1":"Login",
+    "button2":"Register",
+    "button3":"Send"
   },
   "ProfilePage": {
     "menu0": "Overview",

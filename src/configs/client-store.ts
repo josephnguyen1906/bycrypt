@@ -13,9 +13,7 @@ export function getStore(key: string): any {
 
 export function getToken() {
   const store =
-    typeof window !== "undefined"
-      ? window.localStorage.getItem("tokenStaking")
-      : null;
+    typeof window !== "undefined" ? window.localStorage.getItem("token") : null;
   return store;
 }
 export function setStore<T>(key: string, value: T): void {

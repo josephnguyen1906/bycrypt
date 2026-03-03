@@ -86,7 +86,7 @@ export default function MenuProfile({ user }: UserProps) {
   const handleClick = (
     event: React.MouseEvent<HTMLElement>,
     type: "profile" | "submenu",
-    id?: string
+    id?: string,
   ) => {
     if (type === "profile") {
       if (profileAnchorEl) {
@@ -273,7 +273,7 @@ export default function MenuProfile({ user }: UserProps) {
               <MenuItem
                 onClick={() => {
                   if (item.link === "/logout") {
-                    window.localStorage.removeItem("tokenStaking");
+                    window.localStorage.removeItem("token");
                     window.location.href = "/";
                     handleClose();
                   } else {

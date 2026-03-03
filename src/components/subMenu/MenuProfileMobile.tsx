@@ -217,7 +217,7 @@ export default function MenuProfileMobile(data: userProps) {
                 <ListItemButton
                   onClick={() => {
                     if (item.link === "/logout") {
-                      window.localStorage.removeItem("tokenStaking");
+                      window.localStorage.removeItem("token");
                       window.location.href = "/";
                       handleDrawerClose();
                     } else {
@@ -273,7 +273,7 @@ export default function MenuProfileMobile(data: userProps) {
                 <ListItemButton
                   onClick={() => {
                     if (item.link === "/logout") {
-                      window.localStorage.removeItem("tokenStaking");
+                      window.localStorage.removeItem("token");
                       window.location.href = "/";
                       handleDrawerClose();
                     } else {
@@ -316,7 +316,7 @@ export default function MenuProfileMobile(data: userProps) {
             <Button
               onClick={() =>
                 handleMenuItemClick(() => {
-                  window.localStorage.removeItem("tokenStaking");
+                  window.localStorage.removeItem("token");
                   window.location.href = "/";
                 })
               }

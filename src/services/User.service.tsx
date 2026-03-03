@@ -1,18 +1,29 @@
 import { authInstance, contentInstance } from "@/configs/CustomizeAxios";
 
 // đăng nhập
-const loginUser = (email: string, password: string) => {
-  return authInstance.post("/api/login", {
-    email,
-    password,
+const loginUser = (formData: FormData) => {
+  return authInstance.post("/api/login", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
   });
 };
 
 // Đăng ký
-const signupUser = (email: string, password: string) => {
-  return authInstance.post("/api/register", {
-    email,
-    password,
+const signupUser = (formData: FormData) => {
+  return authInstance.post("/api/register", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+// Đăng ký
+const sendCode = (formData: FormData) => {
+  return authInstance.post("/api/send-verification-code", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
   });
 };
 
@@ -24,7 +35,7 @@ const getMe = () => {
 const updatePassword = (
   old_password: string,
   new_password: string,
-  new_password_confirmation: string
+  new_password_confirmation: string,
 ) => {
   return contentInstance.post(`/api/user/change-password`, {
     old_password,
@@ -259,4 +270,5 @@ export {
   getWithdrawHistory,
   getCheck,
   getCheckDeposit,
+  sendCode,
 };

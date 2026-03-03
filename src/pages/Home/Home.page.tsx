@@ -42,10 +42,16 @@ import { getWebsiteConfig } from "@/services/User.service";
 import { useTranslation } from "react-i18next";
 import CoinPage from "@/components/coins/CoinPage";
 import LanguageSwitcher from "@/components/Language/LanguageSwitcher";
+import MarketSummary from "@/components/ChartView/MarketSummary";
+import { useUserStore } from "@/stores/useUserStore";
 
 export default function HomePage() {
   const { t, i18n } = useTranslation();
-  const { user, loading } = useAuth();
+  const { user, loading, fetchUser } = useUserStore();
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
 
   const [langAnchorEl, setLangAnchorEl] = React.useState<null | HTMLElement>(
     null,
@@ -59,29 +65,10 @@ export default function HomePage() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const [websiteConfig, setWebsiteConfig] = useState<any>(null);
   const route = useRouter();
   const handleLangMenuClose = () => {
     setLangAnchorEl(null);
   };
-  useEffect(() => {
-    const referral = async () => {
-      try {
-        const buySellConfig: any = await getWebsiteConfig();
-        if (buySellConfig) {
-          setWebsiteConfig(buySellConfig.data);
-        }
-
-        const hasShownPopup = sessionStorage.getItem("popupShown");
-      } catch (errors: any) {
-        // toast.error(errors?.message);
-      }
-    };
-
-    if (!loading) {
-      referral();
-    }
-  }, [user, loading]);
 
   return (
     <div className="home">
@@ -97,7 +84,11 @@ export default function HomePage() {
               background: "#111827",
             }}
           >
-            <IconButton>
+            <IconButton
+              onClick={() => {
+                route.push("/account");
+              }}
+            >
               <UserIcon width="30px" height="30px" />
             </IconButton>
             <Tooltip title="Language">
@@ -223,6 +214,7 @@ export default function HomePage() {
             ))}
           </Box>
           <Box sx={{ width: "100%", margin: "auto" }}>
+            {/* <MarketSummary /> */}
             <CoinPage />
           </Box>
           <Box sx={{ width: "90%", margin: "20px auto" }}>
