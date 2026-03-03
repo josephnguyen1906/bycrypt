@@ -38,6 +38,7 @@ export default function AccountPage() {
         background:
           "linear-gradient(180deg,#0b1b33 0%,#0b1b33 40%,#091426 100%)",
         p: 2,
+        pb: "130px",
       }}
     >
       {/* login button */}
@@ -180,56 +181,53 @@ export default function AccountPage() {
         sx={{
           borderRadius: 4,
           background: "linear-gradient(135deg,#3b4a36 0%,#303e30 100%)",
+          p: 0,
         }}
       >
-        <CardContent sx={{ p: 0 }}>
-          {[
-            {
-              icon: <LinkIcon sx={{ color: "white" }} />,
-              label: "Referral link",
-              link: "#",
-            },
-            {
-              icon: <SecurityOutlined sx={{ color: "white" }} />,
-              label: "Security center",
-              link: "#",
-            },
-            {
-              icon: <LogoutOutlined sx={{ color: "white" }} />,
-              label: "Logout",
-              link: null,
-            },
-          ].map((item, i) => (
-            <Box
-              key={item.label}
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-              px={2}
-              py={2}
-              borderBottom={
-                i !== 2 ? "1px solid rgba(255,255,255,0.1)" : "none"
+        {[
+          {
+            icon: <LinkIcon sx={{ color: "white" }} />,
+            label: "Referral link",
+            link: "#",
+          },
+          {
+            icon: <SecurityOutlined sx={{ color: "white" }} />,
+            label: "Security center",
+            link: "#",
+          },
+          {
+            icon: <LogoutOutlined sx={{ color: "white" }} />,
+            label: "Logout",
+            link: null,
+          },
+        ].map((item, i) => (
+          <Box
+            key={item.label}
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            px={2}
+            py={2}
+            borderBottom={i !== 2 ? "1px solid rgba(255,255,255,0.1)" : "none"}
+            sx={{ cursor: "pointer" }}
+            onClick={() => {
+              if (item.link) {
+                router.push(item.link);
+              } else {
+                window.localStorage.removeItem("token");
+                router.push("/");
               }
-              sx={{ cursor: "pointer" }}
-              onClick={() => {
-                if (item.link) {
-                  router.push(item.link);
-                } else {
-                  window.localStorage.removeItem("token");
-                  router.push("/");
-                }
-              }}
-            >
-              <Box display="flex" alignItems="center" gap={1}>
-                {item.icon}
+            }}
+          >
+            <Box display="flex" alignItems="center" gap={1}>
+              {item.icon}
 
-                <Typography color="#fff">{item.label}</Typography>
-              </Box>
-
-              <ChevronRight sx={{ color: "#fff" }} />
+              <Typography color="#fff">{item.label}</Typography>
             </Box>
-          ))}
-        </CardContent>
+
+            <ChevronRight sx={{ color: "#fff" }} />
+          </Box>
+        ))}
       </Card>
     </Box>
   );
