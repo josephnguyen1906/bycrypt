@@ -103,7 +103,7 @@ export default function TradePage() {
       />
       <Box mt={5}>
         <Typography
-          fontSize={36}
+          fontSize={25}
           fontWeight="bold"
           color={percent >= 0 ? "#00C853" : "#FF3D00"}
           mt={1}
