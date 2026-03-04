@@ -194,7 +194,7 @@ export default function ChartViewCustom({
       <Stack direction="row" justifyContent="space-between" mb={2}>
         <Box>
           <Typography
-            fontSize={40}
+            fontSize={25}
             fontWeight="bold"
             color={percent >= 0 ? "#00C853" : "#FF3D00"}
           >

@@ -101,7 +101,7 @@ export default function TradePage() {
           setSymbol(v);
         }}
       />
-      <Box mt={5}>
+      <Box mt={7}>
         <Typography
           fontSize={25}
           fontWeight="bold"
