@@ -160,7 +160,7 @@ export default function TradePage() {
           <Button
             onClick={() => setSide("buy")}
             sx={{
-              px: 3,
+              px: 1,
               borderRadius: 999,
               textTransform: "none",
               fontWeight: 600,
@@ -178,7 +178,7 @@ export default function TradePage() {
           <Button
             onClick={() => setSide("sell")}
             sx={{
-              px: 3,
+              px: 1,
               borderRadius: 999,
               textTransform: "none",
               fontWeight: 600,
@@ -200,7 +200,7 @@ export default function TradePage() {
               flex: 1,
               background: "#1e293b",
               borderRadius: 999,
-              px: 3,
+              px: 2,
               py: 1,
               display: "flex",
               alignItems: "center",
@@ -211,7 +211,7 @@ export default function TradePage() {
             }}
           >
             <ErrorOutline sx={{ fontSize: "16px" }} />
-            <Typography fontSize={14} color="white">
+            <Typography fontSize={13} color="white">
               {orderType === "market" ? "Market price" : "Limit price"}{" "}
             </Typography>
             <DownIcon width="20px" height="20px" fill="white" />
@@ -228,7 +228,7 @@ export default function TradePage() {
             <Typography
               fontSize={14}
               color="#9ca3af"
-              sx={{ mt: 1, borderBottom: "1px solid #e5e7eb", p: "5px" }}
+              sx={{ mt: 1, borderBottom: "1px solid rgb(55 65 81)", p: "5px" }}
             >
               Trade at the current best price
             </Typography>
@@ -300,7 +300,18 @@ export default function TradePage() {
             }}
           />
 
-          <Box sx={{ display: "flex", justifyContent: "space-around" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-around",
+              overflowY: "auto",
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              "&::-webkit-scrollbar": {
+                display: "none",
+              },
+            }}
+          >
             {[0, 25, 50, 75, 100].map((v) => (
               <Button
                 key={v}

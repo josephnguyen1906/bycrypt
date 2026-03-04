@@ -130,9 +130,9 @@ export default function TradePopup({
       <Box
         sx={{
           flex: 1,
-          overflowY: "auto",
           px: 2,
           pb: "120px",
+          overflowY: "auto",
           scrollbarWidth: "none",
           msOverflowStyle: "none",
           "&::-webkit-scrollbar": {
