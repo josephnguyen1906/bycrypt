@@ -1,5 +1,13 @@
 "use client";
-import { Box, Button, Drawer, IconButton, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Drawer,
+  IconButton,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import MenuCoin from "@/components/subMenu/MenuCoin";
 import ChartViewCustom from "@/components/ChartView/ChartViewCustom";
@@ -14,11 +22,14 @@ import { useTranslation } from "react-i18next";
 import { getWebsiteConfig } from "@/services/User.service";
 import { useUserStore } from "@/stores/useUserStore";
 import TradePopup from "@/components/popup/TradePopup";
+import CommandClose from "./CommandClose";
+import CommandOpen from "./CommandOpen";
 
 export default function ContactPage() {
   const [openTrade, setOpenTrade] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { t, i18n } = useTranslation();
+  const [value, setValue] = React.useState("one");
   const [menu, setMenu] = useState("btcusdt");
   const [tab, setTab] = useState("BUY");
   const [percent, setPercent] = useState("");
@@ -27,6 +38,10 @@ export default function ContactPage() {
   const [interval, setInterval] = useState("1m");
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setDrawerOpen(true);
+  };
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue);
   };
 
   const handleDrawerClose = () => {
@@ -191,6 +206,31 @@ export default function ContactPage() {
               Buy down
             </Button>
           </Box>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="wrapped label tabs example"
+            TabIndicatorProps={{
+              sx: {
+                backgroundColor: "#34d399",
+                height: 2,
+              },
+            }}
+            sx={{
+              "& .MuiTab-root": {
+                color: "#9ca3af",
+                textTransform: "capitalize",
+              },
+              "& .MuiTab-root.Mui-selected": {
+                color: "#34d399",
+              },
+            }}
+          >
+            <Tab value="one" label="In transaction" wrapped />
+            <Tab value="two" label="Position closed" />
+          </Tabs>
+          {value == "one" && <CommandOpen user={user} />}
+          {value == "two" && <CommandClose user={user} />}
         </Box>
       ) : (
         <Box sx={{ width: "100%", mt: 3, mb: 3 }}>

@@ -186,8 +186,8 @@
     "note": "Turn your idle crypto into a steady source of income with just a few simple steps. DoiUSDT allows you to lock tokens to support the operation of the blockchain network and receive periodic rewards."
   },
   "BuySellPage": {
-    "buy": "Deposit",
-    "sell": "Withdraw",
+    "buy": "Buy up",
+    "sell": "Buy down",
     "result": "Result watting",
     "trade": "Transfer",
     "history": "History",
@@ -229,7 +229,7 @@
     "asset": "Asset",
     "history": "Bill",
     "log_decription": "Please log in to deposit / withdraw coins.",
-    "no_tran": "No transactions have occurred yet."
+    "no_tran": "No more."
   },
   "SafeBox": {
     "tab1": "VND Safe",

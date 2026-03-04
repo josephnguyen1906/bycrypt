@@ -162,7 +162,10 @@ p {
   word-break: break-word;
 }
 
-
+a[href*="tradingview"] {
+  pointer-events: none !important;
+  display: none;
+}
 
 .form {
   width: 90%;
