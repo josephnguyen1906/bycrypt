@@ -34,6 +34,8 @@ export default function AccountPage() {
   return (
     <Box
       sx={{
+        maxWidth: "768px",
+        margin: "auto",
         minHeight: "100vh",
         background:
           "linear-gradient(180deg,#0b1b33 0%,#0b1b33 40%,#091426 100%)",
@@ -112,7 +114,11 @@ export default function AccountPage() {
           </Box>
 
           <Typography fontSize={32} fontWeight="bold" textAlign="center" mt={2}>
-            {hideBalance ? "***" : user ? user.money : "0.00"}
+            {hideBalance
+              ? "***"
+              : user
+                ? Number(user?.balance.usdt).toLocaleString()
+                : "0.00"}
           </Typography>
 
           <Box

@@ -32,6 +32,7 @@ import Image from "next/image";
 import {
   BankMenuIcon,
   DashboardIcon,
+  DownIcon,
   GiftMenuIcon,
   HistoryBetMenuIcon,
   HistoryMenuIcon,
@@ -46,6 +47,7 @@ import {
   ProfileIcon,
   RutMenuIcon,
   StarIcon,
+  UpIcon,
   WarningIcon,
 } from "@/shared/Svgs/Svg.component";
 import NavigationGame from "@/hook/NavigationGame";
@@ -71,6 +73,8 @@ export default function MenuCoin({ data }: props) {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const { t, i18n } = useTranslation();
   const [configs, setConfigs] = React.useState<any>();
+  const [percent, setPercent] = React.useState<string>();
+  const [interval, setInterval] = React.useState("1m");
   const [menu, setMenu] = React.useState("btcusdt");
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setDrawerOpen(true);
@@ -129,9 +133,23 @@ export default function MenuCoin({ data }: props) {
           >
             <MenuIcon fill="#fff" width="25px" height="25px" />
           </IconButton>
-          <Box>
+          <Box sx={{ display: "flex", gap: "10px" }}>
             <Typography fontWeight="500" fontSize={18} color="#fff">
               {menu.toUpperCase().replace("USDT", "/USDT")}
+            </Typography>
+            <Typography
+              fontWeight="500"
+              fontSize={18}
+              sx={{
+                color: Number(percent) >= 0 ? "#00C853" : "#FF3D00",
+              }}
+            >
+              {percent}
+              {Number(percent) < 0 ? (
+                <DownIcon width="16px" height="16px" fill="#ef4444" />
+              ) : (
+                <UpIcon width="16px" height="16px" fill="#22c55e" />
+              )}
             </Typography>
           </Box>
           <IconButton size="small" aria-haspopup="true">
@@ -163,6 +181,10 @@ export default function MenuCoin({ data }: props) {
         >
           {CoinMenuMobile({
             menu: menu,
+            interval,
+            changePercent: (v) => {
+              setPercent(v);
+            },
             setMenu: (v) => {
               setMenu(v);
               data(v);

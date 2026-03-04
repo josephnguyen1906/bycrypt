@@ -37,11 +37,17 @@ const symbols = [
 interface props {
   menu: string;
   setMenu: (string: string) => void;
+  changePercent: (s: string) => void;
+  interval: string;
 }
 
-export default function CoinMenuMobile({ menu, setMenu }: props) {
+export default function CoinMenuMobile({
+  menu,
+  setMenu,
+  interval,
+  changePercent,
+}: props) {
   const [coins, setCoins] = useState<Record<string, Coin>>({});
-  // Fetch initial price
   useEffect(() => {
     fetch(
       "https://api.binance.com/api/v3/ticker/24hr?symbols=" +
@@ -68,33 +74,36 @@ export default function CoinMenuMobile({ menu, setMenu }: props) {
 
   // WebSocket realtime
   useEffect(() => {
-    const streams = symbols.map((s) => `${s}@miniTicker`).join("/");
+    const streams = symbols.map((s) => `${s}@kline_${interval}`).join("/");
+
     const ws = new WebSocket(
       `wss://stream.binance.com:9443/stream?streams=${streams}`,
     );
 
     ws.onmessage = (event) => {
       const msg = JSON.parse(event.data);
-      const data = msg.data;
+      const k = msg?.data?.k;
 
-      if (!data?.s || !data?.c || !data?.o) return;
+      if (!k?.s || !k?.o || !k?.c) return;
 
       setCoins((prev) => {
-        const symbol = data.s.toLowerCase();
+        const symbol = k.s.toLowerCase();
         if (!prev[symbol]) return prev;
 
-        const last = Number(data.c);
-        const open = Number(data.o);
+        const open = Number(k.o);
+        const close = Number(k.c);
 
-        const newChange = open > 0 ? ((last - open) / open) * 100 : 0;
+        const newChange = open > 0 ? ((close - open) / open) * 100 : 0;
 
-        const updatedHistory = [...prev[symbol].history.slice(-19), last];
-
+        const updatedHistory = [...prev[symbol].history.slice(-19), close];
+        if (symbol === menu) {
+          changePercent?.(newChange.toFixed(2));
+        }
         return {
           ...prev,
           [symbol]: {
             ...prev[symbol],
-            price: last,
+            price: close,
             changePercent: newChange,
             history: updatedHistory,
           },
@@ -103,7 +112,7 @@ export default function CoinMenuMobile({ menu, setMenu }: props) {
     };
 
     return () => ws.close();
-  }, []);
+  }, [interval]);
 
   return (
     <Box sx={{ minHeight: "100vh", background: "#111827" }}>
