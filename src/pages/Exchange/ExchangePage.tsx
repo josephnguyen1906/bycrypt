@@ -17,6 +17,7 @@ import TradePopup from "@/components/popup/TradePopup";
 import CoinPopup from "@/components/popup/CoinPopup";
 import { Icoin } from "@/interface/user.interface";
 import { ExchangeIcon } from "@/shared/Svgs/Svg.component";
+import { useUserStore } from "@/stores/useUserStore";
 
 const coinList = [
   "BTC",
@@ -34,7 +35,7 @@ const coinList = [
 
 export default function ExchangePage() {
   const router = useRouter();
-
+  const { user } = useUserStore();
   const [fromCoin, setFromCoin] = useState("btc");
   const [toCoin] = useState("USDT");
 
@@ -236,15 +237,13 @@ export default function ExchangePage() {
       </Typography>
 
       {/* info */}
-
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
           mt: 3,
         }}
       >
-        <Box>
+        <Box sx={{ flex: 1 }}>
           <Typography color="#64748b" fontSize={10}>
             Current exchange rate
           </Typography>
@@ -254,7 +253,12 @@ export default function ExchangePage() {
           </Typography>
         </Box>
 
-        <Box textAlign="center">
+        <Box
+          sx={{
+            flex: 1,
+            textAlign: "center",
+          }}
+        >
           <Typography color="#64748b" fontSize={10}>
             Available {fromCoin.toUpperCase()}
           </Typography>
@@ -264,7 +268,12 @@ export default function ExchangePage() {
           </Typography>
         </Box>
 
-        <Box textAlign="right">
+        <Box
+          sx={{
+            flex: 1,
+            textAlign: "right",
+          }}
+        >
           <Typography color="#64748b" fontSize={10}>
             Expected to be available USDT
           </Typography>
@@ -279,6 +288,7 @@ export default function ExchangePage() {
 
       <Button
         fullWidth
+        disabled={amount == "" || !user}
         sx={{
           mt: 4,
           height: 50,
@@ -286,6 +296,12 @@ export default function ExchangePage() {
           background: "linear-gradient(90deg,#22c55e,#16a34a)",
           color: "white",
           fontWeight: 600,
+          textTransform: "none",
+          boxShadow: "0 10px 25px rgba(16,185,129,.35)",
+          "&:disabled": {
+            background: "#34d39980",
+            color: "#111827b3",
+          },
         }}
       >
         Exchange
