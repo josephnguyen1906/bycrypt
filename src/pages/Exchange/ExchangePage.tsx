@@ -204,7 +204,7 @@ export default function ExchangePage() {
           }}
         />
 
-        <Typography sx={{ fontSize: "12px", width: "30px" }}>
+        <Typography sx={{ fontSize: "12px", width: "35px" }}>
           {fromCoin.toUpperCase()}
         </Typography>
         <Box
@@ -245,29 +245,31 @@ export default function ExchangePage() {
         }}
       >
         <Box>
-          <Typography color="#64748b" fontSize={12}>
+          <Typography color="#64748b" fontSize={10}>
             Current exchange rate
           </Typography>
 
-          <Typography fontWeight={600}>
+          <Typography fontWeight={500} fontSize={11}>
             {rate ? rate.toLocaleString() : "--"}
           </Typography>
         </Box>
 
         <Box textAlign="center">
-          <Typography color="#64748b" fontSize={12}>
-            Available {fromCoin}
+          <Typography color="#64748b" fontSize={10}>
+            Available {fromCoin.toUpperCase()}
           </Typography>
 
-          <Typography fontWeight={600}>{available}</Typography>
+          <Typography fontWeight={500} fontSize={11}>
+            {available}
+          </Typography>
         </Box>
 
         <Box textAlign="right">
-          <Typography color="#64748b" fontSize={12}>
+          <Typography color="#64748b" fontSize={10}>
             Expected to be available USDT
           </Typography>
 
-          <Typography fontWeight={600}>
+          <Typography fontWeight={500} fontSize={11}>
             {Number(expected.toFixed(6)).toLocaleString()}
           </Typography>
         </Box>
