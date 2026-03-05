@@ -52,7 +52,8 @@
     "Safe3": "Money withdrawal from the safe has been cancelled.",
     "Safe4": "Deposit money into the safe successfully",
     "Safe5": "Failed to deposit money into the safe.",
-    "Wallet": "Wallet"
+    "Wallet": "Wallet",
+    "exchange_toast": "Exchange successfully"
   },
   "MenuWebsite": {
     "menu1": "Buy & Sell",
@@ -386,6 +387,7 @@
     "helper_text9": "ex: TRC20",
     "change_label10": "Wallet QR code",
     "button_save": "Submit",
+    
     "button_change": "Change Password",
     "change_pay_title": "Change payment password",
     "add_bank": "Add Bank",

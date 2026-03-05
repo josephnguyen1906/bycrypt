@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Box,
   Typography,
@@ -18,6 +17,10 @@ import CoinPopup from "@/components/popup/CoinPopup";
 import { Icoin } from "@/interface/user.interface";
 import { ExchangeIcon } from "@/shared/Svgs/Svg.component";
 import { useUserStore } from "@/stores/useUserStore";
+import { apiExchange } from "@/services/User.service";
+import { error } from "console";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const coinList = [
   "BTC",
@@ -35,25 +38,22 @@ const coinList = [
 
 export default function ExchangePage() {
   const router = useRouter();
-  const { user } = useUserStore();
-  const [fromCoin, setFromCoin] = useState("btc");
-  const [toCoin] = useState("USDT");
-
+  const { user, fetchUser } = useUserStore();
+  const [coin, setCoin] = useState("btc");
+  const [fromCoin, setFromCoin] = useState("usdt");
+  const [toCoin, setTocoin] = useState("btc");
   const [amount, setAmount] = useState("");
   const [rate, setRate] = useState(0);
   const [expected, setExpected] = useState(0);
-
   const [openSelect, setOpenSelect] = useState(false);
-
   const available = 0;
-
-  /*
-  realtime price
-  */
-
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
   useEffect(() => {
     const ws = new WebSocket(
-      `wss://stream.binance.com:9443/ws/${fromCoin.toLowerCase()}usdt@trade`,
+      `wss://stream.binance.com:9443/ws/${coin.toLowerCase()}usdt@trade`,
     );
 
     ws.onmessage = (event) => {
@@ -62,20 +62,44 @@ export default function ExchangePage() {
     };
 
     return () => ws.close();
-  }, [fromCoin]);
+  }, [coin]);
 
   /*
   expected usdt
   */
 
   useEffect(() => {
-    const value = Number(amount || 0) * rate;
-    setExpected(value);
-  }, [amount, rate]);
+    const amt = Number(amount || 0);
+
+    let result = 0;
+
+    if (!rate || !amt) {
+      setExpected(0);
+      return;
+    }
+
+    if (fromCoin === "usdt") {
+      result = Number(amt) / Number(rate);
+    }
+
+    setExpected(result);
+  }, [amount, fromCoin, toCoin]);
 
   const handleSelectCoin = (coin: Icoin) => {
-    setFromCoin(coin.coinname);
+    setTocoin(coin.coinname);
+    setCoin(coin.coinname);
     setOpenSelect(false);
+  };
+
+  const handleSubmit = async () => {
+    await apiExchange(fromCoin, toCoin, Number(amount))
+      .catch((error) => {
+        toast.error(error);
+      })
+      .finally(() => {
+        toast.success(t(`Toast.exchange_toast`));
+        setAmount("");
+      });
   };
 
   return (
@@ -125,7 +149,11 @@ export default function ExchangePage() {
         }}
       >
         <Button
-          onClick={() => setOpenSelect(true)}
+          onClick={() => {
+            if (fromCoin !== "usdt") {
+              setOpenSelect(true);
+            }
+          }}
           sx={{
             background: "#1e293b",
             color: "white",
@@ -151,6 +179,16 @@ export default function ExchangePage() {
             color: "#22c55e",
             fontSize: 22,
             boxShadow: "0 0 10px rgba(16,185,129,.6)",
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            if (toCoin === "usdt") {
+              setTocoin(fromCoin);
+              setFromCoin("usdt");
+            } else {
+              setTocoin("usdt");
+              setFromCoin(coin);
+            }
           }}
         >
           <ExchangeIcon width="35px" height="35px" />
@@ -166,6 +204,11 @@ export default function ExchangePage() {
             "&:hover": {
               background: "#2b3546ff",
             },
+          }}
+          onClick={() => {
+            if (toCoin !== "usdt") {
+              setOpenSelect(true);
+            }
           }}
         >
           {toCoin}
@@ -205,7 +248,7 @@ export default function ExchangePage() {
           }}
         />
 
-        <Typography sx={{ fontSize: "12px", width: "35px" }}>
+        <Typography sx={{ fontSize: "12px", width: "45px" }}>
           {fromCoin.toUpperCase()}
         </Typography>
         <Box
@@ -233,7 +276,7 @@ export default function ExchangePage() {
       {/* available */}
 
       <Typography mt={1} fontSize={12} color="#64748b">
-        Available{fromCoin} {available}
+        Available{fromCoin.toUpperCase()} {available}
       </Typography>
 
       {/* info */}
@@ -244,12 +287,12 @@ export default function ExchangePage() {
         }}
       >
         <Box sx={{ flex: 1 }}>
-          <Typography color="#64748b" fontSize={10}>
+          <Typography color="rgba(100, 116, 139, 1)" fontSize={10}>
             Current exchange rate
           </Typography>
 
           <Typography fontWeight={500} fontSize={11}>
-            {rate ? rate.toLocaleString() : "--"}
+            {rate ? rate : "--"}
           </Typography>
         </Box>
 
@@ -264,7 +307,7 @@ export default function ExchangePage() {
           </Typography>
 
           <Typography fontWeight={500} fontSize={11}>
-            {available}
+            {Number(user?.balance.usdt ?? 0)}
           </Typography>
         </Box>
 
@@ -275,11 +318,11 @@ export default function ExchangePage() {
           }}
         >
           <Typography color="#64748b" fontSize={10}>
-            Expected to be available USDT
+            Expected to be available {toCoin.toUpperCase()}
           </Typography>
 
           <Typography fontWeight={500} fontSize={11}>
-            {Number(expected.toFixed(6)).toLocaleString()}
+            {expected.toFixed(10)}
           </Typography>
         </Box>
       </Box>
@@ -303,6 +346,7 @@ export default function ExchangePage() {
             color: "#111827b3",
           },
         }}
+        onClick={handleSubmit}
       >
         Exchange
       </Button>
@@ -321,7 +365,7 @@ export default function ExchangePage() {
       <CoinPopup
         onClose={() => setOpenSelect(false)}
         open={openSelect}
-        coin={fromCoin}
+        coin={toCoin}
         handleSelectCoin={handleSelectCoin}
       />
     </Box>

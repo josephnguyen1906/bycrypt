@@ -226,6 +226,14 @@ const SendSafe = (formData: FormData) => {
   });
 };
 
+const apiExchange = (from: string, to: string, amount: number) => {
+  return contentInstance.post(`/api/finance/exchange`, {
+    from,
+    to,
+    amount,
+  });
+};
+
 export {
   loginUser,
   signupUser,
@@ -271,4 +279,5 @@ export {
   getCheck,
   getCheckDeposit,
   sendCode,
+  apiExchange,
 };
