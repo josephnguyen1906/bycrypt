@@ -87,11 +87,11 @@ export default function ExcavatorPage() {
           alignItems="center"
           mb={1}
         >
-          <Typography color="white" fontWeight="bold">
+          <Typography color="white" fontWeight="bold" fontSize={"12px"}>
             {item.title}
           </Typography>
 
-          <Stack direction="row" spacing={1}>
+          <Stack direction="row" spacing={0.5}>
             <Chip
               label="In progress"
               size="small"
@@ -99,6 +99,7 @@ export default function ExcavatorPage() {
                 background: "#1ED760",
                 color: "#000",
                 fontWeight: 600,
+                fontSize: "11px",
               }}
             />
 
@@ -107,8 +108,9 @@ export default function ExcavatorPage() {
               sx={{
                 background: "#1ED760",
                 color: "#000",
-                fontSize: "12px",
+                fontSize: "11px",
                 textTransform: "none",
+                width: "135px",
                 "&:hover": { background: "#17c653" },
               }}
               onClick={() => {
@@ -158,7 +160,7 @@ export default function ExcavatorPage() {
         margin: "auto",
         minHeight: "100vh",
         background: "#111827",
-        p: 2,
+
         pb: "130px",
       }}
     >
@@ -216,6 +218,7 @@ export default function ExcavatorPage() {
             color: "#9aa4b2",
             fontWeight: 600,
             width: "50%",
+            background: "#1f2937",
             textTransform: "capitalize",
           },
           "& .Mui-selected": {
@@ -227,16 +230,16 @@ export default function ExcavatorPage() {
         <Tab label="IEO Launchpad" />
       </Tabs>
 
-      <Typography fontSize={13} color="#9aa4b2" mb={2}>
+      <Typography fontSize={13} color="#9aa4b2" mb={2} p={2}>
         Our advanced AI supercomputing investment products can help you achieve
         stable profits in the market
       </Typography>
 
-      <Typography fontSize={16} color="white" mb={2}>
+      <Typography fontSize={16} color="white" mb={2} p={2}>
         Featured Products
       </Typography>
 
-      <Stack spacing={2} pb={20}>
+      <Stack spacing={2} pb={20} p={2}>
         {/* Tab 0 */}
         {tab === 0 && miningData?.overview?.map((item) => renderCard(item))}
 
@@ -249,7 +252,7 @@ export default function ExcavatorPage() {
               <Card
                 key={item.id}
                 sx={{
-                  background: "#1e293b",
+                  background: "#1f2937",
                   borderRadius: "16px",
                   color: "white",
                   p: 2,
