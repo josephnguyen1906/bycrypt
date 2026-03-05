@@ -14,6 +14,7 @@ import {
   TextField,
   Slider,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface Order {
@@ -33,6 +34,7 @@ export default function TradePage() {
   const { user, fetchUser } = useUserStore();
   const [orderType, setOrderType] = useState<"market" | "limit">("market");
   const [limitPrice, setLimitPrice] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     fetchUser();
@@ -353,45 +355,68 @@ export default function TradePage() {
         </Box>
 
         {/* FOOTER */}
-        <Box mt={3}>
-          <Stack direction="row" justifyContent="space-between" fontSize={12}>
-            <Typography sx={{ color: "#9ca3af", fontSize: "12px" }}>
-              Available
-            </Typography>
-            <Typography sx={{ color: "white", fontSize: "12px" }}>
-              {Number(user?.balance.usdt_total).toLocaleString()} USDT
-            </Typography>
-          </Stack>
+        {user ? (
+          <Box mt={3}>
+            <Stack direction="row" justifyContent="space-between" fontSize={12}>
+              <Typography sx={{ color: "#9ca3af", fontSize: "12px" }}>
+                Available
+              </Typography>
+              <Typography sx={{ color: "white", fontSize: "12px" }}>
+                {Number(user?.balance.usdt_total).toLocaleString()} USDT
+              </Typography>
+            </Stack>
 
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            fontSize={12}
-            mt={1}
-          >
-            <Typography sx={{ color: "#9ca3af", fontSize: "12px" }}>
-              Transaction volume
-            </Typography>
-            <Typography sx={{ color: "white", fontSize: "12px" }}>
-              {Number(user?.balance.usdt).toLocaleString()} USDT
-            </Typography>
-          </Stack>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              fontSize={12}
+              mt={1}
+            >
+              <Typography sx={{ color: "#9ca3af", fontSize: "12px" }}>
+                Transaction volume
+              </Typography>
+              <Typography sx={{ color: "white", fontSize: "12px" }}>
+                {Number(user?.balance.usdt).toLocaleString()} USDT
+              </Typography>
+            </Stack>
 
-          <Button
-            fullWidth
-            sx={{
-              mt: 3,
-              background: "#34d399",
-              color: "black",
-              fontWeight: "bold",
-              borderRadius: 3,
-              p: 1.5,
-              textTransform: "capitalize",
-            }}
-          >
-            Confirm
-          </Button>
-        </Box>
+            <Button
+              fullWidth
+              sx={{
+                mt: 3,
+                background: "#34d399",
+                color: "black",
+                fontWeight: "bold",
+                borderRadius: 3,
+                p: 1.5,
+                textTransform: "capitalize",
+                "&:hover": {
+                  background: "#2cad7eff",
+                },
+              }}
+            >
+              Confirm
+            </Button>
+          </Box>
+        ) : (
+          <Box sx={{ width: "100%", mt: 3, mb: 3 }}>
+            <Button
+              sx={{
+                width: "100%",
+                background: "#2eb862ff",
+                color: "white",
+                height: "50px",
+                textTransform: "none",
+                "&:hover": {
+                  background: "#1d974cff",
+                },
+              }}
+              onClick={() => router.push("/login")}
+            >
+              Go to login
+            </Button>
+          </Box>
+        )}
       </Box>
     </Box>
   );

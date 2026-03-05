@@ -25,6 +25,7 @@ import TradePopup from "@/components/popup/TradePopup";
 import CommandClose from "./CommandClose";
 import CommandOpen from "./CommandOpen";
 import { Icoin } from "@/interface/user.interface";
+import { useRouter } from "next/navigation";
 
 export default function ContactPage() {
   const [openTrade, setOpenTrade] = useState(false);
@@ -38,6 +39,8 @@ export default function ContactPage() {
   const { user, fetchUser } = useUserStore();
   const [interval, setInterval] = useState("1m");
   const [listCoin, setListCoin] = useState<Icoin[]>([]);
+  const router = useRouter();
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setDrawerOpen(true);
   };
@@ -256,7 +259,7 @@ export default function ContactPage() {
                 background: "#1d974cff",
               },
             }}
-            href="/login"
+            onClick={() => router.push("/login")}
           >
             Go to login
           </Button>
