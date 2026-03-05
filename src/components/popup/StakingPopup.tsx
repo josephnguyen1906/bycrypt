@@ -20,6 +20,7 @@ interface progs {
 export default function StakingPopup({ data, onClose, open, onSubmit }: progs) {
   const handleInvest = () => {
     console.log("Invest clicked");
+    onClose();
   };
 
   return (
@@ -38,7 +39,7 @@ export default function StakingPopup({ data, onClose, open, onSubmit }: progs) {
       <DialogContent>
         <Box display="flex" flexDirection="column" gap={2}>
           <Typography fontWeight="bold" fontSize="18px">
-            {data?.name}
+            Purchase {data?.open} day
           </Typography>
 
           <Typography fontSize="13px" color="#94a3b8">
@@ -64,7 +65,6 @@ export default function StakingPopup({ data, onClose, open, onSubmit }: progs) {
           <Box display="flex" gap={2}>
             <Button
               fullWidth
-              variant="contained"
               onClick={onClose}
               sx={{
                 background: "#374151",
@@ -80,7 +80,6 @@ export default function StakingPopup({ data, onClose, open, onSubmit }: progs) {
 
             <Button
               fullWidth
-              variant="contained"
               onClick={handleInvest}
               sx={{
                 background: "#22c55e",

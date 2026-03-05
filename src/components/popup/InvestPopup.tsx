@@ -20,6 +20,7 @@ interface progs {
 export default function InvestPopup({ data, onClose, open }: progs) {
   const handleInvest = () => {
     console.log("Invest clicked");
+    onClose();
   };
 
   return (
