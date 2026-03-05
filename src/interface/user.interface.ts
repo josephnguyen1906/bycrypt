@@ -30,3 +30,11 @@ export interface userResponse {
   eth: string;
   btc: string;
 }
+
+export interface Icoin {
+  id: string;
+  coinname: string;
+  name: string;
+  symbol: string;
+  title: string;
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Box, Typography, Chip, Stack, Button } from "@mui/material";
+import { Box, Typography, Chip, Stack, Button, Skeleton } from "@mui/material";
 import {
   createChart,
   ColorType,
@@ -39,6 +39,7 @@ export default function ChartViewCustom({
   const [openPrice, setOpenPrice] = useState<number>(0);
   const [price, setPrice] = useState<number>(0);
   const [percent, setPercent] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // ================= INIT CHART =================
   useEffect(() => {
@@ -116,40 +117,51 @@ export default function ChartViewCustom({
   // ================= LOAD HISTORY =================
   useEffect(() => {
     async function loadHistory() {
-      const res = await fetch(
-        `https://api.binance.com/api/v3/klines?symbol=${symbol.toUpperCase()}&interval=${interval}&limit=20`,
-      );
+      try {
+        setLoading(true);
+        const res = await fetch(
+          `https://api.binance.com/api/v3/klines?symbol=${symbol.toUpperCase()}&interval=${interval}&limit=20`,
+        );
 
-      const data = await res.json();
+        const data = await res.json();
 
-      const candles: Candle[] = data.map((item: any) => ({
-        time: (item[0] / 1000) as UTCTimestamp,
-        open: parseFloat(item[1]),
-        high: parseFloat(item[2]),
-        low: parseFloat(item[3]),
-        close: parseFloat(item[4]),
-      }));
+        const candles: Candle[] = data.map((item: any) => ({
+          time: (item[0] / 1000) as UTCTimestamp,
+          open: parseFloat(item[1]),
+          high: parseFloat(item[2]),
+          low: parseFloat(item[3]),
+          close: parseFloat(item[4]),
+        }));
 
-      candleSeriesRef.current?.setData(candles);
-      chartRef.current?.timeScale().fitContent();
+        candleSeriesRef.current?.setData(candles);
+        chartRef.current?.timeScale().fitContent();
 
-      // set giá hiện tại
-      const last = candles[candles.length - 1];
-      if (last) {
-        setPrice(last.close);
-        setPercent(((last.close - last.open) / last.open) * 100);
+        // set giá hiện tại
+        const last = candles[candles.length - 1];
+        if (last) {
+          setPrice(last.close);
+          setPercent(((last.close - last.open) / last.open) * 100);
+        }
+      } finally {
+        setLoading(false);
       }
     }
-
     loadHistory();
   }, [interval, symbol]);
 
   useEffect(() => {
-    fetch24hChange();
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        await fetch24hChange();
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    const intervalId: number = window.setInterval(() => {
-      fetch24hChange();
-    }, 5000);
+    fetchData();
+
+    const intervalId = window.setInterval(fetch24hChange, 5000);
 
     return () => clearInterval(intervalId);
   }, [symbol]);
@@ -205,6 +217,11 @@ export default function ChartViewCustom({
     return () => ws.close();
   }, [interval, symbol]);
 
+  useEffect(() => {
+    setPrice(0);
+    setOpenPrice(0);
+    setPercent(0);
+  }, [symbol]);
   return (
     <Box
       sx={{
@@ -215,40 +232,89 @@ export default function ChartViewCustom({
     >
       <Stack direction="row" justifyContent="space-between" mb={2}>
         <Box>
-          <Typography
-            fontSize={25}
-            fontWeight="bold"
-            color={percent >= 0 ? "#00C853" : "#FF3D00"}
-          >
-            {Number(price.toFixed(2)).toLocaleString()}
-          </Typography>
+          {loading ? (
+            <>
+              <Skeleton
+                variant="text"
+                width={120}
+                height={40}
+                animation="wave"
+              />
+              <Skeleton
+                variant="rounded"
+                width={70}
+                height={24}
+                animation="wave"
+              />
+            </>
+          ) : (
+            <>
+              <Typography
+                fontSize={25}
+                fontWeight="bold"
+                color={percent >= 0 ? "#00C853" : "#FF3D00"}
+              >
+                {Number(price.toFixed(2)).toLocaleString()}
+              </Typography>
 
-          <Chip
-            label={`${percent.toFixed(2)}%`}
-            size="small"
-            sx={{
-              color: percent >= 0 ? "#00C853" : "#FF3D00",
-            }}
-            // icon={}
-          />
+              <Chip
+                label={`${percent.toFixed(2)}%`}
+                size="small"
+                sx={{
+                  color: percent >= 0 ? "#00C853" : "#FF3D00",
+                }}
+              />
+            </>
+          )}
         </Box>
 
         <Box textAlign="right">
-          <Typography color="#aaa" fontSize={12} textAlign={"left"}>
-            Realtime
-          </Typography>
+          {loading ? (
+            <>
+              <Skeleton
+                variant="text"
+                width={70}
+                height={18}
+                animation="wave"
+              />
+              <Skeleton
+                variant="text"
+                width={80}
+                height={20}
+                animation="wave"
+              />
+              <Skeleton
+                variant="text"
+                width={120}
+                height={20}
+                animation="wave"
+              />
+              <Skeleton
+                variant="text"
+                width={120}
+                height={20}
+                animation="wave"
+              />
+            </>
+          ) : (
+            <>
+              <Typography color="#aaa" fontSize={12} textAlign={"left"}>
+                Realtime
+              </Typography>
 
-          <Typography color="white" fontSize={14} textAlign={"left"}>
-            TF: {interval.toUpperCase()}
-          </Typography>
+              <Typography color="white" fontSize={14} textAlign={"left"}>
+                TF: {interval.toUpperCase()}
+              </Typography>
 
-          <Typography color="#00C853" fontSize={13} textAlign={"left"}>
-            Open: {Number(openPrice.toFixed(2)).toLocaleString()}
-          </Typography>
+              <Typography color="#00C853" fontSize={13} textAlign={"left"}>
+                Open: {Number(openPrice.toFixed(2)).toLocaleString()}
+              </Typography>
 
-          <Typography color="#FF3D00" fontSize={13} textAlign={"left"}>
-            Close: {Number(price.toFixed(2)).toLocaleString()}
-          </Typography>
+              <Typography color="#FF3D00" fontSize={13} textAlign={"left"}>
+                Close: {Number(price.toFixed(2)).toLocaleString()}
+              </Typography>
+            </>
+          )}
         </Box>
       </Stack>
 

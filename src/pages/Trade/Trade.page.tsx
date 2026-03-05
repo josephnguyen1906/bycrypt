@@ -87,13 +87,12 @@ export default function TradePage() {
   return (
     <Box
       sx={{
-        maxWidth: 420,
+        maxWidth: "768px",
         margin: "auto",
-        background: "#0f172a",
         minHeight: "100vh",
-        color: "white",
+        background: "#111827",
         p: 2,
-        pb: "120px",
+        pb: "130px",
       }}
     >
       <MenuCoin
@@ -210,7 +209,7 @@ export default function TradePage() {
               gap: "3px",
             }}
           >
-            <ErrorOutline sx={{ fontSize: "16px" }} />
+            <ErrorOutline sx={{ fontSize: "16px", color: "white" }} />
             <Typography fontSize={13} color="white">
               {orderType === "market" ? "Market price" : "Limit price"}{" "}
             </Typography>
@@ -254,9 +253,16 @@ export default function TradePage() {
             />
           )}
 
-          <Typography fontSize={12} color="#9ca3af" mt={2}>
-            Quantity
-          </Typography>
+          <Box
+            sx={{ display: "flex", justifyContent: "space-between", pb: "5px" }}
+          >
+            <Typography fontSize={12} color="#9ca3af" mt={2}>
+              Quantity
+            </Typography>
+            <Typography fontSize={12} color="#ef4444" mt={2}>
+              Handling fee: 0.001%
+            </Typography>
+          </Box>
 
           <TextField
             fullWidth
@@ -277,28 +283,40 @@ export default function TradePage() {
             }}
           />
 
-          <Slider
-            value={sliderValue}
-            onChange={(e, v) => setSliderValue(v as number)}
-            sx={{
-              mt: 2,
-              color: sliderValue ? "#34d399" : "rgb(55 65 81)",
+          <Box sx={{ display: "flex", gap: "5px", alignItems: "center" }}>
+            <Typography
+              sx={{
+                width: "50px",
+                color: "#9ca3af",
+                fontSize: "12px",
+                pt: "10px",
+              }}
+            >
+              {sliderValue}%
+            </Typography>
+            <Slider
+              value={sliderValue}
+              onChange={(e, v) => setSliderValue(v as number)}
+              sx={{
+                mt: 2,
+                color: sliderValue ? "#34d399" : "rgb(55 65 81)",
 
-              // Ẩn nút tròn
-              "& .MuiSlider-thumb": {
-                display: "none",
-              },
+                // Ẩn nút tròn
+                "& .MuiSlider-thumb": {
+                  display: "none",
+                },
 
-              // Giữ chiều cao đẹp hơn
-              "& .MuiSlider-track": {
-                height: 6,
-              },
-              "& .MuiSlider-rail": {
-                height: 6,
-                opacity: 0.3,
-              },
-            }}
-          />
+                // Giữ chiều cao đẹp hơn
+                "& .MuiSlider-track": {
+                  height: 6,
+                },
+                "& .MuiSlider-rail": {
+                  height: 6,
+                  opacity: 0.3,
+                },
+              }}
+            />
+          </Box>
 
           <Box
             sx={{
@@ -323,6 +341,9 @@ export default function TradePage() {
                   color: "white",
                   background: "#334155",
                   borderRadius: "20px",
+                  "&:hover": {
+                    background: "#3f4957ff",
+                  },
                 }}
               >
                 {v}%
@@ -334,10 +355,12 @@ export default function TradePage() {
         {/* FOOTER */}
         <Box mt={3}>
           <Stack direction="row" justifyContent="space-between" fontSize={12}>
-            <span>Available</span>
-            <span>
+            <Typography sx={{ color: "#9ca3af", fontSize: "12px" }}>
+              Available
+            </Typography>
+            <Typography sx={{ color: "white", fontSize: "12px" }}>
               {Number(user?.balance.usdt_total).toLocaleString()} USDT
-            </span>
+            </Typography>
           </Stack>
 
           <Stack
@@ -346,8 +369,12 @@ export default function TradePage() {
             fontSize={12}
             mt={1}
           >
-            <span>Transaction volume</span>
-            <span>{Number(user?.balance.usdt).toLocaleString()} USDT</span>
+            <Typography sx={{ color: "#9ca3af", fontSize: "12px" }}>
+              Transaction volume
+            </Typography>
+            <Typography sx={{ color: "white", fontSize: "12px" }}>
+              {Number(user?.balance.usdt).toLocaleString()} USDT
+            </Typography>
           </Stack>
 
           <Button

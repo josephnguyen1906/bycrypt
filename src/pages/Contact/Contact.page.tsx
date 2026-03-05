@@ -19,23 +19,25 @@ import {
 } from "@/shared/Svgs/Svg.component";
 import CoinMenuMobile from "@/components/coins/CoinMenuMobile";
 import { useTranslation } from "react-i18next";
-import { getWebsiteConfig } from "@/services/User.service";
+import { getListCoin, getWebsiteConfig } from "@/services/User.service";
 import { useUserStore } from "@/stores/useUserStore";
 import TradePopup from "@/components/popup/TradePopup";
 import CommandClose from "./CommandClose";
 import CommandOpen from "./CommandOpen";
+import { Icoin } from "@/interface/user.interface";
 
 export default function ContactPage() {
   const [openTrade, setOpenTrade] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { t, i18n } = useTranslation();
-  const [value, setValue] = React.useState("one");
+  const [value, setValue] = useState("one");
   const [menu, setMenu] = useState("btcusdt");
   const [tab, setTab] = useState("BUY");
   const [percent, setPercent] = useState("");
   const [price, setPrice] = useState<number>();
   const { user, fetchUser } = useUserStore();
   const [interval, setInterval] = useState("1m");
+  const [listCoin, setListCoin] = useState<Icoin[]>([]);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setDrawerOpen(true);
   };
@@ -50,6 +52,21 @@ export default function ContactPage() {
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
+
+  useEffect(() => {
+    const referral = async () => {
+      try {
+        const listCoin: any = await getListCoin();
+
+        if (listCoin.status === true) {
+          setListCoin(listCoin.data);
+        }
+      } catch (errors: any) {
+        console.log(errors?.message);
+      }
+    };
+    referral();
+  }, []);
 
   return (
     <Box
@@ -133,6 +150,7 @@ export default function ContactPage() {
           >
             {CoinMenuMobile({
               menu: menu,
+              listCoin,
               interval,
               changePercent: (v) => {
                 setPercent(v);

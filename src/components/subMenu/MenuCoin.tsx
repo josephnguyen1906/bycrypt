@@ -24,7 +24,7 @@ import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
 import Logout from "@mui/icons-material/Logout";
 import FolderIcon from "@mui/icons-material/Folder";
 import CloseIcon from "@mui/icons-material/Close";
-import { userResponse } from "@/interface/user.interface";
+import { Icoin, userResponse } from "@/interface/user.interface";
 import { Badge, Button, Dialog } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/utils/formatMoney";
@@ -64,15 +64,17 @@ import { useTranslation } from "react-i18next";
 import AddToHomeScreenButton from "../Button/AddToHomeScreenButton";
 import { Visibility } from "@mui/icons-material";
 import { formatDateTime } from "@/utils/formatDateTime";
-import { getWebsiteConfig } from "@/services/User.service";
+import { getListCoin, getWebsiteConfig } from "@/services/User.service";
 import CoinMenuMobile from "../coins/CoinMenuMobile";
 interface props {
   data: (string: string) => void;
 }
+
 export default function MenuCoin({ data }: props) {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const { t, i18n } = useTranslation();
   const [configs, setConfigs] = React.useState<any>();
+  const [listCoin, setListCoin] = React.useState<Icoin[]>([]);
   const [percent, setPercent] = React.useState<string>();
   const [interval, setInterval] = React.useState("1m");
   const [menu, setMenu] = React.useState("btcusdt");
@@ -92,8 +94,13 @@ export default function MenuCoin({ data }: props) {
       try {
         const config: any = await getWebsiteConfig();
 
+        const listCoin: any = await getListCoin();
+
         if (config.status === true) {
           setConfigs(config.data);
+        }
+        if (listCoin.status === true) {
+          setListCoin(listCoin.data);
         }
       } catch (errors: any) {
         console.log(errors?.message);
@@ -107,7 +114,7 @@ export default function MenuCoin({ data }: props) {
       <React.Fragment>
         <Box
           sx={{
-            maxWidth: "800px",
+            maxWidth: "768px",
             width: "100%",
             margin: "auto",
             left: 0,
@@ -181,6 +188,7 @@ export default function MenuCoin({ data }: props) {
         >
           {CoinMenuMobile({
             menu: menu,
+            listCoin,
             interval,
             changePercent: (v) => {
               setPercent(v);

@@ -12,6 +12,7 @@ import {
   Divider,
 } from "@mui/material";
 import { DownIcon, UpIcon } from "@/shared/Svgs/Svg.component";
+import { Icoin } from "@/interface/user.interface";
 type Coin = {
   symbol: string;
   price: number;
@@ -19,23 +20,9 @@ type Coin = {
   history: number[];
 };
 
-const symbols = [
-  "btcusdt",
-  "ethusdt",
-  "bchusdt",
-  "ltcusdt",
-  "uniusdt",
-  //   "XAUUSDT",
-  "dotusdt",
-  "solusdt",
-  "trbusdt",
-  "trxusdt",
-  "xrpusdt",
-  "trumpusdt",
-];
-
 interface props {
   menu: string;
+  listCoin: Icoin[];
   setMenu: (string: string) => void;
   changePercent: (s: string) => void;
   interval: string;
@@ -43,38 +30,43 @@ interface props {
 
 export default function CoinMenuMobile({
   menu,
+  listCoin,
   setMenu,
   interval,
   changePercent,
 }: props) {
   const [coins, setCoins] = useState<Record<string, Coin>>({});
   useEffect(() => {
-    fetch(
-      "https://api.binance.com/api/v3/ticker/24hr?symbols=" +
-        JSON.stringify(symbols.map((s) => s.toUpperCase())),
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        const initial: Record<string, Coin> = {};
-        data.forEach((item: any) => {
-          const base = parseFloat(item.lastPrice);
-          initial[item.symbol.toLowerCase()] = {
-            symbol: item.symbol,
-            price: parseFloat(item.lastPrice),
-            changePercent: Number(item.priceChangePercent) || 0,
-            history: Array.from(
-              { length: 20 },
-              (_, i) => base * (1 + (Math.random() - 0.5) * 0.002),
-            ),
-          };
+    if (listCoin.length > 0) {
+      fetch(
+        "https://api.binance.com/api/v3/ticker/24hr?symbols=" +
+          JSON.stringify(listCoin.map((s) => s.name.toUpperCase())),
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          const initial: Record<string, Coin> = {};
+          data.forEach((item: any) => {
+            const base = parseFloat(item.lastPrice);
+            initial[item.symbol.toLowerCase()] = {
+              symbol: item.symbol,
+              price: parseFloat(item.lastPrice),
+              changePercent: Number(item.priceChangePercent) || 0,
+              history: Array.from(
+                { length: 20 },
+                (_, i) => base * (1 + (Math.random() - 0.5) * 0.002),
+              ),
+            };
+          });
+          setCoins(initial);
         });
-        setCoins(initial);
-      });
-  }, []);
+    }
+  }, [listCoin]);
 
   // WebSocket realtime
   useEffect(() => {
-    const streams = symbols.map((s) => `${s}@kline_${interval}`).join("/");
+    const streams = listCoin
+      .map((s) => `${s.name}@kline_${interval}`)
+      .join("/");
 
     const ws = new WebSocket(
       `wss://stream.binance.com:9443/stream?streams=${streams}`,
@@ -111,34 +103,36 @@ export default function CoinMenuMobile({
 
   const fetch24hChange = async () => {
     try {
-      const res = await fetch(
-        "https://api.binance.com/api/v3/ticker/24hr?symbols=" +
-          JSON.stringify(symbols.map((s) => s.toUpperCase())),
-      );
+      if (listCoin.length > 0) {
+        const res = await fetch(
+          "https://api.binance.com/api/v3/ticker/24hr?symbols=" +
+            JSON.stringify(listCoin.map((s) => s.name.toUpperCase())),
+        );
 
-      const data = await res.json();
+        const data = await res.json();
 
-      setCoins((prev) => {
-        const updated = { ...prev };
+        setCoins((prev) => {
+          const updated = { ...prev };
 
-        data.forEach((item: any) => {
-          const key = item.symbol.toLowerCase();
-          const percent = Number(item.priceChangePercent) || 0;
+          data.forEach((item: any) => {
+            const key = item.symbol.toLowerCase();
+            const percent = Number(item.priceChangePercent) || 0;
 
-          if (updated[key]) {
-            updated[key] = {
-              ...updated[key],
-              changePercent: percent,
-            };
-          }
+            if (updated[key]) {
+              updated[key] = {
+                ...updated[key],
+                changePercent: percent,
+              };
+            }
 
-          if (key === menu) {
-            changePercent(item.priceChangePercent);
-          }
+            if (key === menu) {
+              changePercent(item.priceChangePercent);
+            }
+          });
+
+          return updated;
         });
-
-        return updated;
-      });
+      }
     } catch (err) {
       console.error("24h fetch error", err);
     }
@@ -151,7 +145,7 @@ export default function CoinMenuMobile({
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, [menu]);
+  }, [menu, listCoin]);
 
   return (
     <Box sx={{ minHeight: "100vh", background: "#111827" }}>
@@ -200,7 +194,7 @@ function CoinCard({
       }}
     >
       <Typography fontWeight="bold" sx={{ fontSize: "12px", color: "white" }}>
-        {coin.symbol}
+        {coin.symbol.replace("USDT", "/USDT")}
       </Typography>
       <Box textAlign="right">
         <Typography fontWeight="bold" sx={{ fontSize: "12px", color: "white" }}>
