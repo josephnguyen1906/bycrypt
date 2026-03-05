@@ -74,7 +74,7 @@ export default function PrimaryLayoutComponent({
         router.push("/trade");
         break;
       case 3:
-        router.push("/buysell");
+        router.push("/contact");
         break;
       case 4:
         router.push("/excavator");
