@@ -1931,6 +1931,57 @@ export const NextIcon = ({
   </svg>
 );
 
+export const Next2Icon = ({
+  className,
+  width,
+  height,
+  fill,
+}: IIconPropsComponent) => (
+  <svg
+    viewBox="0 -4 20 20"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    fill="#000000"
+    height={height}
+    width={width}
+  >
+    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+    <g
+      id="SVGRepo_tracerCarrier"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    ></g>
+    <g id="SVGRepo_iconCarrier">
+      <g
+        id="Page-1"
+        stroke="none"
+        strokeWidth="1"
+        fill="none"
+        fillRule="evenodd"
+      >
+        {" "}
+        <g
+          id="DribbbleLight-Preview"
+          transform="translate(-60.000000, -8163.000000)"
+          fill={fill ?? "#fff"}
+        >
+          {" "}
+          <g id="icons" transform="translate(56.000000, 160.000000)">
+            {" "}
+            <path
+              d="M16.8,8012.9 C16.713,8012.965 16.608,8013 16.5,8013 L7,8013 C6.448,8013 6,8012.552 6,8012 L6,8006 C6,8005.448 6.448,8005 7,8005 L16.5,8005 C16.608,8005 16.713,8005.035 16.8,8005.1 L22,8009 L16.8,8012.9 Z M23.2,8007.4 L17.6,8003.2 C17.427,8003.07 17.216,8003 17,8003 L6,8003 C4.895,8003 4,8003.895 4,8005 L4,8013 C4,8014.105 4.895,8015 6,8015 L17,8015 C17.216,8015 17.427,8014.93 17.6,8014.8 L23.2,8010.6 C24.267,8009.8 24.267,8008.2 23.2,8007.4 L23.2,8007.4 Z"
+              id="next_arrow-[#8]"
+            >
+              {" "}
+            </path>{" "}
+          </g>{" "}
+        </g>{" "}
+      </g>{" "}
+    </g>
+  </svg>
+);
+
 export const EmailIcon = ({
   className,
   width,

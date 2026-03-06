@@ -165,3 +165,17 @@ export interface IStaking {
   status: number;
   state: number;
 }
+
+export interface IHistoryExchange {
+  id: number;
+  from_amount: string;
+  from_coin: string;
+  from_rate_usdt: string;
+  to_amount: string;
+  to_coin: string;
+  to_rate_usdt: string;
+  username: string;
+  userid: number;
+  status: number;
+  addtime: Date;
+}

@@ -8,6 +8,7 @@ import {
   DialogTitle,
   List,
   ListItemButton,
+  Pagination,
 } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import React, { useEffect, useState } from "react";
@@ -15,12 +16,14 @@ import { useRouter } from "next/navigation";
 import TradePopup from "@/components/popup/TradePopup";
 import CoinPopup from "@/components/popup/CoinPopup";
 import { Icoin } from "@/interface/user.interface";
-import { ExchangeIcon } from "@/shared/Svgs/Svg.component";
+import { ExchangeIcon, Next2Icon, NextIcon } from "@/shared/Svgs/Svg.component";
 import { useUserStore } from "@/stores/useUserStore";
-import { apiExchange } from "@/services/User.service";
+import { apiExchange, getHistoryExchange } from "@/services/User.service";
 import { error } from "console";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import { IHistoryExchange } from "@/shared/interfaces";
+import { formatDateTime } from "@/utils/formatDateTime";
 
 const coinList = [
   "BTC",
@@ -40,6 +43,9 @@ export default function ExchangePage() {
   const router = useRouter();
   const { user, fetchUser } = useUserStore();
   const [coin, setCoin] = useState("btc");
+  const [history, setHistory] = useState<IHistoryExchange[]>([]);
+  const [page, setPage] = useState({ page: 1, limit: 10 });
+  const [total, setTotal] = useState(0);
   const [fromCoin, setFromCoin] = useState("usdt");
   const [toCoin, setTocoin] = useState("btc");
   const [amount, setAmount] = useState("");
@@ -48,9 +54,19 @@ export default function ExchangePage() {
   const [openSelect, setOpenSelect] = useState(false);
   const available = 0;
   const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    getHistoryExchange(page.page, page.limit).then((res: any) => {
+      if (res.status === true) {
+        setHistory(res.data);
+        setTotal(res.pagination.total);
+      }
+    });
+  }, []);
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
+
   useEffect(() => {
     const ws = new WebSocket(
       `wss://stream.binance.com:9443/ws/${coin.toLowerCase()}usdt@trade`,
@@ -109,6 +125,7 @@ export default function ExchangePage() {
         background: "linear-gradient(180deg,#020617,#020617,#0f172a)",
         color: "white",
         p: 2,
+        pb: "110px",
       }}
     >
       {/* header */}
@@ -356,10 +373,82 @@ export default function ExchangePage() {
       <Typography mt={5} mb={2}>
         Exchange record
       </Typography>
+      {history.length > 0 ? (
+        <Box>
+          {history.map((item: IHistoryExchange, index: number) => (
+            <Box
+              key={index}
+              sx={{
+                background: "#22272d",
+                border: "1px solid #ffffff1a",
+                p: 2,
+                borderRadius: "10px",
+                mb: 2,
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "5px",
+                  alignItems: "center",
+                  color: "white",
+                }}
+              >
+                <Typography
+                  sx={{ color: "white", fontSize: "11px", fontWeight: 500 }}
+                >
+                  {item.from_amount + " " + item.from_coin.toUpperCase()}
+                </Typography>
 
-      <Typography color="#64748b" textAlign="center">
-        No more
-      </Typography>
+                <Typography sx={{ color: "white", fontSize: "10px" }}>
+                  →
+                </Typography>
+
+                <Typography
+                  sx={{ color: "white", fontSize: "11px", fontWeight: 500 }}
+                >
+                  {item.to_amount + " " + item.to_coin.toUpperCase()}
+                </Typography>
+              </Box>
+
+              <Typography
+                sx={{
+                  color: "#6b7280",
+                  fontSize: "11px",
+                  fontWeight: 400,
+                  mt: "5px",
+                }}
+              >
+                {formatDateTime(item.addtime)}
+              </Typography>
+            </Box>
+          ))}
+
+          {/* Pagination */}
+          <Box display="flex" justifyContent="center" mt={2}>
+            <Pagination
+              page={page.page}
+              count={Math.ceil(total / page.limit)}
+              onChange={(e, value) =>
+                setPage((prev) => ({
+                  ...prev,
+                  page: value,
+                }))
+              }
+              size="small"
+              sx={{
+                "& .MuiPaginationItem-root": {
+                  color: "#fff",
+                },
+              }}
+            />
+          </Box>
+        </Box>
+      ) : (
+        <Typography color="#64748b" textAlign="center">
+          No more
+        </Typography>
+      )}
 
       {/* popup select coin */}
       <CoinPopup

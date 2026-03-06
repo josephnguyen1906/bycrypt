@@ -234,6 +234,12 @@ const apiExchange = (from: string, to: string, amount: number) => {
   });
 };
 
+const getHistoryExchange = (from: number, limit: number) => {
+  return contentInstance.get(
+    `/api/finance/exchange/history?page=${from}&limit=${limit}`,
+  );
+};
+
 export {
   loginUser,
   signupUser,
@@ -280,4 +286,5 @@ export {
   getCheckDeposit,
   sendCode,
   apiExchange,
+  getHistoryExchange,
 };
