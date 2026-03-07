@@ -1,16 +1,5 @@
 "use client";
-import {
-  Box,
-  Typography,
-  Button,
-  TextField,
-  Dialog,
-  DialogTitle,
-  List,
-  ListItemButton,
-  Pagination,
-  IconButton,
-} from "@mui/material";
+import { Box, Typography, IconButton } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -20,11 +9,20 @@ import Image from "next/image";
 export default function LanguagePage() {
   const router = useRouter();
   const { t, i18n } = useTranslation();
-  const lang = localStorage.getItem("lang");
-  const changeLanguage = (lang: string) => {
-    i18n.changeLanguage(lang);
-    // Lưu vào localStorage (nếu cần lưu trạng thái)
-    localStorage.setItem("lang", lang);
+
+  const [lang, setLang] = useState<string>("en");
+
+  useEffect(() => {
+    const savedLang = localStorage.getItem("lang");
+    if (savedLang) {
+      setLang(savedLang);
+    }
+  }, []);
+
+  const changeLanguage = (language: string) => {
+    i18n.changeLanguage(language);
+    localStorage.setItem("lang", language);
+    setLang(language);
   };
 
   return (
@@ -38,7 +36,6 @@ export default function LanguagePage() {
       }}
     >
       {/* header */}
-
       <Box
         sx={{
           display: "flex",
@@ -66,6 +63,8 @@ export default function LanguagePage() {
           {t("HomePage.Language")}
         </Typography>
       </Box>
+
+      {/* language list */}
       <Box
         sx={{
           padding: "10px",
@@ -75,6 +74,7 @@ export default function LanguagePage() {
           gap: "10px",
         }}
       >
+        {/* English */}
         <Box
           sx={{
             height: "50px",
@@ -83,15 +83,15 @@ export default function LanguagePage() {
             display: "flex",
             gap: "20px",
             alignItems: "center",
-            color: lang == "en" ? " #4ade80" : "white",
+            color: lang === "en" ? "#4ade80" : "white",
             background: "#1f2937",
             borderRadius: "15px",
-            border: lang == "en" ? "1px solid #4ade80" : "none",
+            border: lang === "en" ? "1px solid #4ade80" : "none",
           }}
           onClick={() => changeLanguage("en")}
         >
           <Image
-            src={"https://flagcdn.com/us.svg"}
+            src="https://flagcdn.com/us.svg"
             width={30}
             height={30}
             style={{ height: "20px", objectFit: "contain" }}
@@ -99,6 +99,8 @@ export default function LanguagePage() {
           />
           English
         </Box>
+
+        {/* Vietnamese */}
         <Box
           sx={{
             height: "50px",
@@ -107,15 +109,15 @@ export default function LanguagePage() {
             display: "flex",
             gap: "20px",
             alignItems: "center",
-            color: lang == "vi" ? " #4ade80" : "white",
+            color: lang === "vi" ? "#4ade80" : "white",
             background: "#1f2937",
             borderRadius: "15px",
-            border: lang == "vi" ? "1px solid #4ade80" : "none",
+            border: lang === "vi" ? "1px solid #4ade80" : "none",
           }}
           onClick={() => changeLanguage("vi")}
         >
           <Image
-            src={"https://flagcdn.com/vn.svg"}
+            src="https://flagcdn.com/vn.svg"
             width={30}
             height={30}
             style={{ height: "20px", objectFit: "contain" }}
@@ -123,6 +125,8 @@ export default function LanguagePage() {
           />
           Việt Nam
         </Box>
+
+        {/* Japanese */}
         <Box
           sx={{
             height: "50px",
@@ -131,19 +135,19 @@ export default function LanguagePage() {
             display: "flex",
             gap: "20px",
             alignItems: "center",
-            color: lang == "ja" ? " #4ade80" : "white",
+            color: lang === "ja" ? "#4ade80" : "white",
             background: "#1f2937",
             borderRadius: "15px",
-            border: lang == "ja" ? "1px solid #4ade80" : "none",
+            border: lang === "ja" ? "1px solid #4ade80" : "none",
           }}
           onClick={() => changeLanguage("ja")}
         >
           <Image
-            src={"https://flagcdn.com/jp.svg"}
+            src="https://flagcdn.com/jp.svg"
             width={30}
             height={30}
             style={{ height: "20px", objectFit: "contain" }}
-            alt="japan"
+            alt="jp"
           />
           日本語
         </Box>
