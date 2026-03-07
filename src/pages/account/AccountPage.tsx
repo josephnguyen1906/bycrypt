@@ -205,7 +205,7 @@ export default function AccountPage() {
           {
             label: "Transfer",
             icon: <SyncAlt sx={{ color: "white" }} />,
-            link: "#",
+            link: "/transfer",
           },
           {
             label: "Exchange",

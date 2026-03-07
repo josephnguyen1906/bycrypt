@@ -248,6 +248,31 @@ const getFinaceBalance = () => {
   return contentInstance.get(`/api/finance/balance`);
 };
 
+const getFinaceCoin = () => {
+  return contentInstance.get(`/api/finance/coins`);
+};
+
+const getTranferHistory = () => {
+  return contentInstance.get(`/api/transfer/history`);
+};
+
+const postTranfer = (id: number, amount: string, from: string, to: string) => {
+  return contentInstance.post(
+    `/api/transfer`,
+    {
+      id,
+      amount,
+      from,
+      to,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+};
+
 export {
   loginUser,
   signupUser,
@@ -297,4 +322,7 @@ export {
   getHistoryExchange,
   getDepositMethod,
   getFinaceBalance,
+  getFinaceCoin,
+  getTranferHistory,
+  postTranfer,
 };

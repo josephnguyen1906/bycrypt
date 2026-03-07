@@ -15,12 +15,13 @@ import {
   Slider,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
-interface Order {
-  price: string;
-  qty: string;
-}
+type Order = {
+  price: number;
+  qty: number;
+};
 
 export default function TradePage() {
   const [symbol, setSymbol] = useState("btcusdt");
@@ -35,10 +36,12 @@ export default function TradePage() {
   const [orderType, setOrderType] = useState<"market" | "limit">("market");
   const [limitPrice, setLimitPrice] = useState("");
   const router = useRouter();
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
+
   // ===== REALTIME PRICE =====
   useEffect(() => {
     const ws = new WebSocket(
@@ -57,7 +60,7 @@ export default function TradePage() {
     return () => ws.close();
   }, [symbol]);
 
-  // ===== ORDER BOOK =====
+  // ===== BINANCE ORDER BOOK WS =====
   useEffect(() => {
     const ws = new WebSocket(
       `wss://stream.binance.com:9443/ws/${symbol}@depth20@100ms`,
@@ -70,21 +73,31 @@ export default function TradePage() {
       const asksData = data.asks || data.a || [];
 
       setBids(
-        bidsData.slice(0, 3).map((b: any) => ({
-          price: b[0],
-          qty: b[1],
+        bidsData.slice(0, 8).map((b: any) => ({
+          price: parseFloat(b[0]),
+          qty: parseFloat(b[1]),
         })),
       );
 
       setAsks(
-        asksData.slice(0, 3).map((a: any) => ({
-          price: a[0],
-          qty: a[1],
+        asksData.slice(0, 8).map((a: any) => ({
+          price: parseFloat(a[0]),
+          qty: parseFloat(a[1]),
         })),
       );
     };
+
     return () => ws.close();
   }, [symbol]);
+
+  // ===== MAX VOLUME FOR DEPTH BAR =====
+  const maxQty = useMemo(() => {
+    const all = [...bids.map((b) => b.qty), ...asks.map((a) => a.qty)];
+    return Math.max(...all, 1);
+  }, [bids, asks]);
+
+  const formatPrice = (p: number) => p.toLocaleString();
+  const formatQty = (q: number) => q.toFixed(5);
 
   return (
     <Box
@@ -115,47 +128,108 @@ export default function TradePage() {
 
         {/* ORDER BOOK */}
         <Box mt={3}>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography fontSize={12} color="#9ca3af">
-              Price
+          {/* HEADER */}
+          <Stack direction="row" justifyContent="space-between" mb={1}>
+            <Typography fontSize={12} color="#9ca3af" width="25%">
+              {t("Toast.price")}
             </Typography>
-            <Typography fontSize={12} color="#9ca3af">
-              Quantity
+
+            <Typography fontSize={12} color="#9ca3af" textAlign="center">
+              {t("AssetPage.quantity")}
             </Typography>
-            <Typography fontSize={12} color="#9ca3af">
-              Price
+
+            <Typography
+              fontSize={12}
+              color="#9ca3af"
+              width="25%"
+              textAlign="right"
+            >
+              {t("Toast.price")}
             </Typography>
           </Stack>
 
-          {asks.map((a, i) => (
-            <Stack
-              key={i}
-              direction="row"
-              justifyContent="space-between"
-              fontSize={13}
-              sx={{ color: "#FF3D00" }}
-            >
-              <span style={{ color: "#FF3D00" }}>{a.price}</span>
-              <span style={{ color: "white" }}>{a.qty}</span>
-              <span style={{ color: "#00C853" }}>{a.price}</span>
-            </Stack>
-          ))}
+          {Array.from({ length: 5 }).map((_, i) => {
+            const ask = asks[4 - i];
+            const bid = bids[i];
 
-          {bids.map((b, i) => (
-            <Stack
-              key={i}
-              direction="row"
-              justifyContent="space-between"
-              fontSize={13}
-              sx={{ color: "#00C853" }}
-            >
-              <span style={{ color: "#FF3D00" }}>{b.price}</span>
-              <span style={{ color: "white" }}>{b.qty}</span>
-              <span style={{ color: "#00C853" }}>{b.price}</span>
-            </Stack>
-          ))}
+            const askDepth = ask ? (ask.qty / maxQty) * 100 : 0;
+            const bidDepth = bid ? (bid.qty / maxQty) * 100 : 0;
+
+            return (
+              <Box
+                key={i}
+                sx={{
+                  position: "relative",
+                  height: 24,
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                {/* RED DEPTH */}
+                {ask && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      left: 0,
+                      height: "100%",
+                      width: `${askDepth * 0.375}%`,
+                      background: "rgba(239,68,68,0.25)",
+                      pointerEvents: "none",
+                      transition: "width 0.2s ease",
+                    }}
+                  />
+                )}
+
+                {/* GREEN DEPTH */}
+                {bid && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      right: 0,
+                      height: "100%",
+                      width: `${bidDepth * 0.375}%`,
+                      background: "rgba(34,197,94,0.25)",
+                      pointerEvents: "none",
+                      transition: "width 0.2s ease",
+                    }}
+                  />
+                )}
+
+                <Box
+                  width="100%"
+                  fontSize={13}
+                  sx={{
+                    zIndex: 2,
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {/* ASK PRICE */}
+                  <Box width="25%" color="#ef4444">
+                    {ask ? formatPrice(ask.price) : "-"}
+                  </Box>
+
+                  <Box sx={{ display: "flex", gap: "20px" }}>
+                    {/* ASK QTY */}
+                    <Box width="25%" textAlign="right" color="white">
+                      {ask ? formatQty(ask.qty) : "-"}
+                    </Box>
+
+                    {/* BID QTY */}
+                    <Box width="25%" textAlign="left" color="white" ml={"10px"}>
+                      {bid ? formatQty(bid.qty) : "-"}
+                    </Box>
+                  </Box>
+
+                  {/* BID PRICE */}
+                  <Box width="25%" textAlign="right" color="#22c55e">
+                    {bid ? formatPrice(bid.price) : "-"}
+                  </Box>
+                </Box>
+              </Box>
+            );
+          })}
         </Box>
-
         <Stack direction="row" spacing={1} mt={3} alignItems="center">
           {/* BUY */}
           <Button
@@ -172,7 +246,7 @@ export default function TradePage() {
               },
             }}
           >
-            Purchase
+            {t("HistoryPage.Purchase")}
           </Button>
 
           {/* SELL */}
@@ -190,7 +264,7 @@ export default function TradePage() {
               },
             }}
           >
-            Sell
+            {t("BuySellPage.sell1")}
           </Button>
 
           <Box
@@ -222,7 +296,7 @@ export default function TradePage() {
         {/* FORM */}
         <Box mt={3} p={2} bgcolor="#1e293b" borderRadius={3}>
           <Typography fontSize={12} color="#9ca3af">
-            Price
+            {t("Toast.price")}
           </Typography>
 
           {orderType === "market" ? (
@@ -231,7 +305,7 @@ export default function TradePage() {
               color="#9ca3af"
               sx={{ mt: 1, borderBottom: "1px solid rgb(55 65 81)", p: "5px" }}
             >
-              Trade at the current best price
+              {t("Toast.Coin_title")}
             </Typography>
           ) : (
             <TextField
@@ -259,7 +333,7 @@ export default function TradePage() {
             sx={{ display: "flex", justifyContent: "space-between", pb: "5px" }}
           >
             <Typography fontSize={12} color="#9ca3af" mt={2}>
-              Quantity
+              {t("AssetPage.quantity")}
             </Typography>
             <Typography fontSize={12} color="#ef4444" mt={2}>
               Handling fee: 0.001%
@@ -298,7 +372,7 @@ export default function TradePage() {
             </Typography>
             <Slider
               value={sliderValue}
-              onChange={(e, v) => setSliderValue(v as number)}
+              // onChange={(e, v) => setSliderValue(v as number)}
               sx={{
                 mt: 2,
                 color: sliderValue ? "#34d399" : "rgb(55 65 81)",
@@ -359,7 +433,7 @@ export default function TradePage() {
           <Box mt={3}>
             <Stack direction="row" justifyContent="space-between" fontSize={12}>
               <Typography sx={{ color: "#9ca3af", fontSize: "12px" }}>
-                Available
+                {t("DepositWithdrawPage.message")}
               </Typography>
               <Typography sx={{ color: "white", fontSize: "12px" }}>
                 {Number(user?.balance.usdt_total).toLocaleString()} USDT
@@ -373,7 +447,7 @@ export default function TradePage() {
               mt={1}
             >
               <Typography sx={{ color: "#9ca3af", fontSize: "12px" }}>
-                Transaction volume
+                {t("DepositWithdrawPage.transa_v")}
               </Typography>
               <Typography sx={{ color: "white", fontSize: "12px" }}>
                 {Number(user?.balance.usdt).toLocaleString()} USDT
@@ -395,7 +469,7 @@ export default function TradePage() {
                 },
               }}
             >
-              Confirm
+              {t("DepositWithdrawPage.tab4")}
             </Button>
           </Box>
         ) : (

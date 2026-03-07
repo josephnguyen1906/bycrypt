@@ -260,7 +260,7 @@ export default function WithdrawDetailPage() {
                           cursor: "pointer",
                         }}
                       >
-                        All
+                        {t("DepositWithdrawPage.all")}
                       </Typography>
                     </InputAdornment>
                   ),
@@ -415,7 +415,7 @@ export default function WithdrawDetailPage() {
                 ))
               ) : (
                 <Typography color="#6b7280" mt={2} textAlign="center">
-                  No more
+                  {t("AssetPage.no_tran")}
                 </Typography>
               )}
             </Box>

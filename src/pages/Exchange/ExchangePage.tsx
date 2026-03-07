@@ -159,7 +159,7 @@ export default function ExchangePage() {
             fontSize: 20,
           }}
         >
-          Exchange
+          {t("DepositWithdrawPage.exchange")}
         </Typography>
       </Box>
 
@@ -244,7 +244,7 @@ export default function ExchangePage() {
       {/* title */}
 
       <Typography fontWeight={600} mb={1}>
-        Exchange quantity
+        {t("DepositWithdrawPage.exchange_num")}
       </Typography>
 
       {/* input */}
@@ -259,7 +259,7 @@ export default function ExchangePage() {
       >
         <TextField
           variant="standard"
-          placeholder="Please enter exchange"
+          placeholder={t("DepositWithdrawPage.exchange_input")}
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           fullWidth
@@ -295,14 +295,15 @@ export default function ExchangePage() {
           }}
           onClick={() => setAmount(String(available))}
         >
-          All
+          {t("DepositWithdrawPage.all")}
         </Typography>
       </Box>
 
       {/* available */}
 
       <Typography mt={1} fontSize={12} color="#64748b">
-        Available{fromCoin.toUpperCase()} {available}
+        {t("DepositWithdrawPage.message")}
+        {fromCoin.toUpperCase()} {available}
       </Typography>
 
       {/* info */}
@@ -314,7 +315,7 @@ export default function ExchangePage() {
       >
         <Box sx={{ flex: 1 }}>
           <Typography color="rgba(100, 116, 139, 1)" fontSize={10}>
-            Current exchange rate
+            {t("DepositWithdrawPage.exchange_title1")}
           </Typography>
 
           <Typography fontWeight={500} fontSize={11}>
@@ -329,7 +330,7 @@ export default function ExchangePage() {
           }}
         >
           <Typography color="#64748b" fontSize={10}>
-            Available {fromCoin.toUpperCase()}
+            {t("DepositWithdrawPage.message")} {fromCoin.toUpperCase()}
           </Typography>
 
           <Typography fontWeight={500} fontSize={11}>
@@ -344,7 +345,7 @@ export default function ExchangePage() {
           }}
         >
           <Typography color="#64748b" fontSize={10}>
-            Expected to be available {toCoin.toUpperCase()}
+            {t("DepositWithdrawPage.exchange_title")} {toCoin.toUpperCase()}
           </Typography>
 
           <Typography fontWeight={500} fontSize={11}>
@@ -374,13 +375,13 @@ export default function ExchangePage() {
         }}
         onClick={handleSubmit}
       >
-        Exchange
+        {t("DepositWithdrawPage.exchange")}
       </Button>
 
       {/* record */}
 
       <Typography mt={5} mb={2}>
-        Exchange record
+        {t("DepositWithdrawPage.ex_re")}
       </Typography>
       {history.length > 0 ? (
         <Box>
@@ -455,7 +456,7 @@ export default function ExchangePage() {
         </Box>
       ) : (
         <Typography color="#64748b" textAlign="center">
-          No more
+          {t("AssetPage.no_tran")}
         </Typography>
       )}
 

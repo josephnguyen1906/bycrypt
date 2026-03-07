@@ -55,10 +55,8 @@ export default function ExcavatorPage() {
   }, []);
 
   const fetchData = async () => {
-    setLoading(true);
     const res: any = await getOrepool();
     if (res.status) setMiningData(res.data);
-    setLoading(false);
   };
 
   const fetchStakingData = async () => {

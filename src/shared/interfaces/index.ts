@@ -227,3 +227,16 @@ export interface IWithdrawHistory {
   to_user: number;
   admin_view: number;
 }
+
+export interface ITranferHistory {
+  id: number;
+  userid: number;
+  username: string;
+  coinid: number;
+  coinname: string;
+  amount: string;
+  from: string;
+  to: string;
+  addtime: Date;
+  status: number;
+}
