@@ -31,8 +31,8 @@ export default function VerifiedPage() {
   const [fullName, setFullName] = useState<string | null>(null);
   const [cardNumber, setCardNumber] = useState<string | null>(null);
   const [frontImage, setFrontImage] = useState<File>();
-  const [backImage, setBackImage] = useState<File>();
   const frontFileInput = useRef<HTMLInputElement>(null);
+  const [backImage, setBackImage] = useState<File>();
   const backFileInput = useRef<HTMLInputElement>(null);
 
   const { t } = useTranslation();

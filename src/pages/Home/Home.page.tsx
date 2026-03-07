@@ -157,14 +157,14 @@ export default function HomePage() {
               {
                 key: "recharge",
                 icon: "/images/recharge.png",
-                link: "#",
+                link: "/recharge",
               },
               {
                 key: "regulatory",
                 icon: "/images/wallet.png",
-                link: "#",
+                link: "/regulatory",
               },
-              { key: "loan", icon: "/images/loan.png", link: "#" },
+              { key: "loan", icon: "/images/loan.png", link: "/loan" },
             ].map((item) => (
               <Box
                 key={item.key}

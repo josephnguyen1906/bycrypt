@@ -64,7 +64,13 @@ export default function RechargePage() {
             color: "white",
           }}
         >
-          <Box display="flex" alignItems="center" mb={3} gap={"10px"}>
+          <Box
+            display="flex"
+            alignItems="center"
+            mb={3}
+            gap={"10px"}
+            justifyContent={"space-between"}
+          >
             <IconButton
               onClick={() => router.back()}
               sx={{ background: "#232932" }}
@@ -77,6 +83,7 @@ export default function RechargePage() {
             <Typography fontSize={20} fontWeight={600}>
               Deposit
             </Typography>
+            <IconButton></IconButton>
           </Box>
 
           <Box

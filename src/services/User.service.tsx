@@ -273,6 +273,14 @@ const postTranfer = (id: number, amount: string, from: string, to: string) => {
   );
 };
 
+const postUpdateUser = (formData: FormData) => {
+  return contentInstance.post("/api/user/update-profile", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
 export {
   loginUser,
   signupUser,
@@ -325,4 +333,5 @@ export {
   getFinaceCoin,
   getTranferHistory,
   postTranfer,
+  postUpdateUser,
 };

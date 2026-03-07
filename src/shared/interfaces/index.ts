@@ -56,6 +56,14 @@ export interface IUser {
   phone: string;
   cccd: string;
   fullname: string;
+  firstname: string;
+  lastname: string;
+  dob: string;
+  gender: string;
+  country: string;
+  phonenumber: string;
+  loan: string;
+  img_loan: string;
   cardzm: string;
   cardfm: string;
   rzstatus: number;
