@@ -16,9 +16,7 @@ import AccountBalanceWalletOutlined from "@mui/icons-material/AccountBalanceWall
 import SwapHorizOutlined from "@mui/icons-material/SwapHorizOutlined";
 import RefreshOutlined from "@mui/icons-material/RefreshOutlined";
 import ChevronRight from "@mui/icons-material/ChevronRight";
-import LinkIcon from "@mui/icons-material/Link";
-import SecurityOutlined from "@mui/icons-material/SecurityOutlined";
-import LogoutOutlined from "@mui/icons-material/LogoutOutlined";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/stores/useUserStore";
 import { useEffect, useRef, useState } from "react";
@@ -117,6 +115,27 @@ export default function VerifiedPage() {
         </Button>
       ) : (
         <>
+          <Box
+            display="flex"
+            alignItems="center"
+            mb={3}
+            gap={"10px"}
+            justifyContent={"space-between"}
+          >
+            <IconButton
+              onClick={() => router.back()}
+              sx={{ background: "#232932" }}
+            >
+              <ArrowBackIosNewIcon
+                sx={{ cursor: "pointer", color: "white", fontSize: "14px" }}
+              />
+            </IconButton>
+
+            <Typography fontSize={20} fontWeight={600} color={"white"}>
+              {t("HomePage.verified")}
+            </Typography>
+            <IconButton></IconButton>
+          </Box>
           {!user.cccd ? (
             <Box sx={{ mt: 2 }}>
               <Typography
@@ -313,7 +332,7 @@ export default function VerifiedPage() {
           ) : (
             <Box
               sx={{
-                mt: 3,
+                mt: 5,
                 background: "#1f2937",
                 borderRadius: "12px",
                 padding: "20px",
