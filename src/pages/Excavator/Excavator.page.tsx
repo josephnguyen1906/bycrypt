@@ -20,7 +20,7 @@ import { getOrepool, getStaking } from "@/services/User.service";
 import { IOrepool, IOrepoolIterm, IStaking } from "@/shared/interfaces";
 import InvestPopup from "@/components/popup/InvestPopup";
 import StakingPopup from "@/components/popup/StakingPopup";
-import { InternetIcon, UserIcon } from "@/shared/Svgs/Svg.component";
+import { FileIcon, InternetIcon, UserIcon } from "@/shared/Svgs/Svg.component";
 import LanguageSwitcher from "@/components/Language/LanguageSwitcher";
 import { useRouter } from "next/navigation";
 import LoadingComponent from "@/components/Loading";
@@ -189,11 +189,10 @@ export default function ExcavatorPage() {
         >
           <UserIcon width="20px" height="20px" />
         </IconButton>
-        <Tooltip title="Language">
-          <IconButton onClick={() => route.push("/language")}>
-            <InternetIcon width="20px" height="20px" />
-          </IconButton>
-        </Tooltip>
+
+        <IconButton onClick={() => route.push("/language")}>
+          <InternetIcon width="20px" height="20px" />
+        </IconButton>
       </Box>
       {/* Tabs */}
       <Tabs
@@ -222,13 +221,24 @@ export default function ExcavatorPage() {
         <Tab label={t("MiningPage.title2")} />
       </Tabs>
 
-      <Typography fontSize={13} color="#9aa4b2" mb={2} p={2}>
+      <Typography fontSize={13} color="#9aa4b2" p={2}>
         {t("MiningPage.note")}
       </Typography>
 
-      <Typography fontSize={16} color="white" mb={2} p={2}>
-        {t("MiningPage.Featured")}
-      </Typography>
+      <Box
+        sx={{ display: "flex", justifyContent: "space-between", p: "0 10px" }}
+      >
+        <Typography fontSize={16} color="white" p={2}>
+          {t("MiningPage.Featured")}
+        </Typography>
+        <IconButton
+          sx={{ background: "none" }}
+          onClick={() => route.push("/excavator/my-excavator")}
+        >
+          {" "}
+          <FileIcon width="30px" height="30px" fill="white" />
+        </IconButton>
+      </Box>
 
       <Stack spacing={2} pb={20} p={2}>
         {/* Tab 0 */}

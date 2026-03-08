@@ -16,6 +16,8 @@ import ChartViewCustom from "@/components/ChartView/ChartViewCustom";
 import {
   DashboardIcon,
   DownIcon,
+  FileIcon,
+  HistoryIcon,
   InternetIcon,
   MenuIcon,
   UpIcon,
@@ -34,7 +36,6 @@ import CommandClose from "./CommandClose";
 import CommandOpen from "./CommandOpen";
 import { Icoin, IcoinFinace } from "@/interface/user.interface";
 import { useRouter } from "next/navigation";
-import LanguageSwitcher from "@/components/Language/LanguageSwitcher";
 
 export default function ContactPage() {
   const [openTrade, setOpenTrade] = useState(false);
@@ -154,11 +155,10 @@ export default function ContactPage() {
                 )}
               </Typography>
             </Box>
-            <Tooltip title="Language">
-              <IconButton onClick={() => router.push("/language")}>
-                <InternetIcon width="20px" height="20px" />
-              </IconButton>
-            </Tooltip>
+
+            <IconButton onClick={() => router.push("/contact/history")}>
+              <FileIcon width="30px" height="30px" fill="white" />
+            </IconButton>
           </Box>
           <Drawer
             anchor="left"

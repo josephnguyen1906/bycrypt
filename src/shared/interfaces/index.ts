@@ -174,6 +174,21 @@ export interface IStaking {
   state: number;
 }
 
+export interface IMyStaking {
+  id: number;
+  pid: number;
+  uid: number;
+  account: string;
+  name: string;
+  num: string;
+  open: number;
+  percent: string;
+  addtime: Date;
+  endtime: Date;
+  endday: Date;
+  status: number;
+}
+
 export interface IHistoryExchange {
   id: number;
   from_amount: string;
@@ -247,4 +262,30 @@ export interface ITranferHistory {
   to: string;
   addtime: Date;
   status: number;
+}
+
+export interface IMyOrepool {
+  id: number;
+  kid: number;
+  sharbltxt: null;
+  type: number;
+  sharebl: null;
+  uid: number;
+  username: string;
+  kjtitle: string;
+  imgs: string;
+  status: number;
+  cycle: number;
+  synum: number;
+  outtype: number;
+  outcoin: string;
+  outnum: string;
+  outusdt: string;
+  djout: number;
+  djnum: number;
+  addtime: Date;
+  endtime: Date;
+  intaddtime: number;
+  intendtime: number;
+  last_earning_at: Date;
 }
