@@ -48,26 +48,29 @@ import { useUserStore } from "@/stores/useUserStore";
 export default function HomePage() {
   const { t, i18n } = useTranslation();
   const { user, loading, fetchUser } = useUserStore();
+  const [setting, setSetting] = useState<any>();
 
   useEffect(() => {
     fetchUser();
+    getSetting();
   }, [fetchUser]);
 
   const [langAnchorEl, setLangAnchorEl] = React.useState<null | HTMLElement>(
     null,
   );
   const isLangMenuOpen = Boolean(langAnchorEl);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClickLang = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+
   const route = useRouter();
+
   const handleLangMenuClose = () => {
     setLangAnchorEl(null);
+  };
+
+  const getSetting = async () => {
+    const res = await getWebsiteConfig();
+    if (res.status) {
+      setSetting(res.data);
+    }
   };
 
   return (
@@ -131,7 +134,7 @@ export default function HomePage() {
               {
                 key: "service",
                 icon: "/images/icon-service.png",
-                link: "#",
+                link: setting ? setting.telegram : "#",
               },
               {
                 key: "verified",
