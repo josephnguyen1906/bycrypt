@@ -149,7 +149,7 @@ export default function RechargePage() {
             ))}
           </Box>
 
-          {/* <Box
+          <Box
             sx={{
               background: "#1f2a3a",
               borderRadius: "16px",
@@ -162,7 +162,7 @@ export default function RechargePage() {
           >
             <Typography>Bank Card Recharge</Typography>
             <NextIcon width="12px" height="12px" fill="#9ca3af" />
-          </Box> */}
+          </Box>
         </Box>
       )}
     </>

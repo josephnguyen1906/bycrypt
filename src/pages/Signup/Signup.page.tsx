@@ -26,64 +26,84 @@ export default function SignupPage() {
   const [inviteCode, setInviteCode] = useState("");
   const [sending, setSending] = useState(false);
   const [countdown, setCountdown] = useState(0);
-  const [loadding, setLoadding] = useState<boolean>(false);
+  const [mailSent, setMailSent] = useState(false);
+  const [loadding, setLoadding] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const handlePassword = (e: any) => setPassword(e.target.value);
   const handleUsername = (e: any) => setEmail(e.target.value);
   const toggleShowPassword = () => setShowPassword(!showPassword);
   const router = useRouter();
+  useEffect(() => {
+    if (countdown <= 0) return;
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [countdown]);
 
   const handleSendInvite = async () => {
-    if (!email) return;
+    if (!email || countdown > 0) return;
+
+    setSending(true);
+    setErrorMsg(null);
 
     try {
-      setSending(true);
       const formData = new FormData();
       formData.append("email", email);
-      sendCode(formData)
-        .then((res: any) => {
-          if (res?.status === true) {
-            toast.success("Gửi mail thành công");
-          } else {
-            toast.error(res?.message);
-          }
-        })
-        .catch((err) => {
-          console.error("API error:", err);
-          toast.error(err?.message || "Lỗi không xác định");
-        });
 
-      // Nếu thành công → bắt đầu countdown
-    } catch (error) {
-      console.error(error);
+      const res: any = await sendCode(formData);
+
+      if (res?.status) {
+        setMailSent(true);
+        setCountdown(60);
+      } else {
+        setErrorMsg(res?.message);
+        toast.error(res?.message);
+      }
+    } catch (err: any) {
+      const msg = err?.response?.data?.message || "Lỗi gửi mail";
+      setErrorMsg(msg);
+      toast.error(msg);
     } finally {
       setSending(false);
     }
   };
+  const signup = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  const signup = (e: React.FormEvent) => {
-    // e.preventDefault();
-    if (email !== "" && password !== "") {
-      setLoadding(true);
+    if (!email || !password) {
+      setErrorMsg(t("Toast.signup1"));
+      // toast.error("Tên đăng nhập và mật khẩu không được để trống");
+      return;
+    }
+
+    setLoadding(true);
+    setErrorMsg(null);
+
+    try {
       const formData = new FormData();
       formData.append("email", email);
       formData.append("password", password);
       formData.append("verification_code", inviteCode);
-      signupUser(formData)
-        .then((res: any) => {
-          if (res?.status === true) {
-            toast.success("Đăng ký thành công");
-            window.location.href = "/login";
-          } else {
-            toast.error(res?.message);
-          }
-        })
-        .catch((err) => {
-          console.error("API error:", err);
-          toast.error(err?.message || "Lỗi không xác định");
-        });
-    } else {
-      toast.error("Tên đăng nhập và mật khẩu không được để trống");
+
+      const res: any = await signupUser(formData);
+
+      if (res?.status) {
+        toast.success(t("Toast.signup2"));
+        window.location.href = "/login";
+      } else {
+        setErrorMsg(res?.message);
+        toast.error(res?.message);
+      }
+    } catch (err: any) {
+      const msg = err?.response?.data?.message || "Lỗi đăng ký";
+      setErrorMsg(msg);
+      toast.error(msg);
+    } finally {
+      setLoadding(false);
     }
   };
   return (
@@ -121,6 +141,12 @@ export default function SignupPage() {
           <Typography variant="h4" gutterBottom sx={{ color: "white" }}>
             {t("SignupPage.title")}
           </Typography>
+
+          {errorMsg && (
+            <Typography color="error" fontSize={13} mt={1}>
+              {errorMsg}
+            </Typography>
+          )}
 
           <form>
             <InputLabel sx={{ color: "white", mt: "10px" }}>
@@ -278,7 +304,7 @@ export default function SignupPage() {
 
               <Button
                 onClick={handleSendInvite}
-                disabled={email.length == 0 || sending}
+                disabled={email.length === 0 || sending || countdown > 0}
                 sx={{
                   minWidth: 80,
                   borderRadius: "14px",
@@ -294,9 +320,14 @@ export default function SignupPage() {
                   },
                 }}
               >
-                {t("SignupPage.button3")}
+                {countdown > 0 ? `${countdown}s` : t("SignupPage.button3")}
               </Button>
             </Box>
+            {mailSent && (
+              <Typography color="#4ade80" fontSize={13} mt={1}>
+                {t("Toast.signup3")}
+              </Typography>
+            )}
             <Box mt={3}>
               {/* Login */}
               <Button

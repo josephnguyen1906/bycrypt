@@ -32,6 +32,10 @@
     "price": "Giá",
     "btn_login": "Đi đến đăng nhập",
     "loan": "Bắt đầu xác minh",
+    "login1": "Đăng nhập thành công",
+    "signup1": "Tên đăng nhập và mật khẩu không được để trống",
+    "signup2": "Đăng ký thành công",
+    "signup3": " Mã xác nhận đã được gửi tới email của bạn",
     "Coin_title": "Giao dịch với giá tốt nhất hiện tại",
     "exchange_toast": "Chuyển đổi thành công"
   },

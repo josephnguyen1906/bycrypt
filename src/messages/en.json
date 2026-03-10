@@ -32,6 +32,10 @@
     "price": "Price",
     "btn_login": "Go to login",
     "loan": "Start verification",
+    "login1": "Login successful",
+    "signup1": "Username and password cannot be empty",
+    "signup2": "Registration successful",
+    "signup3": "The verification code has been sent to your email",
     "Coin_title": "Trade at the current best price",
     "exchange_toast": "Exchange successfully"
   },

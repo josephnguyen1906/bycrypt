@@ -23,6 +23,7 @@ export default function LoginPage() {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loadding, setLoadding] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const handlePassword = (e: any) => setPassword(e.target.value);
@@ -32,30 +33,32 @@ export default function LoginPage() {
   // Login handler
   const login = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (email !== "" && password !== "") {
       setLoadding(true);
+
       const formData = new FormData();
       formData.append("email", email);
       formData.append("password", password);
+
       await loginUser(formData)
         .then((res: any) => {
           if (res?.status === true) {
-            toast.success("Đăng nhập thành công");
+            toast.success(t("Toast.login1"));
             window.localStorage.setItem("token", res.token);
             window.location.href = "/";
           } else {
-            toast.error(res?.msg);
+            toast.error(res?.message);
           }
         })
-        .catch((err) => {
-          console.error("API error:", err);
-          toast.error(err?.message || "Lỗi không xác định");
+        .catch((err: any) => {
+          const msg = err?.response?.data?.message || err.message;
+          setError(msg);
         })
         .finally(() => {
           setLoadding(false);
+          setError("");
         });
-    } else {
-      toast.error("Tên đăng nhập và mật khẩu không được để trống");
     }
   };
   return (
@@ -100,6 +103,13 @@ export default function LoginPage() {
           >
             {t("LoginPage.decription")}
           </Typography>
+          {error.length > 0 && (
+            <Typography
+              sx={{ color: "red", fontSize: "14px", p: "10px", mt: 2 }}
+            >
+              Error: {error}
+            </Typography>
+          )}
           <form>
             <InputLabel sx={{ color: "white", mt: "10px" }}>
               {t("LoginPage.title1")}{" "}
@@ -226,6 +236,7 @@ export default function LoginPage() {
                 )}
               </IconButton>
             </Box>
+
             <Box mt={3}>
               {/* Login */}
               <Button
