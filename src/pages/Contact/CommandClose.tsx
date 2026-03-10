@@ -103,7 +103,7 @@ export default function CommandClose({ user }: { user: IUser }) {
                     </Typography>
 
                     <Typography sx={{ color: "#9aa4b2", fontSize: 13 }}>
-                      {t("BuySellPage.price_buy")}:
+                      {t("BuySellPage.price_buy")}:{" "}
                       {Number(item.buyprice).toLocaleString()}
                     </Typography>
                   </Box>
@@ -118,7 +118,9 @@ export default function CommandClose({ user }: { user: IUser }) {
                         marginBottom: "6px",
                       }}
                     >
-                      {item.is_win === 1 ? "WIN" : "LOSS"}
+                      {item.is_win === 1
+                        ? t("BuySellPage.WIN")
+                        : t("BuySellPage.LOSS")}
                     </Typography>
 
                     <Typography
@@ -172,11 +174,17 @@ export default function CommandClose({ user }: { user: IUser }) {
         <Box
           sx={{
             width: "100%",
-            height: "100%",
+            height: "100vh",
             bgcolor: "#0b1622",
             border: "1px solid #374151",
-
             mx: "auto",
+            pb: "100px",
+            overflowY: "auto",
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
             color: "#fff",
           }}
         >
@@ -227,7 +235,11 @@ export default function CommandClose({ user }: { user: IUser }) {
                     {t("BuySellPage.Closed")}
                   </Box>
                   <Chip
-                    label={selectedOrder.hyzd === 1 ? "Buy" : "Sell"}
+                    label={
+                      selectedOrder.hyzd === 1
+                        ? t("BuySellPage.BUY")
+                        : t("BuySellPage.SELL")
+                    }
                     size="small"
                     sx={{
                       color: selectedOrder.hyzd === 1 ? "#f87171" : "#34d399",

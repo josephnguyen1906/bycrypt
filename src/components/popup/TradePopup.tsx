@@ -181,7 +181,7 @@ export default function TradePopup({
               textAlign={"right"}
               color={tab === "BUY" ? "#22c55e" : "#ef4444"}
             >
-              {tab}
+              {tab === "BUY" ? t("BuySellPage.BUY") : t("BuySellPage.SELL")}
             </Typography>
             <Typography fontWeight="bold" color={"white"}>
               {price.toLocaleString()}
@@ -381,7 +381,7 @@ export default function TradePopup({
           }}
           onClick={handleSubmit}
         >
-          {tab}
+          {tab === "BUY" ? t("BuySellPage.BUY") : t("BuySellPage.SELL")}
         </Button>
         {history.length > 0 && (
           <Typography sx={{ p: "8px", fontSize: "12px", color: "orange" }}>

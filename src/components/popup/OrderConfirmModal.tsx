@@ -128,7 +128,11 @@ export default function OrderConfirmModal({
             </Typography>
 
             {/* Info */}
-            <InfoRow label="Transaction Type" value={type} color="green" />
+            <InfoRow
+              label={t("ProfilePage.tran_type")}
+              value={type}
+              color="green"
+            />
             <InfoRow
               label={t("AssetPage.quantity")}
               value={Number(data?.timer_buynum).toLocaleString()}
