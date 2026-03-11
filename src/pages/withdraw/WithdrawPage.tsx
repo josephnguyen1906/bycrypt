@@ -24,12 +24,36 @@ const networks = [
     img: "https://coin-images.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
   },
   {
+    coin: "bch",
+    img: "https://coin-images.coingecko.com/coins/images/780/large/bitcoin-cash-circle.png?1696501932",
+  },
+  {
     coin: "ltc",
     img: "https://coin-images.coingecko.com/coins/images/2/large/litecoin.png?1696501400",
   },
   {
+    coin: "uni",
+    img: "https://coin-images.coingecko.com/coins/images/12504/large/uniswap-uni.png?1696512319",
+  },
+  {
+    coin: "paxg",
+    img: "https://s2.coinmarketcap.com/static/img/coins/64x64/4705.png",
+  },
+  {
+    coin: "dot",
+    img: "https://coin-images.coingecko.com/coins/images/12171/large/polkadot.png?1696512008",
+  },
+  {
     coin: "sol",
     img: "https://coin-images.coingecko.com/coins/images/4128/large/solana.png?1718769756",
+  },
+  {
+    coin: "trb",
+    img: "https://s2.coinmarketcap.com/static/img/coins/64x64/4944.png",
+  },
+  {
+    coin: "trx",
+    img: "https://coin-images.coingecko.com/coins/images/1094/large/tron-logo.png?1696502193",
   },
   {
     coin: "xrp",
@@ -42,6 +66,10 @@ const networks = [
   {
     coin: "bnb",
     img: "https://coin-images.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+  },
+  {
+    coin: "trump",
+    img: "https://s2.coinmarketcap.com/static/img/coins/64x64/27872.png",
   },
 ];
 
@@ -69,6 +97,8 @@ export default function WithdrawPage() {
       ) : (
         <Box
           sx={{
+            maxWidth: "448px",
+            margin: "auto",
             background: "#0b1727",
             minHeight: "100vh",
             p: 2,

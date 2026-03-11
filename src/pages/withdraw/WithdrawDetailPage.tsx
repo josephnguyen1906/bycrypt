@@ -112,7 +112,8 @@ export default function WithdrawDetailPage() {
           sx={{
             background: "#0b1727",
             minHeight: "100vh",
-
+            maxWidth: "448px",
+            margin: "auto",
             color: "white",
             pb: "120px",
           }}

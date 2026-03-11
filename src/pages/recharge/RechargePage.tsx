@@ -33,7 +33,13 @@ const networks = [
     bg: "#26a17b",
   },
   { name: "ETH-ERC20", icon: "E", coin: "eth", wallet: "ERC20", bg: "#627eea" },
-  { name: "BTC-Bitcoin", icon: "B", coin: "btc", wallet: "BTC", bg: "#f7931a" },
+  {
+    name: "BTC-Bitcoin",
+    icon: "B",
+    coin: "btc",
+    wallet: "TRC20",
+    bg: "#f7931a",
+  },
 ];
 
 export default function RechargePage() {
@@ -58,6 +64,7 @@ export default function RechargePage() {
     }
     setLoading(false);
   };
+  console.log(listMethod);
 
   return (
     <>
@@ -67,6 +74,8 @@ export default function RechargePage() {
         <Box
           sx={{
             background: "#0b1727",
+            maxWidth: "448px",
+            margin: "auto",
             minHeight: "100vh",
             p: 2,
             color: "white",

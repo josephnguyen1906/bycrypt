@@ -105,7 +105,7 @@ export default function TransferPage() {
         alignItems="center"
         gap={"10px"}
         justifyContent={"space-between"}
-        sx={{ background: "#1a1f24", p: 2 }}
+        sx={{ background: "#111827", p: 2 }}
       >
         <IconButton
           onClick={() => router.back()}

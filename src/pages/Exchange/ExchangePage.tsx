@@ -126,6 +126,8 @@ export default function ExchangePage() {
   return (
     <Box
       sx={{
+        maxWidth: "448px",
+        margin: "auto",
         minHeight: "100vh",
         background: "linear-gradient(180deg,#020617,#020617,#0f172a)",
         color: "white",

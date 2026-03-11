@@ -51,7 +51,8 @@ export default function CoinTranferPopup({
           borderTopRightRadius: 20,
           background: "#0e0e0e",
           color: "white",
-
+          maxWidth: "448px",
+          margin: "auto",
           zIndex: 999999999,
           borderRadius: "20px",
           borderTop: "1px solid #e5e7eb",

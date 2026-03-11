@@ -89,6 +89,8 @@ export default function DepositPage() {
             background: "#0b1727",
             minHeight: "100vh",
             p: 2,
+            maxWidth: "448px",
+            margin: "auto",
             color: "white",
             pb: "120px",
           }}
