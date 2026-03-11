@@ -142,7 +142,19 @@ export default function CoinMenuMobile({
   }, [interval, listCoin]);
 
   return (
-    <Box sx={{ minHeight: "100vh", background: "#111827" }}>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        background: "#111827",
+        pb: "100px",
+        overflowY: "auto",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+        "&::-webkit-scrollbar": {
+          display: "none",
+        },
+      }}
+    >
       <Box sx={{ width: "80px", mb: "10px", p: 2 }}>
         <Typography sx={{ color: "#22c55e", fontSize: "16px" }}>
           USDT

@@ -173,7 +173,7 @@ export default function CommandClose({ user }: { user: IUser }) {
       <Modal open={openDetail} onClose={handleCloseDetail}>
         <Box
           sx={{
-            width: "448px",
+            maxWidth: "448px",
             margin: "auto",
             height: "100vh",
             bgcolor: "#0b1622",
