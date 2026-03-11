@@ -142,7 +142,7 @@ export default function CommandClose({ user }: { user: IUser }) {
                 </Box>
               </Box>
             ))}
-          <TablePagination
+          {/* <TablePagination
             component="div"
             count={bill.length}
             page={page}
@@ -155,7 +155,7 @@ export default function CommandClose({ user }: { user: IUser }) {
               color: "white",
               margin: "auto",
             }}
-          />
+          /> */}
         </Box>
       ) : (
         <Typography
@@ -179,7 +179,7 @@ export default function CommandClose({ user }: { user: IUser }) {
             bgcolor: "#0b1622",
             border: "1px solid #374151",
             mx: "auto",
-            pb: "100px",
+            pb: "150px",
             overflowY: "auto",
             "&::-webkit-scrollbar": {
               display: "none",

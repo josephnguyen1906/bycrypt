@@ -318,6 +318,7 @@ export default function ChartViewCustom({
           spacing={1}
           sx={{
             minWidth: "max-content",
+            mb: 2,
           }}
         >
           {["1m", "5m", "15m", "30m", "1h"].map((tf) => (

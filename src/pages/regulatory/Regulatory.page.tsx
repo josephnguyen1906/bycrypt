@@ -65,7 +65,7 @@ export default function RegulatoryPage() {
           width={400}
           height={600}
           alt=""
-          style={{ height: "100%", objectFit: "contain" }}
+          style={{ width: "100%", objectFit: "contain" }}
         />
       </Box>
     </Box>
