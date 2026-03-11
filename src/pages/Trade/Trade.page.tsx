@@ -196,12 +196,11 @@ export default function TradePage() {
           setSymbol(v);
         }}
       />
-      <Box mt={7}>
+      <Box mt={2}>
         <Typography
           fontSize={25}
           fontWeight="bold"
           color={percent >= 0 ? "#00C853" : "#FF3D00"}
-          mt={1}
           sx={{ borderBottom: "1px solid rgb(55 65 81)" }}
         >
           {price.toLocaleString()}

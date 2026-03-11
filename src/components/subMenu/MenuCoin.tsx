@@ -133,21 +133,15 @@ export default function MenuCoin({ data, changeCoin }: props) {
     <>
       <Box
         sx={{
-          maxWidth: "448px",
+          maxWidth: "100%",
           width: "100%",
-          margin: "auto",
-          left: 0,
-          right: 0,
-          position: "fixed",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          top: 0,
           textAlign: "center",
-          padding: "0px 20px",
           background: "#111827",
           boxShadow: "0px -2px 5px rgba(37, 37, 37, 0.1)",
-          p: 2,
+          p: 1,
         }}
       >
         <IconButton
@@ -190,10 +184,9 @@ export default function MenuCoin({ data, changeCoin }: props) {
         onClose={handleDrawerClose}
         sx={{
           "& .MuiDrawer-paper": {
-            width: "320px",
+            width: "40%",
             background: "#111827",
             border: "none",
-
             position: "fixed",
 
             left: {

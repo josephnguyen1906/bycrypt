@@ -137,7 +137,7 @@ export default function TradePopup({
           color: "white",
           overflow: "hidden",
           display: "flex",
-          p: 2,
+          p: 1,
           flexDirection: "column",
           zIndex: 999999999,
         },

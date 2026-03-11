@@ -175,7 +175,7 @@ export default function ContactPage() {
             onClose={handleDrawerClose}
             sx={{
               "& .MuiDrawer-paper": {
-                width: "20%",
+                width: "50%",
                 background: "#111827",
                 border: "none",
 
