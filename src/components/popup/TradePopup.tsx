@@ -127,7 +127,7 @@ export default function TradePopup({
       onClose={onClose}
       PaperProps={{
         sx: {
-          width: "448px",
+          maxWidth: "448px",
           margin: "auto",
           height: "85vh",
           maxHeight: "90vh",
