@@ -142,12 +142,12 @@ export default function WithdrawDetailPage() {
           >
             {/* Title */}
             <Typography fontSize={20} fontWeight={600}>
-              {method?.name.toUpperCase()} {t("StakingPage.tab3")}
+              {method?.title} {t("StakingPage.tab3")}
             </Typography>
 
             <Typography fontSize={13} color="#9ca3af" mt={0.5}>
               {t("DepositWithdrawPage.message")} {method?.balance.available}
-              {method?.name.toUpperCase()}
+              {method?.title}
             </Typography>
 
             {/* Chain type */}

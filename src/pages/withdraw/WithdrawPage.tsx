@@ -130,7 +130,7 @@ export default function WithdrawPage() {
                     ></Avatar>
 
                     <Typography fontSize={14}>
-                      {item.name.toUpperCase()} {t("StakingPage.tab3")}
+                      {item.title} {t("StakingPage.tab3")}
                     </Typography>
                   </Box>
 
