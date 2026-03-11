@@ -96,7 +96,7 @@ export default function TransferPage() {
         maxWidth: "448px",
         margin: "auto",
         minHeight: "100vh",
-        background: "#1f252b",
+        background: "#111827",
         pb: "130px",
       }}
     >

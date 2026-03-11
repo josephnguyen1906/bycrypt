@@ -73,6 +73,7 @@ export default function WithdrawPage() {
             minHeight: "100vh",
             p: 2,
             color: "white",
+            pb: "180px",
           }}
         >
           <Box
