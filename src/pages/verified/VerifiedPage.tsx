@@ -18,6 +18,7 @@ import { VisibilityOffOutlined } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { verifiUser } from "@/services/User.service";
+import { CameraIcon } from "@/shared/Svgs/Svg.component";
 
 export default function VerifiedPage() {
   const [fullName, setFullName] = useState<string | null>(null);
@@ -81,7 +82,7 @@ export default function VerifiedPage() {
   return (
     <Box
       sx={{
-        maxWidth: "768px",
+        maxWidth: "448px",
         margin: "auto",
         minHeight: "100vh",
         background:
@@ -135,41 +136,12 @@ export default function VerifiedPage() {
               <Typography
                 variant="h6"
                 mb={2}
-                sx={{ color: "#d1d5db", fontSize: "12px" }}
+                sx={{ color: "#d1d5db", fontSize: "16px" }}
               >
                 {t("ProfilePage.verified_title1")}
               </Typography>
 
               <Box sx={{ mt: 2, textAlign: "center" }}>
-                <Typography
-                  variant="h6"
-                  mb={1}
-                  mt={1}
-                  sx={{ color: "#d1d5db", fontSize: "12px", textAlign: "left" }}
-                >
-                  {t("ProfilePage.verified_title5")}
-                </Typography>
-                <TextField
-                  fullWidth
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder={t("ProfilePage.verified_title3")}
-                  sx={{
-                    borderRadius: "8px",
-                    background: "#1f2937",
-                    color: "#fff",
-                    marginBottom: "20px",
-                    "& .MuiOutlinedInput-root": {
-                      color: "white",
-                    },
-                    "& .MuiInputBase-input::placeholder": {
-                      color: "gray",
-                      fontSize: { xs: "16px", sm: "14px" },
-                      opacity: 1, // để không bị mờ
-                    },
-                  }}
-                />
                 <Typography
                   variant="h6"
                   mb={1}
@@ -199,15 +171,43 @@ export default function VerifiedPage() {
                     },
                   }}
                 />
+
+                <Typography
+                  variant="h6"
+                  mb={1}
+                  mt={1}
+                  sx={{ color: "#d1d5db", fontSize: "12px", textAlign: "left" }}
+                >
+                  {t("ProfilePage.verified_title5")}
+                </Typography>
+                <TextField
+                  fullWidth
+                  type="text"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder={t("ProfilePage.verified_title3")}
+                  sx={{
+                    borderRadius: "8px",
+                    background: "#1f2937",
+                    color: "#fff",
+                    marginBottom: "20px",
+                    "& .MuiOutlinedInput-root": {
+                      color: "white",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "gray",
+                      fontSize: { xs: "16px", sm: "14px" },
+                      opacity: 1, // để không bị mờ
+                    },
+                  }}
+                />
               </Box>
 
               <Box
                 sx={{
-                  display: {
-                    xs: "block",
-                    sm: "flex",
-                  },
+                  display: "flex",
                   justifyContent: "center",
+                  flexDirection: "column",
                   gap: 2,
                 }}
               >
@@ -217,36 +217,69 @@ export default function VerifiedPage() {
                   mt={1}
                   sx={{
                     color: "#4ade80",
-                    fontSize: "12px",
+                    fontSize: "16px",
                     textAlign: "center",
+                    fontWeight: 400,
                   }}
                 >
                   {t("ProfilePage.verified_title6")}
                 </Typography>
                 <Box
                   sx={{
-                    width: "70%",
+                    width: "100%",
                     textAlign: "center",
                     margin: "auto",
                   }}
                 >
-                  <Box
-                    component="img"
-                    src={
-                      frontImage
-                        ? URL.createObjectURL(frontImage)
-                        : "/images/mau_the_can-cuoc_moi.jpg"
-                    }
-                    alt="Mặt trước CCCD"
-                    onClick={handleFrontClick}
+                  {frontImage ? (
+                    <>
+                      <Box
+                        component="img"
+                        src={frontImage && URL.createObjectURL(frontImage)}
+                        alt="Mặt trước CCCD"
+                        onClick={handleFrontClick}
+                        sx={{
+                          width: "100%",
+                          borderRadius: "8px",
+                          boxShadow: 2,
+                          cursor: "pointer",
+                          objectFit: "cover",
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <Box
+                      onClick={handleFrontClick}
+                      sx={{
+                        width: "120px",
+                        height: "120px",
+                        borderRadius: "8px",
+                        boxShadow: 2,
+                        cursor: "pointer",
+                        background: "#1f2937",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        margin: "0 auto",
+                      }}
+                    >
+                      <CameraIcon width="35px" height="35px" fill="white" />
+                    </Box>
+                  )}
+                  <Typography
                     sx={{
+                      color: "#d1d5db",
                       width: "100%",
-                      borderRadius: "8px",
-                      boxShadow: 2,
-                      cursor: "pointer",
-                      objectFit: "cover",
+                      textAlign: "center",
+                      paddingBottom: "10px",
+                      fontWeight: 400,
+                      fontSize: "14px",
+                      pt: "8px",
                     }}
-                  />
+                  >
+                    {t("ProfilePage.before")}
+                  </Typography>
+
                   <input
                     type="file"
                     accept="image/*"
@@ -254,16 +287,6 @@ export default function VerifiedPage() {
                     style={{ display: "none" }}
                     onChange={handleFrontChange}
                   />
-                  <Typography
-                    sx={{
-                      color: "#fff",
-                      width: "100%",
-                      textAlign: "center",
-                      paddingBottom: "10px",
-                    }}
-                  >
-                    {t("ProfilePage.before")}
-                  </Typography>
                 </Box>
 
                 <Box
@@ -273,23 +296,59 @@ export default function VerifiedPage() {
                     margin: "auto",
                   }}
                 >
-                  <Box
-                    component="img"
-                    src={
-                      backImage
-                        ? URL.createObjectURL(backImage)
-                        : "/images/cccdms.png"
-                    }
-                    alt="Mặt sau CCCD"
-                    onClick={handleBackClick}
+                  {backImage ? (
+                    <>
+                      <Box
+                        component="img"
+                        src={
+                          backImage
+                            ? URL.createObjectURL(backImage)
+                            : "/images/cccdms.png"
+                        }
+                        alt="Mặt sau CCCD"
+                        onClick={handleBackClick}
+                        sx={{
+                          width: "100%",
+                          borderRadius: "8px",
+                          boxShadow: 2,
+                          cursor: "pointer",
+                          objectFit: "cover",
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <Box
+                      onClick={handleBackClick}
+                      sx={{
+                        width: "120px",
+                        height: "120px",
+                        borderRadius: "8px",
+                        boxShadow: 2,
+                        cursor: "pointer",
+                        background: "#1f2937",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        margin: "0 auto",
+                      }}
+                    >
+                      <CameraIcon width="35px" height="35px" fill="white" />
+                    </Box>
+                  )}
+                  <Typography
+                    align="center"
                     sx={{
+                      color: "#d1d5db",
                       width: "100%",
-                      borderRadius: "8px",
-                      boxShadow: 2,
-                      cursor: "pointer",
-                      objectFit: "cover",
+                      textAlign: "center",
+                      paddingBottom: "10px",
+                      fontWeight: 400,
+                      fontSize: "14px",
+                      pt: "8px",
                     }}
-                  />
+                  >
+                    {t("ProfilePage.after")}
+                  </Typography>
                   <input
                     type="file"
                     accept="image/*"
@@ -297,9 +356,6 @@ export default function VerifiedPage() {
                     style={{ display: "none" }}
                     onChange={handleBackChange}
                   />
-                  <Typography align="center" sx={{ color: "#fff" }}>
-                    {t("ProfilePage.after")}
-                  </Typography>
                 </Box>
 
                 <Button
@@ -313,6 +369,7 @@ export default function VerifiedPage() {
                     borderRadius: "15px",
                     margin: "0 auto",
                     mt: "30px",
+                    textTransform: "capitalize",
                     "&:hover": {
                       background: "#22c55e",
                     },

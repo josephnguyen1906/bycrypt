@@ -74,210 +74,217 @@ export default function HomePage() {
   };
 
   return (
-    <div className="home">
-      <div className="home-mobile">
-        <Box>
-          <Box
-            sx={{
-              width: "100%",
-              height: "60px",
-              display: "flex",
-              justifyContent: "space-between",
-              padding: "10px",
-              background: "#111827",
+    <Box
+      sx={{
+        maxWidth: "448px",
+        margin: "auto",
+        minHeight: "100vh",
+        background: "#111827",
+
+        pb: "130px",
+      }}
+    >
+      <Box>
+        <Box
+          sx={{
+            width: "100%",
+            height: "60px",
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "10px",
+            background: "#111827",
+          }}
+        >
+          <IconButton
+            onClick={() => {
+              route.push("/account");
             }}
           >
-            <IconButton
+            <UserIcon width="20px" height="20px" />
+          </IconButton>
+          <Tooltip title="Language">
+            <IconButton onClick={() => route.push("/language")}>
+              <InternetIcon width="20px" height="20px" />
+            </IconButton>
+          </Tooltip>
+        </Box>
+        <Box
+          sx={{
+            width: "100%",
+            paddingTop: "10px",
+            display: "flex",
+            justifyContent: "center",
+            justifyItems: "center",
+            boxShadow:
+              "0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1)",
+          }}
+        >
+          <Image
+            src={"/images/banner.jpg"}
+            width={368}
+            height={212}
+            alt=""
+            style={{
+              width: "90%",
+              objectFit: "cover",
+              borderRadius: "20px",
+            }}
+          />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            mt: 3,
+            alignItems: "flex-start",
+          }}
+        >
+          {[
+            {
+              key: "service",
+              icon: "/images/icon-service.png",
+              link: "#",
+            },
+            {
+              key: "verified",
+              icon: "/images/verified.png",
+              link: "/verified",
+            },
+            {
+              key: "recharge",
+              icon: "/images/recharge.png",
+              link: "/recharge",
+            },
+            {
+              key: "regulatory",
+              icon: "/images/wallet.png",
+              link: "/regulatory",
+            },
+            { key: "loan", icon: "/images/loan.png", link: "/loan" },
+          ].map((item) => (
+            <Box
+              key={item.key}
+              sx={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 1,
+              }}
               onClick={() => {
-                route.push("/account");
+                if (!user && item.key !== "service") {
+                  route.push("/login");
+                } else if (item.link === "#") {
+                  window.open(setting?.telegram, "_blank");
+                } else {
+                  route.push(item.link);
+                }
               }}
             >
-              <UserIcon width="20px" height="20px" />
-            </IconButton>
-            <Tooltip title="Language">
-              <IconButton onClick={() => route.push("/language")}>
-                <InternetIcon width="20px" height="20px" />
-              </IconButton>
-            </Tooltip>
-          </Box>
-          <Box
-            sx={{
-              width: "100%",
-              paddingTop: "10px",
-              display: "flex",
-              justifyContent: "center",
-              justifyItems: "center",
-              boxShadow:
-                "0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1)",
-            }}
-          >
-            <Image
-              src={"/images/banner.jpg"}
-              width={368}
-              height={212}
-              alt=""
-              style={{
-                width: "90%",
-                objectFit: "cover",
-                borderRadius: "20px",
-              }}
-            />
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              mt: 3,
-              alignItems: "flex-start",
-            }}
-          >
-            {[
-              {
-                key: "service",
-                icon: "/images/icon-service.png",
-                link: "#",
-              },
-              {
-                key: "verified",
-                icon: "/images/verified.png",
-                link: "/verified",
-              },
-              {
-                key: "recharge",
-                icon: "/images/recharge.png",
-                link: "/recharge",
-              },
-              {
-                key: "regulatory",
-                icon: "/images/wallet.png",
-                link: "/regulatory",
-              },
-              { key: "loan", icon: "/images/loan.png", link: "/loan" },
-            ].map((item) => (
               <Box
-                key={item.key}
                 sx={{
-                  flex: 1,
+                  width: 50,
+                  height: 50,
+                  border: "1px solid #22b65a",
+                  background: "#1f2937",
+                  borderRadius: "50%",
                   display: "flex",
-                  flexDirection: "column",
+                  justifyContent: "center",
                   alignItems: "center",
-                  gap: 1,
-                }}
-                onClick={() => {
-                  if (!user && item.key !== "service") {
-                    route.push("/login");
-                  } else if (item.link === "#") {
-                    window.open(setting?.telegram, "_blank");
-                  } else {
-                    route.push(item.link);
-                  }
                 }}
               >
-                <Box
-                  sx={{
-                    width: 50,
-                    height: 50,
-                    border: "1px solid #22b65a",
-                    background: "#1f2937",
-                    borderRadius: "50%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Image src={item.icon} width={25} height={25} alt="" />
-                </Box>
-
-                <Typography
-                  sx={{
-                    fontSize: "10px",
-                    color: "white",
-                    textAlign: "center",
-                    px: 1,
-                    lineHeight: 1.2,
-                    wordBreak: "break-word",
-                  }}
-                >
-                  {t(`HomePage.${item.key}`)}
-                </Typography>
+                <Image src={item.icon} width={25} height={25} alt="" />
               </Box>
-            ))}
-          </Box>
-          <Box sx={{ width: "100%", margin: "auto" }}>
-            {/* <MarketSummary /> */}
-            <CoinPage />
-          </Box>
-          <Box sx={{ width: "90%", margin: "20px auto" }}>
-            <Typography
-              variant="h4"
-              sx={{
-                color: "white",
-              }}
-            >
-              {t(`HomePage.h4`)}
-            </Typography>
-            <Typography variant="body1" sx={{ color: "white", mt: "15px" }}>
-              {t(`HomePage.p_1`)}
-            </Typography>
-            <Image
-              src={"./images/about-us.jpg"}
-              width={340}
-              height={340}
-              alt="l"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "contain",
-                margin: "15px 0px",
-                borderRadius: "20px",
-              }}
-            />
-            <Typography
-              variant="body1"
-              sx={{ color: "white", mt: "15px", pb: "100px" }}
-            >
-              {t(`HomePage.p_2`)}
-            </Typography>
-          </Box>
-        </Box>
 
-        <Dialog
-          open={isLangMenuOpen}
-          onClose={handleLangMenuClose}
-          PaperProps={{
-            style: {
-              width: "80%",
-              backgroundColor: "#909090",
-              color: "#fff",
-              borderRadius: "8px",
-              marginTop: "10%",
-            },
+              <Typography
+                sx={{
+                  fontSize: "10px",
+                  color: "white",
+                  textAlign: "center",
+                  px: 1,
+                  lineHeight: 1.2,
+                  wordBreak: "break-word",
+                }}
+              >
+                {t(`HomePage.${item.key}`)}
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+        <Box sx={{ width: "100%", margin: "auto" }}>
+          {/* <MarketSummary /> */}
+          <CoinPage />
+        </Box>
+        <Box sx={{ width: "90%", margin: "20px auto" }}>
+          <Typography
+            variant="h4"
+            sx={{
+              color: "white",
+            }}
+          >
+            {t(`HomePage.h4`)}
+          </Typography>
+          <Typography variant="body1" sx={{ color: "white", mt: "15px" }}>
+            {t(`HomePage.p_1`)}
+          </Typography>
+          <Image
+            src={"./images/about-us.jpg"}
+            width={340}
+            height={340}
+            alt="l"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+              margin: "15px 0px",
+              borderRadius: "20px",
+            }}
+          />
+          <Typography
+            variant="body1"
+            sx={{ color: "white", mt: "15px", pb: "100px" }}
+          >
+            {t(`HomePage.p_2`)}
+          </Typography>
+        </Box>
+      </Box>
+
+      <Dialog
+        open={isLangMenuOpen}
+        onClose={handleLangMenuClose}
+        PaperProps={{
+          style: {
+            width: "80%",
+            backgroundColor: "#909090",
+            color: "#fff",
+            borderRadius: "8px",
+            marginTop: "10%",
+          },
+        }}
+      >
+        <Box
+          sx={{
+            width: "100%",
+            background: "#909090",
+            color: "#fff",
+            height: "200px",
           }}
         >
           <Box
             sx={{
               width: "100%",
-              background: "#909090",
-              color: "#fff",
               height: "200px",
+              padding: "20px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
-            <Box
-              sx={{
-                width: "100%",
-                height: "200px",
-                padding: "20px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
-                {t(`HomePage.button`)}
-              </Typography>
-            </Box>
+            <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
+              {t(`HomePage.button`)}
+            </Typography>
           </Box>
-        </Dialog>
-      </div>
-    </div>
+        </Box>
+      </Dialog>
+    </Box>
   );
 }

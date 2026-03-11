@@ -3,46 +3,46 @@
   --theme-header-height: 0.8rem;
   --theme-side-width: 190;
   --theme-scroll-bar-bg-color: var(--theme-color-line);
-  --theme-filter-active-color: #D1AE52;
+  --theme-filter-active-color: #d1ae52;
   --theme-main-bg-color: #020d24;
   --theme-main-bg-color-hex: 26, 26, 26;
-  --theme-bg-color: #0A0A0A;
-  --theme-table-bg-color: #0A0A0A;
+  --theme-bg-color: #0a0a0a;
+  --theme-table-bg-color: #0a0a0a;
   --theme-disabled-bg-color: #999;
-  --theme-countTo-bg: #0A0A0A;
-  --theme-ant-message-bg: #FFF;
+  --theme-countTo-bg: #0a0a0a;
+  --theme-ant-message-bg: #fff;
   --theme-bg-shadow: rgba(0, 0, 0, 0.06);
   --theme-load-bg-color: #33333366;
   --theme-home-bg-color: 26, 26, 26;
-  --theme-primary-color: #D1AE52;
+  --theme-primary-color: #d1ae52;
   --theme-primay-color-hex: 209, 174, 82;
   --theme-primary-font-color: #703904;
   --theme-disabled-font-color: #fff;
   --theme-ant-message-font-color: #333;
-  --theme-aside-icon-color-0: #BEBEBE;
-  --theme-aside-icon-color-1: #A8A8A8;
+  --theme-aside-icon-color-0: #bebebe;
+  --theme-aside-icon-color-1: #a8a8a8;
   --theme-aside-icon-color-2: #666;
-  --theme-aside-font-color: #D1AE52;
-  --theme-aside-active-font-color: #D1AE52;
+  --theme-aside-font-color: #d1ae52;
+  --theme-aside-active-font-color: #d1ae52;
   --theme-aside-active-bg-color-0: #232323;
   --theme-aside-active-bg-color-1: #262626;
   --theme-aside-box-shadow: 0 0.02rem 0.04rem 0 rgba(0, 0, 0, 0.3);
-  --theme-aside-no-active-box-shadow: #0000001F;
-  --theme-jackpot-bg-color-0: #2A2A2A;
+  --theme-aside-no-active-box-shadow: #0000001f;
+  --theme-jackpot-bg-color-0: #2a2a2a;
   --theme-jackpot-bg-color-1: #282828;
-  --theme-jackpot-num-bg-color-0: #0D0D0D;
+  --theme-jackpot-num-bg-color-0: #0d0d0d;
   --theme-jackpot-num-bg-color-1: #404040;
-  --theme-jackpot-num-bg-color-2: #0D0D0D;
-  --theme-jackpot-num-bg-shadow-color-0: #F9E69C;
-  --theme-jackpot-num-bg-shadow-color-1: #CDAA6C;
-  --theme-jackpot-title-color: #FFFFFF;
+  --theme-jackpot-num-bg-color-2: #0d0d0d;
+  --theme-jackpot-num-bg-shadow-color-0: #f9e69c;
+  --theme-jackpot-num-bg-shadow-color-1: #cdaa6c;
+  --theme-jackpot-title-color: #ffffff;
   --theme-game-lobby-border: #333333;
-  --theme-search-icon-color: #D1AE52;
+  --theme-search-icon-color: #d1ae52;
   --theme-btm-def-color: #999999;
-  --theme-btm-bg-color: #0A0A0A;
-  --theme-mine-icon-color: #D1AE52;
-  --theme-hx-color: #E3E3E3;
-  --theme-text-color-darken: #E3E3E3;
+  --theme-btm-bg-color: #0a0a0a;
+  --theme-mine-icon-color: #d1ae52;
+  --theme-hx-color: #e3e3e3;
+  --theme-text-color-darken: #e3e3e3;
   --theme-text-color: #999999;
   --theme-text-color-lighten: #666666;
   --theme-text-color-lighten-withshadow: #fff;
@@ -55,56 +55,56 @@
   --theme-text-person-color: #fff;
   --theme-color-line: #333333;
   --theme-color-line-hex: 51, 51, 51;
-  --theme-active-bg-color: #1A1A1A;
-  --theme-active-gou-color: #D1AE52;
+  --theme-active-bg-color: #1a1a1a;
+  --theme-active-gou-color: #d1ae52;
   --theme-cardBg-color: rgba(0, 0, 0, 0.5);
   --theme-cardShadow-mask-color: rgba(255, 255, 255, 0.1);
   --theme-cardShadow-font-color: #fff;
   --theme-progress-line-color: #666666;
   --theme-text-color-darken-hex: 227, 227, 227;
-  --theme-secondary-color-success: #04BE02;
+  --theme-secondary-color-success: #04be02;
   --theme-secondary-color-success-linear-gradient: #18c516;
   --theme-secondary-color-success-text: #fff;
-  --theme-secondary-color-error: #EA4E3D;
+  --theme-secondary-color-error: #ea4e3d;
   --theme-secondary-color-error-linear-gradient: #f35a4a;
-  --theme-secondary-color-finance: #FFAA09;
+  --theme-secondary-color-finance: #ffaa09;
   --theme-secondary-color-finance-linear-gradient: #ffb325;
-  --theme-secondary-color-tabs-start-gradient: #1A1A1A;
-  --theme-secondary-color-tabs-end-gradient: #1A1A1A;
-  --theme-secondary-color-tabs-active-start-gradien: #1A1A1A;
-  --theme-secondary-color-tabs-active-end-gradient: #1A1A1A;
-  --theme-secondary-color-tabs-active-border: #D1AE52;
-  --theme-secondary-color-help-text-color: #FFFFFF;
-  --theme-label-secondary-color-finance: #FFAA09;
+  --theme-secondary-color-tabs-start-gradient: #1a1a1a;
+  --theme-secondary-color-tabs-end-gradient: #1a1a1a;
+  --theme-secondary-color-tabs-active-start-gradien: #1a1a1a;
+  --theme-secondary-color-tabs-active-end-gradient: #1a1a1a;
+  --theme-secondary-color-tabs-active-border: #d1ae52;
+  --theme-secondary-color-help-text-color: #ffffff;
+  --theme-label-secondary-color-finance: #ffaa09;
   --theme-event-luck-wheel-silver: #1672f2;
   --theme-event-luck-wheel-gold: #ffaa09;
   --theme-event-luck-wheel-diamond: #b751ff;
-  --theme-user-card-top-bg-color: #E9CA78;
-  --theme-user-card-bg-color: #E0BE6D;
-  --theme-user-card-bottom-bg-color: #C39949;
-  --theme-vip-progress-bg-color: #D1AE52;
+  --theme-user-card-top-bg-color: #e9ca78;
+  --theme-user-card-bg-color: #e0be6d;
+  --theme-user-card-bottom-bg-color: #c39949;
+  --theme-vip-progress-bg-color: #d1ae52;
   --theme-top-nav-bg: #000000;
-  --theme-side-menu-bg-color: #1A1A1A;
-  --theme-side-menu-btn-color: #0A0A0A;
+  --theme-side-menu-bg-color: #1a1a1a;
+  --theme-side-menu-btn-color: #0a0a0a;
   --theme-side-menu-btn-color-hex: 10, 10, 10;
-  --theme-side-menu-btn-hover: #FFFFFF;
-  --theme-side-footer-bg-color: #1A1A1A;
+  --theme-side-menu-btn-hover: #ffffff;
+  --theme-side-footer-bg-color: #1a1a1a;
   --theme-tabbar-bg-color: #111923;
-  --theme-home-bg: #1A1A1A;
+  --theme-home-bg: #1a1a1a;
   --theme-side-bg-color: #0f212e;
   --theme-left-nav-text-color: #999999;
-  --theme-left-nav-text-active-color: #D1AE52;
+  --theme-left-nav-text-active-color: #d1ae52;
   --theme-side-popver-text-color: #fff;
   --theme-game-card-ddt_bg: #333333;
-  --theme-game-card-ddt_icon: #1A1A1A;
-  --theme-alt-primary: #D1AE52;
+  --theme-game-card-ddt_icon: #1a1a1a;
+  --theme-alt-primary: #d1ae52;
   --theme-alt-neutral-1: #999999;
   --theme-alt-neutral-2: #666666;
   --theme-alt-border: #999999;
-  --theme-profile_icon_1: #D1AE52;
-  --theme-profile_icon_2: #D1AE52;
-  --theme-profile_icon_3: #D1AE52;
-  --theme-profile_icon_4: #D1AE52;
+  --theme-profile_icon_1: #d1ae52;
+  --theme-profile_icon_2: #d1ae52;
+  --theme-profile_icon_3: #d1ae52;
+  --theme-profile_icon_4: #d1ae52;
   --theme-web_filter_gou: #703904;
   --theme-aside-active-box-shadow: 0 0.02rem 0.04rem 0 rgba(0, 0, 0, 0.3);
   --vh: 7.42px;
@@ -138,7 +138,6 @@
 }
 
 @supports (-webkit-touch-callout: none) {
-
   input,
   textarea,
   select {
@@ -172,7 +171,7 @@ a[href*="tradingview"] {
   background-color: #fff;
   box-shadow: 0 10px 60px rgb(218, 229, 255);
   border-radius: 20px;
-  padding: 2rem .7rem .7rem .7rem;
+  padding: 2rem 0.7rem 0.7rem 0.7rem;
   text-align: center;
   margin: auto;
   font-size: 1.125rem;
@@ -204,7 +203,9 @@ a[href*="tradingview"] {
   border: 2px dashed #483285;
   color: #444;
   cursor: pointer;
-  transition: background .2s ease-in-out, border .2s ease-in-out;
+  transition:
+    background 0.2s ease-in-out,
+    border 0.2s ease-in-out;
 }
 
 .drop-container:hover {
@@ -221,7 +222,7 @@ a[href*="tradingview"] {
   font-size: 20px;
   font-weight: bold;
   text-align: center;
-  transition: color .2s ease-in-out;
+  transition: color 0.2s ease-in-out;
 }
 
 #file-input {
@@ -243,7 +244,7 @@ a[href*="tradingview"] {
   border-radius: 10px;
   color: #fff;
   cursor: pointer;
-  transition: background .2s ease-in-out;
+  transition: background 0.2s ease-in-out;
 }
 
 li {
@@ -258,14 +259,11 @@ li a {
   background: #111923;
 }
 
-@media only screen and (max-width: 768px) {
-
+@media only screen and (max-width: 448px) {
   /* Thiết lập CSS cho mobile */
   body {
     --device: "m";
   }
-
-
 }
 
 #google_translate_element {
@@ -327,7 +325,7 @@ input {
   display: none !important;
 }
 
-body>.skiptranslate {
+body > .skiptranslate {
   display: none !important;
 }
 
@@ -335,7 +333,7 @@ body>.skiptranslate {
   display: none;
 }
 
-@media(max-width: 500px) {
+@media (max-width: 500px) {
   .google_translate_element {
     width: 250px;
   }

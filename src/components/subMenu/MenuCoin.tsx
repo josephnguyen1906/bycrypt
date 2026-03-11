@@ -134,7 +134,7 @@ export default function MenuCoin({ data, changeCoin }: props) {
       <React.Fragment>
         <Box
           sx={{
-            maxWidth: "768px",
+            maxWidth: "448px",
             width: "100%",
             margin: "auto",
             left: 0,

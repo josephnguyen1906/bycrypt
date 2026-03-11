@@ -1,5 +1,5 @@
 .container {
-    width: 100%;
+    width: 448px;
     height: 100%;
     /* position: relative; */
     margin: 0 auto;
@@ -37,10 +37,10 @@ main {
 }
 
 .menu-mobile {
-    max-width: 769px;
+    max-width: 448px;
     width: 100%;
     margin: auto;
-    left: 1%;
+    left: 0;
     right: 0;
     position: fixed;
     bottom: 0;

@@ -96,7 +96,7 @@ export default function LoanPage() {
   return (
     <Box
       sx={{
-        maxWidth: "768px",
+        maxWidth: "448px",
         margin: "auto",
         minHeight: "100vh",
         background: "#111827",
