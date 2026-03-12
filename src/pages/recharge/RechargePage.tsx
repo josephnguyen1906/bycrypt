@@ -15,7 +15,7 @@ const networks = [
     name: "USDC-ERC20",
     icon: "U",
     coin: "usdc",
-    wallet: "usdc",
+    wallet: "ERC20",
     bg: "#2775ca",
   },
   {
