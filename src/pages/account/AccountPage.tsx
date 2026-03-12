@@ -149,7 +149,7 @@ export default function AccountPage() {
             </Box>
             <Box sx={{ display: "flex", gap: "10px" }}>
               <Typography
-                sx={{ color: "#9ca3af", fontSize: "15px", fontWeight: 300 }}
+                sx={{ color: "#9ca3af", fontSize: "15px", fontWeight: 400 }}
               >
                 UID: {user.invit}
               </Typography>
@@ -177,7 +177,7 @@ export default function AccountPage() {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Typography fontSize={14}>
+            <Typography fontSize={16} fontWeight={600}>
               {t("ProfilePage.Wallet")}(USDT)
             </Typography>
 
