@@ -349,7 +349,7 @@ header {
     border-radius: 8px;
     color: #fff;
     display: flex;
-    font-family: Nunito Sans, sans-serif;
+     font-family: ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji" Nunito Sans, sans-serif;
     font-size: 16px;
     font-weight: 600;
     gap: 4px;

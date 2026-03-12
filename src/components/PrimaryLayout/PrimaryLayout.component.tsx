@@ -30,7 +30,8 @@ import {
   SportsIcon,
   UserIcon,
 } from "@/shared/Svgs/Svg.component";
-import { Box, Button } from "@mui/material";
+import { Box, Button, ThemeProvider } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
 import useAuth from "@/hook/useAuth";
 import { IUser } from "@/shared/interfaces";
 import MenuProfileMobile from "../subMenu/MenuProfileMobile";
@@ -38,10 +39,12 @@ import "../../i18n";
 import LiveChatWidget from "../LIveChat/LiveChat";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import { useUserStore } from "@/stores/useUserStore";
-import LiveChatPage from "../LIveChat/LiveChat";
-const FooterPage = dynamic(() => import("@/pages/Footer/Footer.page"), {
-  ssr: false,
+
+const theme = createTheme({
+  typography: {
+    fontFamily:
+      'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+  },
 });
 
 export default function PrimaryLayoutComponent({
@@ -88,157 +91,179 @@ export default function PrimaryLayoutComponent({
 
   return (
     <>
-      <div className="container">
-        <main>{children}</main>
-        {path !== "/login/" && path !== "/signup/" && path !== "/chat/" && (
-          <nav className="menu-mobile">
-            <ul>
-              <li>
-                <button type="button" onClick={() => hanldMenu(1)}>
-                  <Box
-                    sx={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      background: activeMenu === 1 ? "#22c55e" : "none",
-                    }}
-                  >
-                    <HomeIcon
-                      width="25px"
-                      height="25px"
-                      fill={activeMenu === 1 ? "white" : "#909090"}
-                    />
-                  </Box>
-                  <p
-                    className={activeMenu === 1 ? "mobile-active" : "mobile-p"}
-                  >
-                    {t("MenuMobile.menu1")}
-                  </p>
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => hanldMenu(2)}>
-                  <Box
-                    sx={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      background: activeMenu === 2 ? "#22c55e" : "none",
-                    }}
-                  >
-                    <MarketIcon
-                      width="25px"
-                      height="25px"
-                      fill={activeMenu === 2 ? "white" : "#909090"}
-                    />
-                  </Box>
-                  <p
-                    className={activeMenu === 2 ? "mobile-active" : "mobile-p"}
-                  >
-                    {t("MenuMobile.menu2")}
-                  </p>
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => hanldMenu(3)}>
-                  <Box
-                    sx={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      background: activeMenu === 3 ? "#22c55e" : "none",
-                    }}
-                  >
-                    <SettingsIcon
-                      width="30px"
-                      height="30px"
-                      fill={activeMenu === 3 ? "white" : "#909090"}
-                    />
-                  </Box>
-                  <p
-                    className={activeMenu === 3 ? "mobile-active" : "mobile-p"}
-                  >
-                    {t("MenuMobile.menu3")}
-                  </p>
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => hanldMenu(4)}>
-                  <Box
-                    sx={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      background: activeMenu === 4 ? "#22c55e" : "none",
-                    }}
-                  >
-                    <ChartIcon
-                      width="25px"
-                      height="25px"
-                      fill={activeMenu === 4 ? "white" : "#909090"}
-                    />
-                  </Box>
-                  <p
-                    className={activeMenu === 4 ? "mobile-active" : "mobile-p"}
-                  >
-                    {t("MenuMobile.menu4")}
-                  </p>
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => hanldMenu(5)}>
-                  <Box
-                    sx={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      background: activeMenu === 5 ? "#22c55e" : "none",
-                    }}
-                  >
-                    <UserIcon
-                      width="25px"
-                      height="25px"
-                      fill={activeMenu === 5 ? "white" : "#909090"}
-                    />
-                  </Box>
-                  <p
-                    className={activeMenu === 5 ? "mobile-active" : "mobile-p"}
-                  >
-                    {t("MenuMobile.menu5")}
-                  </p>
-                </button>
-              </li>
-            </ul>
-          </nav>
-        )}
+      <ThemeProvider theme={theme}>
+        <div className="container">
+          <main>{children}</main>
+          {path !== "/login/" && path !== "/signup/" && path !== "/chat/" && (
+            <nav className="menu-mobile">
+              <ul>
+                <li>
+                  <button type="button" onClick={() => hanldMenu(1)}>
+                    <Box
+                      sx={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        background: activeMenu === 1 ? "#22c55e" : "none",
+                      }}
+                    >
+                      <HomeIcon
+                        width="25px"
+                        height="25px"
+                        fill={activeMenu === 1 ? "white" : "#909090"}
+                      />
+                    </Box>
+                    <p
+                      className={
+                        activeMenu === 1 ? "mobile-active" : "mobile-p"
+                      }
+                    >
+                      {t("MenuMobile.menu1")}
+                    </p>
+                  </button>
+                </li>
+                <li>
+                  <button type="button" onClick={() => hanldMenu(2)}>
+                    <Box
+                      sx={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        background: activeMenu === 2 ? "#22c55e" : "none",
+                      }}
+                    >
+                      <MarketIcon
+                        width="25px"
+                        height="25px"
+                        fill={activeMenu === 2 ? "white" : "#909090"}
+                      />
+                    </Box>
+                    <p
+                      className={
+                        activeMenu === 2 ? "mobile-active" : "mobile-p"
+                      }
+                    >
+                      {t("MenuMobile.menu2")}
+                    </p>
+                  </button>
+                </li>
+                <li>
+                  <button type="button" onClick={() => hanldMenu(3)}>
+                    <Box
+                      sx={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        background: activeMenu === 3 ? "#22c55e" : "none",
+                      }}
+                    >
+                      {activeMenu === 3 ? (
+                        <Image
+                          src={"/images/statistic-white.png"}
+                          width={20}
+                          height={20}
+                          alt=""
+                        />
+                      ) : (
+                        <Image
+                          src={"/images/statistic-gray.png"}
+                          width={20}
+                          height={20}
+                          alt=""
+                        />
+                      )}
+                    </Box>
+                    <p
+                      className={
+                        activeMenu === 3 ? "mobile-active" : "mobile-p"
+                      }
+                    >
+                      {t("MenuMobile.menu3")}
+                    </p>
+                  </button>
+                </li>
+                <li>
+                  <button type="button" onClick={() => hanldMenu(4)}>
+                    <Box
+                      sx={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        background: activeMenu === 4 ? "#22c55e" : "none",
+                      }}
+                    >
+                      <ChartIcon
+                        width="25px"
+                        height="25px"
+                        fill={activeMenu === 4 ? "white" : "#909090"}
+                      />
+                    </Box>
+                    <p
+                      className={
+                        activeMenu === 4 ? "mobile-active" : "mobile-p"
+                      }
+                    >
+                      {t("MenuMobile.menu4")}
+                    </p>
+                  </button>
+                </li>
+                <li>
+                  <button type="button" onClick={() => hanldMenu(5)}>
+                    <Box
+                      sx={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        background: activeMenu === 5 ? "#22c55e" : "none",
+                      }}
+                    >
+                      <UserIcon
+                        width="25px"
+                        height="25px"
+                        fill={activeMenu === 5 ? "white" : "#909090"}
+                      />
+                    </Box>
+                    <p
+                      className={
+                        activeMenu === 5 ? "mobile-active" : "mobile-p"
+                      }
+                    >
+                      {t("MenuMobile.menu5")}
+                    </p>
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          )}
 
-        {/* <MenuPopupComponent
+          {/* <MenuPopupComponent
             open={open}
             onClose={handleClose}
             title="Category"
           /> */}
-        <SupportPopupComponent
-          open={openSupport}
-          onClose={() => setOpenSupport(false)}
-          title="Support"
-        />
-        {/* <LiveChatWidget /> */}
-      </div>
+          <SupportPopupComponent
+            open={openSupport}
+            onClose={() => setOpenSupport(false)}
+            title="Support"
+          />
+          {/* <LiveChatWidget /> */}
+        </div>
+      </ThemeProvider>
     </>
   );
 }

@@ -24,7 +24,11 @@ import { useRouter } from "next/navigation";
 import { useUserStore } from "@/stores/useUserStore";
 import Skeleton from "@mui/material/Skeleton";
 import { useEffect, useState } from "react";
-import { VisibilityOffOutlined } from "@mui/icons-material";
+import {
+  SyncAltOutlined,
+  SyncOutlined,
+  VisibilityOffOutlined,
+} from "@mui/icons-material";
 import LoadingComponent from "@/components/Loading";
 import { useTranslation } from "react-i18next";
 import { InternetIcon } from "@/shared/Svgs/Svg.component";
@@ -248,22 +252,90 @@ export default function AccountPage() {
         {[
           {
             label: t("HomePage.recharge"),
-            icon: <RefreshOutlined sx={{ color: "white" }} />,
+            icon: (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="25"
+                height="25"
+                fill="none"
+                stroke="currentColor"
+                style={{ color: "#d1d5db" }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                ></path>
+              </svg>
+            ),
             link: "/recharge",
           },
           {
             label: t("StakingPage.tab3"),
-            icon: <AccountBalanceWalletOutlined sx={{ color: "white" }} />,
+            icon: (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="25"
+                height="25"
+                fill="none"
+                stroke="currentColor"
+                style={{ color: "#d1d5db" }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                ></path>
+              </svg>
+            ),
             link: "/withdraw",
           },
           {
             label: t("BuySellPage.trade"),
-            icon: <SyncAlt sx={{ color: "white" }} />,
+            icon: (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="25"
+                height="25"
+                fill="none"
+                stroke="currentColor"
+                style={{ color: "#d1d5db" }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                ></path>
+              </svg>
+            ),
             link: "/transfer",
           },
           {
             label: t("DepositWithdrawPage.exchange"),
-            icon: <SwapHorizOutlined sx={{ color: "white" }} />,
+            icon: (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="25"
+                height="25"
+                fill="none"
+                stroke="currentColor"
+                style={{ color: "#d1d5db" }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                ></path>
+              </svg>
+            ),
             link: "/exchange",
           },
         ].map((item) => (
@@ -292,7 +364,7 @@ export default function AccountPage() {
               {item.icon}
             </IconButton>
 
-            <Typography fontSize={12} color="#fff" mt={1}>
+            <Typography color="#fff" mt={1} sx={{ fontSize: "12px" }}>
               {item.label}
             </Typography>
           </Box>
@@ -300,7 +372,12 @@ export default function AccountPage() {
       </Stack>
 
       {/* account center */}
-      <Typography color="#fff" mb={1}>
+      <Typography
+        color="#fff"
+        mb={1}
+        variant="h5"
+        sx={{ fontSize: "18px", fontWeight: 600, pb: "10px" }}
+      >
         {t("ProfilePage.center")}
       </Typography>
 
@@ -313,17 +390,80 @@ export default function AccountPage() {
       >
         {[
           {
-            icon: <LinkIcon sx={{ color: "white" }} />,
+            icon: (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="28"
+                height="28"
+                fill="none"
+                stroke="currentColor"
+                style={{ color: "#fff" }}
+              >
+                <path
+                  d="M10 13a5 5 0 007.54.54l1.92-1.92a4 4 0 00-5.66-5.66l-1.03 1.03"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></path>
+                <path
+                  d="M14 11a5 5 0 00-7.54-.54L4.54 12.38a4 4 0 005.66 5.66l1.03-1.03"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></path>
+              </svg>
+            ),
             label: t("ProfilePage.ReferralLink"),
             link: "/referral",
           },
           {
-            icon: <SecurityOutlined sx={{ color: "white" }} />,
+            icon: (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="28"
+                height="28"
+                fill="none"
+                stroke="currentColor"
+                style={{ color: "#fff" }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                ></path>
+              </svg>
+            ),
             label: t("ProfilePage.Security_center"),
             link: "/security",
           },
           {
-            icon: <LogoutOutlined sx={{ color: "white" }} />,
+            icon: (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="28"
+                height="28"
+                fill="none"
+                stroke="currentColor"
+                style={{ color: "#fff" }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15"
+                ></path>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M18 12H9m0 0l3-3m-3 3l3 3"
+                ></path>
+              </svg>
+            ),
             label: t("ProfilePage.Logout"),
             link: null,
           },

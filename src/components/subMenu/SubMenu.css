@@ -22,7 +22,7 @@
     background: #283145;
     border-radius: 8px;
     color: #fff;
-    font-family: Nunito Sans, sans-serif;
+     font-family: ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji" Nunito Sans, sans-serif;
     font-size: 14px;
     padding: 20px 5px;
     text-align: center;

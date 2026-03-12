@@ -97,10 +97,12 @@ main {
 
 .mobile-active {
     color: #22c55e;
+      font-weight: 500;
 }
 
 .mobile-p {
     color: #909090;
+    font-weight: 500;
 }
 
 .icon-home-m {

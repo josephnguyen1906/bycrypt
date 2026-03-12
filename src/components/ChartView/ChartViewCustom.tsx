@@ -10,6 +10,7 @@ import {
   IChartApi,
   ISeriesApi,
 } from "lightweight-charts";
+import { DownIcon, UpIcon } from "@/shared/Svgs/Svg.component";
 
 type Candle = {
   time: UTCTimestamp;
@@ -40,6 +41,19 @@ export default function ChartViewCustom({
   const [price, setPrice] = useState<number>(0);
   const [percent, setPercent] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
+  const [high24h, setHigh24h] = useState(0);
+  const [low24h, setLow24h] = useState(0);
+  const [volume24h, setVolume24h] = useState(0);
+  const timeframes = [
+    { value: "1m", label: "1M" },
+    { value: "5m", label: "5M" },
+    { value: "15m", label: "15M" },
+    { value: "30m", label: "30M" },
+    { value: "1h", label: "1H" },
+    { value: "1d", label: "1D" },
+    { value: "1w", label: "1WEEK" },
+    { value: "1M", label: "1MON" },
+  ];
 
   // ================= INIT CHART =================
   useEffect(() => {
@@ -56,11 +70,13 @@ export default function ChartViewCustom({
       },
       rightPriceScale: {
         borderColor: "#1e2a3a",
-        minimumWidth: 30,
+        autoScale: true,
+        scaleMargins: {
+          top: 0.2,
+          bottom: 0.2,
+        },
       },
-      localization: {
-        priceFormatter: (p: number) => Number(p.toFixed(5)).toLocaleString(),
-      },
+
       timeScale: {
         borderColor: "#1e2a3a",
         timeVisible: true,
@@ -74,18 +90,24 @@ export default function ChartViewCustom({
         pinch: true,
       },
       width: chartContainerRef.current.clientWidth,
-      height: 350,
+      height: 450,
     });
 
     const candleSeries = chart.addSeries(CandlestickSeries, {
-      upColor: "#00C853",
-      downColor: "#FF3D00",
-      borderUpColor: "#00C853",
-      borderDownColor: "#FF3D00",
-      wickUpColor: "#00C853",
-      wickDownColor: "#FF3D00",
+      upColor: "#10b981",
+      downColor: "#ef4444",
+      borderUpColor: "#10b981",
+      borderDownColor: "#ef4444",
+      wickUpColor: "#10b981",
+      wickDownColor: "#ef4444",
       priceLineVisible: false,
       lastValueVisible: false,
+
+      priceFormat: {
+        type: "price",
+        precision: 6,
+        minMove: 0.01,
+      },
     });
 
     chartRef.current = chart;
@@ -94,7 +116,7 @@ export default function ChartViewCustom({
     // Tạo price line 1 lần
     priceLineRef.current = candleSeries.createPriceLine({
       price: 0,
-      color: "#FF3D00",
+      color: "#ef4444",
       lineWidth: 1,
       lineStyle: 2,
       axisLabelVisible: true,
@@ -135,6 +157,9 @@ export default function ChartViewCustom({
 
         candleSeriesRef.current?.setData(candles);
         chartRef.current?.timeScale().fitContent();
+        chartRef.current?.priceScale("right").applyOptions({
+          autoScale: true,
+        });
 
         // set giá hiện tại
         const last = candles[candles.length - 1];
@@ -157,9 +182,10 @@ export default function ChartViewCustom({
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
-      const percentValue = Number(data.P);
-
-      setPercent(percentValue);
+      setPercent(Number(data.P));
+      setHigh24h(parseFloat(data.h));
+      setLow24h(parseFloat(data.l));
+      setVolume24h(parseFloat(data.v));
     };
 
     return () => ws.close();
@@ -188,13 +214,16 @@ export default function ChartViewCustom({
 
       candleSeriesRef.current?.update(candle);
       chartRef.current?.timeScale().scrollToRealTime();
+      chartRef.current?.priceScale("right").applyOptions({
+        autoScale: true,
+      });
       setOpenPrice(open);
       setPrice(close);
       // setPercent(percentValue);
       changePrice(close);
       priceLineRef.current?.applyOptions({
         price: close,
-        color: close >= open ? "#00C853" : "#FF3D00",
+        color: close >= open ? "#10b981" : "#ef4444",
       });
     };
 
@@ -236,18 +265,26 @@ export default function ChartViewCustom({
               <Typography
                 fontSize={25}
                 fontWeight="bold"
-                color={percent >= 0 ? "#00C853" : "#FF3D00"}
+                color={percent >= 0 ? "#10b981" : "#ef4444"}
               >
-                {Number(price.toFixed(2)).toLocaleString()}
+                {Number(price).toLocaleString()}
               </Typography>
+              <Box sx={{ display: "flex", alignItems: "center", gap: "3px" }}>
+                <Typography
+                  sx={{
+                    color: percent >= 0 ? "#10b981" : "#ef4444",
+                    fontSize: "14px",
+                  }}
+                >
+                  {percent.toFixed(2)}%
+                </Typography>
 
-              <Chip
-                label={`${percent.toFixed(2)}%`}
-                size="small"
-                sx={{
-                  color: percent >= 0 ? "#00C853" : "#FF3D00",
-                }}
-              />
+                {Number(percent) < 0 ? (
+                  <DownIcon width="16px" height="16px" fill="#ef4444" />
+                ) : (
+                  <UpIcon width="16px" height="16px" fill="#22c55e" />
+                )}
+              </Box>
             </>
           )}
         </Box>
@@ -282,21 +319,34 @@ export default function ChartViewCustom({
             </>
           ) : (
             <>
-              <Typography color="#aaa" fontSize={12} textAlign={"left"}>
-                Realtime
-              </Typography>
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography color="#9ca3af" fontSize={13} textAlign="left">
+                  High
+                </Typography>
+                <Typography color="#ffffff" fontSize={13} textAlign="right">
+                  {high24h.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </Typography>
+              </Box>
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography color="#9ca3af" fontSize={13} textAlign="left">
+                  Low
+                </Typography>
 
-              <Typography color="white" fontSize={14} textAlign={"left"}>
-                TF: {interval.toUpperCase()}
-              </Typography>
-
-              <Typography color="#00C853" fontSize={13} textAlign={"left"}>
-                Open: {Number(openPrice.toFixed(2)).toLocaleString()}
-              </Typography>
-
-              <Typography color="#FF3D00" fontSize={13} textAlign={"left"}>
-                Close: {Number(price.toFixed(2)).toLocaleString()}
-              </Typography>
+                <Typography color="#ffffff" fontSize={13} textAlign="left">
+                  {Number(low24h).toLocaleString()}
+                </Typography>
+              </Box>
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography color="#9ca3af" fontSize={13} textAlign="left">
+                  24H quantity
+                </Typography>
+                <Typography color="#ffffff" fontSize={13} textAlign="left">
+                  {Number(volume24h).toLocaleString()}
+                </Typography>
+              </Box>
             </>
           )}
         </Box>
@@ -306,11 +356,7 @@ export default function ChartViewCustom({
         sx={{
           overflowX: "auto",
           whiteSpace: "nowrap",
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-          "&::-webkit-scrollbar": {
-            display: "none",
-          },
+          pb: 1,
         }}
       >
         <Stack
@@ -318,25 +364,36 @@ export default function ChartViewCustom({
           spacing={1}
           sx={{
             minWidth: "max-content",
-            mb: 2,
           }}
         >
-          {["1m", "5m", "15m", "30m", "1h"].map((tf) => (
-            <Button
-              key={tf}
-              size="small"
-              onClick={() => setInterval(tf)}
-              variant={tf === interval ? "contained" : "outlined"}
-              sx={{
-                flexShrink: 0,
-                color: "white",
-                borderColor: "#2c3e50",
-                background: tf === interval ? "#00C853" : "transparent",
-              }}
-            >
-              {tf.toUpperCase()}
-            </Button>
-          ))}
+          {timeframes.map((tf) => {
+            const active = tf.value === interval;
+
+            return (
+              <Button
+                key={tf.value}
+                onClick={() => setInterval(tf.value)}
+                sx={{
+                  minWidth: 55,
+                  height: 25,
+                  px: 1,
+                  borderRadius: "999px",
+                  fontSize: "11px",
+                  fontWeight: 600,
+
+                  color: active ? "white" : "#9ca3af",
+                  backgroundColor: active ? "#22c55e" : "#1f2937",
+
+                  "&:hover": {
+                    backgroundColor: "#22c55e",
+                    color: "white",
+                  },
+                }}
+              >
+                {tf.label}
+              </Button>
+            );
+          })}
         </Stack>
       </Box>
 

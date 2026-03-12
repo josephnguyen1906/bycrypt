@@ -37,7 +37,7 @@ const networks = [
     name: "BTC-Bitcoin",
     icon: "B",
     coin: "btc",
-    wallet: "TRC20",
+    wallet: "Bitcoin",
     bg: "#f7931a",
   },
 ];

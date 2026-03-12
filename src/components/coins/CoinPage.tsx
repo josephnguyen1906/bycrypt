@@ -25,13 +25,19 @@ const symbols = [
   "bchusdt",
   "ltcusdt",
   "uniusdt",
-  //   "XAUUSDT",
+  "paxgusdt",
   "dotusdt",
   "solusdt",
   "trbusdt",
   "trxusdt",
   "xrpusdt",
   "trumpusdt",
+  "dogeusdt",
+  "taousdt",
+  "linkusdt",
+  "aptusdt",
+  "bnbusdt",
+  "usdcusdt",
 ];
 const iconMap: Record<string, string> = {
   BTC: "https://cdn.jsdelivr.net/gh/simplr-sh/coin-logos/images/bitcoin/small.png",
@@ -44,8 +50,15 @@ const iconMap: Record<string, string> = {
   TRB: "https://cdn.jsdelivr.net/gh/simplr-sh/coin-logos/images/tellor/small.png",
   TRX: "https://cdn.jsdelivr.net/gh/simplr-sh/coin-logos/images/tron/small.png",
   XRP: "https://cdn.jsdelivr.net/gh/simplr-sh/coin-logos/images/ripple/small.png",
+  PAXG: "/images/18a638a4-aed3-4306-9e18-ad35e03d442a.png",
   TRUMP:
     "https://cdn.jsdelivr.net/gh/simplr-sh/coin-logos/images/maga/small.png",
+  DOGE: "/images/22ef2baf-b210-4882-afd9-1317bb7a3603.png",
+  TAO: "/images/e46210b3-26dd-4eeb-976c-c209a90c3613.png",
+  LINK: "/images/1eda1f7f-585a-4f16-abd7-a7104221414a.png",
+  APT: "/images/f3dff438-2cc0-4d32-b419-935ab660b3ea.png",
+  BNB: "/images/94863af2-c980-42cf-a139-7b9f462a36c2.png",
+  USDC: "/images/4cf7d633-92fb-4d37-80ed-458c7d1ea410.png",
 };
 export default function CoinPage() {
   const [coins, setCoins] = useState<Record<string, Coin>>({});
