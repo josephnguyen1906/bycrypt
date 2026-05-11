@@ -50,6 +50,7 @@ import LanguageSwitcher from "@/components/Language/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 import { formatDateTime } from "@/utils/formatDateTime";
 import NavigationGame from "@/hook/NavigationGame";
+import { useUserStore } from "@/stores/useUserStore";
 
 interface propUser {
   user: userResponse | null;
@@ -98,559 +99,116 @@ const StyledMenu = styled((props: MenuProps) => (
   },
 }));
 
-export default function HeaderPage(props: propUser) {
+export default function HeaderPage() {
   const { t } = useTranslation();
-  const [show, setShow] = useState(false);
-  const [activeTab, setActiveTab] = useState<number>(0);
-  const [user, setUser] = useState<any>(props.user);
-  const [message, setMessage] = React.useState<any>(null);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [menuId, setMenuId] = React.useState<null | string>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [dataNoti, setDataNoti] = useState<any | null>(null);
-  const [configs, setConfigs] = useState<any | null>(null);
-  const [popupOpen, setPopupOpen] = React.useState<null | HTMLElement>(null);
+  const [language, setLanguage] = useState<string>("en");
+
+  useEffect(() => {
+    const storedLang = localStorage.getItem("language") || "en";
+    setLanguage(storedLang);
+  }, []);
   const router = useRouter();
-  const [langAnchorEl, setLangAnchorEl] = React.useState<null | HTMLElement>(
-    null,
-  );
-  const isLangMenuOpen = Boolean(langAnchorEl);
-  const isNotiOpen = Boolean(popupOpen);
-
+  const { user, loading, fetchUser } = useUserStore();
   useEffect(() => {
-    const referral = async () => {
-      try {
-        const config: any = await getWebsiteConfig();
+    fetchUser();
+  }, [fetchUser]);
 
-        if (config.status === true) {
-          setConfigs(config.data);
-        }
-      } catch (errors: any) {
-        console.log(errors?.message);
-      }
-    };
-    referral();
-  }, []);
-
-  const handleLangMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setLangAnchorEl(event.currentTarget);
-  };
-
-  const handleNotiOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setPopupOpen(event.currentTarget);
-  };
-
-  const handleLangMenuClose = () => {
-    setLangAnchorEl(null);
-  };
-  const handleNotiClose = () => {
-    setPopupOpen(null);
-  };
-  const handleMouseEnter = (
-    event: React.MouseEvent<HTMLElement>,
-    id: string,
-  ) => {
-    // Hủy timeout đóng menu nếu có
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    setAnchorEl(event.currentTarget);
-    setMenuId(id);
-  };
-
-  const handleMouseLeave = () => {
-    // Thêm độ trễ trước khi đóng menu
-    timeoutRef.current = setTimeout(() => {
-      setAnchorEl(null);
-      setMenuId(null);
-    }, 200); // Độ trễ 200ms
-  };
-
-  const handleMenuMouseEnter = () => {
-    // Hủy timeout khi chuột vào menu con
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-  };
-
-  const handleSetActiveTab = useCallback((tabIndex: number) => {
-    setActiveTab(tabIndex);
-    setShow(true);
-  }, []);
-
-  const [device, setDevice] = useState("");
-  useEffect(() => {
-    const initialize = async () => {
-      try {
-        const res: any = await getMe();
-        const noti: any = await getNotification();
-        if (res?.data) {
-          setUser(res.data);
-          const updatedRes: any = await getMe();
-          setUser(updatedRes?.data);
-        }
-        if (noti.status === true) {
-          setDataNoti(noti.data);
-        }
-      } catch (error) {
-        console.error("Error during initialization:", error);
-      }
-    };
-
-    initialize();
-  }, []);
-
-  useEffect(() => {
-    const userAgent = navigator.userAgent;
-    if (/iPhone|iPad|iPod/i.test(userAgent)) {
-      setDevice("iOS");
-    } else if (/Android/i.test(userAgent)) {
-      setDevice("Android");
-    } else {
-      setDevice("Khác");
-    }
-  }, []);
-  const menuTranslate = () => (
+  return (
     <Box
       sx={{
-        width: "100%",
-        background: "#909090",
-        color: "#fff",
-        height: "200px",
+        width: "100vw",
+        background: "#141A1F",
+        backdropFilter: "blur(10px)",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        zIndex: 999,
       }}
     >
       <Box
         sx={{
-          width: "100%",
-          height: "200px",
-          padding: "20px",
+          width: "90%",
           display: "flex",
-          flexDirection: "column",
+          justifyContent: "space-between",
+          height: "80px",
           alignItems: "center",
         }}
       >
-        <LanguageSwitcher />
+        <Box sx={{ display: "flex", gap: "10px", pl: "20px" }}>
+          <Image
+            src={"/images/logo2.png"}
+            width={100}
+            height={100}
+            alt=""
+            style={{ height: "50px", objectFit: "contain", cursor: "pointer" }}
+            onClick={() => router.push("/")}
+          />
+          <Box sx={{ display: "flex", gap: "30px", alignItems: "center" }}>
+            {MenuWebsite.map((item) => (
+              <Link
+                href={item.link}
+                key={item.id}
+                style={{ color: "white", textDecoration: "none" }}
+              >
+                {t(`MenuWebsite.${item.title}`)}
+              </Link>
+            ))}
+          </Box>
+        </Box>
+        <Box sx={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <Button
+            sx={{
+              background: "#202630",
+              color: "white",
+              textTransform: "capitalize",
+              borderRadius: "20px",
+              padding: "2px 20px",
+              height: "35px",
+            }}
+          >
+            Nạp tiền
+          </Button>
+          <Button
+            sx={{
+              background: "#202630",
+              color: "white",
+              textTransform: "capitalize",
+              borderRadius: "20px",
+              padding: "2px 20px",
+              height: "35px",
+              display: "flex",
+              gap: "10px",
+            }}
+          >
+            <Image
+              src={"/images/lang-icon.png"}
+              width={20}
+              height={20}
+              alt=""
+              style={{ height: "20px", objectFit: "contain" }}
+            />
+            {language}
+          </Button>
+          <IconButton href={user ? "/profile" : "/login"}>
+            <Image
+              src={"/images/avatar-icon.png"}
+              width={30}
+              height={30}
+              alt=""
+              style={{ height: "30px", objectFit: "contain" }}
+            />
+          </IconButton>
+          <IconButton sx={{ width: 40, height: 40, background: "#202630" }}>
+            <Image
+              src={"/images/live-chat.png"}
+              width={25}
+              height={25}
+              alt=""
+              style={{ height: "25px", objectFit: "contain" }}
+            />
+          </IconButton>
+        </Box>
       </Box>
     </Box>
-  );
-  return (
-    <header>
-      <div className="main-header">
-        <div className="header-top">
-          <div className="header-left">
-            <div className="logo">
-              <a
-                onClick={() => router.push("/")}
-                style={{
-                  textDecoration: "none",
-                  color: "#fff",
-                  fontFamily: "sans-serif",
-                  fontStyle: "italic",
-                }}
-              >
-                <Image
-                  src="/images/logo2.png"
-                  width={120}
-                  height={120}
-                  alt=""
-                  style={{
-                    width: "120px",
-                    height: "50px",
-                    objectFit: "contain",
-                  }}
-                />
-              </a>
-            </div>
-          </div>
-          <nav className="header-bottom">
-            <ul>
-              {MenuWebsite.map((item) => (
-                <li key={item.id}>
-                  <Button
-                    id={`menu-button-${item.id}`}
-                    aria-controls={
-                      anchorEl && menuId === item.id
-                        ? `menu-${item.id}`
-                        : undefined
-                    }
-                    aria-haspopup="true"
-                    aria-expanded={
-                      anchorEl && menuId === item.id ? "true" : undefined
-                    }
-                    disableElevation
-                    onMouseEnter={(e) => handleMouseEnter(e, item.id)}
-                    onMouseLeave={handleMouseLeave}
-                    onClick={() => router.push(item.link)}
-                    endIcon={item.item.length > 0 && <KeyboardArrowDownIcon />}
-                    sx={{ color: "white" }}
-                  >
-                    {t("MenuWebsite." + item.title)}
-                  </Button>
-                  {item.item.length > 0 && (
-                    <StyledMenu
-                      id={`menu-${item.id}`}
-                      anchorEl={anchorEl}
-                      open={Boolean(anchorEl) && menuId === item.id}
-                      onClose={handleMouseLeave}
-                      anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "center",
-                      }}
-                      transformOrigin={{
-                        vertical: "top",
-                        horizontal: "center",
-                      }}
-                      MenuListProps={{
-                        onMouseEnter: handleMenuMouseEnter,
-                        onMouseLeave: handleMouseLeave,
-                      }}
-                    >
-                      {item.item.map((subItem: any, index: number) => (
-                        <MenuItem
-                          key={index}
-                          onClick={handleMouseLeave}
-                          sx={{
-                            width: 330,
-                          }}
-                        >
-                          <Typography
-                            // href={subItem.link}
-                            onClick={() => router.push(subItem.link)}
-                            style={{
-                              textDecoration: "none",
-                              color: "inherit",
-                              display: "flex",
-                              width: "100%",
-                              alignItems: "center",
-                            }}
-                          >
-                            {subItem.icon}
-                            <div
-                              style={{
-                                marginLeft: 8,
-                                width: "calc(100% - 24px)",
-                              }}
-                            >
-                              <Typography
-                                variant="body1"
-                                sx={{
-                                  width: "100%",
-                                  wordBreak: "break-word",
-                                  overflowWrap: "break-word",
-                                  fontWeight: "600",
-                                }}
-                              >
-                                {t("MenuWebsite." + subItem.title)}
-                              </Typography>
-                              {subItem.note && (
-                                <Typography
-                                  variant="caption"
-                                  sx={{
-                                    width: "100%",
-                                    wordBreak: "break-word",
-                                    overflowWrap: "anywhere",
-                                    whiteSpace: "normal",
-                                  }}
-                                >
-                                  {t("MenuWebsite." + subItem.note)}
-                                </Typography>
-                              )}
-                            </div>
-                          </Typography>
-                        </MenuItem>
-                      ))}
-                    </StyledMenu>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </nav>
-          <div className="header-right">
-            {user ? (
-              <div className="header-right-menu">
-                <input
-                  type="text"
-                  placeholder={t("HomePage.mobile_search_placeholder")}
-                  className="search-bar"
-                />
-                <MenuProfile user={user} />
-                <button
-                  onClick={handleNotiOpen}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    padding: 0,
-                    cursor: "pointer",
-                  }}
-                >
-                  <Badge
-                    badgeContent={dataNoti?.unread_count || 0} // số thông báo
-                    color="error" // màu đỏ
-                    overlap="circular" // căn chỉnh cho icon tròn
-                  >
-                    <NotiIcon />
-                  </Badge>
-                </button>
-                <StyledMenu
-                  id="language-menu"
-                  anchorEl={popupOpen}
-                  open={isNotiOpen}
-                  onClose={handleNotiClose}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "center",
-                  }}
-                  MenuListProps={{
-                    onMouseEnter: handleMenuMouseEnter,
-                    onMouseLeave: handleNotiClose,
-                  }}
-                  sx={{
-                    "& .MuiPaper-root": {
-                      width: "400px",
-                      height: "400px",
-                      overflowY: "auto",
-                    },
-                  }}
-                >
-                  <Box
-                    sx={{
-                      width: "90%",
-                      padding: "10px",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      margin: "auto",
-                    }}
-                  >
-                    {dataNoti ? (
-                      dataNoti.notices.map(
-                        (announcement: any, index: number) => (
-                          <Box key={index}>
-                            {/* <Divider sx={{ my: 1 }} /> */}
-                            <Box
-                              sx={{
-                                width: "100%",
-                                padding: "15px 0px",
-                                borderTop:
-                                  index !== 0 ? "1px solid gray" : "none",
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: "5px",
-                                color: "black",
-                              }}
-                            >
-                              <Typography variant="body2" color="black">
-                                {announcement.title}
-                              </Typography>
-                              <Typography variant="body2" color="black">
-                                {formatDateTime(announcement.addtime)}
-                              </Typography>
-
-                              <Typography
-                                color="black"
-                                sx={{ fontSize: "14px", fontWeight: "400" }}
-                              >
-                                {announcement.content}
-                              </Typography>
-                            </Box>
-                          </Box>
-                        ),
-                      )
-                    ) : (
-                      <Box sx={{ width: "100%" }}>
-                        <Box
-                          sx={{
-                            width: "100%",
-                            display: "flex",
-                            marginTop: "15px",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: "12px",
-                          }}
-                        ></Box>
-                      </Box>
-                    )}
-                  </Box>
-                </StyledMenu>
-                <button
-                  onClick={() => {
-                    if (configs && configs.cskh) {
-                      NavigationGame(configs.cskh);
-                    }
-                  }}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    padding: 0,
-                    cursor: "pointer",
-                  }}
-                >
-                  <img src="/images/live-chat.png" width="24px" height="24px" />
-                </button>
-                <button
-                  onClick={handleLangMenuOpen}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    padding: 0,
-                    cursor: "pointer",
-                  }}
-                >
-                  <InternetIcon />
-                </button>
-                <StyledMenu
-                  id="language-menu"
-                  anchorEl={langAnchorEl}
-                  open={isLangMenuOpen}
-                  onClose={handleLangMenuClose}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "center",
-                  }}
-                  MenuListProps={{
-                    onMouseEnter: handleMenuMouseEnter,
-                    onMouseLeave: handleLangMenuClose,
-                  }}
-                  sx={{
-                    "& .MuiPaper-root": {
-                      width: "200px", // Adjust width for language menu
-                    },
-                  }}
-                >
-                  <Box
-                    sx={{
-                      padding: "10px",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      background: "#111827",
-                      boxShadow: "0px -2px 5px rgba(37, 37, 37, 0.1)",
-                    }}
-                  >
-                    <LanguageSwitcher onLanguageChange={handleLangMenuClose} />
-                  </Box>
-                </StyledMenu>
-              </div>
-            ) : (
-              <div className="header-right-menu">
-                <input
-                  type="text"
-                  placeholder={t("HomePage.mobile_search_placeholder")}
-                  className="search-bar"
-                />
-                <a
-                  style={{
-                    background: "none",
-                    fontSize: "14px",
-                    border: "none",
-                    padding: 0,
-                    color: "#fff",
-                    width: "70px",
-                  }}
-                  // href="/login"
-                  onClick={() => router.push("/login")}
-                >
-                  {t("HomePage.mobile_login")}
-                </a>
-                <a
-                  style={{
-                    background: "none",
-                    fontSize: "14px",
-                    padding: "5px",
-                    color: "#fff",
-                    border: "1px solid #fff",
-                    borderRadius: "10px",
-                    width: "65px",
-                  }}
-                  // href="/signup"
-                  onClick={() => router.push("/signup")}
-                >
-                  {t("HomePage.mobile_signup")}
-                </a>
-                <button
-                  style={{
-                    background: "none",
-                    border: "none",
-                    padding: 0,
-                    cursor: "pointer",
-                  }}
-                >
-                  <NotiIcon />
-                </button>
-                <button
-                  onClick={() => {
-                    if (configs && configs.cskh) {
-                      // router.push(configs.cskh);
-                      NavigationGame(configs.cskh);
-                    }
-                  }}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    padding: 0,
-                    cursor: "pointer",
-                  }}
-                >
-                  <img src="/images/live-chat.png" width="24px" height="24px" />
-                </button>
-                <button
-                  onClick={handleLangMenuOpen}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    padding: 0,
-                    cursor: "pointer",
-                  }}
-                >
-                  <InternetIcon />
-                </button>
-                <StyledMenu
-                  id="language-menu"
-                  anchorEl={langAnchorEl}
-                  open={isLangMenuOpen}
-                  onClose={handleLangMenuClose}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "center",
-                  }}
-                  MenuListProps={{
-                    onMouseEnter: handleMenuMouseEnter,
-                    onMouseLeave: handleLangMenuClose,
-                  }}
-                  sx={{
-                    "& .MuiPaper-root": {
-                      width: "200px", // Adjust width for language menu
-                    },
-                  }}
-                >
-                  <Box
-                    sx={{
-                      padding: "5px",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <LanguageSwitcher onLanguageChange={handleLangMenuClose} />
-                  </Box>
-                </StyledMenu>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </header>
   );
 }

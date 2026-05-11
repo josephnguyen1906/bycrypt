@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { PreviousIcon } from "@/shared/Svgs/Svg.component";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function SignupPage() {
   const { t } = useTranslation();
@@ -64,7 +65,7 @@ export default function SignupPage() {
         toast.error(res?.message);
       }
     } catch (err: any) {
-      const msg = err?.response?.data?.message || "Lỗi gửi mail";
+      const msg = err?.message || "Lỗi gửi mail";
       setErrorMsg(msg);
       toast.error(msg);
     } finally {
@@ -109,22 +110,33 @@ export default function SignupPage() {
   return (
     <Box
       sx={{
-        backgroundColor: "#111827",
-        paddingTop: "50px",
+        backgroundColor: "#141A1F",
+        paddingTop: { xs: 0, sm: "50px" },
         height: "100vh",
       }}
     >
       <Box
         sx={{
-          width: "100%",
-          backgroundColor: "#111827",
+          width: {
+            xs: "100%",
+            sm: "460px",
+          },
+          backgroundColor: "#202630",
+          margin: "auto",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          mt: { xs: 0, sm: 6 },
+          height: { xs: "100vh", sm: "auto" },
+          pb: "30px",
+          borderRadius: {
+            xs: 0,
+            sm: "10px",
+          },
           p: 4,
         }}
       >
-        <Box sx={{ maxWidth: "400px", width: "100%" }}>
+        <Box sx={{ maxWidth: "100%", width: "100%" }}>
           <IconButton
             sx={{
               background: "#1f2937",
@@ -138,9 +150,15 @@ export default function SignupPage() {
           >
             <PreviousIcon width="20px" height="20px" />
           </IconButton>
-          <Typography variant="h4" gutterBottom sx={{ color: "white" }}>
-            {t("SignupPage.title")}
-          </Typography>
+          <Box sx={{ width: "100%", textAlign: "center" }}>
+            <Image
+              src={"/images/logo2.png"}
+              width={100}
+              height={100}
+              alt=""
+              style={{ height: "100px", objectFit: "contain" }}
+            />
+          </Box>
 
           {errorMsg && (
             <Typography color="error" fontSize={13} mt={1}>
@@ -161,18 +179,17 @@ export default function SignupPage() {
               onChange={handleUsername}
               sx={{
                 mb: 3,
-
                 "& .MuiOutlinedInput-root": {
-                  borderRadius: "14px",
-                  backgroundColor: "#1e2a3a",
+                  borderRadius: "8px",
+                  backgroundColor: "#2B313B",
                   color: "#fff",
 
                   "& fieldset": {
-                    borderColor: "rgba(255,255,255,0.15)",
+                    borderColor: "none",
                   },
 
                   "&:hover fieldset": {
-                    borderColor: "rgba(255,255,255,0.3)",
+                    borderColor: "none",
                   },
 
                   "&.Mui-focused fieldset": {
@@ -219,18 +236,17 @@ export default function SignupPage() {
                 onChange={handlePassword}
                 sx={{
                   mb: 3,
-
                   "& .MuiOutlinedInput-root": {
-                    borderRadius: "14px",
-                    backgroundColor: "#1e2a3a",
+                    borderRadius: "8px",
+                    backgroundColor: "#2B313B",
                     color: "#fff",
 
                     "& fieldset": {
-                      borderColor: "rgba(255,255,255,0.15)",
+                      borderColor: "none",
                     },
 
                     "&:hover fieldset": {
-                      borderColor: "rgba(255,255,255,0.3)",
+                      borderColor: "none",
                     },
 
                     "&.Mui-focused fieldset": {
@@ -287,16 +303,35 @@ export default function SignupPage() {
                 onChange={(e) => setInviteCode(e.target.value)}
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    borderRadius: "14px",
-                    backgroundColor: "#1e2a3a",
+                    borderRadius: "8px",
+                    backgroundColor: "#2B313B",
                     color: "#fff",
 
                     "& fieldset": {
-                      borderColor: "rgba(255,255,255,0.15)",
+                      borderColor: "none",
+                    },
+
+                    "&:hover fieldset": {
+                      borderColor: "none",
                     },
 
                     "&.Mui-focused fieldset": {
                       borderColor: "#4ade80",
+                      borderWidth: "1px",
+                    },
+                  },
+
+                  "& .MuiInputBase-input": {
+                    color: "#fff",
+
+                    "&::placeholder": {
+                      color: "#7c8aa0",
+                      opacity: 1,
+                    },
+
+                    "&:-webkit-autofill": {
+                      WebkitBoxShadow: "0 0 0 1000px #1e2a3a inset",
+                      WebkitTextFillColor: "#fff",
                     },
                   },
                 }}

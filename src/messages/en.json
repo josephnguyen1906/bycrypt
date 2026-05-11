@@ -40,28 +40,11 @@
     "exchange_toast": "Exchange successfully"
   },
   "MenuWebsite": {
-    "menu1": "Buy & Sell",
-    "sub_menu1": {
-      "menu1": "Buy & Sell Crypto",
-      "note1": "Buying and selling without transaction fees through more than 100 payment methods."
-    },
-    "menu2": "Market",
-    "menu4": "Safe",
-    "sub_menu4": {
-      "menu1": "Earn",
-      "note1": "Don't just hold earn.",
-      "menu2": "Loan",
-      "note2": "Borrow to earn, borrow to spend",
-      "menu3": "Jumpstart",
-      "note3": "Discover new, hight-quality project around the world."
-    },
-    "menu5": "Convert",
-    "sub_menu5": {
-      "menu1": "Convert",
-      "note1": "Quick convertion, zero tranding fees, and no hidden costs.",
-      "menu2": "Spot",
-      "note2": "Buy and sell crypto with ease"
-    }
+    "menu1": "Home",
+    "menu2": "Trade",
+    "menu3": "Market",
+    "menu4": "Invest",
+    "menu5": "News"
   },
   "MenuMobile": {
     "menu1": "Home",
@@ -102,6 +85,13 @@
     "h4": "About Us",
     "button": "Select language",
     "Language": "Language",
+    "title1": "Over 7.5 million users have joined Standard Chartered. Welcome!",
+    "title2": "Download our app for a better experience.",
+    "title3": "Hot Product",
+    "title4": "A trading platform suitable for everyone.",
+    "title5": "Client",
+    "title6": "Supported Countries",
+    "title7": "Quarterly Transaction Volume",
     "p_1": "We are a leading trading platform dedicated to providing safe, efficient and reliable digital asset trading services. Our mission is to provide advanced cryptocurrency trading experiences to global users and promote the development and innovation of the digital asset market.",
     "p_2": "In the field of digital currency, we are committed to becoming a leading innovator and industry benchmark. Our vision is to build a world-leading digital asset trading platform through technological innovation and service excellence, providing users with the best trading experience and the most comprehensive selection of digital assets.",
     "loan": "Loan"

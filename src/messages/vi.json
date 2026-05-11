@@ -40,28 +40,11 @@
     "exchange_toast": "Chuyển đổi thành công"
   },
   "MenuWebsite": {
-    "menu1": "Mua & Bán",
-    "sub_menu1": {
-      "menu1": "Mua & Bán Crypto",
-      "note1": "Mua và bán không mất phí giao dịch với hơn 100 phương thức thanh toán."
-    },
-    "menu2": "Thị trường",
-    "menu4": "Két",
-    "sub_menu4": {
-      "menu1": "Kiếm lợi nhuận",
-      "note1": "Đừng chỉ giữ, hãy kiếm lợi nhuận.",
-      "menu2": "Vay",
-      "note2": "Vay để kiếm tiền, vay để chi tiêu",
-      "menu3": "Jumpstart",
-      "note3": "Khám phá các dự án chất lượng cao trên toàn thế giới."
-    },
-    "menu5": "Chuyển đổi",
-    "sub_menu5": {
-      "menu1": "Chuyển đổi",
-      "note1": "Chuyển đổi nhanh, không phí giao dịch, không chi phí ẩn.",
-      "menu2": "Spot",
-      "note2": "Mua bán crypto dễ dàng"
-    }
+    "menu1": "Trang chủ",
+    "menu2": "Giao dịch",
+    "menu3": "Thị trường",
+    "menu4": "Ngân hàng tài chính",
+    "menu5": "Hướng dẫn mới"
   },
   "MenuMobile": {
     "menu1": "Trang chủ",
@@ -102,6 +85,13 @@
     "h4": "Về chúng tôi",
     "button": "Chọn ngôn ngữ",
     "Language": "Ngôn ngữ",
+    "title1": "Hơn 7,5 triệu người dùng đã tham gia standard chartered. Chào mừng bạn",
+    "title2": "Tải ứng dụng của chúng tôi để có trải nghiệm tốt hơn",
+    "title3": "Sản phẩm phổ biến",
+    "title4": "Nền tảng giao dịch phù hợp cho mọi người",
+    "title5": "Khách hàng",
+    "title6": "Quốc gia hỗ trợ",
+    "title7": "Khối lượng giao dịch hàng quý",
     "p_1": "Chúng tôi là nền tảng giao dịch hàng đầu cung cấp dịch vụ giao dịch tài sản số an toàn, hiệu quả và đáng tin cậy.",
     "p_2": "Trong lĩnh vực tiền kỹ thuật số, chúng tôi cam kết trở thành nền tảng giao dịch tài sản số hàng đầu thế giới.",
     "loan": "Khoản vay"

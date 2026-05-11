@@ -81,7 +81,7 @@ export const MenuAset = [
 export const MenuWebsite = [
   {
     id: "1",
-    link: "/buysell",
+    link: "/",
     title: "menu1",
     item: [],
   },
@@ -92,23 +92,23 @@ export const MenuWebsite = [
     item: [],
   },
   {
-    id: "4",
+    id: "3",
     link: "/excavator",
+    title: "menu3",
+    item: [],
+  },
+  {
+    id: "4",
+    link: "/convert",
     title: "menu4",
     item: [],
   },
   {
     id: "5",
-    link: "/convert",
+    link: "#",
     title: "menu5",
     item: [],
   },
-  // {
-  //   id: "6",
-  //   link: "#",
-  //   title: "Notification",
-  //   item: [],
-  // },
 ];
 
 export const MenuMobile = [

@@ -11,6 +11,7 @@ import {
   FormControl,
   Grid,
   IconButton,
+  Link,
 } from "@mui/material";
 import { loginUser } from "@/services/User.service";
 import { toast } from "react-toastify";
@@ -18,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { NextIcon, PreviousIcon } from "@/shared/Svgs/Svg.component";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function LoginPage() {
   const { t } = useTranslation();
@@ -64,22 +66,33 @@ export default function LoginPage() {
   return (
     <Box
       sx={{
-        backgroundColor: "#111827",
-        paddingTop: "50px",
+        backgroundColor: "#141A1F",
+        paddingTop: { xs: 0, sm: "50px" },
         height: "100vh",
       }}
     >
       <Box
         sx={{
-          width: "100%",
-          backgroundColor: "#111827",
+          width: {
+            xs: "100%",
+            sm: "460px",
+          },
+          backgroundColor: "#202630",
+          margin: "auto",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          mt: { xs: 0, sm: 6 },
+          height: { xs: "100vh", sm: "auto" },
+          pb: "30px",
+          borderRadius: {
+            xs: 0,
+            sm: "10px",
+          },
           p: 4,
         }}
       >
-        <Box sx={{ maxWidth: "400px", width: "100%" }}>
+        <Box sx={{ maxWidth: "100%", width: "100%" }}>
           <IconButton
             sx={{
               background: "#1f2937",
@@ -93,16 +106,16 @@ export default function LoginPage() {
           >
             <PreviousIcon width="20px" height="20px" />
           </IconButton>
-          <Typography variant="h4" gutterBottom sx={{ color: "white" }}>
-            {t("LoginPage.title")}
-          </Typography>
-          <Typography
-            variant="caption"
-            gutterBottom
-            sx={{ color: "white", fontSize: "16px", mb: "20px" }}
-          >
-            {t("LoginPage.decription")}
-          </Typography>
+          <Box sx={{ width: "100%", textAlign: "center" }}>
+            <Image
+              src={"/images/logo2.png"}
+              width={100}
+              height={100}
+              alt=""
+              style={{ height: "100px", objectFit: "contain" }}
+            />
+          </Box>
+
           {error.length > 0 && (
             <Typography
               sx={{ color: "red", fontSize: "14px", p: "10px", mt: 2 }}
@@ -123,18 +136,17 @@ export default function LoginPage() {
               onChange={handleUsername}
               sx={{
                 mb: 3,
-
                 "& .MuiOutlinedInput-root": {
-                  borderRadius: "14px",
-                  backgroundColor: "#1e2a3a",
+                  borderRadius: "8px",
+                  backgroundColor: "#2B313B",
                   color: "#fff",
 
                   "& fieldset": {
-                    borderColor: "rgba(255,255,255,0.15)",
+                    borderColor: "none",
                   },
 
                   "&:hover fieldset": {
-                    borderColor: "rgba(255,255,255,0.3)",
+                    borderColor: "none",
                   },
 
                   "&.Mui-focused fieldset": {
@@ -181,19 +193,17 @@ export default function LoginPage() {
                 value={password}
                 onChange={handlePassword}
                 sx={{
-                  mb: 3,
-
                   "& .MuiOutlinedInput-root": {
-                    borderRadius: "14px",
-                    backgroundColor: "#1e2a3a",
+                    borderRadius: "8px",
+                    backgroundColor: "#2B313B",
                     color: "#fff",
 
                     "& fieldset": {
-                      borderColor: "rgba(255,255,255,0.15)",
+                      borderColor: "none",
                     },
 
                     "&:hover fieldset": {
-                      borderColor: "rgba(255,255,255,0.3)",
+                      borderColor: "none",
                     },
 
                     "&.Mui-focused fieldset": {
@@ -258,65 +268,23 @@ export default function LoginPage() {
               >
                 {t("LoginPage.button1")}
               </Button>
-
-              {/* OR */}
-              <Typography
-                textAlign="center"
-                color="#9aa4b2"
-                my={2}
-                fontSize={14}
-              >
-                {t("LoginPage.title3")}
-              </Typography>
-
-              {/* Wallet login */}
-              <Button
-                fullWidth
+              <Link
+                href="/signup"
                 sx={{
-                  background: "#5BFF00",
-                  color: "#000",
-                  fontWeight: 600,
-                  borderRadius: "14px",
-                  height: 52,
-                  textTransform: "none",
-                  boxShadow: "0 0 20px rgba(91,255,0,0.4)",
-                  "&:hover": {
-                    background: "#4de000",
-                    boxShadow: "0 0 25px rgba(91,255,0,0.6)",
-                  },
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  justifyContent: "center",
+                  mt: "40px",
+                  textDecoration: "none",
+                  color: "white",
+                  fontSize: "12px",
                 }}
               >
-                {t("LoginPage.button2")}
-              </Button>
-
-              {/* OR */}
-              <Typography
-                textAlign="center"
-                color="#9aa4b2"
-                my={2}
-                fontSize={14}
-              >
-                {t("LoginPage.title3")}
-              </Typography>
-
-              {/* Create account */}
-              <Button
-                fullWidth
-                onClick={() => router.push("/signup")}
-                sx={{
-                  background: "#1e2a3a",
-                  color: "#fff",
-                  borderRadius: "14px",
-                  height: 52,
-                  textTransform: "none",
-                  fontWeight: 500,
-                  "&:hover": {
-                    background: "#253548",
-                  },
-                }}
-              >
-                {t("LoginPage.button3")}
-              </Button>
+                {" "}
+                {t("LoginPage.button3")}{" "}
+                <NextIcon width="12px" height="12px" />{" "}
+              </Link>
             </Box>
           </form>
         </Box>
