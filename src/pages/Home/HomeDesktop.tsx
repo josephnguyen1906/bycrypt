@@ -270,7 +270,7 @@ export default function HomeDesktop({
                     variant="caption"
                     sx={{
                       textAlign: "center",
-                      fontWeight: 550,
+                      fontWeight: 700,
                       color: "white",
                       fontSize: "30px",
                     }}
