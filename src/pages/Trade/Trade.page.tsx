@@ -21,6 +21,7 @@ import { useUserStore } from "@/stores/useUserStore";
 import { IHistoryOpen } from "@/shared/interfaces";
 import TradePopup from "@/components/popup/TradePopup";
 import { NextIcon, PreviousIcon } from "@/shared/Svgs/Svg.component";
+import { useRouter } from "next/navigation";
 
 export interface Icoin {
   coinname: string;
@@ -108,7 +109,7 @@ export default function TradePage() {
   const [showPopup, setShowPopup] = useState(false);
   const [time, setTime] = useState("1");
   const [timeValue, setTimeValue] = useState("1m");
-
+  const router = useRouter();
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
@@ -286,7 +287,7 @@ export default function TradePage() {
             },
           }}
         >
-          <IconButton href="/">
+          <IconButton onClick={() => router.back()}>
             <PreviousIcon width="20px" height="20px" />
           </IconButton>
         </Box>

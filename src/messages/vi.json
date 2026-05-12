@@ -227,7 +227,8 @@
     "Transaction": "Mật khẩu giao dịch",
     "history": "Hóa đơn",
     "log_decription": "Vui lòng đăng nhập để nạp / rút coin.",
-    "no_tran": "Không còn dữ liệu."
+    "no_tran": "Không còn dữ liệu.",
+    "noti": "Vui lòng liên hệ chăm sóc khách hàng để lấy thông tin phương thức nạp tiền phù hợp"
   },
   "DepositWithdrawPage": {
     "note_wallet": "Cập nhật địa chỉ ví mới (Bảo mật + Thêm ngân hàng + Cập nhật địa chỉ ví)",

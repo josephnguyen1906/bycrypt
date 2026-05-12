@@ -157,6 +157,7 @@ export default function HeaderPage() {
         </Box>
         <Box sx={{ display: "flex", gap: "10px", alignItems: "center" }}>
           <Button
+            onClick={() => router.push("/deposit")}
             sx={{
               background: "#202630",
               color: "white",
@@ -166,7 +167,7 @@ export default function HeaderPage() {
               height: "35px",
             }}
           >
-            Nạp tiền
+            {t("AssetPage.menu2")}
           </Button>
           <Button
             sx={{
