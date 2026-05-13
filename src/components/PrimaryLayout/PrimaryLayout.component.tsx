@@ -91,6 +91,7 @@ export default function PrimaryLayoutComponent({
         break;
       case 5:
         if (user) router.push("/account");
+        else router.push("/login");
         break;
     }
   };
