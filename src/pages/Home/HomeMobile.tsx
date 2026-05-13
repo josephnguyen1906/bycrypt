@@ -52,7 +52,13 @@ export default function HomeMobile({
         >
           <IconButton
             onClick={() => {
-              route.push("/account");
+              if (user) {
+                route.push("/account");
+              } else {
+                {
+                  route.push("/login");
+                }
+              }
             }}
           >
             <UserIcon width="20px" height="20px" />
