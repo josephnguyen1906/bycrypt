@@ -74,7 +74,7 @@ export default function CoinHeader({ coin, time, setMenuCoin }: any) {
   return (
     <Box
       sx={{
-        background: "#1c2735",
+        background: "#0E1316",
         borderBottom: "1px solid #161b26",
         px: 1.5,
         py: 1,
