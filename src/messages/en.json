@@ -73,10 +73,10 @@
   },
   "MenuMobile": {
     "menu1": "Home",
-    "menu2": "Coins",
+    "menu2": "Market",
     "menu3": "Trade",
     "menu4": "Finance",
-    "menu5": "Mine",
+    "menu5": "Asset",
     "title1": "Profile and settings",
     "title2": "Shortcuts",
     "title3": "Manage assset",

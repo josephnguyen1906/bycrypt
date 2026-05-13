@@ -81,7 +81,7 @@ export default function PrimaryLayoutComponent({
         router.push("/");
         break;
       case 2:
-        router.push("/trade");
+        router.push("/market");
         break;
       case 3:
         router.push("/trade");
@@ -118,7 +118,6 @@ export default function PrimaryLayoutComponent({
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
-                          background: activeMenu === 1 ? "#22c55e" : "none",
                         }}
                       >
                         <HomeIcon
@@ -146,13 +145,13 @@ export default function PrimaryLayoutComponent({
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
-                          background: activeMenu === 2 ? "#22c55e" : "none",
                         }}
                       >
-                        <MarketIcon
-                          width="25px"
-                          height="25px"
-                          fill={activeMenu === 2 ? "white" : "#909090"}
+                        <Image
+                          src={"/images/market-icon.png"}
+                          width={25}
+                          height={25}
+                          alt=""
                         />
                       </Box>
                       <p
@@ -174,32 +173,16 @@ export default function PrimaryLayoutComponent({
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
-                          background: activeMenu === 3 ? "#22c55e" : "none",
+                          mt: "10px",
                         }}
                       >
-                        {activeMenu === 3 ? (
-                          <Image
-                            src={"/images/statistic-white.png"}
-                            width={20}
-                            height={20}
-                            alt=""
-                          />
-                        ) : (
-                          <Image
-                            src={"/images/statistic-gray.png"}
-                            width={20}
-                            height={20}
-                            alt=""
-                          />
-                        )}
+                        <Image
+                          src={"/images/trade-icon.png"}
+                          width={30}
+                          height={30}
+                          alt=""
+                        />
                       </Box>
-                      <p
-                        className={
-                          activeMenu === 3 ? "mobile-active" : "mobile-p"
-                        }
-                      >
-                        {t("MenuMobile.menu3")}
-                      </p>
                     </button>
                   </li>
                   <li>
@@ -212,7 +195,6 @@ export default function PrimaryLayoutComponent({
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
-                          background: activeMenu === 4 ? "#22c55e" : "none",
                         }}
                       >
                         <ChartIcon
@@ -240,7 +222,6 @@ export default function PrimaryLayoutComponent({
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
-                          background: activeMenu === 5 ? "#22c55e" : "none",
                         }}
                       >
                         <Image
