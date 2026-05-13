@@ -42,7 +42,7 @@ export default function VerifiedPage() {
   const handleSubmit = async () => {
     if (!frontImage || !backImage || !phone) {
       alert(
-        "Please upload both front and back images and provide a phone number."
+        "Please upload both front and back images and provide a phone number.",
       );
       return;
     }

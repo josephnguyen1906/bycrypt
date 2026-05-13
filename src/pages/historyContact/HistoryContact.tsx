@@ -56,325 +56,345 @@ export default function HistoryContact() {
   return (
     <Box
       sx={{
-        maxWidth: "448px",
-        margin: "auto",
+        width: "100%",
         minHeight: "100vh",
-        background: "#111827",
-        p: 2,
-        pb: "130px",
+        background: "#141A1F",
+        paddingTop: {
+          xs: "0px",
+          sm: "80px",
+        },
       }}
     >
-      {" "}
       <Box
-        display="flex"
-        alignItems="center"
-        mb={3}
-        gap={"10px"}
-        justifyContent={"space-between"}
+        sx={{
+          width: { xs: "100%", sm: "500px" },
+          backgroundColor: "#202630",
+          margin: "auto",
+          minHeight: { xs: "100vh", sm: "700px" },
+          borderRadius: {
+            xs: 0,
+            sm: "16px",
+          },
+          padding: "16px",
+          position: "relative",
+          pb: {
+            xs: "120px",
+            sm: 0,
+          },
+        }}
       >
-        <IconButton
-          onClick={() => router.back()}
-          sx={{ background: "#232932" }}
+        <Box
+          display="flex"
+          alignItems="center"
+          mb={3}
+          gap={"10px"}
+          justifyContent={"space-between"}
         >
-          <ArrowBackIosNewIcon
-            sx={{ cursor: "pointer", color: "white", fontSize: "14px" }}
-          />
-        </IconButton>
-      </Box>
-      {user && (
-        <>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="wrapped label tabs example"
-            TabIndicatorProps={{
-              sx: {
-                backgroundColor: "#34d399",
-                height: 2,
-              },
-            }}
-            sx={{
-              "& .MuiTab-root": {
-                color: "#9ca3af",
-                textTransform: "capitalize",
-              },
-              "& .MuiTab-root.Mui-selected": {
-                color: "#34d399",
-              },
-            }}
+          <IconButton
+            onClick={() => router.back()}
+            sx={{ background: "#232932" }}
           >
-            <Tab value="one" label={t("BuySellPage.transaction")} wrapped />
-            <Tab value="two" label={t("BuySellPage.Position")} />
-          </Tabs>
-          {value == "one" && (
-            <Box sx={{ width: "95%", margin: "auto", paddingTop: "20px" }}>
-              {history && history.length > 0 ? (
-                history.map((item: IHistoryOpen, index: number) => (
-                  <Box
-                    key={index}
-                    sx={{
-                      background: "#1c2735",
-                      borderRadius: "14px",
-                      padding: "16px 18px",
-                      marginBottom: "12px",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                    }}
-                  >
+            <ArrowBackIosNewIcon
+              sx={{ cursor: "pointer", color: "white", fontSize: "14px" }}
+            />
+          </IconButton>
+        </Box>
+        {user && (
+          <>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="wrapped label tabs example"
+              TabIndicatorProps={{
+                sx: {
+                  backgroundColor: "#34d399",
+                  height: 2,
+                },
+              }}
+              sx={{
+                "& .MuiTab-root": {
+                  color: "#9ca3af",
+                  textTransform: "capitalize",
+                },
+                "& .MuiTab-root.Mui-selected": {
+                  color: "#34d399",
+                },
+              }}
+            >
+              <Tab value="one" label={t("BuySellPage.transaction")} wrapped />
+              <Tab value="two" label={t("BuySellPage.Position")} />
+            </Tabs>
+            {value == "one" && (
+              <Box sx={{ width: "95%", margin: "auto", paddingTop: "20px" }}>
+                {history && history.length > 0 ? (
+                  history.map((item: IHistoryOpen, index: number) => (
                     <Box
+                      key={index}
                       sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "flex-start",
+                        background: "#1c2735",
+                        borderRadius: "14px",
+                        padding: "16px 18px",
+                        marginBottom: "12px",
+                        border: "1px solid rgba(255,255,255,0.08)",
                       }}
                     >
-                      {/* LEFT */}
-                      <Box>
-                        <Box sx={{ display: "flex", gap: "10px" }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        {/* LEFT */}
+                        <Box>
+                          <Box sx={{ display: "flex", gap: "10px" }}>
+                            <Typography
+                              sx={{
+                                color: "#fff",
+                                fontSize: "14px",
+                                fontWeight: 500,
+                                marginBottom: "6px",
+                              }}
+                            >
+                              {item.coinname?.replace("-", "/")}
+                            </Typography>
+                            <Button
+                              sx={{
+                                color: "#d1d5db",
+                                background: "#374151",
+                                fontWeight: 400,
+                                height: "25px",
+                                fontSize: "10px",
+                                textTransform: "capitalize",
+                              }}
+                            >
+                              {t("AssetPage.label")}
+                            </Button>
+                          </Box>
                           <Typography
-                            sx={{
-                              color: "#fff",
-                              fontSize: "14px",
-                              fontWeight: 500,
-                              marginBottom: "6px",
-                            }}
+                            sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
                           >
-                            {item.coinname?.replace("-", "/")}
+                            {t("StakingPage.amount")}
                           </Typography>
-                          <Button
-                            sx={{
-                              color: "#d1d5db",
-                              background: "#374151",
-                              fontWeight: 400,
-                              height: "25px",
-                              fontSize: "10px",
-                              textTransform: "capitalize",
-                            }}
+
+                          <Typography
+                            sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
                           >
-                            {t("AssetPage.label")}
-                          </Button>
+                            {t("BuySellPage.price_buy")}
+                          </Typography>
+
+                          <Typography
+                            sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
+                          >
+                            {t("MiningPage.time")}
+                          </Typography>
                         </Box>
-                        <Typography
-                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
-                        >
-                          {t("StakingPage.amount")}
-                        </Typography>
 
-                        <Typography
-                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
-                        >
-                          {t("BuySellPage.price_buy")}
-                        </Typography>
-
-                        <Typography
-                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
-                        >
-                          {t("MiningPage.time")}
-                        </Typography>
-                      </Box>
-
-                      {/* RIGHT */}
-                      <Box sx={{ textAlign: "right" }}>
-                        <Typography
-                          sx={{
-                            color: item.hyzd === 1 ? "#4ade80" : "#ef4444",
-                            fontWeight: 500,
-                            fontSize: 15,
-                            marginBottom: "6px",
-                          }}
-                        >
-                          {item.hyzd === 1
-                            ? t("BuySellPage.BUY")
-                            : t("BuySellPage.SELL")}
-                        </Typography>
-                        <Typography
-                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
-                        >
-                          {Number(item.num).toLocaleString()} USDT
-                        </Typography>
-
-                        <Typography
-                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
-                        >
-                          {Number(item.buyprice).toLocaleString()}
-                        </Typography>
-
-                        <Typography
-                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
-                        >
-                          {timeAgo(item.buytime)}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Box>
-                ))
-              ) : (
-                <Typography
-                  sx={{
-                    color: "#9ca3af",
-                    fontSize: "12px",
-                    fontWeight: 600,
-                    textAlign: "center",
-                  }}
-                >
-                  {t("AssetPage.no_tran")}
-                </Typography>
-              )}
-            </Box>
-          )}
-          {value == "two" && (
-            <Box sx={{ width: "95%", margin: "auto", paddingTop: "20px" }}>
-              {bill && bill.length > 0 ? (
-                bill.map((item: IHistoryClose, index: number) => (
-                  <Box
-                    key={index}
-                    sx={{
-                      background: "#1c2735",
-                      borderRadius: "14px",
-                      padding: "16px 18px",
-                      marginBottom: "12px",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "flex-start",
-                      }}
-                    >
-                      {/* LEFT */}
-                      <Box>
-                        <Box sx={{ display: "flex", gap: "10px" }}>
-                          <Typography
-                            sx={{
-                              color: "#fff",
-                              fontSize: "14px",
-                              fontWeight: 500,
-                              marginBottom: "6px",
-                            }}
-                          >
-                            {item.coinname?.replace("-", "/")}
-                          </Typography>
-                          <Button
-                            sx={{
-                              color: "#d1d5db",
-                              background: "#374151",
-                              fontWeight: 400,
-                              height: "25px",
-                              fontSize: "10px",
-                              textTransform: "capitalize",
-                            }}
-                          >
-                            {t("AssetPage.label")}
-                          </Button>
-                        </Box>
-                        <Typography
-                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
-                        >
-                          {t("StakingPage.amount")}
-                        </Typography>
-
-                        <Typography
-                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
-                        >
-                          {t("BuySellPage.price_buy")}
-                        </Typography>
-
-                        <Typography
-                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
-                        >
-                          {t("BuySellPage.price_sell")}
-                        </Typography>
-
-                        <Typography
-                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
-                        >
-                          {t("MiningPage.time")}
-                        </Typography>
-                      </Box>
-
-                      {/* RIGHT */}
-                      <Box sx={{ textAlign: "right" }}>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            gap: "10px",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Typography
-                            sx={{
-                              color: item.is_win === 1 ? "#4ade80" : "#ef4444",
-                              background:
-                                item.is_win === 1 ? "#10b98133" : "#ef444433",
-                              fontWeight: 400,
-                              p: "5px 15px",
-                              borderRadius: "10px",
-                              fontSize: "12px",
-                              textTransform: "capitalize",
-                            }}
-                          >
-                            {item.is_win === 1
-                              ? t("BuySellPage.WIN")
-                              : t("BuySellPage.LOSS")}
-                          </Typography>
+                        {/* RIGHT */}
+                        <Box sx={{ textAlign: "right" }}>
                           <Typography
                             sx={{
                               color: item.hyzd === 1 ? "#4ade80" : "#ef4444",
                               fontWeight: 500,
-                              fontSize: "16px",
+                              fontSize: 15,
                               marginBottom: "6px",
-                              pt: "10px",
                             }}
                           >
                             {item.hyzd === 1
                               ? t("BuySellPage.BUY")
                               : t("BuySellPage.SELL")}
                           </Typography>
+                          <Typography
+                            sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
+                          >
+                            {Number(item.num).toLocaleString()} USDT
+                          </Typography>
+
+                          <Typography
+                            sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
+                          >
+                            {Number(item.buyprice).toLocaleString()}
+                          </Typography>
+
+                          <Typography
+                            sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
+                          >
+                            {timeAgo(item.buytime)}
+                          </Typography>
                         </Box>
-                        <Typography
-                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
-                        >
-                          {Number(item.num).toLocaleString()} USDT
-                        </Typography>
-
-                        <Typography
-                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
-                        >
-                          {Number(item.buyprice).toLocaleString()}
-                        </Typography>
-
-                        <Typography
-                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
-                        >
-                          {Number(item.sellprice).toLocaleString()}
-                        </Typography>
-
-                        <Typography
-                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
-                        >
-                          {timeAgo(item.buytime)}
-                        </Typography>
                       </Box>
                     </Box>
-                  </Box>
-                ))
-              ) : (
-                <Typography
-                  sx={{
-                    color: "#9ca3af",
-                    fontSize: "12px",
-                    fontWeight: 600,
-                    textAlign: "center",
-                  }}
-                >
-                  {t("AssetPage.no_tran")}
-                </Typography>
-              )}
-            </Box>
-          )}
-        </>
-      )}
+                  ))
+                ) : (
+                  <Typography
+                    sx={{
+                      color: "#9ca3af",
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      textAlign: "center",
+                    }}
+                  >
+                    {t("AssetPage.no_tran")}
+                  </Typography>
+                )}
+              </Box>
+            )}
+            {value == "two" && (
+              <Box sx={{ width: "95%", margin: "auto", paddingTop: "20px" }}>
+                {bill && bill.length > 0 ? (
+                  bill.map((item: IHistoryClose, index: number) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        background: "#1c2735",
+                        borderRadius: "14px",
+                        padding: "16px 18px",
+                        marginBottom: "12px",
+                        border: "1px solid rgba(255,255,255,0.08)",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        {/* LEFT */}
+                        <Box>
+                          <Box sx={{ display: "flex", gap: "10px" }}>
+                            <Typography
+                              sx={{
+                                color: "#fff",
+                                fontSize: "14px",
+                                fontWeight: 500,
+                                marginBottom: "6px",
+                              }}
+                            >
+                              {item.coinname?.replace("-", "/")}
+                            </Typography>
+                            <Button
+                              sx={{
+                                color: "#d1d5db",
+                                background: "#374151",
+                                fontWeight: 400,
+                                height: "25px",
+                                fontSize: "10px",
+                                textTransform: "capitalize",
+                              }}
+                            >
+                              {t("AssetPage.label")}
+                            </Button>
+                          </Box>
+                          <Typography
+                            sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
+                          >
+                            {t("StakingPage.amount")}
+                          </Typography>
+
+                          <Typography
+                            sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
+                          >
+                            {t("BuySellPage.price_buy")}
+                          </Typography>
+
+                          <Typography
+                            sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
+                          >
+                            {t("BuySellPage.price_sell")}
+                          </Typography>
+
+                          <Typography
+                            sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
+                          >
+                            {t("MiningPage.time")}
+                          </Typography>
+                        </Box>
+
+                        {/* RIGHT */}
+                        <Box sx={{ textAlign: "right" }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              gap: "10px",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Typography
+                              sx={{
+                                color:
+                                  item.is_win === 1 ? "#4ade80" : "#ef4444",
+                                background:
+                                  item.is_win === 1 ? "#10b98133" : "#ef444433",
+                                fontWeight: 400,
+                                p: "5px 15px",
+                                borderRadius: "10px",
+                                fontSize: "12px",
+                                textTransform: "capitalize",
+                              }}
+                            >
+                              {item.is_win === 1
+                                ? t("BuySellPage.WIN")
+                                : t("BuySellPage.LOSS")}
+                            </Typography>
+                            <Typography
+                              sx={{
+                                color: item.hyzd === 1 ? "#4ade80" : "#ef4444",
+                                fontWeight: 500,
+                                fontSize: "16px",
+                                marginBottom: "6px",
+                                pt: "10px",
+                              }}
+                            >
+                              {item.hyzd === 1
+                                ? t("BuySellPage.BUY")
+                                : t("BuySellPage.SELL")}
+                            </Typography>
+                          </Box>
+                          <Typography
+                            sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
+                          >
+                            {Number(item.num).toLocaleString()} USDT
+                          </Typography>
+
+                          <Typography
+                            sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
+                          >
+                            {Number(item.buyprice).toLocaleString()}
+                          </Typography>
+
+                          <Typography
+                            sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
+                          >
+                            {Number(item.sellprice).toLocaleString()}
+                          </Typography>
+
+                          <Typography
+                            sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
+                          >
+                            {timeAgo(item.buytime)}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Box>
+                  ))
+                ) : (
+                  <Typography
+                    sx={{
+                      color: "#9ca3af",
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      textAlign: "center",
+                    }}
+                  >
+                    {t("AssetPage.no_tran")}
+                  </Typography>
+                )}
+              </Box>
+            )}
+          </>
+        )}
+      </Box>
     </Box>
   );
 }

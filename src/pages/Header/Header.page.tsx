@@ -104,7 +104,7 @@ export default function HeaderPage() {
   const [language, setLanguage] = useState<string>("en");
 
   useEffect(() => {
-    const storedLang = localStorage.getItem("language") || "en";
+    const storedLang = localStorage.getItem("lang") || "en";
     setLanguage(storedLang);
   }, []);
   const router = useRouter();
@@ -170,6 +170,7 @@ export default function HeaderPage() {
             {t("AssetPage.menu2")}
           </Button>
           <Button
+            onClick={() => router.push("/language")}
             sx={{
               background: "#202630",
               color: "white",

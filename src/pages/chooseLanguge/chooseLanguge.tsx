@@ -23,135 +23,130 @@ export default function LanguagePage() {
     i18n.changeLanguage(language);
     localStorage.setItem("lang", language);
     setLang(language);
+    router.push("/");
   };
 
   return (
     <Box
       sx={{
-        maxWidth: "448px",
-        margin: "auto",
+        width: "100%",
         minHeight: "100vh",
-        background: "linear-gradient(180deg,#020617,#020617,#0f172a)",
-        color: "white",
-        p: 2,
-        pb: "110px",
+        background: "#141A1F",
+        paddingTop: {
+          xs: "0px",
+          sm: "80px",
+        },
       }}
     >
-      {/* header */}
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          mb: 3,
+          width: { xs: "100%", sm: "500px" },
+          backgroundColor: "#202630",
+          margin: "auto",
+          minHeight: { xs: "100vh", sm: "700px" },
+          borderRadius: {
+            xs: 0,
+            sm: "16px",
+          },
+          padding: "16px",
+          position: "relative",
+          pb: {
+            xs: "120px",
+            sm: 0,
+          },
         }}
       >
-        <IconButton
-          onClick={() => router.back()}
-          sx={{ background: "#232932" }}
-        >
-          <ArrowBackIosNewIcon
-            sx={{ cursor: "pointer", color: "white", fontSize: "14px" }}
-          />
-        </IconButton>
-
-        <Typography
-          sx={{
-            flex: 1,
-            textAlign: "center",
-            fontWeight: 600,
-            fontSize: 20,
-          }}
-        >
-          {t("HomePage.Language")}
-        </Typography>
-      </Box>
-
-      {/* language list */}
-      <Box
-        sx={{
-          padding: "10px",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-        }}
-      >
-        {/* English */}
+        {/* header */}
         <Box
           sx={{
-            height: "50px",
-            cursor: "pointer",
-            padding: "10px",
             display: "flex",
-            gap: "20px",
             alignItems: "center",
-            color: lang === "en" ? "#4ade80" : "white",
-            background: "#1f2937",
-            borderRadius: "15px",
-            border: lang === "en" ? "1px solid #4ade80" : "none",
+            mb: 3,
           }}
-          onClick={() => changeLanguage("en")}
         >
-          <Image
-            src="https://flagcdn.com/us.svg"
-            width={30}
-            height={30}
-            style={{ height: "20px", objectFit: "contain" }}
-            alt="us"
-          />
-          English
+          <IconButton
+            onClick={() => router.back()}
+            sx={{ background: "#232932" }}
+          >
+            <ArrowBackIosNewIcon
+              sx={{ cursor: "pointer", color: "white", fontSize: "14px" }}
+            />
+          </IconButton>
+
+          <Typography
+            sx={{
+              flex: 1,
+              textAlign: "center",
+              fontWeight: 600,
+              fontSize: 20,
+              color: "white",
+            }}
+          >
+            {t("HomePage.Language")}
+          </Typography>
         </Box>
 
-        {/* Vietnamese */}
+        {/* language list */}
         <Box
           sx={{
-            height: "50px",
-            cursor: "pointer",
             padding: "10px",
+            width: "100%",
             display: "flex",
-            gap: "20px",
-            alignItems: "center",
-            color: lang === "vi" ? "#4ade80" : "white",
-            background: "#1f2937",
-            borderRadius: "15px",
-            border: lang === "vi" ? "1px solid #4ade80" : "none",
+            flexDirection: "column",
+            gap: "10px",
           }}
-          onClick={() => changeLanguage("vi")}
         >
-          <Image
-            src="https://flagcdn.com/vn.svg"
-            width={30}
-            height={30}
-            style={{ height: "20px", objectFit: "contain" }}
-            alt="vn"
-          />
-          Việt Nam
-        </Box>
+          {/* English */}
+          <Box
+            sx={{
+              height: "50px",
+              cursor: "pointer",
+              padding: "10px",
+              display: "flex",
+              gap: "20px",
+              alignItems: "center",
+              color: lang === "en" ? "#4ade80" : "white",
+              background: "#1f2937",
+              borderRadius: "15px",
+              border: lang === "en" ? "1px solid #4ade80" : "none",
+            }}
+            onClick={() => changeLanguage("en")}
+          >
+            <Image
+              src="https://flagcdn.com/us.svg"
+              width={30}
+              height={30}
+              style={{ height: "20px", objectFit: "contain" }}
+              alt="us"
+            />
+            English
+          </Box>
 
-        {/* Japanese */}
-        <Box
-          sx={{
-            height: "50px",
-            cursor: "pointer",
-            padding: "10px",
-            display: "flex",
-            gap: "20px",
-            alignItems: "center",
-            color: lang === "ja" ? "#4ade80" : "white",
-            background: "#1f2937",
-            borderRadius: "15px",
-            border: lang === "ja" ? "1px solid #4ade80" : "none",
-          }}
-          onClick={() => changeLanguage("ja")}
-        >
-          <Image
-            src="https://flagcdn.com/jp.svg"
-            width={30}
-            height={30}
-            style={{ height: "20px", objectFit: "contain" }}
-            alt="jp"
-          />
-          日本語
+          {/* Vietnamese */}
+          <Box
+            sx={{
+              height: "50px",
+              cursor: "pointer",
+              padding: "10px",
+              display: "flex",
+              gap: "20px",
+              alignItems: "center",
+              color: lang === "vi" ? "#4ade80" : "white",
+              background: "#1f2937",
+              borderRadius: "15px",
+              border: lang === "vi" ? "1px solid #4ade80" : "none",
+            }}
+            onClick={() => changeLanguage("vi")}
+          >
+            <Image
+              src="https://flagcdn.com/vn.svg"
+              width={30}
+              height={30}
+              style={{ height: "20px", objectFit: "contain" }}
+              alt="vn"
+            />
+            Việt Nam
+          </Box>
         </Box>
       </Box>
     </Box>

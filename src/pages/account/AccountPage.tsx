@@ -20,13 +20,15 @@ import ChevronRight from "@mui/icons-material/ChevronRight";
 import LinkIcon from "@mui/icons-material/Link";
 import SecurityOutlined from "@mui/icons-material/SecurityOutlined";
 import LogoutOutlined from "@mui/icons-material/LogoutOutlined";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useUserStore } from "@/stores/useUserStore";
 import Skeleton from "@mui/material/Skeleton";
 import { useEffect, useState } from "react";
 import {
   SyncAltOutlined,
   SyncOutlined,
+  Visibility,
+  VisibilityOff,
   VisibilityOffOutlined,
 } from "@mui/icons-material";
 import LoadingComponent from "@/components/Loading";
@@ -40,23 +42,21 @@ export default function AccountPage() {
   const [hideBalance, setHideBalance] = useState(false);
   const router = useRouter();
   const { user, fetchUser, loading } = useUserStore();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const open = Boolean(anchorEl);
-
-  const handleClickLang = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const [load, setLoad] = useState(true);
 
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
 
-  if (loading) {
+  useEffect(() => {
+    if (!user) {
+      router.push("/");
+    } else {
+      setLoad(false);
+    }
+  }, [user]);
+
+  if (load) {
     return <LoadingComponent />;
   }
 
@@ -64,12 +64,16 @@ export default function AccountPage() {
     {
       title: "AssetPage.recent",
       icon: "/images/history-icon.png",
-      onClick: () => {},
+      onClick: () => {
+        router.push("/contact/history");
+      },
     },
     {
       title: "DepositWithdrawPage.Password",
       icon: "/images/chang-pass-icon.png",
-      onClick: () => {},
+      onClick: () => {
+        router.push("/security");
+      },
     },
     {
       title: "ProfilePage.tab_bank",
@@ -81,7 +85,9 @@ export default function AccountPage() {
     {
       title: "ProfilePage.menu3",
       icon: "/images/verified-icon.png",
-      onClick: () => {},
+      onClick: () => {
+        router.push("/verified");
+      },
     },
     // {
     //   title: "About us",
@@ -230,7 +236,11 @@ export default function AccountPage() {
               }}
               onClick={() => setHideBalance(!hideBalance)}
             >
-              👁️
+              {hideBalance ? (
+                <VisibilityOff fontSize="small" />
+              ) : (
+                <Visibility fontSize="small" />
+              )}
             </Typography>
           </Box>
 
@@ -269,7 +279,9 @@ export default function AccountPage() {
                 fontSize: "13px",
               }}
             >
-              {Number(user?.balance.usdt).toLocaleString()} USDT
+              {hideBalance
+                ? "******"
+                : Number(user?.balance.usdt).toLocaleString() + " USDT"}
             </Typography>
           </Box>
         </Box>
@@ -283,6 +295,7 @@ export default function AccountPage() {
           }}
         >
           <Box
+            onClick={() => router.push("/withdraw")}
             sx={{
               flex: 1,
               background: "#2A313D",
@@ -298,6 +311,7 @@ export default function AccountPage() {
           </Box>
 
           <Box
+            onClick={() => router.push("/deposit")}
             sx={{
               flex: 1,
               background: "#2A313D",

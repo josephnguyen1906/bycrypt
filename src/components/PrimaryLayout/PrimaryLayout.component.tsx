@@ -39,6 +39,7 @@ import "../../i18n";
 import LiveChatWidget from "../LIveChat/LiveChat";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import { useUserStore } from "@/stores/useUserStore";
 
 const theme = createTheme({
   typography: {
@@ -53,7 +54,7 @@ export default function PrimaryLayoutComponent({
   children: React.ReactNode;
 }) {
   const { t, i18n } = useTranslation();
-  const [menu, setMenu] = useState(1);
+  const { user, fetchUser } = useUserStore();
   const router = useRouter();
   const path = usePathname();
   const [openSupport, setOpenSupport] = useState(false);
@@ -67,6 +68,10 @@ export default function PrimaryLayoutComponent({
     if (path?.startsWith("/account")) return 5;
     return 0;
   };
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
   const activeMenu = getActiveMenu();
   const hanldMenu = (menu: number) => {
     setOpenSupport(false);
@@ -85,7 +90,7 @@ export default function PrimaryLayoutComponent({
         router.push("/excavator");
         break;
       case 5:
-        router.push("/account");
+        if (user) router.push("/account");
         break;
     }
   };
@@ -238,10 +243,12 @@ export default function PrimaryLayoutComponent({
                           background: activeMenu === 5 ? "#22c55e" : "none",
                         }}
                       >
-                        <UserIcon
-                          width="25px"
-                          height="25px"
-                          fill={activeMenu === 5 ? "white" : "#909090"}
+                        <Image
+                          src={"/images/profile-icon.png"}
+                          width={25}
+                          height={25}
+                          alt=""
+                          style={{ height: "25px", objectFit: "contain" }}
                         />
                       </Box>
                       <p

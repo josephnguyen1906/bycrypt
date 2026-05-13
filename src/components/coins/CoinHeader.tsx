@@ -15,7 +15,7 @@ import {
 import { useEffect, useState } from "react";
 import CoinMenuMobile from "./CoinMenuMobile";
 import { IcoinFinace } from "@/interface/user.interface";
-import { getFinaceCoin } from "@/services/User.service";
+import { getFinaceCoin, getListCoin } from "@/services/User.service";
 import { iconMap } from "./CoinPage";
 import { getTickerBySymbol } from "@/services/binance";
 
@@ -26,6 +26,8 @@ export default function CoinHeader({ coin, time, setMenuCoin }: any) {
   const [menu, setMenu] = useState("btcusdt");
   const [ticker, setTicker] = useState<any>(null);
   useEffect(() => {
+    console.log("menu", menu);
+
     const fetchTicker = async () => {
       const data = await getTickerBySymbol(menu, time);
 
@@ -55,7 +57,7 @@ export default function CoinHeader({ coin, time, setMenuCoin }: any) {
 
   const referral = async () => {
     try {
-      const listCoin: any = await getFinaceCoin();
+      const listCoin: any = await getListCoin();
 
       if (listCoin.status === true) {
         setListCoin(listCoin.data);

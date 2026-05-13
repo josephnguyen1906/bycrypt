@@ -211,6 +211,9 @@ export default function TradePage() {
   };
 
   const handleSubmit = async (data: ITypeTrade) => {
+    if (!user) {
+      toast.error(t("BuySellPage.title"));
+    }
     if (user?.rzstatus !== 2) {
       toast.error(t("Toast.buysell5"));
       return;
@@ -225,14 +228,19 @@ export default function TradePage() {
       const formData = new FormData();
       formData.append("ctime", data.hytime);
       formData.append("amount", String(data.price));
-      formData.append("coinname", symbol.replace("usdt", "-usdt"));
+      formData.append("coinname", selectedCoin.symbol);
       formData.append("method", data.method);
       formData.append("uprate", data.hyykbl);
 
       const res = await createOrder(formData);
-
-      if (res?.data) {
-        fetchResult();
+      console.log("res", res);
+      if (res.status) {
+        setProgressContract(res.data);
+        await fetchResult();
+        fetchUser();
+        historyOpen();
+        toast.success(t("Toast.buysell3"));
+        return;
       }
 
       // onClose();
@@ -244,9 +252,7 @@ export default function TradePage() {
 
   const fetchResult = async () => {
     try {
-      const tradeId = window.localStorage.getItem("tradeId");
-
-      if (!tradeId || !progressContract?.id) {
+      if (!progressContract?.id) {
         throw new Error("Missing trade ID or progress contract ID");
       }
 
@@ -460,6 +466,9 @@ export default function TradePage() {
                       {t("HistoryPage.tab1")} (0)
                     </Typography>
                     <Button
+                      onClick={() => {
+                        router.push("/contact/history");
+                      }}
                       sx={{
                         display: "flex",
                         gap: "5px",
@@ -476,15 +485,15 @@ export default function TradePage() {
                         height={20}
                         alt=""
                       />
-                      Lịch sử
+                      {t("BuySellPage.history")}
                     </Button>
                   </Box>
 
                   <CommandOpen
                     user={user}
                     history={history}
-                    onCLose={() => {
-                      historyOpen();
+                    onCLose={async () => {
+                      await historyOpen();
                     }}
                   />
                 </Box>
@@ -509,6 +518,7 @@ export default function TradePage() {
                     }}
                   >
                     <Button
+                      disabled={!user}
                       sx={{
                         width: "48%",
                         height: "40px",
@@ -516,6 +526,9 @@ export default function TradePage() {
                         textTransform: "none",
                         color: "black",
                         "&:hover": { background: "#2dd4bf" },
+                        "&:disabled": {
+                          background: "gray",
+                        },
                       }}
                       onClick={() => {
                         setOpenTrade(true);
@@ -525,6 +538,7 @@ export default function TradePage() {
                       {t("BuySellPage.buy")}
                     </Button>
                     <Button
+                      disabled={!user}
                       sx={{
                         width: "48%",
                         height: "40px",
@@ -532,6 +546,9 @@ export default function TradePage() {
                         textTransform: "none",
                         color: "white",
                         "&:hover": { background: "#ef4444" },
+                        "&:disabled": {
+                          background: "gray",
+                        },
                       }}
                       onClick={() => {
                         setOpenTrade(true);

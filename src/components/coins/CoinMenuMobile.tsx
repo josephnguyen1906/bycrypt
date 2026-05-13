@@ -9,6 +9,7 @@ import { iconMap } from "./CoinPage";
 type Coin = {
   symbol: string;
   name: string;
+  title: string;
   price: number;
   changePercent: number;
   history: number[];
@@ -40,12 +41,13 @@ export default function CoinMenuMobile({
     const initial: Record<string, Coin> = {};
 
     listCoin.forEach((s) => {
-      const symbol = (s.name + "usdt").toLowerCase();
-      const name = s.title + "/USDT";
+      const symbol = s.name.toLowerCase();
+      const name = s.title;
 
       initial[symbol] = {
         symbol: symbol.toUpperCase(),
         name: name,
+        title: s.title,
         price: 0,
         changePercent: 0,
         history: [],
@@ -54,20 +56,45 @@ export default function CoinMenuMobile({
 
     setCoins(initial);
   }, [listCoin]);
-
-  /**
-   * TICKER WEBSOCKET (price + percent)
-   */
   useEffect(() => {
-    if (!listCoin.length) return;
+    console.log("CREATE WS");
 
     const streams = listCoin
-      .map((s) => `${(s.name + "usdt").toLowerCase()}@kline_${interval}`)
+      .map((s) => `${s.name.toLowerCase()}usdt@kline_${interval}`)
       .join("/");
 
     const ws = new WebSocket(
       `wss://stream.binance.com:9443/stream?streams=${streams}`,
     );
+
+    ws.onopen = () => {
+      console.log("WS Connected");
+    };
+
+    ws.onclose = (e) => {
+      console.log("WS Closed", e.code, e.reason);
+    };
+
+    return () => {
+      console.log("CLEANUP");
+      ws.close();
+    };
+  }, [interval]);
+  useEffect(() => {
+    if (!listCoin.length) return;
+
+    const streams = listCoin
+      .filter((s) => s.name !== "TRUMP")
+      .map((s) => `${s.name.toLowerCase()}@kline_${interval}`)
+      .join("/");
+
+    const ws = new WebSocket(
+      `wss://stream.binance.com:9443/stream?streams=${streams}`,
+    );
+
+    ws.onopen = () => {
+      console.log("WS Connected");
+    };
 
     ws.onmessage = (event) => {
       const msg = JSON.parse(event.data);
@@ -88,24 +115,27 @@ export default function CoinMenuMobile({
 
         return {
           ...prev,
-
           [symbol]: {
             ...prev[symbol],
-
             price: close,
-
             changePercent: percent,
           },
         };
       });
-
-      if (symbol === menu) {
-        changePercent(percent.toString());
-      }
     };
 
-    return () => ws.close();
-  }, [listCoin, menu, interval]);
+    ws.onerror = (err) => {
+      console.log("WS Error", err);
+    };
+
+    ws.onclose = () => {
+      console.log("WS Closed");
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, [listCoin, interval]);
 
   return (
     <Box
@@ -151,7 +181,8 @@ function CoinCard({
   menu: string;
   setMenu: (v: string) => void;
 }) {
-  const baseSymbol = coin.symbol.replace("USDT", "");
+  const baseSymbol = coin.title.replace("/USDT", "");
+
   return (
     <Box
       sx={{

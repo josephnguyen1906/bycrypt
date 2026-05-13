@@ -330,13 +330,16 @@ export default function TradeForm({ onSubmit, user }: InputProps) {
 
           <Button
             fullWidth
+            disabled={!user}
             sx={{
               height: "46px",
               borderRadius: "999px",
               background: isUp ? "#02c173" : "#F20D3A",
               color: "#fff",
               fontWeight: 700,
-
+              "&:disabled": {
+                background: "gray",
+              },
               "&:hover": {
                 background: isUp ? "#02c173" : "#d10b32",
               },

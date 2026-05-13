@@ -37,79 +37,107 @@ export default function ChangePassword() {
   return (
     <Box
       sx={{
-        background: "#0b1727",
+        width: "100%",
         minHeight: "100vh",
-        color: "white",
+        background: "#141A1F",
+        paddingTop: {
+          xs: "0px",
+          sm: "80px",
+        },
       }}
     >
       <Box
-        display="flex"
-        alignItems="center"
-        justifyContent={"space-between"}
-        p={2}
+        sx={{
+          width: { xs: "100%", sm: "500px" },
+          backgroundColor: "#202630",
+          margin: "auto",
+          minHeight: { xs: "100vh", sm: "700px" },
+          borderRadius: {
+            xs: 0,
+            sm: "16px",
+          },
+          padding: "16px",
+          position: "relative",
+          pb: {
+            xs: "120px",
+            sm: 0,
+          },
+        }}
       >
-        <IconButton
-          onClick={() => router.back()}
-          sx={{ background: "#232932" }}
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent={"space-between"}
+          p={2}
         >
-          <ArrowBackIosNewIcon
-            sx={{ cursor: "pointer", color: "white", fontSize: "14px" }}
-          />
-        </IconButton>
+          <IconButton
+            onClick={() => router.back()}
+            sx={{ background: "#232932" }}
+          >
+            <ArrowBackIosNewIcon
+              sx={{ cursor: "pointer", color: "white", fontSize: "14px" }}
+            />
+          </IconButton>
 
-        <Typography fontSize={20} fontWeight={600} textAlign={"center"}>
-          {t("ProfilePage.menu2")}
-        </Typography>
-        <IconButton></IconButton>
-      </Box>
-      <Box
-        onClick={() => router.push("/change-login-pass")}
-        sx={{
-          display: "flex",
-          borderTop: "1px solid #1f2937",
-          borderBottom: "1px solid #1f2937",
-          height: "50px",
-          alignItems: "center",
-          cursor: "pointer",
-          justifyContent: "space-between",
-          p: "0px 10px",
-        }}
-      >
-        <Typography sx={{ color: "white", fontSize: "12px" }}>
-          {t("DepositWithdrawPage.LoginPassword")}
-        </Typography>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography sx={{ color: "#9ca3af", fontSize: "12px" }}>
-            {t("DepositWithdrawPage.Revise")}
+          <Typography
+            fontSize={20}
+            fontWeight={600}
+            textAlign={"center"}
+            color={"white"}
+          >
+            {t("ProfilePage.menu2")}
           </Typography>
-          <IconButton sx={{ background: "none" }}>
-            <NextIcon width="14px" height="14px" fill="#9ca3af" />
-          </IconButton>
+          <IconButton></IconButton>
         </Box>
-      </Box>
-      <Box
-        onClick={() => router.push("/change-tran-pass")}
-        sx={{
-          display: "flex",
-          borderTop: "1px solid #1f2937",
-          borderBottom: "1px solid #1f2937",
-          height: "50px",
-          alignItems: "center",
-          cursor: "pointer",
-          justifyContent: "space-between",
-          p: "0px 10px",
-        }}
-      >
-        <Typography sx={{ color: "white", fontSize: "12px" }}>
-          {t("DepositWithdrawPage.Password")}
-        </Typography>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography sx={{ color: "#9ca3af", fontSize: "12px" }}>
-            {t("DepositWithdrawPage.Revise")}
+        <Box
+          onClick={() => router.push("/change-login-pass")}
+          sx={{
+            display: "flex",
+            borderTop: "1px solid #1f2937",
+            borderBottom: "1px solid #1f2937",
+            height: "50px",
+            alignItems: "center",
+            cursor: "pointer",
+            justifyContent: "space-between",
+            p: "0px 10px",
+          }}
+        >
+          <Typography sx={{ color: "white", fontSize: "12px" }}>
+            {t("DepositWithdrawPage.LoginPassword")}
           </Typography>
-          <IconButton sx={{ background: "none" }}>
-            <NextIcon width="14px" height="14px" fill="#9ca3af" />
-          </IconButton>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Typography sx={{ color: "#9ca3af", fontSize: "12px" }}>
+              {t("DepositWithdrawPage.Revise")}
+            </Typography>
+            <IconButton sx={{ background: "none" }}>
+              <NextIcon width="14px" height="14px" fill="#9ca3af" />
+            </IconButton>
+          </Box>
+        </Box>
+        <Box
+          onClick={() => router.push("/change-tran-pass")}
+          sx={{
+            display: "flex",
+            borderTop: "1px solid #1f2937",
+            borderBottom: "1px solid #1f2937",
+            height: "50px",
+            alignItems: "center",
+            cursor: "pointer",
+            justifyContent: "space-between",
+            p: "0px 10px",
+          }}
+        >
+          <Typography sx={{ color: "white", fontSize: "12px" }}>
+            {t("DepositWithdrawPage.Password")}
+          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Typography sx={{ color: "#9ca3af", fontSize: "12px" }}>
+              {t("DepositWithdrawPage.Revise")}
+            </Typography>
+            <IconButton sx={{ background: "none" }}>
+              <NextIcon width="14px" height="14px" fill="#9ca3af" />
+            </IconButton>
+          </Box>
         </Box>
       </Box>
     </Box>
