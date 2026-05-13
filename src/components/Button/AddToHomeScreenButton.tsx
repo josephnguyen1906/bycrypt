@@ -23,7 +23,7 @@ const AddToHomeScreenButton = () => {
         window.AddToHomeScreenInstance = window.AddToHomeScreen({
           appName: "DOIUSDT",
           appNameDisplay: "DOIUSDT",
-          appIconUrl: "/images/logo2.png",
+          appIconUrl: "/images/logo.png",
           assetUrl:
             "https://cdn.jsdelivr.net/gh/philfung/add-to-homescreen@3.2/dist/assets/img/",
           maxModalDisplayCount: -1,

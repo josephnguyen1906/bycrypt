@@ -152,7 +152,7 @@ export default function HeaderPage() {
       >
         <Box sx={{ display: "flex", gap: "10px", pl: "20px" }}>
           <Image
-            src={"/images/logo2.png"}
+            src={"/images/logo.png"}
             width={100}
             height={100}
             alt=""

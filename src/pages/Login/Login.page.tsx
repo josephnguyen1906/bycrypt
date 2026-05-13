@@ -108,7 +108,7 @@ export default function LoginPage() {
           </IconButton>
           <Box sx={{ width: "100%", textAlign: "center" }}>
             <Image
-              src={"/images/logo2.png"}
+              src={"/images/logo.png"}
               width={100}
               height={100}
               alt=""
