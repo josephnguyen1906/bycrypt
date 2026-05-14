@@ -333,7 +333,7 @@ export default function TradePopup({
           <Typography
             sx={{ color: "#9ca3af", fontWeight: 400, fontSize: "13px" }}
           >
-            {t("BuySellPage.h2")}
+            {t("BuySellPage.balance")}
           </Typography>
           <Typography
             sx={{ color: "#9ca3af", fontWeight: 400, fontSize: "13px" }}
