@@ -113,6 +113,7 @@ export default function NewsPage() {
             gridTemplateColumns: "1fr",
             width: "100%",
             gap: "10px",
+            pb: "100px",
           }}
         >
           {news.length > 0 &&

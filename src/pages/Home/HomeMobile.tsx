@@ -61,11 +61,25 @@ export default function HomeMobile({
           >
             <UserIcon width="20px" height="20px" />
           </IconButton>
-          <Tooltip title="Language">
-            <IconButton onClick={() => route.push("/language")}>
-              <InternetIcon width="20px" height="20px" />
+          <Box>
+            <IconButton
+              sx={{ height: "20px" }}
+              onClick={() => route.push("/news")}
+            >
+              <Image
+                src={"/images/history-icon.png"}
+                width={20}
+                height={20}
+                alt=""
+                style={{ height: "20px", objectFit: "cover" }}
+              />
             </IconButton>
-          </Tooltip>
+            <Tooltip title="Language">
+              <IconButton onClick={() => route.push("/language")}>
+                <InternetIcon width="20px" height="20px" />
+              </IconButton>
+            </Tooltip>
+          </Box>
         </Box>
         <Box
           sx={{

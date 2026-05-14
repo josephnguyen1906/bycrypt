@@ -154,7 +154,7 @@ export default function LoginPage() {
                   },
 
                   "&.Mui-focused fieldset": {
-                    borderColor: "#4ade80",
+                    border: "none",
                     borderWidth: "1px",
                   },
                 },
@@ -211,7 +211,7 @@ export default function LoginPage() {
                     },
 
                     "&.Mui-focused fieldset": {
-                      borderColor: "#4ade80",
+                      border: "none",
                       borderWidth: "1px",
                     },
                   },
