@@ -136,6 +136,9 @@ export default function TradePage() {
     const his: any = await getContractjc();
     if (his.status === true) {
       setHisstory(his.data);
+      if (his?.data?.length > 0) {
+        setTradeYn(true);
+      }
     }
     // } catch (errors: any) {
     //   console.log(errors?.message);
