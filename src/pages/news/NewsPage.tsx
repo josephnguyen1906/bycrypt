@@ -144,6 +144,15 @@ export default function NewsPage() {
                       fontWeight: 600,
                       color: "white",
                       pl: "5px",
+
+                      height: "50px",
+
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
                     }}
                   >
                     {item.title}
