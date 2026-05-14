@@ -34,6 +34,7 @@ export default function HomeDesktop({
     { id: 3, img: "/images/home_banner_3.png" },
     { id: 4, img: "/images/home_banner_4.png" },
   ];
+
   return (
     <Box
       sx={{

@@ -223,7 +223,7 @@ export default function AccountPage() {
               mt: 0.5,
             }}
           >
-            UID: 6a0186cea862ea1426597312
+            UID: {user?.invit}
           </Typography>
         </Box>
 
