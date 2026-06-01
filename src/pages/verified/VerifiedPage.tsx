@@ -55,9 +55,7 @@ export default function VerifiedPage() {
 
   const handleSubmit = async () => {
     if (!frontImage || !backImage || !fullName || !cardNumber) {
-      alert(
-        "Please upload both front and back images and provide a phone number.",
-      );
+      alert("Vui lòng upload ảnh căn cước công dân lên");
       return;
     }
 
