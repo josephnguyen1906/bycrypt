@@ -147,8 +147,8 @@
     "button": "Xem thêm"
   },
   "BuySellPage": {
-    "buy": "Mua lên",
-    "sell": "Mua xuống",
+    "buy": "Mua",
+    "sell": "Bán",
     "sell1": "Bán",
     "result": "kết quả",
     "LOSS": "THUA",

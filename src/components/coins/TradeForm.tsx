@@ -286,7 +286,8 @@ export default function TradeForm({ onSubmit, user, tradeYn }: InputProps) {
               fontSize: "12px",
             }}
           >
-            Số dư <b>{Number(user?.balance?.usdt).toLocaleString()}usdt</b>
+            Số dư{" "}
+            <b>{Number(user?.balance?.usdt ?? 0).toLocaleString()} USDT</b>
           </Typography>
 
           <Typography
@@ -306,8 +307,7 @@ export default function TradeForm({ onSubmit, user, tradeYn }: InputProps) {
               fontSize: "12px",
             }}
           >
-            Hướng đầu tư{" "}
-            <b style={{ color: "#fff" }}>{isUp ? "Tăng" : "Giảm"}</b>
+            Hướng đầu tư <b style={{ color: "#fff" }}>{isUp ? "Mua" : "Bán"}</b>
           </Typography>
 
           <Typography
@@ -352,7 +352,7 @@ export default function TradeForm({ onSubmit, user, tradeYn }: InputProps) {
               hanldSubmit(isUp);
             }}
           >
-            {isUp ? "Mua tăng" : "Mua giảm"}
+            {isUp ? "Mua" : "Bán"}
           </Button>
           {isMinError && (
             <Typography
