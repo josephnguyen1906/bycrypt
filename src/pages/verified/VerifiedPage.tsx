@@ -175,8 +175,8 @@ export default function VerifiedPage() {
                   </Typography>
                   <InputBase
                     type="string"
-                    value={cardNumber}
-                    onChange={(e) => setCardNumber(e.target.value)}
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
                     placeholder={t("ProfilePage.verified_title3")}
                     sx={{
                       width: "100%",
@@ -207,8 +207,8 @@ export default function VerifiedPage() {
                   </Typography>
                   <InputBase
                     type="string"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(e.target.value)}
                     placeholder={t("ProfilePage.verified_title2")}
                     sx={{
                       width: "100%",
@@ -446,7 +446,7 @@ export default function VerifiedPage() {
                         borderRadius: "8px",
                       }}
                     >
-                      {user.cccd}
+                      {user.fullname}
                     </Typography>
                   </Box>
 
@@ -463,7 +463,7 @@ export default function VerifiedPage() {
                         borderRadius: "8px",
                       }}
                     >
-                      {user.fullname}
+                      {user.cccd}
                     </Typography>
                   </Box>
                 </Box>

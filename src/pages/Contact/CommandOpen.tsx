@@ -125,7 +125,7 @@ export default function CommandOpen({
                     marginBottom: "6px",
                   }}
                 >
-                  {item.hyzd === 1 ? "BUY" : "SELL"}
+                  {item.hyzd === 1 ? "Mua" : "Bán"}
                 </Typography>
 
                 <Typography sx={{ color: "#9aa4b2", fontSize: 13 }}>
