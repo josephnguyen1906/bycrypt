@@ -89,13 +89,13 @@ export default function TradePage() {
   const { t } = useTranslation();
   const { user, fetchUser } = useUserStore();
   const [selectedCoin, setSelectedCoin] = useState<Icoin>({
-    id: 43,
-    coinname: "xau",
-    name: "xauusdt",
-    symbol: "XAUUSD",
-    title: "XAU/USD",
+    coinname: "btc",
+    id: 1,
+    name: "btcusdt",
     sort: 1,
     status: 1,
+    symbol: "btc-usdt",
+    title: "BTC/USDT",
   });
 
   const [tab, setTab] = useState("BUY");
