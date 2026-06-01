@@ -82,7 +82,7 @@ export default function TradeForm({ onSubmit, user, tradeYn }: InputProps) {
             type: 0,
             hytime: processedData.hy_time?.[0] || "",
             hyykbl: processedData.hy_ykbl?.[0] || "",
-            price: Number(processedData.hy_min_per_frame?.[0] || 0),
+            price: 0,
             selectTime: processedData.hy_time?.[0] || "",
             hy_min_per_frame: Number(processedData.hy_min_per_frame?.[0] || 0),
             hy_max_per_frame: Number(processedData.hy_max_per_frame?.[0] || 0),
@@ -109,7 +109,7 @@ export default function TradeForm({ onSubmit, user, tradeYn }: InputProps) {
       type: index,
       hytime: value,
       hyykbl: buySellConfig.hy_ykbl[index],
-      price: buySellConfig.hy_min_per_frame[index],
+      price: 0,
       hy_min_per_frame: buySellConfig.hy_min_per_frame[index],
       hy_max_per_frame: buySellConfig.hy_max_per_frame[index],
       selectTime: value,
@@ -220,10 +220,7 @@ export default function TradeForm({ onSubmit, user, tradeYn }: InputProps) {
               color: "#fff",
             }}
             onClick={() =>
-              handlePrice(
-                mode,
-                Math.max(buySellConfig?.hy_min, Number(data.price) - 100),
-              )
+              handlePrice(mode, Math.max(0, Number(data.price ?? 0) - 100))
             }
           >
             -
