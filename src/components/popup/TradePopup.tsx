@@ -245,7 +245,7 @@ export default function TradePopup({
                   onClick={() => {
                     setType(index);
                     setHytime(item);
-                    setHyykbl(0);
+                    setHyykbl(buySellConfig.hy_ykbl[index]);
                     setPriceConfig(
                       Number(buySellConfig.hy_tzed?.[index]) || 100,
                     );
@@ -351,6 +351,7 @@ export default function TradePopup({
             sx: {
               background: "#111827",
               color: "white",
+              border: "none",
 
               "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
                 {
