@@ -74,7 +74,7 @@ export default function TradePopup({
           setType(0);
           setHytime(processedData.hy_time?.[0] || "3");
           setHyykbl(processedData.hy_ykbl?.[0] || "15");
-          setAmount(processedData.hy_min_per_frame?.[0] || "200");
+          setAmount(0);
           setPriceConfig(Number(processedData.hy_tzed?.[0]) || 200);
           setBuySellConfig(processedData);
         }
@@ -124,17 +124,14 @@ export default function TradePopup({
       toast.error(t("Toast.buysell4"));
     }
   };
-  const minAmount = Number(buySellConfig?.hy_min_per_frame?.[type] || 0);
 
   const maxAmount = Number(buySellConfig?.hy_max_per_frame?.[type] || 0);
 
   const currentAmount = Number(amount || 0);
 
-  const isMinError = currentAmount < minAmount;
-
   const isMaxError = currentAmount > maxAmount;
 
-  const isAmountError = isMinError || isMaxError;
+  const isAmountError = isMaxError;
 
   return (
     <Drawer
@@ -342,11 +339,7 @@ export default function TradePopup({
           }}
           error={isAmountError}
           helperText={
-            isMinError
-              ? `Tối thiểu ${minAmount.toLocaleString()} USDT`
-              : isMaxError
-                ? `Tối đa ${maxAmount.toLocaleString()} USDT`
-                : ""
+            isMaxError ? `Tối đa ${maxAmount.toLocaleString()} USDT` : ""
           }
           FormHelperTextProps={{
             sx: {
