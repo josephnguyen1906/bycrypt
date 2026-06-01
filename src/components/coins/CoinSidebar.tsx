@@ -33,6 +33,10 @@ export default function CoinSidebar({ coins, selectedCoin, onSelect }: any) {
     return coin.symbol;
   };
 
+  const normalizeSymbolCheck = (coin: any) => {
+    return coin.name.replace("-", "").toUpperCase();
+  };
+
   /**
    * FETCH ALL MARKET
    */
@@ -49,7 +53,7 @@ export default function CoinSidebar({ coins, selectedCoin, onSelect }: any) {
        * BINANCE COINS
        */
       const cryptoCoins = coins.filter((coin: any) => {
-        const symbol = normalizeSymbol(coin);
+        const symbol = normalizeSymbolCheck(coin);
 
         return !SPECIAL_SYMBOLS[symbol];
       });
