@@ -101,7 +101,6 @@ export default function TradePage() {
   const [tab, setTab] = useState("BUY");
   const [openTrade, setOpenTrade] = useState(false);
   const [listCoin, setListCoin] = useState<Icoin[] | null>(null);
-  const [symbol, setSymbol] = useState<any>("btc-usdt");
   const [history, setHisstory] = useState<IHistoryOpen[]>([]);
   const [result, setResult] = useState<any>(null);
   const [progressContract, setProgressContract] = useState<any>(null);
@@ -155,6 +154,7 @@ export default function TradePage() {
       };
     });
   };
+  console.log("selectedCoin", selectedCoin);
 
   const handleSubmit = async (data: ITypeTrade) => {
     if (!user) {
@@ -616,7 +616,7 @@ export default function TradePage() {
             fetchUser();
             historyOpen();
           }}
-          symbol={selectedCoin.name}
+          symbol={selectedCoin.symbol}
         />
       )}
     </Box>

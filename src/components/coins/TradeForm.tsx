@@ -73,12 +73,16 @@ export default function TradeForm({ onSubmit, user, tradeYn }: InputProps) {
           };
 
           setBuySellConfig(processedData);
+          console.log(
+            "hy_min_per_frame",
+            processedData.hy_min_per_frame?.[0] || 0,
+          );
 
           const defaultData = {
             type: 0,
             hytime: processedData.hy_time?.[0] || "",
             hyykbl: processedData.hy_ykbl?.[0] || "",
-            price: Number(processedData.hy_tzed?.[0] || 0),
+            price: Number(processedData.hy_min_per_frame?.[0] || 0),
             selectTime: processedData.hy_time?.[0] || "",
             hy_min_per_frame: Number(processedData.hy_min_per_frame?.[0] || 0),
             hy_max_per_frame: Number(processedData.hy_max_per_frame?.[0] || 0),
@@ -105,7 +109,7 @@ export default function TradeForm({ onSubmit, user, tradeYn }: InputProps) {
       type: index,
       hytime: value,
       hyykbl: buySellConfig.hy_ykbl[index],
-      price: buySellConfig.hy_tzed[index],
+      price: buySellConfig.hy_min_per_frame[index],
       hy_min_per_frame: buySellConfig.hy_min_per_frame[index],
       hy_max_per_frame: buySellConfig.hy_max_per_frame[index],
       selectTime: value,
@@ -129,12 +133,12 @@ export default function TradeForm({ onSubmit, user, tradeYn }: InputProps) {
     if (mode === "up") {
       setTradeUp((prev) => ({
         ...prev,
-        price: value,
+        price: Number(value),
       }));
     } else {
       setTradeDown((prev) => ({
         ...prev,
-        price: value,
+        price: Number(value),
       }));
     }
   };
@@ -144,7 +148,6 @@ export default function TradeForm({ onSubmit, user, tradeYn }: InputProps) {
       onSubmit(tradeUp);
     } else {
       onSubmit(tradeDown);
-      console.log("tradeDown", tradeDown);
     }
   };
 
@@ -244,7 +247,7 @@ export default function TradeForm({ onSubmit, user, tradeYn }: InputProps) {
             </Typography>
 
             <InputBase
-              value={data.price}
+              value={data.hy_min_per_frame}
               onChange={(e: any) => {
                 const value = e.target.value.replace(/\D/g, "");
 
@@ -317,7 +320,10 @@ export default function TradeForm({ onSubmit, user, tradeYn }: InputProps) {
               fontSize: "12px",
             }}
           >
-            Số tiền đầu tư <b style={{ color: "#fff" }}>{data.price}</b>
+            Số tiền đầu tư{" "}
+            <b style={{ color: "#fff" }}>
+              {Number(data.price).toLocaleString()} USDT
+            </b>
           </Typography>
 
           <Typography

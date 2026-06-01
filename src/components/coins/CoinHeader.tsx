@@ -61,16 +61,17 @@ export default function CoinHeader({ coin, time, setMenuCoin }: any) {
     try {
       const symbol = normalizeSymbol(menu);
 
-      /**
-       * SPECIAL MARKET
-       */
+      console.log({
+        menu,
+        normalized: symbol,
+        special: SPECIAL_SYMBOLS[symbol],
+      });
       if (SPECIAL_SYMBOLS[symbol]) {
         const apiSymbol = SPECIAL_SYMBOLS[symbol];
 
         const res: any = await getDataChart(apiSymbol);
 
         const result = res?.data;
-        console.log("result", result);
 
         if (result) {
           setTicker({
@@ -84,27 +85,27 @@ export default function CoinHeader({ coin, time, setMenuCoin }: any) {
         }
 
         return;
+      } else {
+        /**
+         * BINANCE MARKET
+         */
+        const res = await fetch(
+          `https://api.binance.com/api/v3/ticker/24hr?symbol=${symbol}`,
+        );
+
+        const data = await res.json();
+
+        if (!data?.lastPrice) return;
+
+        setTicker({
+          close: Number(data.lastPrice),
+          open: Number(data.openPrice),
+          high: Number(data.highPrice),
+          low: Number(data.lowPrice),
+          volume: Number(data.volume),
+          change: Number(data.priceChangePercent),
+        });
       }
-
-      /**
-       * BINANCE MARKET
-       */
-      const res = await fetch(
-        `https://api.binance.com/api/v3/ticker/24hr?symbol=${symbol}`,
-      );
-
-      const data = await res.json();
-
-      if (!data?.lastPrice) return;
-
-      setTicker({
-        close: Number(data.lastPrice),
-        open: Number(data.openPrice),
-        high: Number(data.highPrice),
-        low: Number(data.lowPrice),
-        volume: Number(data.volume),
-        change: Number(data.priceChangePercent),
-      });
     } catch (error) {
       console.log("FETCH TICKER ERROR:", error);
     } finally {
@@ -143,17 +144,11 @@ export default function CoinHeader({ coin, time, setMenuCoin }: any) {
     setMenu(coin.name.toUpperCase());
   }, [coin]);
 
-  /**
-   * FETCH MARKET
-   */
   useEffect(() => {
-    if (!menu) return;
+    console.log("effect run", menu, time);
 
     fetchTicker();
 
-    /**
-     * SPECIAL API LIMIT
-     */
     const interval = setInterval(() => {
       fetchTicker();
     }, 60000);
@@ -179,8 +174,6 @@ export default function CoinHeader({ coin, time, setMenuCoin }: any) {
   const handleDrawerClose = () => {
     setDrawerOpen(false);
   };
-
-  console.log("ticker", ticker);
 
   return (
     <Box

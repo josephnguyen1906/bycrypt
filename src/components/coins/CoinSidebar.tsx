@@ -3,7 +3,7 @@
 import { Avatar, Box, Stack, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { iconMap } from "./CoinPage";
-import { getDataChart } from "@/services/User.service";
+import { getDataChart, getDataChartSiderbar } from "@/services/User.service";
 
 export default function CoinSidebar({ coins, selectedCoin, onSelect }: any) {
   const [marketData, setMarketData] = useState<any>({});
@@ -30,7 +30,7 @@ export default function CoinSidebar({ coins, selectedCoin, onSelect }: any) {
    * NORMALIZE SYMBOL
    */
   const normalizeSymbol = (coin: any) => {
-    return coin.name.replace("-", "").toUpperCase();
+    return coin.symbol;
   };
 
   /**
@@ -52,15 +52,6 @@ export default function CoinSidebar({ coins, selectedCoin, onSelect }: any) {
         const symbol = normalizeSymbol(coin);
 
         return !SPECIAL_SYMBOLS[symbol];
-      });
-
-      /**
-       * SPECIAL COINS
-       */
-      const specialCoins = coins.filter((coin: any) => {
-        const symbol = normalizeSymbol(coin);
-
-        return !!SPECIAL_SYMBOLS[symbol];
       });
 
       /**
@@ -87,7 +78,7 @@ export default function CoinSidebar({ coins, selectedCoin, onSelect }: any) {
               change: Number(data.priceChangePercent),
             };
           } catch (error) {
-            console.log("BINANCE ERROR:", error);
+            // console.log("BINANCE ERROR:", error);
 
             return null;
           }
@@ -104,34 +95,17 @@ export default function CoinSidebar({ coins, selectedCoin, onSelect }: any) {
        */
       const specialResponses: any[] = [];
 
-      for (const coin of specialCoins) {
-        try {
-          const symbol = normalizeSymbol(coin);
-
-          const apiSymbol = SPECIAL_SYMBOLS[symbol];
-
-          const res: any = await getDataChart(apiSymbol);
-
-          const result = res?.data;
-
-          if (!result) continue;
-
-          specialResponses.push({
-            symbol,
-            close: Number(result.close),
-            change: Number(result.change_percent),
-          });
-
-          /**
-           * DELAY 300ms
-           * tránh rate limit
-           */
-          await new Promise((resolve) => setTimeout(resolve, 300));
-        } catch (error) {
-          console.log("SPECIAL API ERROR:", error);
-        }
-      }
-
+      const res: any = await getDataChartSiderbar();
+      const result: any[] = res?.data;
+      result.map((result: any) => {
+        specialResponses.push({
+          symbol: result.symbol,
+          close: Number(result.data.close),
+          change: Number(result.data.change_percent),
+          high: Number(result.data.high),
+          low: Number(result.data.low),
+        });
+      });
       /**
        * =========================
        * MERGE
@@ -158,13 +132,7 @@ export default function CoinSidebar({ coins, selectedCoin, onSelect }: any) {
    */
   useEffect(() => {
     if (!coins?.length) return;
-
     fetchTicker();
-
-    /**
-     * SPECIAL API LIMIT LOW
-     * => 60s
-     */
     const interval = setInterval(() => {
       fetchTicker();
     }, 5000);
@@ -182,9 +150,7 @@ export default function CoinSidebar({ coins, selectedCoin, onSelect }: any) {
     >
       {coins?.map((coin: any) => {
         const symbol = normalizeSymbol(coin);
-
         const data = marketData[symbol];
-
         const active = selectedCoin?.symbol === coin.symbol;
 
         return (

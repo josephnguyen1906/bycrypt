@@ -74,7 +74,7 @@ export default function TradePopup({
           setType(0);
           setHytime(processedData.hy_time?.[0] || "3");
           setHyykbl(processedData.hy_ykbl?.[0] || "15");
-          setAmount(processedData.hy_tzed?.[0] || "200");
+          setAmount(processedData.hy_min_per_frame?.[0] || "200");
           setPriceConfig(Number(processedData.hy_tzed?.[0]) || 200);
           setBuySellConfig(processedData);
         }
@@ -102,7 +102,7 @@ export default function TradePopup({
       const formData = new FormData();
       formData.append("ctime", hytime);
       formData.append("amount", priceConfig);
-      formData.append("coinname", symbol.replace("usdt", "-usdt"));
+      formData.append("coinname", symbol.toUpperCase());
       formData.append("method", method);
       formData.append("uprate", hyykbl);
 
@@ -249,7 +249,7 @@ export default function TradePopup({
                     setType(index);
                     setHytime(item);
                     setHyykbl(buySellConfig.hy_ykbl?.[index] || "0");
-                    setAmount(buySellConfig.hy_tzed?.[index] || "200");
+                    setAmount(buySellConfig.hy_min_per_frame?.[index] || "200");
                     setPriceConfig(
                       Number(buySellConfig.hy_tzed?.[index]) || 100,
                     );
@@ -408,7 +408,7 @@ export default function TradePopup({
               {" "}
               {t("BuySellPage.Expected")}
             </Typography>
-            <Typography>{Number(hyykbl)?.toFixed(2)}</Typography>
+            <Typography>{Number(hyykbl)?.toLocaleString()}</Typography>
           </Stack>
 
           <Stack direction="row" justifyContent="space-between" mt={1}>
@@ -417,7 +417,7 @@ export default function TradePopup({
               {t("BuySellPage.payout")}
             </Typography>
             <Typography>
-              {(Number(amount) + Number(hyykbl) || 0).toFixed(2)}
+              {(Number(amount) + Number(hyykbl) || 0).toLocaleString()}
             </Typography>
           </Stack>
         </Box>

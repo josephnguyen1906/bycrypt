@@ -309,8 +309,12 @@ const postTradeMarket = (
 const getDataChart = (parms: string) => {
   return contentInstance.get("/api/contract/price?symbol=" + parms);
 };
+const getDataChartSiderbar = () => {
+  return contentInstance.get("/api/contract/prices");
+};
 export {
   getDataChart,
+  getDataChartSiderbar,
   loginUser,
   signupUser,
   updatePassword,

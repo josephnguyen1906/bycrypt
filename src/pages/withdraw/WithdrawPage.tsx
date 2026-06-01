@@ -112,7 +112,7 @@ export default function WithdrawPage() {
           width: { xs: "100%", sm: "500px" },
           backgroundColor: "#202630",
           margin: "auto",
-          height: { xs: "100%", sm: "860px" },
+          height: { xs: "100%", sm: "980px" },
           borderRadius: {
             xs: 0,
             sm: "16px",
