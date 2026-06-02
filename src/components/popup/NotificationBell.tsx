@@ -279,7 +279,7 @@ export default function NotificationBell({
               },
 
               height: {
-                xs: 200,
+                xs: notifications.length > 0 ? 200 : 100,
                 sm: notifications.length > 0 ? 300 : 200,
               },
 
