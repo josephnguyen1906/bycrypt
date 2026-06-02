@@ -394,18 +394,17 @@ export default function NotificationBell({
                   </Box>
                 ))
               )}
-
-              <Box
-                sx={{
-                  textAlign: "center",
-                  mt: 2,
-                  pt: 1,
-                  borderTop: "1px solid #eee",
-                  fontSize: 12,
-                }}
-              >
-                Thông báo các lệnh rút tiền bị hủy
-              </Box>
+            </Box>
+            <Box
+              sx={{
+                textAlign: "center",
+                pb: 2,
+                pt: 1,
+                borderTop: "1px solid #eee",
+                fontSize: 12,
+              }}
+            >
+              Thông báo các lệnh rút tiền bị hủy
             </Box>
           </Paper>
         </>
