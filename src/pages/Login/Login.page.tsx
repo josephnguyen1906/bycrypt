@@ -160,7 +160,7 @@ export default function LoginPage() {
                   borderRadius: "8px",
                   backgroundColor: "#2B313B",
                   color: "#fff",
-
+                  border: "none",
                   "& fieldset": {
                     borderColor: "none",
                   },
@@ -177,6 +177,7 @@ export default function LoginPage() {
 
                 "& .MuiInputBase-input": {
                   color: "#fff",
+                  border: "none",
 
                   "&::placeholder": {
                     color: "#7c8aa0",
@@ -217,6 +218,7 @@ export default function LoginPage() {
                     borderRadius: "8px",
                     backgroundColor: "#2B313B",
                     color: "#fff",
+                    border: "none",
 
                     "& fieldset": {
                       borderColor: "none",
@@ -234,6 +236,7 @@ export default function LoginPage() {
 
                   "& .MuiInputBase-input": {
                     color: "#fff",
+                    border: "none",
 
                     "&::placeholder": {
                       color: "#7c8aa0",
