@@ -593,11 +593,7 @@ export default function TradePage() {
                 >
                   {result?.is_win === 1 ? "+" : "-"}
                   {result
-                    ? formatCurrency(
-                        Number(result?.ploss) + Number(result?.num),
-                        "en",
-                        "USD",
-                      )
+                    ? formatCurrency(Number(result?.ploss), "en", "USD")
                     : 0}
                 </Typography>
               </Box>

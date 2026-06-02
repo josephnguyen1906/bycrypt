@@ -8,7 +8,7 @@ export default function useWithdrawTimeCheck() {
 
     const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
-    const isValidTime = currentMinutes >= 720 && currentMinutes < 1320; // 12:00 - 22:00
+    const isValidTime = currentMinutes >= 720 && currentMinutes < 1320; // 12:00 - 24:00
 
     if (!isValidTime) {
       const today = now.toDateString();

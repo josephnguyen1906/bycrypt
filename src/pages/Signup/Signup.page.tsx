@@ -91,7 +91,11 @@ export default function SignupPage() {
       const formData = new FormData();
       formData.append("email", email);
       formData.append("password", password);
-      formData.append("verification_code", inviteCode);
+      if (mailSent) {
+        formData.append("verification_code", inviteCode);
+      } else {
+        formData.append("invit", inviteCode);
+      }
       formData.append("paypassword", paypassword);
 
       const res: any = await signupUser(formData);
