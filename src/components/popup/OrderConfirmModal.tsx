@@ -185,7 +185,9 @@ export default function OrderConfirmModal({
 
             <InfoRow
               label={t("ProfilePage.tran_type")}
-              value={type}
+              value={
+                type === "BUY" ? t("BuySellPage.BUY") : t("BuySellPage.SELL")
+              }
               color="green"
             />
             <InfoRow label={t("AssetPage.quantity")} value={dataOrder?.num} />
