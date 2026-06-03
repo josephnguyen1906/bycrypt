@@ -72,7 +72,7 @@ export default function WithdrawTimeDialog({ open, onClose }: Props) {
               ml: 0.5,
             }}
           >
-            12:00 - 22:00
+            12:00 - 00:00
           </Typography>
         </Typography>
 
