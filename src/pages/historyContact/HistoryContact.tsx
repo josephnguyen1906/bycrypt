@@ -200,9 +200,7 @@ export default function HistoryContact() {
                               marginBottom: "6px",
                             }}
                           >
-                            {item.hyzd === 1
-                              ? t("BuySellPage.BUY")
-                              : t("BuySellPage.SELL")}
+                            {item.hyzd === 1 ? "Mua" : "Bán"}
                           </Typography>
                           <Typography
                             sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
@@ -347,9 +345,7 @@ export default function HistoryContact() {
                                 pt: "10px",
                               }}
                             >
-                              {item.hyzd === 1
-                                ? t("BuySellPage.BUY")
-                                : t("BuySellPage.SELL")}
+                              {item.hyzd === 1 ? "Mua" : "Bán"}
                             </Typography>
                           </Box>
                           <Typography

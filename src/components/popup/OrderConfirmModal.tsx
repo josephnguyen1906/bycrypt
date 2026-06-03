@@ -155,7 +155,7 @@ export default function OrderConfirmModal({
             />
             <InfoRow
               label={t("BuySellPage.duration")}
-              value={`${data?.time}s`}
+              value={`${data?.time} phút`}
             />
             <InfoRow
               label={t("BuySellPage.Profitability")}
@@ -164,9 +164,7 @@ export default function OrderConfirmModal({
             />
             <InfoRow
               label={t("BuySellPage.payout")}
-              value={Number(
-                (data?.num * (1 + profitability / 100)).toFixed(2),
-              ).toLocaleString()}
+              value={Number(data?.num).toLocaleString()}
             />
           </>
         ) : (

@@ -203,17 +203,12 @@ export default function TradePage() {
       toast.error(t("Toast.buysell4"));
     }
   };
-  const fetchResult = async () => {
+  const fetchResult = async (id: number) => {
     try {
-      const tradeId = tradeIdRef.current;
-      console.log("tradeId", tradeId);
+      const tradeId = history[0].id;
+      console.log("id", id);
 
-      if (!tradeId) {
-        console.log("NO TRADE ID");
-        return;
-      }
-
-      const res = await getOrderResult(Number(tradeId));
+      const res = await getOrderResult(id);
 
       setResult(res.data);
 
@@ -461,8 +456,8 @@ export default function TradePage() {
                   <CommandOpen
                     user={user}
                     history={history}
-                    onCLose={() => {
-                      fetchResult();
+                    onCLose={(e) => {
+                      fetchResult(e);
                     }}
                   />
                 </Box>

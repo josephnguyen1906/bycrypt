@@ -401,7 +401,9 @@ export default function TradePopup({
               {" "}
               {t("BuySellPage.Expected")}
             </Typography>
-            <Typography>{Number(hyykbl)?.toLocaleString()}</Typography>
+            <Typography>
+              {Number(amount * (1 + hyykbl / 100) - amount)?.toLocaleString()}
+            </Typography>
           </Stack>
 
           <Stack direction="row" justifyContent="space-between" mt={1}>
@@ -409,9 +411,7 @@ export default function TradePopup({
               {" "}
               {t("BuySellPage.payout")}
             </Typography>
-            <Typography>
-              {(Number(amount) + Number(hyykbl) || 0).toLocaleString()}
-            </Typography>
+            <Typography>{Number(amount).toLocaleString()}</Typography>
           </Stack>
         </Box>
 

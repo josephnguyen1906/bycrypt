@@ -14,22 +14,13 @@ export default function CommandOpen({
 }: {
   user: IUser | null;
   history: IHistoryOpen[];
-  onCLose: () => void;
+  onCLose: (e: number) => void;
 }) {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [historyId, setHisstoryId] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState<{ [key: number]: number }>({});
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
   useEffect(() => {
     if (!history) return;
 
@@ -38,7 +29,9 @@ export default function CommandOpen({
     history.forEach((item) => {
       initial[item.id] = getTimeLeft(item.selltime);
     });
-
+    if (history.length > 0) {
+      setHisstoryId(history[0].id);
+    }
     setTimeLeft(initial);
   }, [history]);
 
@@ -55,7 +48,7 @@ export default function CommandOpen({
           updated[numId] = newTime;
 
           if (prev[numId] === 1) {
-            onCLose();
+            if (historyId) onCLose(historyId);
           }
         });
 
