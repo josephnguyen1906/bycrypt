@@ -212,7 +212,7 @@ function CoinCard({ coin }: { coin: Coin }) {
                   color: "#fff",
                 }}
               >
-                {coin.symbol}
+                {coin.symbol.replace("USDT", "/USDT")}
               </Typography>
             </Box>
           </Stack>
@@ -361,7 +361,7 @@ function CoinTickerList({ coins }: { coins: Record<string, Coin> }) {
                 {baseSymbol.charAt(0)}
               </Avatar>
               <Typography fontSize={16} fontWeight={600}>
-                {coin.symbol}
+                {coin.symbol.replace("USDT", "/USDT")}
               </Typography>
             </Box>
 
