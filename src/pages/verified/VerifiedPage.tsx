@@ -461,7 +461,7 @@ export default function VerifiedPage() {
                         borderRadius: "8px",
                       }}
                     >
-                      {user.cccd}
+                      ***********
                     </Typography>
                   </Box>
                 </Box>
