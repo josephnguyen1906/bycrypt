@@ -166,7 +166,7 @@ export default function AddBankPage() {
                 letterSpacing: "1px",
               }}
             >
-              {user.bank_acc_no}
+              ************{user?.bank_acc_no?.slice(-6) || "--"}
             </Typography>
 
             {/* Account Name */}

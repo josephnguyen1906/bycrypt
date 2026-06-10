@@ -34,7 +34,7 @@ interface IListcoin {
   type: number;
   title: string;
   sort: number;
-  addtime: Date;
+  addtime: string;
   status: number;
   czstatus: number;
   czaddress: string;
@@ -56,7 +56,28 @@ export default function WithdrawPage() {
   const [password, setPassword] = useState("");
   const { user, fetchUser } = useUserStore();
   const [listCoin, setListCoin] = useState<IListcoin[] | null>(null);
-  const [selectedCoin, setSelectedCoin] = useState<IListcoin | null>(null);
+  const [selectedCoin, setSelectedCoin] = useState<IListcoin | null>({
+    id: 2,
+    name: "usdt",
+    czline: "TJASXiXxAcdBqEfD1UFwrrtKZcxeM7LbNT",
+    type: 1,
+    title: "USDT",
+    sort: 1,
+    addtime: "2026-06-04T03:39:14.000000Z",
+    status: 1,
+    czstatus: 1,
+    czaddress: "TWPncVw8KgYBwBAasZrgZ3VGQ6sNayES2R",
+    czminnum: 100,
+    txstatus: 1,
+    sxftype: 1,
+    txsxf: 0,
+    txsxf_n: 0,
+    txminnum: 100,
+    txmaxnum: 1000000,
+    bbsxf: 0.03,
+    hysxf: 0,
+    bank: 28000,
+  });
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const router = useRouter();
@@ -98,6 +119,8 @@ export default function WithdrawPage() {
       toast.error(err.message);
     }
   };
+  console.log("sel", selectedCoin);
+
   return (
     <Box
       sx={{
@@ -457,9 +480,8 @@ export default function WithdrawPage() {
                   letterSpacing: "1px",
                 }}
               >
-                {user?.bank_acc_no || "--"}
+                ************{user?.bank_acc_no?.slice(-6) || "--"}
               </Typography>
-
               {/* Account Name */}
               <Typography
                 sx={{
