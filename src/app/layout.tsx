@@ -8,27 +8,39 @@ import "react-multi-carousel/lib/styles.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const DEFAULT_SEO = { title: "KCEX", description: "KCEX" };
+
 async function getSeo() {
-  const res = await fetch("https://api.mitradeforexx.com/api/config", {
-    cache: "no-store", // nếu muốn luôn fetch mới
-  });
+  const apiBase = (
+    process.env.NEXT_PUBLIC_API_URL || "https://api.wnskcex.com"
+  ).replace(/\/$/, "");
 
-  if (!res.ok) {
+  try {
+    const res = await fetch(`${apiBase}/api/config`, {
+      next: { revalidate: 300 },
+      signal: AbortSignal.timeout(5000),
+    });
+
+    if (!res.ok) {
+      return DEFAULT_SEO;
+    }
+
+    const json = await res.json();
     return {
-      title: "KCEX",
-      description: "KCEX",
+      title: json?.data?.webname || DEFAULT_SEO.title,
+      description: json?.data?.webtitle || DEFAULT_SEO.description,
     };
+  } catch {
+    return DEFAULT_SEO;
   }
-
-  return res.json();
 }
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getSeo();
 
   return {
-    title: seo?.data?.webname || "KCEX",
-    description: seo?.data?.webtitle || "KCEX",
+    title: seo.title,
+    description: seo.description,
     icons: {
       icon: "/images/logo.png",
     },
