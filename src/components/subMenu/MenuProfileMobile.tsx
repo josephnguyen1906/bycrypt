@@ -134,7 +134,7 @@ export default function MenuProfileMobile(data: userProps) {
           setConfigs(config.data);
         }
       } catch (errors: any) {
-        console.log(errors?.message);
+        // console.log(errors?.message);
       }
     };
     referral();

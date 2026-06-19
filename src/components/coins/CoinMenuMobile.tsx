@@ -76,7 +76,7 @@ export default function CoinMenuMobile({
                 change: Number(data.priceChangePercent),
               };
             } catch (error) {
-              console.log("BINANCE ERROR:", error);
+              // console.log("BINANCE ERROR:", error);
               return null;
             }
           }),
@@ -99,7 +99,7 @@ export default function CoinMenuMobile({
 
       setMarketData(formatted);
     } catch (error) {
-      console.log("FETCH ERROR:", error);
+      // console.log("FETCH ERROR:", error);
     } finally {
       fetchingRef.current = false;
     }

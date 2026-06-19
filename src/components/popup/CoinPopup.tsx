@@ -44,7 +44,7 @@ export default function CoinPopup({
           setListCoin(listCoin.data);
         }
       } catch (errors: any) {
-        console.log(errors?.message);
+        // console.log(errors?.message);
       }
     };
     referral();

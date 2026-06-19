@@ -29,7 +29,6 @@ export const CircleCountdown: React.FC<CircleCountdownProps> = ({
     try {
       const res: any = await getCheck(id);
 
-      console.log(res?.data);
       if (res?.data?.status == 2) {
         if (timerRef.current) clearInterval(timerRef.current);
         if (onComplete) onComplete();

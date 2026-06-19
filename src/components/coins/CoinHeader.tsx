@@ -32,7 +32,6 @@ export default function CoinHeader({ coin, time, setMenuCoin }: any) {
   const [menu, setMenu] = useState("XAUUSD");
 
   const [ticker, setTicker] = useState<any>(null);
-  console.log("coin", coin);
 
   const fetchingRef = useRef(false);
   const SPECIAL_SYMBOLS: Record<string, string> = {
@@ -58,11 +57,6 @@ export default function CoinHeader({ coin, time, setMenuCoin }: any) {
     fetchingRef.current = true;
 
     try {
-      console.log({
-        menu,
-        normalized: menu,
-        special: SPECIAL_SYMBOLS[menu],
-      });
       if (SPECIAL_SYMBOLS[menu]) {
         const apiSymbol = SPECIAL_SYMBOLS[menu];
 
@@ -104,7 +98,7 @@ export default function CoinHeader({ coin, time, setMenuCoin }: any) {
         });
       }
     } catch (error) {
-      console.log("FETCH TICKER ERROR:", error);
+      // console.log("FETCH TICKER ERROR:", error);
     } finally {
       fetchingRef.current = false;
     }
@@ -121,7 +115,7 @@ export default function CoinHeader({ coin, time, setMenuCoin }: any) {
         setListCoin(listCoin.data);
       }
     } catch (errors: any) {
-      console.log(errors?.message);
+      // console.log(errors?.message);
     }
   };
 
@@ -142,8 +136,6 @@ export default function CoinHeader({ coin, time, setMenuCoin }: any) {
   }, [coin]);
 
   useEffect(() => {
-    console.log("effect run", menu, time);
-
     fetchTicker();
 
     const interval = setInterval(() => {
