@@ -12,7 +12,7 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IHistoryOpen, IUser } from "@/shared/interfaces";
 import {
   createOrder,
@@ -53,6 +53,8 @@ export default function TradePopup({
   const [openConfirm, setOpenConfirm] = useState(false);
   const [orderData, setOrderData] = useState<any>(null);
   const [orderOpen, setOderOpen] = useState<any>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const submittingRef = useRef(false);
 
   useEffect(() => {
     const referral = async () => {
@@ -86,6 +88,8 @@ export default function TradePopup({
   }, []);
 
   const handleSubmit = async () => {
+    if (submittingRef.current) return;
+
     if (user?.rzstatus !== 2) {
       toast.error(t("Toast.buysell5"));
       return;
@@ -95,6 +99,9 @@ export default function TradePopup({
       toast.error(t("Toast.buysell1"));
       return;
     }
+
+    submittingRef.current = true;
+    setIsSubmitting(true);
 
     try {
       const method = tab == "BUY" ? "1" : "2";
@@ -122,6 +129,9 @@ export default function TradePopup({
       // toast.success(t("Toast.buysell3"));
     } catch (error) {
       toast.error(t("Toast.buysell4"));
+    } finally {
+      submittingRef.current = false;
+      setIsSubmitting(false);
     }
   };
 
@@ -419,7 +429,7 @@ export default function TradePopup({
         <Button
           fullWidth
           variant="contained"
-          disabled={history.length > 0 || isAmountError}
+          disabled={history.length > 0 || isAmountError || isSubmitting}
           sx={{
             mt: 3,
             background: tab === "BUY" ? "#22c55e" : "#ef4444",

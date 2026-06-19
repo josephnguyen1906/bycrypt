@@ -112,6 +112,8 @@ export default function TradePage() {
   const router = useRouter();
   const [imageLoaded, setImageLoaded] = useState(false);
   const tradeIdRef = useRef<number | null>(null);
+  const submittingRef = useRef(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     fetchUser();
@@ -156,6 +158,8 @@ export default function TradePage() {
   };
 
   const handleSubmit = async (data: ITypeTrade) => {
+    if (submittingRef.current) return;
+
     if (!user) {
       toast.error(t("BuySellPage.title"));
       return;
@@ -169,6 +173,9 @@ export default function TradePage() {
       toast.error(t("Toast.buysell1"));
       return;
     }
+
+    submittingRef.current = true;
+    setIsSubmitting(true);
 
     try {
       const formData = new FormData();
@@ -201,6 +208,9 @@ export default function TradePage() {
     } catch (error) {
       console.log("MAIN ERROR:", error);
       toast.error(t("Toast.buysell4"));
+    } finally {
+      submittingRef.current = false;
+      setIsSubmitting(false);
     }
   };
   const fetchResult = async (id: number) => {
@@ -400,6 +410,7 @@ export default function TradePage() {
                     onSubmit={handleSubmit}
                     user={user}
                     tradeYn={tradeYn}
+                    isSubmitting={isSubmitting}
                   />
                 </Box>
                 <Box>

@@ -24,9 +24,10 @@ interface InputProps {
   onSubmit: (e: ITypeTrade) => void;
   user: IUser | null;
   tradeYn: boolean;
+  isSubmitting?: boolean;
 }
 
-export default function TradeForm({ onSubmit, user, tradeYn }: InputProps) {
+export default function TradeForm({ onSubmit, user, tradeYn, isSubmitting = false }: InputProps) {
   const [buySellConfig, setBuySellConfig] = useState<any>(null);
 
   // STATE RIÊNG CHO TĂNG
@@ -324,7 +325,7 @@ export default function TradeForm({ onSubmit, user, tradeYn }: InputProps) {
 
           <Button
             fullWidth
-            disabled={!user || tradeYn || isMaxError}
+            disabled={!user || tradeYn || isMaxError || isSubmitting}
             sx={{
               height: "46px",
               borderRadius: "999px",
