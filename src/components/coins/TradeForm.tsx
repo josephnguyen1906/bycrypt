@@ -73,10 +73,6 @@ export default function TradeForm({ onSubmit, user, tradeYn }: InputProps) {
           };
 
           setBuySellConfig(processedData);
-          console.log(
-            "hy_min_per_frame",
-            processedData.hy_min_per_frame?.[0] || 0,
-          );
 
           const defaultData = {
             type: 0,

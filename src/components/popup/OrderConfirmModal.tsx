@@ -50,7 +50,7 @@ export default function OrderConfirmModal({
         setDataOrder(res.data);
       }
     } catch (err) {
-      console.log("err 1", err);
+      // console.log("err 1", err);
     }
   };
   useEffect(() => {

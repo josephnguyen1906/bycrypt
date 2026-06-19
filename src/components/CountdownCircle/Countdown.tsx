@@ -17,7 +17,6 @@ export const Countdown: React.FC<CircleCountdownProps> = ({
 }) => {
   const [timeLeft, setTimeLeft] = useState(duration);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  console.log("duration", duration);
 
   const stroke = 5;
   const normalizedRadius = radius - stroke * 2;

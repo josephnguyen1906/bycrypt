@@ -73,7 +73,7 @@ export default function CoinSidebar({ coins, selectedCoin, onSelect }: any) {
 
       setMarketData(formatted);
     } catch (error) {
-      console.log("FETCH TICKER ERROR:", error);
+      // console.log("FETCH TICKER ERROR:", error);
     } finally {
       fetchingRef.current = false;
     }

@@ -123,7 +123,7 @@ export default function MenuCoin({ data, changeCoin }: props) {
           }
         }
       } catch (errors: any) {
-        console.log(errors?.message);
+        // console.log(errors?.message);
       }
     };
     referral();
