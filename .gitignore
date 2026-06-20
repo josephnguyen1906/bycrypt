@@ -45,3 +45,6 @@ next-env.d.ts
 
 # Backend (Laravel API + admin — local only, không đẩy lên repo FE)
 /Backend/
+
+# Server deploy configs (aaPanel/Apache/PM2 — chỉ dùng trên server, không đẩy repo FE)
+/deploy/
