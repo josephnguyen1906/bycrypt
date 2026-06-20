@@ -2,7 +2,7 @@
 
 import { Box, Modal, Typography, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { getOrderResult } from "@/services/User.service";
 import { IHistoryClose } from "@/shared/interfaces";
 import { formatDateTime } from "@/utils/formatDateTime";
@@ -26,13 +26,8 @@ export default function OrderConfirmModal({
   const { t } = useTranslation();
   const [countdown, setCountdown] = useState<number | null>(null);
   const [dataOrder, setDataOrder] = useState<IHistoryClose | null>(null);
-
-  useEffect(() => {
-    if (!open || !data) return;
-
-    setCountdown(data.time);
-    setDataOrder(null);
-  }, [open, data]);
+  const isCheckingRef = useRef(false);
+  const isSettledRef = useRef(false);
 
   const getTimeLeft = (selltime: Date) => {
     const end = new Date(selltime).getTime();
@@ -43,39 +38,55 @@ export default function OrderConfirmModal({
   const percent =
     countdown !== null ? (countdown / (data.time * 60)) * 100 : 100;
 
-  const checkOrder = async () => {
+  const checkOrder = useCallback(async () => {
+    if (!data?.id || isCheckingRef.current || isSettledRef.current) return;
+
+    isCheckingRef.current = true;
     try {
       const res = await getOrderResult(data.id);
       if (res.status && res.data) {
         setDataOrder(res.data);
-        if (Number(res.data.status) !== 1) {
+        const settled = Number(res.data.status) !== 1;
+        isSettledRef.current = settled;
+        if (settled) {
           setCountdown(0);
         }
       }
     } catch {
       // retry on next tick
+    } finally {
+      isCheckingRef.current = false;
     }
-  };
+  }, [data?.id]);
 
   useEffect(() => {
     if (!open || !data) return;
+    setDataOrder(null);
+    isSettledRef.current = false;
+    isCheckingRef.current = false;
 
     const resolveSecondsLeft = () => {
       if (data.selltime) {
         return getTimeLeft(data.selltime);
       }
-      if (typeof data.time === "number") {
-        return data.time;
-      }
-      return 0;
+      const durationMinutes = Number(data.time);
+      if (!Number.isFinite(durationMinutes) || durationMinutes <= 0) return 0;
+      return Math.floor(durationMinutes * 60);
     };
 
+    const startedAt = Date.now();
+    const fallbackDurationSeconds = resolveSecondsLeft();
+
     const tick = () => {
-      const left = resolveSecondsLeft();
+      const left = data.selltime
+        ? resolveSecondsLeft()
+        : Math.max(
+            fallbackDurationSeconds - Math.floor((Date.now() - startedAt) / 1000),
+            0,
+          );
       setCountdown(left);
 
-      const settled = dataOrder && Number(dataOrder.status) !== 1;
-      if (left <= 0 && !settled) {
+      if (left <= 0 && !isSettledRef.current) {
         void checkOrder();
       }
     };
@@ -84,7 +95,7 @@ export default function OrderConfirmModal({
     const interval = setInterval(tick, 1000);
 
     return () => clearInterval(interval);
-  }, [open, data, dataOrder]);
+  }, [open, data, checkOrder]);
 
   return (
     <Modal open={open} onClose={onClose}>

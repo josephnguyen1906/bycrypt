@@ -12,7 +12,7 @@ const DEFAULT_SEO = { title: "KCEX", description: "KCEX" };
 
 async function getSeo() {
   const apiBase = (
-    process.env.NEXT_PUBLIC_API_URL || "https://api.wnskcex.com"
+    process.env.NEXT_PUBLIC_API_URL || "https://cms.wnskcex.com"
   ).replace(/\/$/, "");
 
   try {
