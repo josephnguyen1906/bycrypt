@@ -28,6 +28,7 @@ export default function OrderConfirmModal({
   const [dataOrder, setDataOrder] = useState<IHistoryClose | null>(null);
   const isCheckingRef = useRef(false);
   const isSettledRef = useRef(false);
+  const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const getTimeLeft = (selltime: Date) => {
     const end = new Date(selltime).getTime();
@@ -50,6 +51,10 @@ export default function OrderConfirmModal({
         isSettledRef.current = settled;
         if (settled) {
           setCountdown(0);
+          if (pollIntervalRef.current) {
+            clearInterval(pollIntervalRef.current);
+            pollIntervalRef.current = null;
+          }
         }
       }
     } catch {
@@ -64,6 +69,11 @@ export default function OrderConfirmModal({
     setDataOrder(null);
     isSettledRef.current = false;
     isCheckingRef.current = false;
+
+    if (pollIntervalRef.current) {
+      clearInterval(pollIntervalRef.current);
+      pollIntervalRef.current = null;
+    }
 
     const resolveSecondsLeft = () => {
       if (data.selltime) {
@@ -86,15 +96,26 @@ export default function OrderConfirmModal({
           );
       setCountdown(left);
 
-      if (left <= 0 && !isSettledRef.current) {
+      if (left <= 0 && !isSettledRef.current && !pollIntervalRef.current) {
         void checkOrder();
+        pollIntervalRef.current = setInterval(() => {
+          if (!isSettledRef.current) {
+            void checkOrder();
+          }
+        }, 3000);
       }
     };
 
     tick();
     const interval = setInterval(tick, 1000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      if (pollIntervalRef.current) {
+        clearInterval(pollIntervalRef.current);
+        pollIntervalRef.current = null;
+      }
+    };
   }, [open, data, checkOrder]);
 
   return (
