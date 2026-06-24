@@ -21,13 +21,20 @@ export interface ITypeTrade {
   method: string;
 }
 interface InputProps {
-  onSubmit: (e: ITypeTrade) => void;
+  onSubmit: (data: ITypeTrade, symbol: string) => void;
+  symbol: string;
   user: IUser | null;
   tradeYn: boolean;
   isSubmitting?: boolean;
 }
 
-export default function TradeForm({ onSubmit, user, tradeYn, isSubmitting = false }: InputProps) {
+export default function TradeForm({
+  onSubmit,
+  symbol,
+  user,
+  tradeYn,
+  isSubmitting = false,
+}: InputProps) {
   const [buySellConfig, setBuySellConfig] = useState<any>(null);
 
   // STATE RIÊNG CHO TĂNG
@@ -142,9 +149,9 @@ export default function TradeForm({ onSubmit, user, tradeYn, isSubmitting = fals
 
   const hanldSubmit = (isUp: boolean) => {
     if (isUp) {
-      onSubmit(tradeUp);
+      onSubmit(tradeUp, symbol);
     } else {
-      onSubmit(tradeDown);
+      onSubmit(tradeDown, symbol);
     }
   };
 

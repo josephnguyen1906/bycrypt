@@ -125,7 +125,13 @@ export default function TradePage() {
 
       if (resCoin.data) {
         setListCoin(resCoin.data);
-        setSelectedCoin(resCoin.data[0]);
+        setSelectedCoin((prev) => {
+          const current = resCoin.data.find(
+            (coin: Icoin) =>
+              coin.symbol.toUpperCase() === prev.symbol.toUpperCase(),
+          );
+          return current ?? resCoin.data[0];
+        });
       }
     };
     fetchData();
@@ -157,7 +163,7 @@ export default function TradePage() {
     });
   };
 
-  const handleSubmit = async (data: ITypeTrade) => {
+  const handleSubmit = async (data: ITypeTrade, orderSymbol: string) => {
     if (submittingRef.current) return;
 
     if (!user) {
@@ -182,7 +188,7 @@ export default function TradePage() {
 
       formData.append("ctime", data.hytime);
       formData.append("amount", String(data.price));
-      formData.append("coinname", selectedCoin.symbol);
+      formData.append("coinname", orderSymbol);
       formData.append("method", data.method);
       formData.append("uprate", data.hyykbl);
 
@@ -270,8 +276,10 @@ export default function TradePage() {
         <CoinHeader
           coin={selectedCoin}
           time={timeValue}
-          setMenuCoin={(e: any) => {
-            const data = listCoin?.find((i) => i.name == e);
+          setMenuCoin={(symbol: string) => {
+            const data = listCoin?.find(
+              (i) => i.symbol.toUpperCase() === symbol.toUpperCase(),
+            );
             if (data) setSelectedCoin(data);
           }}
         />
@@ -408,6 +416,7 @@ export default function TradePage() {
                 >
                   <TradeForm
                     onSubmit={handleSubmit}
+                    symbol={selectedCoin.symbol}
                     user={user}
                     tradeYn={tradeYn}
                     isSubmitting={isSubmitting}
