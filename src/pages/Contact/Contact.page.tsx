@@ -28,6 +28,7 @@ import {
   getContractjc,
   getFinaceCoin,
   getListCoin,
+  getOrderResult,
   getWebsiteConfig,
 } from "@/services/User.service";
 import { useUserStore } from "@/stores/useUserStore";
@@ -197,7 +198,13 @@ export default function ContactPage() {
             <CommandOpen
               user={user}
               history={history}
-              onCLose={() => {
+              onCLose={async (id: number) => {
+                try {
+                  if (id) await getOrderResult(id);
+                } catch (e) {
+                  // settlement may also be handled by cron; ignore errors
+                }
+                await fetchUser();
                 historyOpen();
               }}
             />

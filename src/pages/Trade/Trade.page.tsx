@@ -221,14 +221,12 @@ export default function TradePage() {
   };
   const fetchResult = async (id: number) => {
     try {
-      const tradeId = history[0].id;
-      console.log("id", id);
-
       const res = await getOrderResult(id);
 
       setResult(res.data);
-
       setTrade(null);
+
+      await fetchUser();
 
       await preloadImage("/images/thongbao.png");
 
@@ -244,15 +242,16 @@ export default function TradePage() {
   useEffect(() => {
     if (showPopup) {
       const timeout = setTimeout(() => {
-        setShowPopup(false); // Ẩn popup sau 5 giây
-        setResult(null); // Reset kết quả nếu cần
+        setShowPopup(false);
+        setResult(null);
         historyOpen();
         setTradeYn(false);
+        fetchUser();
       }, 5000);
 
-      return () => clearTimeout(timeout); // Clear khi component unmount hoặc showPopup thay đổi
+      return () => clearTimeout(timeout);
     }
-  }, [showPopup]);
+  }, [showPopup, fetchUser]);
 
   return (
     <Box sx={{ background: "#000", paddingTop: { xs: "0px", sm: "70px" } }}>
