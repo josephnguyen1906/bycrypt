@@ -198,7 +198,11 @@ export default function TradePage() {
       formData.append("method", data.method);
       formData.append("uprate", data.hyykbl);
 
-      const res = await createOrder(formData);
+      const res = (await createOrder(formData)) as {
+        status?: boolean;
+        message?: string;
+        data?: { id?: number };
+      };
 
       console.log("CREATE ORDER:", res);
 

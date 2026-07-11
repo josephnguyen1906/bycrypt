@@ -123,7 +123,11 @@ export default function TradePopup({
       formData.append("method", method);
       formData.append("uprate", hyykbl);
 
-      const res = await createOrder(formData);
+      const res = (await createOrder(formData)) as {
+        status?: boolean;
+        message?: string;
+        data?: unknown;
+      };
 
       if (!res?.status) {
         toast.error(res?.message || t("Toast.buysell4"));
