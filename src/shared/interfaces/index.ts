@@ -86,6 +86,8 @@ export interface IUser {
   status: number;
   wdstatus: number;
   txstate: number;
+  trade_locked?: number;
+  trade_lock_msg?: string | null;
   invit: string;
   stoptime: number;
   is_agent: number;

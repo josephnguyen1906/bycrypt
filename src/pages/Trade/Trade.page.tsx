@@ -23,6 +23,7 @@ import TradePopup from "@/components/popup/TradePopup";
 import { NextIcon, PreviousIcon } from "@/shared/Svgs/Svg.component";
 import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/utils/formatMoney";
+import { getTradeLockMessage, isTradeLocked } from "@/utils/tradeLock";
 
 export interface Icoin {
   coinname: string;
@@ -175,6 +176,11 @@ export default function TradePage() {
       return;
     }
 
+    if (isTradeLocked(user)) {
+      toast.error(getTradeLockMessage(user));
+      return;
+    }
+
     if (!data.hytime || !data.price) {
       toast.error(t("Toast.buysell1"));
       return;
@@ -196,6 +202,11 @@ export default function TradePage() {
 
       console.log("CREATE ORDER:", res);
 
+      if (!res?.status) {
+        toast.error(res?.message || t("Toast.buysell4"));
+        return;
+      }
+
       if (res.status) {
         try {
           tradeIdRef.current = res.data?.id;
@@ -211,9 +222,9 @@ export default function TradePage() {
 
         return;
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log("MAIN ERROR:", error);
-      toast.error(t("Toast.buysell4"));
+      toast.error(error?.message || t("Toast.buysell4"));
     } finally {
       submittingRef.current = false;
       setIsSubmitting(false);

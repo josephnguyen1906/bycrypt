@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import OrderConfirmModal from "./OrderConfirmModal";
 import { CheckIcon } from "@/shared/Svgs/Svg.component";
+import { getTradeLockMessage, isTradeLocked } from "@/utils/tradeLock";
 
 interface Props {
   open: boolean;
@@ -99,6 +100,11 @@ export default function TradePopup({
       return;
     }
 
+    if (isTradeLocked(user)) {
+      toast.error(getTradeLockMessage(user));
+      return;
+    }
+
     if (!hytime || amount === "" || Number(amount) <= 0) {
       toast.error(t("Toast.buysell1"));
       return;
@@ -119,6 +125,11 @@ export default function TradePopup({
 
       const res = await createOrder(formData);
 
+      if (!res?.status) {
+        toast.error(res?.message || t("Toast.buysell4"));
+        return;
+      }
+
       if (res?.data) {
         const his: any = await getContractjc();
         if (his.data?.length > 0) {
@@ -131,8 +142,8 @@ export default function TradePopup({
 
       // onClose();
       // toast.success(t("Toast.buysell3"));
-    } catch (error) {
-      toast.error(t("Toast.buysell4"));
+    } catch (error: any) {
+      toast.error(error?.message || t("Toast.buysell4"));
     } finally {
       submittingRef.current = false;
       setIsSubmitting(false);
