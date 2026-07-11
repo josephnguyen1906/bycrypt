@@ -213,7 +213,7 @@ export default function TradePage() {
 
       if (res.status) {
         try {
-          tradeIdRef.current = res.data?.id;
+          tradeIdRef.current = res.data?.id ?? null;
           setProgressContract(res.data);
 
           await fetchUser();
