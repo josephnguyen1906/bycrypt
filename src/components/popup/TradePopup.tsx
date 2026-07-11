@@ -123,7 +123,7 @@ export default function TradePopup({
       formData.append("method", method);
       formData.append("uprate", hyykbl);
 
-      const res = (await createOrder(formData)) as {
+      const res = (await createOrder(formData)) as unknown as {
         status?: boolean;
         message?: string;
         data?: unknown;

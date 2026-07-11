@@ -198,7 +198,7 @@ export default function TradePage() {
       formData.append("method", data.method);
       formData.append("uprate", data.hyykbl);
 
-      const res = (await createOrder(formData)) as {
+      const res = (await createOrder(formData)) as unknown as {
         status?: boolean;
         message?: string;
         data?: { id?: number };
