@@ -1,13 +1,38 @@
-import { IUser } from "@/shared/interfaces";
+import { IOrepool, IUser } from "@/shared/interfaces";
 import { Box, IconButton, Typography } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { MenuAccount } from "@/datafake/Menu";
+import { getOrepool } from "@/services/User.service";
 export default function Tab1Page({ user }: { user: IUser | null }) {
   const [show, setShow] = useState(true);
   const { t } = useTranslation();
+  const [stakingData, setStakingData] = useState<IOrepool>();
+
+  const fetchStakingData = async () => {
+    try {
+      const res: any = await getOrepool();
+
+      if (res) {
+        setStakingData(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchStakingData();
+  }, []);
+
+  const totalMyList = useMemo(() => {
+    const myList = stakingData?.mylist || [];
+
+    return myList.reduce((sum: number, item: any) => {
+      return sum + Number(item.outusdt || 0);
+    }, 0);
+  }, [stakingData]);
   return (
     <Box sx={{ width: "100%" }}>
       <Box
@@ -32,7 +57,6 @@ export default function Tab1Page({ user }: { user: IUser | null }) {
         <Box
           sx={{
             display: "flex",
-            gap: "10px",
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -43,7 +67,7 @@ export default function Tab1Page({ user }: { user: IUser | null }) {
               : "*****"}
           </Typography>
           <IconButton
-            sx={{ background: "none" }}
+            sx={{ background: "none", width: 25, height: 25 }}
             onClick={() => setShow(!show)}
           >
             {show ? (
@@ -76,10 +100,12 @@ export default function Tab1Page({ user }: { user: IUser | null }) {
           </Box>
         ))}
       </Box>
+
       <Box sx={{ display: "grid", gap: "10px", mt: 2 }}>
         <Typography sx={{ color: "#B8BDC5", fontSize: 16 }}>
           {t("AccountPage.title2")}
         </Typography>
+
         <Box
           sx={{
             display: "flex",
@@ -97,12 +123,70 @@ export default function Tab1Page({ user }: { user: IUser | null }) {
             <Typography
               sx={{ color: "white", fontSize: 14, textAlign: "right" }}
             >
-              {Number(user?.balance?.usdt).toLocaleString()} USDT
+              {Number(totalMyList).toLocaleString()} USDT
             </Typography>
             <Typography
               sx={{ color: "#868c9a", fontSize: 14, textAlign: "right" }}
             >
-              ≈$ {Number(user?.balance?.usdt).toLocaleString()}
+              ≈$ {Number(totalMyList).toLocaleString()}
+            </Typography>
+          </Box>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Box display={"flex"} gap={"10px"} alignItems={"center"}>
+            <Image src={"/images/money.png"} width={20} height={20} alt="" />
+            <Typography sx={{ color: "#868c9a", fontSize: 14 }}>
+              {t("AccountPage.menu3")}
+            </Typography>
+          </Box>
+          <Box display={"grid"} alignItems={"center"}>
+            <Typography
+              sx={{ color: "white", fontSize: 14, textAlign: "right" }}
+            >
+              {Number(totalMyList).toLocaleString()} USDT
+            </Typography>
+            <Typography
+              sx={{ color: "#868c9a", fontSize: 14, textAlign: "right" }}
+            >
+              ≈$ {Number(totalMyList).toLocaleString()}
+            </Typography>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Box display={"flex"} gap={"10px"} alignItems={"center"}>
+            <Image
+              src={"/images/icon-excavator.png"}
+              width={20}
+              height={20}
+              alt=""
+            />
+            <Typography sx={{ color: "#868c9a", fontSize: 14 }}>
+              {t("AccountPage.title3")}
+            </Typography>
+          </Box>
+          <Box display={"grid"} alignItems={"center"}>
+            <Typography
+              sx={{ color: "white", fontSize: 14, textAlign: "right" }}
+            >
+              {Number(totalMyList).toLocaleString()} USDT
+            </Typography>
+            <Typography
+              sx={{ color: "#868c9a", fontSize: 14, textAlign: "right" }}
+            >
+              ≈$ {Number(totalMyList).toLocaleString()}
             </Typography>
           </Box>
         </Box>
