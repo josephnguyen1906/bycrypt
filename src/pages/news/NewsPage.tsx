@@ -17,14 +17,13 @@ interface INews {
   title: string;
   coverImage: string;
   status: number;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 }
 export default function NewsPage() {
   const { t, i18n } = useTranslation();
   const [news, setNews] = useState<INews[]>([]);
   const router = useRouter();
-  const { user, fetchUser, loading } = useUserStore();
 
   const fetchNewList = async () => {
     const res: any = await getListNew();
@@ -40,139 +39,96 @@ export default function NewsPage() {
   return (
     <Box
       sx={{
-        width: "100%",
-        background: "#000",
-        paddingTop: {
-          xs: "0px",
-          sm: "100px",
+        maxWidth: {
+          xs: "100%",
+          sm: "448px",
         },
+        margin: "auto",
+        minHeight: "100vh",
+        background: "#0E0F18",
+        pb: "100px",
+        pt: 3,
       }}
     >
+      <Typography
+        sx={{ fontSize: 20, color: "white", fontWeight: 700, padding: "10px" }}
+      >
+        {t("HomePage.menu4")}
+      </Typography>
       <Box
         sx={{
           width: "90%",
           margin: "auto",
-          pb: "50px",
-          pt: "30px",
+          position: "relative",
+          pl: 5,
+          mt: 3,
         }}
       >
+        {/* Line */}
         <Box
           sx={{
-            display: { xs: "none", sm: "grid" },
-            gridTemplateColumns: "1fr 1fr 1fr",
-            width: "100%",
-            gap: "10px",
+            position: "absolute",
+            left: 18,
+            top: 3,
+            bottom: 0,
+            width: "1px",
+            bgcolor: "#1F5EFF",
           }}
-        >
-          {news.length > 0 &&
-            news.map((item, index) => (
-              <Box
-                key={index}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  gap: "10px",
-                  textAlign: "center",
-                }}
-              >
-                <Image
-                  src={item.coverImage}
-                  width={442}
-                  height={300}
-                  style={{
-                    height: "300px",
-                    objectFit: "cover",
-                    borderRadius: "10px",
-                  }}
-                  alt={item.title}
-                />
-                <Typography
-                  sx={{ fontSize: "16px", fontWeight: 600, color: "white" }}
-                >
-                  {item.title}
-                </Typography>
-                <Button
-                  onClick={() => router.push("/news/" + item.id)}
-                  sx={{
-                    background: "none",
-                    border: "none",
-                    color: "white",
-                    textTransform: "capitalize",
-                    "&:hover": { background: "none" },
-                  }}
-                >
-                  Xem chi tiết →
-                </Button>
-              </Box>
-            ))}
-        </Box>
-        <Box
-          sx={{
-            display: { xs: "grid", sm: "none" },
-            gridTemplateColumns: "1fr",
-            width: "100%",
-            gap: "10px",
-            pb: "100px",
-          }}
-        >
-          {news.length > 0 &&
-            news.map((item, index) => (
-              <Box
-                key={index}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                }}
-              >
-                <Image
-                  src={item.coverImage}
-                  width={120}
-                  height={80}
-                  style={{
-                    height: "80px",
-                    objectFit: "cover",
-                    borderRadius: "10px",
-                  }}
-                  alt={item.title}
-                />
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <Typography
-                    sx={{
-                      fontSize: "16px",
-                      fontWeight: 600,
-                      color: "white",
-                      pl: "5px",
+        />
 
-                      height: "50px",
+        {news.map((item, index) => (
+          <Box
+            key={item.id}
+            sx={{
+              position: "relative",
+              pb: 3,
+              borderTop: index !== 0 ? "1px solid #1D2234" : "none",
+            }}
+          >
+            {/* Dot */}
+            <Box
+              sx={{
+                position: "absolute",
+                left: -24,
+                top: 4,
+                width: 6,
+                height: 6,
+                borderRadius: "50%",
+                bgcolor: "#2E6CFF",
+                boxShadow: "0 0 0 4px rgba(46,108,255,.15)",
+              }}
+            />
 
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
+            {/* Time */}
+            <Typography
+              sx={{
+                color: "#8B8FA4",
+                fontSize: 14,
+                mb: 1,
+                // pt: "10px",
+              }}
+            >
+              {new Date(item.created_at).toLocaleString("vi")}
+            </Typography>
 
-                      display: "-webkit-box",
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: "vertical",
-                    }}
-                  >
-                    {item.title}
-                  </Typography>
-                  <Button
-                    onClick={() => router.push("/news/" + item.id)}
-                    sx={{
-                      background: "none",
-                      border: "none",
-                      color: "white",
-                      textTransform: "capitalize",
-                      "&:hover": { background: "none" },
-                    }}
-                  >
-                    Xem chi tiết →
-                  </Button>
-                </Box>
-              </Box>
-            ))}
-        </Box>
+            {/* Title */}
+            <Typography
+              sx={{
+                color: "#FFF",
+                fontWeight: 700,
+                fontSize: 18,
+                lineHeight: 1.5,
+                cursor: "pointer",
+                "&:hover": {
+                  color: "#4E8FFF",
+                },
+              }}
+              onClick={() => router.push(`/news/${item.id}`)}
+            >
+              {item.title}
+            </Typography>
+          </Box>
+        ))}
       </Box>
     </Box>
   );

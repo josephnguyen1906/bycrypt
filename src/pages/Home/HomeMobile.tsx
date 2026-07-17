@@ -34,6 +34,7 @@ import PoolList from "./PoolList";
 import CoinTicker from "@/components/CoinTicker/CoinTicker";
 import { COINS, MONEYCOIN, news } from "@/datafake/home";
 import NewsCard from "./NewCard";
+import HeaderMobile from "@/components/PrimaryLayout/HeaderMobile";
 
 export default function HomeMobile({
   user,
@@ -47,7 +48,6 @@ export default function HomeMobile({
   const [langAnchorEl, setLangAnchorEl] = useState<null | HTMLElement>(null);
   const isLangMenuOpen = Boolean(langAnchorEl);
   const [stakingData, setStakingData] = useState<IOrepool>();
-  const route = useRouter();
 
   const fetchStakingData = async () => {
     try {
@@ -73,51 +73,15 @@ export default function HomeMobile({
   return (
     <Box
       sx={{
-        maxWidth: "448px",
+        maxWidth: { xs: "100%", sm: "448px" },
         margin: "auto",
         minHeight: "100vh",
         background: "#0E0F18",
-
         pb: "100px",
       }}
     >
       <Box>
-        <Box
-          sx={{
-            width: "100%",
-            height: "60px",
-            display: "flex",
-            justifyContent: "space-between",
-            padding: "10px",
-            background: "#0E0F18",
-          }}
-        >
-          <Box>
-            <Button sx={{ width: 40, height: 40, background: "#0E0F18" }}>
-              <MenuIcon sx={{ color: "white" }} />
-            </Button>
-          </Box>
-          <Box sx={{ display: "flex", gap: "5px", alignItems: "center" }}>
-            <NotificationBell />
-            <IconButton
-              sx={{ height: "20px" }}
-              onClick={() => route.push("/news")}
-            >
-              <Image
-                src={"/images/history-icon.png"}
-                width={20}
-                height={20}
-                alt=""
-                style={{ height: "20px", objectFit: "cover" }}
-              />
-            </IconButton>
-            <Tooltip title="Language">
-              <IconButton onClick={() => route.push("/language")}>
-                <InternetIcon width="20px" height="20px" />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        </Box>
+        <HeaderMobile user={user} />
 
         <Box
           sx={{

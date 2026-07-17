@@ -7,15 +7,18 @@ import useBinanceTicker from "./useBinanceTicker";
 export default function CoinTicker({
   listCoin,
   tab,
+  search,
 }: {
   listCoin: string[];
   tab: number;
+  search?: string | null;
 }) {
   const { coins, coinList } = useBinanceTicker({ listCoin, tab });
-
-  console.log("coinList", coinList);
-  console.log("coins", coins);
-
+  const filteredCoinList = search?.trim()
+    ? coinList.filter((symbol) =>
+        symbol.toLowerCase().includes(search.trim().toLowerCase()),
+      )
+    : coinList;
   return (
     <Box
       sx={{
@@ -25,7 +28,7 @@ export default function CoinTicker({
         overflow: "hidden",
       }}
     >
-      {coinList.map((symbol) => (
+      {filteredCoinList.map((symbol) => (
         <CoinRow
           key={`${tab}-${symbol}`}
           tab={tab}

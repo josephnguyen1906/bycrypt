@@ -90,18 +90,19 @@ export default function NavMobileBottom() {
               height="20px"
             />
           }
-          href="/"
+          onClick={() => router.push("/")}
         />
 
         <BottomNavigationAction
           label={t("NavMobile.menu2")}
           icon={
             <CandlestickChartIcon
-              sx={{ color: "#888888" }}
+              sx={{ color: path == "/market/" ? "#00A609" : "#888888" }}
               width="20px"
               height="20px"
             />
           }
+          onClick={() => router.push("/market")}
         />
         <BottomNavigationAction
           label={t("NavMobile.menu3")}
@@ -110,21 +111,28 @@ export default function NavMobileBottom() {
 
         <BottomNavigationAction
           label={t("NavMobile.menu4")}
-          icon={<CoinInsertIcon width="20px" height="20px" />}
+          icon={
+            <CoinInsertIcon
+              fill={path == "/news/" ? "#00A609" : "#888888"}
+              width="20px"
+              height="20px"
+            />
+          }
+          onClick={() => router.push("/news")}
         />
 
         <BottomNavigationAction
           label={t("NavMobile.menu5")}
           icon={
             <WalletMenuIcon
-              fill={path == "/profile" ? "#00A609" : "#888888"}
+              fill={path == "/account/" ? "#00A609" : "#888888"}
               width="20px"
               height="20px"
             />
           }
           onClick={() => {
             if (user) {
-              router.push("/profile");
+              router.push("/account");
             }
           }}
         />

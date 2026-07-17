@@ -86,7 +86,7 @@ export default function NewDetailPage() {
           </IconButton>
 
           <Typography fontSize={20} fontWeight={600}>
-            {t("AssetPage.menu5")}
+            {t("HomePage.menu4")}
           </Typography>
           <IconButton></IconButton>
         </Box>
@@ -124,7 +124,7 @@ export default function NewDetailPage() {
           <Box
             sx={{ color: "#000", pt: "10px" }}
             dangerouslySetInnerHTML={{
-              __html: data?.content || "Không có nội dung",
+              __html: data?.content || "",
             }}
           />
         </Box>

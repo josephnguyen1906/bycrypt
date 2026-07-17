@@ -1,4 +1,8 @@
 import {
+  AccountMenu1Icon,
+  AccountMenu2Icon,
+  AccountMenu3Icon,
+  AccountMenu4Icon,
   AssetsIcon,
   CalendarIcon,
   CasinoCardsIcon,
@@ -316,4 +320,11 @@ export const MenuAset2 = [
     title: "My Staking",
     icon: <SafeBoxIcon width="26px" height="26px" fill="#fff" />,
   },
+];
+
+export const MenuAccount = [
+  { id: 1, icon: <AccountMenu1Icon />, name: "AccountPage.menuTab1" },
+  { id: 2, icon: <AccountMenu2Icon />, name: "AccountPage.menuTab2" },
+  { id: 3, icon: <AccountMenu3Icon />, name: "AccountPage.menuTab3" },
+  { id: 4, icon: <AccountMenu4Icon />, name: "AccountPage.menuTab4" },
 ];

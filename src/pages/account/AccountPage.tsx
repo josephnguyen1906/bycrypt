@@ -1,49 +1,29 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  Typography,
-  Card,
-  CardContent,
-  IconButton,
-  Stack,
-  Tooltip,
-  Menu,
-} from "@mui/material";
-import VisibilityOutlined from "@mui/icons-material/VisibilityOutlined";
-import SyncAlt from "@mui/icons-material/SyncAlt";
-import AccountBalanceWalletOutlined from "@mui/icons-material/AccountBalanceWalletOutlined";
-import SwapHorizOutlined from "@mui/icons-material/SwapHorizOutlined";
-import RefreshOutlined from "@mui/icons-material/RefreshOutlined";
-import ChevronRight from "@mui/icons-material/ChevronRight";
-import LinkIcon from "@mui/icons-material/Link";
-import SecurityOutlined from "@mui/icons-material/SecurityOutlined";
-import LogoutOutlined from "@mui/icons-material/LogoutOutlined";
+import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import { useUserStore } from "@/stores/useUserStore";
-import Skeleton from "@mui/material/Skeleton";
 import { useEffect, useState } from "react";
-import {
-  SyncAltOutlined,
-  SyncOutlined,
-  Visibility,
-  VisibilityOff,
-  VisibilityOffOutlined,
-} from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import LoadingComponent from "@/components/Loading";
 import { useTranslation } from "react-i18next";
-import { InternetIcon, PreviousIcon } from "@/shared/Svgs/Svg.component";
-import LanguageSwitcher from "@/components/Language/LanguageSwitcher";
-import Image from "next/image";
+import MenuIcon from "@mui/icons-material/Menu";
+import { CustomTabPanel } from "../DepositWithdraw/DepositWithdraw.page";
+import Tab1Page from "./tabs/Tab1Page";
 
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
 export default function AccountPage() {
   const { t, i18n } = useTranslation();
-  const [hideBalance, setHideBalance] = useState(false);
   const router = useRouter();
   const { user, fetchUser, loading } = useUserStore();
   const [load, setLoad] = useState(true);
 
+  const [value, setValue] = useState(1);
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
@@ -60,382 +40,85 @@ export default function AccountPage() {
     return <LoadingComponent />;
   }
 
-  const menuItems = [
-    {
-      title: "AssetPage.recent",
-      icon: "/images/history-icon.png",
-      onClick: () => {
-        router.push("/contact/history");
-      },
-    },
-    {
-      title: "DepositWithdrawPage.Password",
-      icon: "/images/chang-pass-icon.png",
-      onClick: () => {
-        router.push("/security");
-      },
-    },
-    {
-      title: "ProfilePage.tab_bank",
-      icon: "/images/withdraw-icon.png",
-      onClick: () => {
-        router.push("/addbank");
-      },
-    },
-    {
-      title: "ProfilePage.menu3",
-      icon: "/images/verified-icon.png",
-      onClick: () => {
-        router.push("/verified");
-      },
-    },
-    // {
-    //   title: "About us",
-    //    icon: "/images/chang-pass-icon.png",
-    //   onClick: () => {},
-    // },
-  ];
-
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
   return (
     <Box
       sx={{
-        width: "100%",
+        maxWidth: { xs: "100%", sm: "448px" },
+        margin: "auto",
         minHeight: "100vh",
-        background: "#141A1F",
-        paddingTop: {
-          xs: "0px",
-          sm: "100px",
-        },
+        background: "#0E0F18",
+        pb: "100px",
       }}
     >
       <Box
         sx={{
-          width: { xs: "100%", sm: "500px" },
-          backgroundColor: "#202630",
-          margin: "auto",
-          height: { xs: "100%", sm: "860px" },
-          borderRadius: {
-            xs: 0,
-            sm: "16px",
-          },
-          padding: "16px",
-          position: "relative",
-          pb: "150px",
+          width: "100%",
+          height: "60px",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          alignItems: "center",
+          padding: "10px",
+          background: "#0E0F18",
         }}
       >
-        {/* Header */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            mb: 3,
-          }}
-        >
-          <Box
-            sx={{
-              color: "#fff",
-              fontSize: "24px",
-              cursor: "pointer",
-            }}
-            onClick={() => router.back()}
-          >
-            <PreviousIcon width="25px" height="20px" />
-          </Box>
-
-          <Box
-            sx={{
-              background: "#121821",
-              color: "#28D17C",
-              padding: "4px 20px",
-              borderRadius: "10px",
-            }}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="#000000"
-              width={"25px"}
-              height={"25px"}
-            >
-              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-              <g
-                id="SVGRepo_tracerCarrier"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              ></g>
-              <g id="SVGRepo_iconCarrier">
-                {" "}
-                <circle fill="#28D17C" cx="11.997" cy="18" r="1"></circle>{" "}
-                <path
-                  fill="#28D17C"
-                  d="M18 13c-.198 0-.397-.058-.572-.18-5.77-4.038-10.748-.084-10.798-.044-.43.35-1.06.283-1.406-.147-.35-.43-.282-1.064.146-1.413.062-.05 6.214-4.935 13.202-.044.453.317.563.943.248 1.397-.194.28-.505.43-.82.43z"
-                ></path>{" "}
-                <path
-                  fill="#28D17C"
-                  d="M21 10c-.193 0-.388-.055-.56-.172C11.173 3.546 3.72 9.7 3.644 9.763c-.423.36-1.053.303-1.41-.12-.354-.424-.302-1.058.12-1.415.086-.072 8.7-7.184 19.205-.065.456.31.576.934.27 1.394-.195.288-.51.443-.83.443zm-6.002 6c-.197 0-.396-.058-.57-.18-2.552-1.776-4.713-.113-4.803-.04-.43.343-1.058.273-1.404-.157-.342-.43-.28-1.055.148-1.403 1.157-.945 4.153-2.17 7.203-.046.455.316.567.94.25 1.395-.193.28-.504.43-.82.43z"
-                ></path>{" "}
-              </g>
-            </svg>
-          </Box>
+        <Box>
+          <Button sx={{ width: 40, height: 40, background: "#0E0F18" }}>
+            <MenuIcon sx={{ color: "white" }} />
+          </Button>
         </Box>
-
-        {/* Avatar */}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            mb: 3,
-          }}
-        >
-          <Box
-            sx={{
-              width: 90,
-              height: 90,
-              borderRadius: "50%",
-              background: "#D9D9D9",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              fontSize: "50px",
-              mb: 1,
-              border: "4px solid #999",
-            }}
-          >
-            👤
-          </Box>
-
-          <Typography
-            sx={{
-              color: "#fff",
-              fontWeight: 700,
-              fontSize: "16px",
-            }}
-          >
-            {user?.username || "huy@gmail.com"}
-          </Typography>
-
-          <Typography
-            sx={{
-              color: "#CFCFCF",
-              fontSize: "13px",
-              mt: 0.5,
-            }}
-          >
-            UID: {user?.invit}
-          </Typography>
-        </Box>
-
-        {/* Balance Card */}
-        <Box
-          sx={{
-            background: "#2A313D",
-            borderRadius: "14px",
-            padding: "16px",
-            mb: 2,
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "#fff",
-                fontSize: "14px",
-              }}
-            >
-              {t("AssetPage.title1")}
-            </Typography>
-
-            <Typography
-              sx={{
-                color: "#999",
-                cursor: "pointer",
-              }}
-              onClick={() => setHideBalance(!hideBalance)}
-            >
-              {hideBalance ? (
-                <VisibilityOff fontSize="small" />
-              ) : (
-                <Visibility fontSize="small" />
-              )}
-            </Typography>
-          </Box>
-
-          <Typography
-            sx={{
-              color: "#fff",
-              fontSize: "34px",
-              fontWeight: 700,
-              mt: 2,
-            }}
-          >
-            {hideBalance
-              ? "******"
-              : Number(user?.balance.usdt_total).toLocaleString() + " USDT"}
-          </Typography>
-
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              mt: 3,
-            }}
-          >
-            <Typography
-              sx={{
-                color: "#A5A5A5",
-                fontSize: "13px",
-              }}
-            >
-              {t("ProfilePage.Available_balance")}
-            </Typography>
-
-            <Typography
-              sx={{
-                color: "#fff",
-                fontSize: "13px",
-              }}
-            >
-              {hideBalance
-                ? "******"
-                : Number(user?.balance.usdt).toLocaleString() + " USDT"}
-            </Typography>
-          </Box>
-        </Box>
-
-        {/* Buttons */}
-        <Box
-          sx={{
-            display: "flex",
-            gap: 2,
-            mb: 2,
-          }}
-        >
-          <Box
-            onClick={() => router.push("/withdraw")}
-            sx={{
-              flex: 1,
-              background: "#2A313D",
-              borderRadius: "10px",
-              padding: "14px",
-              textAlign: "center",
-              color: "#fff",
-              cursor: "pointer",
-              fontWeight: 600,
-            }}
-          >
-            ↕ {t("AssetPage.menu3")}
-          </Box>
-
-          <Box
-            onClick={() => router.push("/deposit")}
-            sx={{
-              flex: 1,
-              background: "#2A313D",
-              borderRadius: "10px",
-              padding: "14px",
-              textAlign: "center",
-              color: "#fff",
-              cursor: "pointer",
-              fontWeight: 600,
-            }}
-          >
-            ↓ {t("AssetPage.menu2")}
-          </Box>
-        </Box>
-
-        {/* Menu List */}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 1.5,
-          }}
-        >
-          {menuItems.map((item, index) => (
-            <Box
-              key={index}
-              onClick={item.onClick}
-              sx={{
-                background: "#2A313D",
-                borderRadius: "10px",
-                padding: "16px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                cursor: "pointer",
-                transition: "0.2s",
-                "&:hover": {
-                  background: "#323B49",
-                },
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                }}
-              >
-                <Image
-                  src={item.icon}
-                  width={20}
-                  height={20}
-                  alt=""
-                  style={{ height: "20px", objectFit: "contain" }}
-                />
-
-                <Typography
-                  sx={{
-                    color: "#fff",
-                    fontSize: "14px",
-                    fontWeight: 500,
-                  }}
-                >
-                  {t(item.title)}
-                </Typography>
-              </Box>
-
-              <Typography
-                sx={{
-                  color: "#CFCFCF",
-                  fontSize: "18px",
-                }}
-              >
-                ›
-              </Typography>
-            </Box>
-          ))}
-        </Box>
-
-        {/* Logout */}
-        <Button
-          onClick={() => {
-            window.localStorage.removeItem("token");
-            window.location.href = "/";
-          }}
-          sx={{
-            width: "100%",
-            mt: 3,
-            background: "#fff",
-            color: "red",
-            textAlign: "left",
-            padding: "14px",
-            borderRadius: "10px",
-            cursor: "pointer",
-            fontWeight: 600,
-            textTransform: "capitalize",
-          }}
-        >
-          {t("ProfilePage.Logout")}
-        </Button>
+        <Typography sx={{ color: "white", fontSize: 16 }}>
+          {t("AccountPage.title")}{" "}
+        </Typography>
       </Box>
+      <Box
+        sx={{
+          width: "100%",
+          overflowX: "auto",
+          whiteSpace: "nowrap",
+        }}
+      >
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="scrollable prevent tabs example"
+          variant="scrollable"
+          scrollButtons="auto"
+          sx={{
+            width: "90%",
+            margin: "0 auto",
+            minWidth: "400px", // Optional, giúp Tabs không bị bóp nhỏ
+            "& .MuiTab-root": {
+              color: "#fff",
+              fontSize: "12px",
+              fontWeight: 500,
+              whiteSpace: "nowrap", // giữ chữ không xuống dòng
+              "&:hover": { color: "#fff" },
+              "&.Mui-selected": {
+                color: "#fff",
+                fontWeight: 700,
+              },
+            },
+            "& .MuiTabs-indicator": {
+              backgroundColor: "#00A609",
+              height: 3,
+              borderRadius: "3px",
+              transform: "scaleX(0.5)",
+              transformOrigin: "center",
+            },
+          }}
+        >
+          <Tab label={t("AccountPage.menu1")} {...a11yProps(1)} />
+          <Tab label={t("AccountPage.menu2")} {...a11yProps(2)} />
+          <Tab label={t("AccountPage.menu3")} {...a11yProps(3)} />
+          <Tab label={t("AccountPage.menu4")} {...a11yProps(4)} />
+        </Tabs>
+      </Box>
+      <CustomTabPanel value={value} index={1}>
+        <Tab1Page user={user} />
+      </CustomTabPanel>
     </Box>
   );
 }

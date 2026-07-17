@@ -74,6 +74,20 @@
     "Language": "Ngôn ngữ",
     "menu1": "Hợp đồng",
     "menu2": "Ngoại hối",
-    "menu3": "Điểm"
+    "menu3": "Điểm",
+    "menu4": "Tin tức"
+  },
+  "AccountPage": {
+    "title": "Tài sản ",
+    "title1": "Tổng tài sản（USDT）",
+    "title2": "Danh mục đầu tư",
+    "menuTab1": "Nạp tiền",
+    "menuTab2": "Rút tiền",
+    "menuTab3": "lịch sử",
+    "menuTab4": "Trao đổi",
+    "menu1": "Tổng quan",
+    "menu2": "Điểm",
+    "menu3": "Hợp đồng",
+    "menu4": "Tài chính"
   }
 }
