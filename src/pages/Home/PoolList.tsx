@@ -62,7 +62,7 @@ export default function PoolList({ pools }: { pools: PoolItem[] }) {
                 fontSize: 14,
               }}
             >
-              Hạn chế:
+              {t("HomePage.title4")}:
               <Box
                 component="span"
                 sx={{
@@ -95,7 +95,7 @@ export default function PoolList({ pools }: { pools: PoolItem[] }) {
                   fontWeight: 600,
                 }}
               >
-                Lợi tức
+                {t("HomePage.title5")}
               </Typography>
 
               <Box
@@ -108,7 +108,7 @@ export default function PoolList({ pools }: { pools: PoolItem[] }) {
                   fontWeight: 700,
                 }}
               >
-                Chu kỳ: {item.cycle} ngày
+                {t("HomePage.title6")}: {item.cycle} {t("HomePage.title7")}
               </Box>
             </Stack>
 
@@ -120,7 +120,7 @@ export default function PoolList({ pools }: { pools: PoolItem[] }) {
                 mt: 1,
               }}
             >
-              {roi.toFixed(2)}%/ngày
+              {roi.toFixed(2)}%/{t("HomePage.title7")}
             </Typography>
 
             <Button
@@ -139,7 +139,7 @@ export default function PoolList({ pools }: { pools: PoolItem[] }) {
                 },
               }}
             >
-              Participate in usage
+              {t("HomePage.title8")}
             </Button>
           </Box>
         );

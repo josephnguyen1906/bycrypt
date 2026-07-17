@@ -1,96 +1,3 @@
-export const menu = [
-  {
-    id: 0,
-    text: "9Wickets Sports",
-    img: "/assets/home/menu/1629408550911012866.png",
-  },
-  {
-    id: 1,
-    text: "EVO Live",
-    img: "/assets/home/menu/1656664122357907457.png",
-  },
-  {
-    id: 2,
-    text: "AE Live",
-    img: "/assets/home/menu/1629408059274346497.png",
-  },
-  {
-    id: 3,
-    text: "JDB Blockchain Games",
-    img: "/assets/home/menu/1716657499114999809.png",
-  },
-  {
-    id: 4,
-    text: "KM Cards",
-    img: "/assets/home/menu/1629406222282629122.png",
-  },
-  {
-    id: 5,
-    text: "Money Coming",
-    img: "/assets/home/menu/JL_51.png",
-  },
-  {
-    id: 6,
-    text: "Rummy",
-    img: "/assets/home/menu/JL_94.png",
-  },
-  {
-    id: 7,
-    text: "Aviator",
-    img: "/assets/home/menu/JDB_22001.png",
-  },
-  {
-    id: 8,
-    text: "7 Up 7 Down",
-    img: "/assets/home/menu/KM_7_Up_7_Down.png",
-  },
-  {
-    id: 9,
-    text: "Andar Bahar",
-    img: "/assets/home/menu/KM_Andar_Bahar.png",
-  },
-  {
-    id: 10,
-    text: "Poker Roulette",
-    img: "/assets/home/menu/163_1012.png",
-  },
-  {
-    id: 11,
-    text: "SABA Sports",
-    img: "/assets/home/menu/1629408644123901953.png",
-  },
-  {
-    id: 12,
-    text: "JILI Cards",
-    img: "/assets/home/menu/1629406342452342786.png",
-  },
-  {
-    id: 13,
-    text: "Dice",
-    img: "/assets/home/menu/JDB_22002.png",
-  },
-  {
-    id: 14,
-    text: "JILI Slots",
-    img: "/assets/home/menu/1629407004813926401.png",
-  },
-  {
-    id: 15,
-    text: "Fishing Joy",
-    img: "/assets/home/menu/163_4004.png",
-  },
-  {
-    id: 16,
-    text: "Crash",
-    img: "/assets/home/menu/T1_crash.png",
-  },
-  {
-    id: 17,
-    text: "Mines",
-    img: "/assets/home/menu/JDB_22005.png",
-  },
-];
-
 export const bannerWeb = [
   //   { id: 1, images: "banner1.png" },
   { id: 2, images: "banner2.png" },
@@ -103,68 +10,6 @@ export const dataDashboard = [
   { id: 1, title: "title5", value: "7.8M" },
   { id: 2, title: "title6", value: "190+" },
   { id: 3, title: "title7", value: "$289.9B" },
-];
-export const menuUp = [
-  // {
-  //     id: 1,
-  //     image: "/images/icon_dtfl_2rm_1.png",
-  //     title: "Tất cả",
-  //     link: "",
-  // },
-  {
-    id: 2,
-    image: "/images/icon_dtfl_ty_1.png",
-    title: "Sports",
-    link: "",
-  },
-  {
-    id: 3,
-    image: "/images/icon_dtfl_zr_1.png",
-    title: "Live",
-    link: "",
-  },
-  {
-    id: 4,
-    image: "/images/icon_dtfl_qp_1.png",
-    title: "Play Lottey",
-    link: "/card",
-  },
-  {
-    id: 5,
-    image: "/images/icon_dtfl_qkl_1.png",
-    title: "Bole Gaming",
-    link: "/blockchain",
-  },
-  {
-    id: 6,
-    image: "/images/icon_dtfl_by_1.png",
-    title: "CC88",
-    link: "/fishing",
-  },
-];
-
-export const CartsMenu = [
-  {
-    id: 0,
-    text: "All Play Lottery",
-    img: "/images/icon_dtfl_qp_1.png",
-  },
-];
-
-export const BlockchainMenu = [
-  {
-    id: 0,
-    text: "All Bole Gameming",
-    img: "/images/icon_dtfl_qkl_1.png",
-  },
-];
-
-export const SlotMenu = [
-  {
-    id: 0,
-    text: "All CC88",
-    img: "/images/icon_dtfl_dz_1.png",
-  },
 ];
 
 export const LuckywheelData = [
@@ -209,4 +54,68 @@ export const MONEYCOIN = [
   "USDCAD",
   "USDCHF",
   "USDMYR",
+];
+
+export const news = [
+  {
+    id: 1,
+    author: "Scott Matherson",
+    avatar: "/images/user1.webp",
+    time: "2026-07-17 07:02:08",
+    title:
+      "Bitcoin, Ethereum Open Interest Are Sitting Close To ATH Levels, What Happened Last Time?",
+    description:
+      "Bitcoin, Ethereum Open Interest Are Sitting Close To ATH Levels, What Happened Last Time?",
+    image: "/images/news2-84612b87.webp",
+    likes: 4548,
+    views: 3438,
+    coins: [
+      {
+        name: "ICP",
+        value: "+0%",
+      },
+      {
+        name: "ATOM",
+        value: "+0.3653%",
+      },
+    ],
+    users: [
+      "/images/1.png",
+      "/images/2.png",
+      "/images/3.png",
+      "/images/4.png",
+      "/images/5.png",
+      "/images/6.png",
+    ],
+  },
+  {
+    id: 2,
+    author: "Aayush Jindal",
+    avatar: "/images/user2.jpg",
+    time: "2026-07-17 19:45:32",
+    title: "XRP Price Recovery Fails – Is It Doomed for Another Collapse?",
+    description:
+      "XRP Price Recovery Fails – Is It Doomed for Another Collapse?",
+    image: "/images/news2-84612b87.webp",
+    likes: 3254,
+    views: 1854,
+    coins: [
+      {
+        name: "XRP",
+        value: "+2.31%",
+      },
+      {
+        name: "BTC",
+        value: "+0.91%",
+      },
+    ],
+    users: [
+      "/images/1.png",
+      "/images/2.png",
+      "/images/3.png",
+      "/images/4.png",
+      "/images/5.png",
+      "/images/6.png",
+    ],
+  },
 ];

@@ -1,3 +1,9 @@
+import {
+  GreenSquareIcon,
+  PurpleSquareIcon,
+  RedSquareIcon,
+} from "@/shared/Svgs/Svg.component";
+
 export const properties = {
   prevArrow: (
     <button type="button" className="indicator-btn">
@@ -115,4 +121,91 @@ export const slideImgPromotion = [
   //   id: 3,
   //   img: "/images/banner_img3.webp",
   // },
+];
+
+export const listAdvantages = [
+  {
+    id: 1,
+    icon: <RedSquareIcon />,
+    title: "HomePage.title21",
+    note: "HomePage.note1",
+  },
+  {
+    id: 2,
+    icon: <GreenSquareIcon />,
+    title: "HomePage.title22",
+    note: "HomePage.note2",
+  },
+  {
+    id: 3,
+    icon: <PurpleSquareIcon />,
+    title: "HomePage.title23",
+    note: "HomePage.note3",
+  },
+];
+
+export const listAdvantage2 = [
+  {
+    id: 1,
+    title: "HomePage.title31",
+  },
+  {
+    id: 2,
+    title: "HomePage.title32",
+  },
+  {
+    id: 3,
+    title: "HomePage.title33",
+  },
+];
+
+export const ListPartner = [
+  {
+    id: 1,
+    img: "/images/partner1-f7e133e5.png",
+  },
+  {
+    id: 2,
+    img: "/images/partner2-f364e88d.png",
+  },
+  {
+    id: 3,
+    img: "/images/partner3-963744ea.png",
+  },
+  {
+    id: 4,
+    img: "/images/partner4-ef634656.png",
+  },
+  {
+    id: 5,
+    img: "/images/partner5-d566f753.png",
+  },
+  {
+    id: 6,
+    img: "/images/partner6-4d5a0f4d.png",
+  },
+  {
+    id: 7,
+    img: "/images/partner7-687d307d.png",
+  },
+  {
+    id: 8,
+    img: "/images/partner8-3dd4a7d4.png",
+  },
+  {
+    id: 9,
+    img: "/images/partner9-2fb9aeea.png",
+  },
+  {
+    id: 10,
+    img: "/images/partner10-611b5436.png",
+  },
+  {
+    id: 11,
+    img: "/images/partner11-cec81ea1.png",
+  },
+  {
+    id: 12,
+    img: "/images/partner12-09431cd6.png",
+  },
 ];
