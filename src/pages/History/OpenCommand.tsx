@@ -245,7 +245,7 @@ export default function OpenCommand() {
         </Box>
         <Grid container spacing={1}>
           {/* Left Section */}
-          <Grid item xs={12} sm={12}>
+          <Grid size={{ xs: 12, sm: 12 }}>
             <StyledPaper
               sx={{
                 display: "grid",
@@ -316,8 +316,8 @@ export default function OpenCommand() {
                             {user?.status === 1
                               ? t("HistoryPage.status1")
                               : user?.status === 2
-                              ? t("HistoryPage.status2")
-                              : t("HistoryPage.status3")}
+                                ? t("HistoryPage.status2")
+                                : t("HistoryPage.status3")}
                           </TableCell>
                           <TableCell sx={{ color: "#fff" }}>
                             {row.is_win === 1 ? "Win" : "Lose"}

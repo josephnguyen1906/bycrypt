@@ -1,9 +1,9 @@
 {
-  "name": "gambling-web-app",
+  "name": "bycrypt",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3002",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -14,8 +14,9 @@
     "@fireworks-js/react": "^2.10.8",
     "@fontsource/roboto": "^5.0.8",
     "@iconify/react": "^5.1.0",
-    "@mui/icons-material": "^5.15.11",
-    "@mui/material": "^5.15.11",
+    "@mui/icons-material": "^7.3.1",
+    "@mui/material": "^7.3.1",
+    "@mui/material-nextjs": "^7.3.1",
     "@mui/styled-engine-sc": "^6.0.0-alpha.17",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",

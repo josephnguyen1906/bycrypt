@@ -177,3 +177,36 @@ export const LuckywheelData = [
   { option: "500", style: { backgroundColor: "blueviolet" } },
   { option: "1000", style: { backgroundColor: "red" } },
 ];
+
+export const COINS = [
+  "BTCUSDT",
+  "ETHUSDT",
+  "SOLUSDT",
+  "DOTUSDT",
+  "XAUTUSDT",
+  "XTZUSDT",
+  "ADAUSDT",
+  "MLNUSDT",
+  "YFIUSDT",
+  "DAIUSDT",
+  "ETCUSDT",
+  "XRPUSDT",
+  "LTCUSDT",
+  "USDCUSDT",
+  "KNCUSDT",
+  "DOGEUSDT",
+];
+export const MONEYCOIN = [
+  "XAUUSD",
+  "USDSGD",
+  "USDJPY",
+  "USDSGD",
+  "USDHKD",
+  "USDRUB",
+  "EURUSD",
+  "GBPUSD",
+  "NZDUSD",
+  "USDCAD",
+  "USDCHF",
+  "USDMYR",
+];

@@ -66,28 +66,12 @@ export const properties = {
 export const slideImg = [
   {
     id: 1,
-    img: "/images/background.webp",
+    img: "/images/bm1-f168bff2.jpg",
     number: 1520222200221,
   },
   {
     id: 2,
-    img: "/images/PC_Sport_1_1731311945.webp",
-  },
-  {
-    id: 3,
-    img: "/images/hero_Live casino_1737105473.webp",
-  },
-  {
-    id: 4,
-    img: "/images/PC_Da304_1745752022.webp",
-  },
-  {
-    id: 5,
-    img: "/images/Deposit_p2p_PC_1742202209.webp",
-  },
-  {
-    id: 6,
-    img: "/images/ban-ca-hoan-3-phantram_1742203198.webp",
+    img: "/images/b2-8a4950a1.jpg",
   },
 ];
 export const slideMBImg = [

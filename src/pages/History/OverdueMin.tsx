@@ -250,7 +250,7 @@ export default function OverdueMin() {
         </Box>
         <Grid container spacing={1}>
           {/* Left Section */}
-          <Grid item xs={12} sm={12}>
+          <Grid size={{ xs: 12, sm: 12 }}>
             <StyledPaper
               sx={{
                 display: "grid",
@@ -353,8 +353,8 @@ export default function OverdueMin() {
                             {item.type === 1
                               ? t("HistoryPage.mining1")
                               : item.type === 2
-                              ? t("HistoryPage.mining2")
-                              : t("HistoryPage.mining3")}
+                                ? t("HistoryPage.mining2")
+                                : t("HistoryPage.mining3")}
                           </Typography>
                           <Typography
                             variant="body1"

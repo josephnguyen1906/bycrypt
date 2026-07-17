@@ -262,7 +262,7 @@ export default function OverviewPage() {
         </Box>
         <Grid container spacing={2}>
           {/* Left Section */}
-          <Grid item xs={12} sm={8}>
+          <Grid size={{ xs: 12, sm: 8 }}>
             {user && user.rzstatus === 2 ? (
               <StyledPaper
                 sx={{
@@ -363,7 +363,7 @@ export default function OverviewPage() {
           </Grid>
 
           {/* Right Section */}
-          <Grid item xs={12} sm={4}>
+          <Grid size={{ xs: 12, sm: 4 }}>
             <StyledPaper
               sx={{
                 display: "grid",

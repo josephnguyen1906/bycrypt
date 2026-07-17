@@ -5,7 +5,6 @@ import PrimaryLayoutComponent from "@/components/PrimaryLayout/PrimaryLayout.com
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-multi-carousel/lib/styles.css";
-
 const inter = Inter({ subsets: ["latin"] });
 
 const DEFAULT_SEO = { title: "KCEX", description: "KCEX" };

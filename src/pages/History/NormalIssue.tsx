@@ -241,7 +241,7 @@ export default function NormalIssue() {
         </Box>
         <Grid container spacing={1}>
           {/* Left Section */}
-          <Grid item xs={12} sm={12}>
+          <Grid size={{ xs: 12, sm: 12 }}>
             <StyledPaper
               sx={{
                 display: "grid",

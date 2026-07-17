@@ -11,14 +11,17 @@ import {
   FormControl,
   Grid,
   IconButton,
+  InputAdornment,
+  Checkbox,
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { sendCode, signupUser } from "@/services/User.service";
 import { useTranslation } from "react-i18next";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { PreviousIcon } from "@/shared/Svgs/Svg.component";
+import { CheckBox, Visibility, VisibilityOff } from "@mui/icons-material";
+import CloseIcon from "@mui/icons-material/Close";
+import CheckIcon from "@mui/icons-material/Check";
+import CircleIcon from "@mui/icons-material/Circle";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 
 export default function SignupPage() {
   const { t } = useTranslation();
@@ -118,9 +121,11 @@ export default function SignupPage() {
   return (
     <Box
       sx={{
-        backgroundColor: "#141A1F",
-        paddingTop: { xs: 0, sm: "50px" },
-        height: { xs: "100vh", sm: "100%" },
+        maxWidth: "460px",
+        margin: "auto",
+        minHeight: "100vh",
+        background: "#0E0F18",
+        pt: 1,
       }}
     >
       <Box
@@ -129,12 +134,12 @@ export default function SignupPage() {
             xs: "100%",
             sm: "460px",
           },
-          backgroundColor: "#202630",
+          backgroundColor: "#0E0F18",
           margin: "auto",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          mt: { xs: 0, sm: 6 },
+          mt: { xs: 0, sm: 3 },
           height: { xs: "100vh", sm: "auto" },
           pb: "30px",
           borderRadius: {
@@ -147,7 +152,7 @@ export default function SignupPage() {
         <Box sx={{ maxWidth: "100%", width: "100%" }}>
           <IconButton
             sx={{
-              background: "#1f2937",
+              background: "#0E0F18",
               position: "fixed",
               top: "20px",
               "&:hover": {
@@ -156,21 +161,18 @@ export default function SignupPage() {
             }}
             onClick={() => router.back()}
           >
-            <PreviousIcon width="20px" height="20px" />
+            <CloseIcon width="20px" height="20px" sx={{ color: "white" }} />
           </IconButton>
-          <Box sx={{ width: "100%", textAlign: "center" }}>
-            <Image
-              src={"/images/logo.png"}
-              width={100}
-              height={100}
-              alt=""
-              style={{
-                height: "100px",
-                objectFit: "contain",
-                borderRadius: "10px",
-              }}
-            />
-          </Box>
+          <Typography
+            sx={{
+              color: "white",
+              fontSize: "26px",
+              fontWeight: "600",
+              p: "10px",
+            }}
+          >
+            {t("SignupPage.title1")}
+          </Typography>
 
           {errorMsg && (
             <Typography color="error" fontSize={13} mt={1}>
@@ -179,51 +181,17 @@ export default function SignupPage() {
           )}
 
           <form>
-            <InputLabel sx={{ color: "white", mt: "10px" }}>
-              {t("SignupPage.title1")}{" "}
+            <InputLabel sx={{ color: "white", mt: "10px", mb: "5px" }}>
+              {t("SignupPage.label1")}
             </InputLabel>
             <TextField
               fullWidth
-              placeholder={t("LoginPage.value1")}
+              placeholder={t("LoginPage.placeholder1")}
               variant="outlined"
               value={email}
               type="email"
               onChange={handleUsername}
-              sx={{
-                mb: 3,
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "8px",
-                  backgroundColor: "#2B313B",
-                  color: "#fff",
-
-                  "& fieldset": {
-                    borderColor: "none",
-                  },
-
-                  "&:hover fieldset": {
-                    borderColor: "none",
-                  },
-
-                  "&.Mui-focused fieldset": {
-                    border: "none",
-                    borderWidth: "1px",
-                  },
-                },
-
-                "& .MuiInputBase-input": {
-                  color: "#fff",
-
-                  "&::placeholder": {
-                    color: "#7c8aa0",
-                    opacity: 1,
-                  },
-
-                  "&:-webkit-autofill": {
-                    WebkitBoxShadow: "0 0 0 1000px #1e2a3a inset",
-                    WebkitTextFillColor: "#fff",
-                  },
-                },
-              }}
+              sx={textField}
             />
 
             <InputLabel sx={{ color: "white" }}>
@@ -241,69 +209,40 @@ export default function SignupPage() {
             >
               <TextField
                 fullWidth
-                placeholder={t("LoginPage.value2")}
+                placeholder={t("SignupPage.placeholder2")}
                 variant="outlined"
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={handlePassword}
-                sx={{
-                  mb: 3,
-                  "& .MuiOutlinedInput-root": {
-                    borderRadius: "8px",
-                    backgroundColor: "#2B313B",
-                    color: "#fff",
-
-                    "& fieldset": {
-                      borderColor: "none",
-                    },
-
-                    "&:hover fieldset": {
-                      borderColor: "none",
-                    },
-
-                    "&.Mui-focused fieldset": {
-                      border: "none",
-                      borderWidth: "1px",
-                    },
-                  },
-
-                  "& .MuiInputBase-input": {
-                    color: "#fff",
-
-                    "&::placeholder": {
-                      color: "#7c8aa0",
-                      opacity: 1,
-                    },
-
-                    "&:-webkit-autofill": {
-                      WebkitBoxShadow: "0 0 0 1000px #1e2a3a inset",
-                      WebkitTextFillColor: "#fff",
-                    },
+                sx={textField}
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {showPassword ? (
+                            <Visibility
+                              fontSize="small"
+                              sx={{ color: "white" }}
+                            />
+                          ) : (
+                            <VisibilityOff
+                              fontSize="small"
+                              sx={{ color: "white" }}
+                            />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
                   },
                 }}
               />
-
-              <IconButton
-                onClick={toggleShowPassword}
-                style={{
-                  position: "absolute",
-                  right: "4px",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  padding: 4,
-                  color: "white",
-                }}
-              >
-                {showPassword ? (
-                  <Visibility fontSize="small" />
-                ) : (
-                  <VisibilityOff fontSize="small" />
-                )}
-              </IconButton>
             </Box>
 
             <InputLabel sx={{ color: "white" }}>
-              {t("SignupPage.title2")} rút tiền
+              {t("SignupPage.label3")}
             </InputLabel>
             <Box
               sx={{
@@ -317,112 +256,50 @@ export default function SignupPage() {
             >
               <TextField
                 fullWidth
-                placeholder={t("LoginPage.value2")}
+                placeholder={t("SignupPage.placeholder3")}
                 variant="outlined"
                 type={showPayPassword ? "text" : "password"}
                 value={paypassword}
                 onChange={(e) => setPayPassword(e.target.value)}
-                sx={{
-                  mb: 3,
-                  "& .MuiOutlinedInput-root": {
-                    borderRadius: "8px",
-                    backgroundColor: "#2B313B",
-                    color: "#fff",
-
-                    "& fieldset": {
-                      borderColor: "none",
-                    },
-
-                    "&:hover fieldset": {
-                      borderColor: "none",
-                    },
-
-                    "&.Mui-focused fieldset": {
-                      border: "none",
-                      borderWidth: "1px",
-                    },
-                  },
-
-                  "& .MuiInputBase-input": {
-                    color: "#fff",
-
-                    "&::placeholder": {
-                      color: "#7c8aa0",
-                      opacity: 1,
-                    },
-
-                    "&:-webkit-autofill": {
-                      WebkitBoxShadow: "0 0 0 1000px #1e2a3a inset",
-                      WebkitTextFillColor: "#fff",
-                    },
+                sx={textField}
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPayPassword(!showPassword)}
+                        >
+                          {showPayPassword ? (
+                            <Visibility
+                              fontSize="small"
+                              sx={{ color: "white" }}
+                            />
+                          ) : (
+                            <VisibilityOff
+                              fontSize="small"
+                              sx={{ color: "white" }}
+                            />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
                   },
                 }}
               />
-
-              <IconButton
-                onClick={toggleShowPayPassword}
-                style={{
-                  position: "absolute",
-                  right: "4px",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  padding: 4,
-                  color: "white",
-                }}
-              >
-                {showPayPassword ? (
-                  <Visibility fontSize="small" />
-                ) : (
-                  <VisibilityOff fontSize="small" />
-                )}
-              </IconButton>
             </Box>
             {/* Invite code */}
             <InputLabel sx={{ color: "white", mt: 2 }}>
               {" "}
-              {t("SignupPage.title3")}
+              {t("SignupPage.label4")}
             </InputLabel>
 
             <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
               <TextField
                 fullWidth
-                placeholder={t("SignupPage.value3")}
+                placeholder={t("SignupPage.placeholder4")}
                 value={inviteCode}
                 onChange={(e) => setInviteCode(e.target.value)}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    borderRadius: "8px",
-                    backgroundColor: "#2B313B",
-                    color: "#fff",
-
-                    "& fieldset": {
-                      borderColor: "none",
-                    },
-
-                    "&:hover fieldset": {
-                      borderColor: "none",
-                    },
-
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#4ade80",
-                      borderWidth: "1px",
-                    },
-                  },
-
-                  "& .MuiInputBase-input": {
-                    color: "#fff",
-
-                    "&::placeholder": {
-                      color: "#7c8aa0",
-                      opacity: 1,
-                    },
-
-                    "&:-webkit-autofill": {
-                      WebkitBoxShadow: "0 0 0 1000px #1e2a3a inset",
-                      WebkitTextFillColor: "#fff",
-                    },
-                  },
-                }}
+                sx={textField}
               />
 
               {/* <Button
@@ -451,7 +328,44 @@ export default function SignupPage() {
                 {t("Toast.signup3")}
               </Typography>
             )}
-            <Box mt={3}>
+            <Box display={"flex"} gap={"10px"} alignItems={"center"}>
+              <Checkbox
+                icon={
+                  <CircleIcon
+                    sx={{
+                      fontSize: 16,
+                      color: "#fff",
+                    }}
+                  />
+                }
+                checkedIcon={
+                  <CheckIcon
+                    sx={{
+                      width: 16,
+                      height: 16,
+                      p: "2px",
+                      borderRadius: "50%",
+                      backgroundColor: "#fff",
+                      color: "#16A34A",
+                      boxSizing: "border-box",
+                    }}
+                  />
+                }
+                sx={{
+                  p: 0,
+                  "&:hover": {
+                    backgroundColor: "transparent",
+                  },
+                }}
+              />
+              <Typography color="#fff" fontSize={13}>
+                {t("SignupPage.title4")}
+              </Typography>
+              <Typography color="#4ade80" fontSize={13}>
+                {t("SignupPage.title5")}
+              </Typography>
+            </Box>
+            <Box mt={2}>
               {/* Login */}
               <Button
                 fullWidth
@@ -470,14 +384,15 @@ export default function SignupPage() {
                   },
                 }}
               >
-                {t("SignupPage.button2")}
+                {t("SignupPage.title1")}
               </Button>
 
               <Box
                 sx={{
                   display: "flex",
-                  justifyContent: "center",
+                  justifyContent: "left",
                   width: "100%",
+                  mt: 1,
                 }}
               >
                 <Typography
@@ -486,7 +401,7 @@ export default function SignupPage() {
                   my={2}
                   fontSize={14}
                 >
-                  {t("SignupPage.title4")}
+                  {t("SignupPage.title2")}
                 </Typography>
 
                 <Button
@@ -495,14 +410,13 @@ export default function SignupPage() {
                   sx={{
                     background: "none",
                     color: "#4ade80",
-                    fontWeight: 600,
-                    borderRadius: "14px",
-                    height: 52,
-                    width: 100,
+                    fontWeight: 400,
+                    borderRadius: 14,
+                    width: 130,
                     textTransform: "none",
                   }}
                 >
-                  {t("SignupPage.button1")}
+                  {t("SignupPage.title3")}
                 </Button>
               </Box>
             </Box>
@@ -512,3 +426,41 @@ export default function SignupPage() {
     </Box>
   );
 }
+
+const textField = {
+  mb: 3,
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "8px",
+    backgroundColor: "#1A1B24",
+    height: 48,
+    color: "#fff",
+    border: "none",
+    "& fieldset": {
+      borderColor: "none",
+    },
+
+    "&:hover fieldset": {
+      borderColor: "none",
+    },
+
+    "&.Mui-focused fieldset": {
+      border: "none",
+      borderWidth: "1px",
+    },
+  },
+
+  "& .MuiInputBase-input": {
+    color: "#fff",
+    border: "none",
+
+    "&::placeholder": {
+      color: "#7c8aa0",
+      opacity: 1,
+    },
+
+    "&:-webkit-autofill": {
+      WebkitBoxShadow: "0 0 0 1000px #1e2a3a inset",
+      WebkitTextFillColor: "#fff",
+    },
+  },
+};

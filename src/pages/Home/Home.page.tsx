@@ -31,14 +31,10 @@ import {
 import { getWebsiteConfig } from "@/services/User.service";
 import { useUserStore } from "@/stores/useUserStore";
 import HomeMobile from "./HomeMobile";
-import HomeDesktop from "./HomeDesktop";
 
 export default function HomePage() {
   const { user, loading, fetchUser } = useUserStore();
   const [setting, setSetting] = useState<any>();
-
-  const isSM = useMediaQuery("(min-width:600px)");
-  const isXS = useMediaQuery("(max-width:600px)");
   useEffect(() => {
     fetchUser();
     getSetting();
@@ -53,8 +49,7 @@ export default function HomePage() {
 
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
-      {isXS && <HomeMobile setting={setting} user={user} />}
-      {isSM && <HomeDesktop setting={setting} user={user} />}
+      <HomeMobile setting={setting} user={user} />
     </Box>
   );
 }

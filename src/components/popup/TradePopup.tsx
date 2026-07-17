@@ -269,7 +269,7 @@ export default function TradePopup({
         <Grid container spacing={1}>
           {buySellConfig &&
             buySellConfig.hy_time.map((item: string, index: number) => (
-              <Grid item xs={4} key={index}>
+              <Grid size={4} key={index}>
                 <Box
                   onClick={() => {
                     setType(index);
@@ -283,10 +283,8 @@ export default function TradePopup({
                     borderRadius: 2,
                     display: "flex",
                     flexDirection: "column",
-
                     justifyContent: "center",
                     alignItems: "center",
-
                     textAlign: "center",
                     cursor: "pointer",
                     background: type === index ? "#064e3b" : "#111827",
@@ -294,10 +292,12 @@ export default function TradePopup({
                   }}
                 >
                   <Typography fontSize={12}>{Number(item) * 60}s</Typography>
+
                   <Typography fontSize={11} color="#94a3b8">
                     {t("BuySellPage.Profitability")}{" "}
                     {buySellConfig.hy_ykbl?.[index]}%
                   </Typography>
+
                   {type === index && <CheckIcon width="14px" height="14px" />}
                 </Box>
               </Grid>
@@ -425,7 +425,9 @@ export default function TradePopup({
               {t("BuySellPage.Expected")}
             </Typography>
             <Typography>
-              {Number(currentAmount * (1 + hyykbl / 100) - currentAmount)?.toLocaleString()}
+              {Number(
+                currentAmount * (1 + hyykbl / 100) - currentAmount,
+              )?.toLocaleString()}
             </Typography>
           </Stack>
 

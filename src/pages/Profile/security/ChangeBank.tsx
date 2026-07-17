@@ -395,7 +395,6 @@ export default function ChangeBank({ subTabs }: iProps) {
                 const { ...optionProps } = props;
                 return (
                   <Box
-                    key={option.id}
                     component="li"
                     sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
                     {...optionProps}

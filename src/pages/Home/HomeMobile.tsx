@@ -1,14 +1,30 @@
-import CoinPage from "@/components/coins/CoinPage";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import NotificationBell from "@/components/popup/NotificationBell";
-import { getWebsiteConfig } from "@/services/User.service";
-import { IUser } from "@/shared/interfaces";
-import { InternetIcon, UserIcon } from "@/shared/Svgs/Svg.component";
-import { Box, Dialog, IconButton, Tooltip, Typography } from "@mui/material";
+import { getOrepool, getWebsiteConfig } from "@/services/User.service";
+import { IOrepool, IUser } from "@/shared/interfaces";
+import {
+  InternetIcon,
+  SquareIcon,
+  UserIcon,
+} from "@/shared/Svgs/Svg.component";
+import {
+  Box,
+  Button,
+  Dialog,
+  IconButton,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
+import MenuIcon from "@mui/icons-material/Menu";
+import Carousel from "react-multi-carousel";
+import { slideImg } from "@/datafake/slide";
+import PoolList from "./PoolList";
+import CoinTicker from "@/components/CoinTicker/CoinTicker";
+import { COINS, MONEYCOIN } from "@/datafake/home";
 
 export default function HomeMobile({
   user,
@@ -18,38 +34,40 @@ export default function HomeMobile({
   setting: any;
 }) {
   const { t, i18n } = useTranslation();
-  const [configs, setConfigs] = useState<any>();
+  const [tab, setTab] = useState(0);
   const [langAnchorEl, setLangAnchorEl] = useState<null | HTMLElement>(null);
   const isLangMenuOpen = Boolean(langAnchorEl);
-
+  const [stakingData, setStakingData] = useState<IOrepool>();
   const route = useRouter();
 
-  useEffect(() => {
-    const referral = async () => {
-      try {
-        const config: any = await getWebsiteConfig();
+  const fetchStakingData = async () => {
+    try {
+      const res: any = await getOrepool();
 
-        if (config.status === true) {
-          setConfigs(config.data);
-        }
-      } catch (errors: any) {
-        console.log(errors?.message);
+      if (res) {
+        setStakingData(res.data);
       }
-    };
-    referral();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchStakingData();
   }, []);
 
   const handleLangMenuClose = () => {
     setLangAnchorEl(null);
   };
-
+  const coinList = useMemo(() => {
+    return tab == 1 ? MONEYCOIN : COINS;
+  }, [tab]);
   return (
     <Box
       sx={{
         maxWidth: "448px",
         margin: "auto",
         minHeight: "100vh",
-        background: "#111827",
+        background: "#0E0F18",
 
         pb: "130px",
       }}
@@ -62,42 +80,13 @@ export default function HomeMobile({
             display: "flex",
             justifyContent: "space-between",
             padding: "10px",
-            background: "#111827",
+            background: "#0E0F18",
           }}
         >
           <Box>
-            {/* <IconButton
-              onClick={() => {
-                if (user) {
-                  route.push("/account");
-                } else {
-                  route.push("/login");
-                }
-              }}
-            >
-              <UserIcon width="20px" height="20px" />
-            </IconButton> */}
-            <IconButton
-              sx={{ width: 40, height: 40, background: "#202630" }}
-              onClick={() => {
-                const newWindow = window.open(
-                  configs.telegram,
-                  "_blank",
-                  "noopener,noreferrer",
-                );
-                if (newWindow) {
-                  newWindow.opener = null;
-                }
-              }}
-            >
-              <Image
-                src={"/images/live-chat.png"}
-                width={25}
-                height={25}
-                alt=""
-                style={{ height: "25px", objectFit: "contain" }}
-              />
-            </IconButton>
+            <Button sx={{ width: 40, height: 40, background: "#0E0F18" }}>
+              <MenuIcon sx={{ color: "white" }} />
+            </Button>
           </Box>
           <Box sx={{ display: "flex", gap: "5px", alignItems: "center" }}>
             <NotificationBell />
@@ -120,65 +109,204 @@ export default function HomeMobile({
             </Tooltip>
           </Box>
         </Box>
+
         <Box
           sx={{
-            width: "100%",
-            paddingTop: "10px",
-            display: "flex",
-            justifyContent: "center",
-            justifyItems: "center",
-            boxShadow:
-              "0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1)",
+            width: "95%",
+            margin: "auto",
+            py: "10px",
           }}
         >
-          <Image
-            src={"/images/banner.jpg"}
-            width={368}
-            height={212}
-            alt=""
-            style={{
-              width: "90%",
-              objectFit: "cover",
-              borderRadius: "20px",
+          <Carousel
+            arrows={false}
+            autoPlay
+            infinite
+            showDots={false}
+            responsive={{
+              mobile: {
+                breakpoint: {
+                  max: 3000,
+                  min: 0,
+                },
+                items: 1,
+              },
             }}
-          />
+          >
+            {slideImg.map((item) => {
+              return (
+                <Box
+                  key={item.id}
+                  sx={{
+                    position: "relative",
+                    width: "100%",
+                    height: "197px",
+                    borderRadius: "10px",
+                  }}
+                >
+                  <Image
+                    src={item.img}
+                    fill
+                    alt=""
+                    style={{
+                      objectFit: "cover",
+                      borderRadius: "10px",
+                    }}
+                  />
+                </Box>
+              );
+            })}
+          </Carousel>
+        </Box>
+        <Box
+          display={"flex"}
+          justifyContent={"space-between"}
+          sx={{ width: "90%", margin: "auto" }}
+        >
+          <Box display={"flex"} gap={"10px"} alignItems={"center"}>
+            <SquareIcon />
+            <Typography
+              variant="h4"
+              sx={{
+                color: "white",
+                fontSize: 20,
+              }}
+            >
+              {t(`HomePage.title1`)}
+            </Typography>
+          </Box>
+          <IconButton sx={{ background: "none", border: "none" }}>
+            <ArrowForwardIcon sx={{ color: "white", fontSize: 24 }} />
+          </IconButton>
+        </Box>
+        <Box
+          sx={{
+            width: "95%",
+            margin: "auto",
+            mt: "20px",
+          }}
+        >
+          <Box display={"flex"} justifyContent={"space-between"}></Box>
+          <PoolList pools={stakingData?.overview ?? []} />
+
+          <Box
+            sx={{
+              position: "relative",
+              width: "100%",
+              height: "197px",
+              borderRadius: "10px",
+              mb: 2,
+              mt: 1,
+            }}
+          >
+            <Image
+              src={"/images/b1-66ebdb3e.jpg"}
+              fill
+              alt=""
+              style={{
+                objectFit: "cover",
+                borderRadius: "10px",
+              }}
+            />
+          </Box>
+        </Box>
+        <Box
+          display={"flex"}
+          justifyContent={"space-between"}
+          sx={{ width: "90%", margin: "auto" }}
+        >
+          <Box display={"flex"} gap={"10px"} alignItems={"center"}>
+            <SquareIcon />
+            <Typography
+              variant="h4"
+              sx={{
+                color: "white",
+                fontSize: 20,
+              }}
+            >
+              {t(`HomePage.title2`)}
+            </Typography>
+          </Box>
+          <IconButton sx={{ background: "none", border: "none" }}>
+            <ArrowForwardIcon sx={{ color: "white", fontSize: 24 }} />
+          </IconButton>
         </Box>
 
-        <Box sx={{ width: "100%", margin: "auto" }}>
-          {/* <MarketSummary /> */}
-          <CoinPage />
+        <Box
+          sx={{
+            width: "95%",
+            margin: "auto",
+            mt: "20px",
+          }}
+        >
+          <Box sx={{ display: "flex", gap: "10px", mb: "20px" }}>
+            <Button
+              sx={{
+                background: tab == 0 ? "#00A609" : "none",
+                fontSize: 14,
+                textTransform: "capitalize",
+                color: "white",
+                borderRadius: 20,
+              }}
+              onClick={() => setTab(0)}
+            >
+              {t(`HomePage.menu1`)}
+            </Button>
+            <Button
+              sx={{
+                background: tab == 1 ? "#00A609" : "none",
+                fontSize: 14,
+                textTransform: "capitalize",
+                color: "white",
+                borderRadius: 20,
+              }}
+              onClick={() => setTab(1)}
+            >
+              {t(`HomePage.menu2`)}
+            </Button>
+            <Button
+              sx={{
+                background: tab == 2 ? "#00A609" : "none",
+                fontSize: 14,
+                textTransform: "capitalize",
+                color: "white",
+                borderRadius: 20,
+              }}
+              onClick={() => setTab(2)}
+            >
+              {t(`HomePage.menu2`)}
+            </Button>
+          </Box>
+
+          <CoinTicker key={tab} listCoin={coinList} tab={tab} />
         </Box>
-        <Box sx={{ width: "90%", margin: "20px auto" }}>
-          <Typography
-            variant="h4"
-            sx={{
-              color: "white",
-            }}
+        <Box
+          sx={{
+            width: "95%",
+            margin: "auto",
+            mt: "20px",
+          }}
+        >
+          <Box
+            display={"flex"}
+            justifyContent={"space-between"}
+            sx={{ width: "90%", margin: "auto" }}
           >
-            {t(`HomePage.h4`)}
-          </Typography>
-          <Typography variant="body1" sx={{ color: "white", mt: "15px" }}>
-            {t(`HomePage.p_1`)}
-          </Typography>
-          <Image
-            src={"./images/about-us.jpg"}
-            width={340}
-            height={340}
-            alt="l"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "contain",
-              margin: "15px 0px",
-              borderRadius: "20px",
-            }}
-          />
-          <Typography
-            variant="body1"
-            sx={{ color: "white", mt: "15px", pb: "100px" }}
-          >
-            {t(`HomePage.p_2`)}
-          </Typography>
+            <Box display={"flex"} gap={"10px"} alignItems={"center"}>
+              <SquareIcon />
+              <Typography
+                variant="h4"
+                sx={{
+                  color: "white",
+                  fontSize: 20,
+                }}
+              >
+                {t(`HomePage.title3`)}
+              </Typography>
+            </Box>
+            <IconButton sx={{ background: "none", border: "none" }}>
+              <ArrowForwardIcon sx={{ color: "white", fontSize: 24 }} />
+            </IconButton>
+          </Box>
         </Box>
       </Box>
 
