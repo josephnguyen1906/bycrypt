@@ -145,7 +145,31 @@ export default function LanguagePage() {
               style={{ height: "20px", objectFit: "contain" }}
               alt="vn"
             />
-            Việt Nam
+            Tiếng việt
+          </Box>
+          <Box
+            sx={{
+              height: "50px",
+              cursor: "pointer",
+              padding: "10px",
+              display: "flex",
+              gap: "20px",
+              alignItems: "center",
+              color: lang === "ja" ? "#4ade80" : "white",
+              background: "#1f2937",
+              borderRadius: "15px",
+              border: lang === "ja" ? "1px solid #4ade80" : "none",
+            }}
+            onClick={() => changeLanguage("ja")}
+          >
+            <Image
+              src="https://flagcdn.com/jp.svg"
+              width={30}
+              height={30}
+              style={{ height: "20px", objectFit: "contain" }}
+              alt="jp"
+            />
+            日本語
           </Box>
         </Box>
       </Box>
