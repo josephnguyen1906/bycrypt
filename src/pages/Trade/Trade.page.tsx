@@ -237,7 +237,7 @@ export default function TradePage() {
             {t("TradePage.title15")}
           </Button>
         </Stack>
-        <Grid container spacing={2}>
+        <Grid container spacing={1}>
           <Grid size={{ xs: 5 }}>
             <OrderBook
               asks={asks}

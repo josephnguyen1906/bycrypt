@@ -68,7 +68,7 @@ export default function OrderBook({
           sx={{
             width: "65%",
             color,
-            fontSize: 13,
+            fontSize: 11,
             zIndex: 2,
             fontVariantNumeric: "tabular-nums",
           }}
@@ -81,7 +81,7 @@ export default function OrderBook({
             width: "35%",
             textAlign: "right",
             color: "#fff",
-            fontSize: 13,
+            fontSize: 11,
             zIndex: 2,
             fontVariantNumeric: "tabular-nums",
           }}
@@ -110,7 +110,7 @@ export default function OrderBook({
           sx={{
             width: "65%",
             color: "#6E7685",
-            fontSize: 12,
+            fontSize: 11,
           }}
         >
           {t("TradePage.title12")} (USDT)
@@ -121,7 +121,7 @@ export default function OrderBook({
             width: "35%",
             textAlign: "right",
             color: "#6E7685",
-            fontSize: 12,
+            fontSize: 11,
           }}
         >
           {t("TradePage.title13")}{" "}
@@ -164,7 +164,7 @@ export default function OrderBook({
           sx={{
             width: "65%",
             color: "#6E7685",
-            fontSize: 12,
+            fontSize: 11,
           }}
         >
           {t("TradePage.title12")} (USDT)
@@ -175,7 +175,7 @@ export default function OrderBook({
             width: "35%",
             textAlign: "right",
             color: "#6E7685",
-            fontSize: 12,
+            fontSize: 11,
           }}
         >
           {t("TradePage.title13")}{" "}
