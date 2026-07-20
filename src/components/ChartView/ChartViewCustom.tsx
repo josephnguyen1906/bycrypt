@@ -11,6 +11,7 @@ import {
   ISeriesApi,
 } from "lightweight-charts";
 import { DownIcon, UpIcon } from "@/shared/Svgs/Svg.component";
+import { t } from "i18next";
 
 type Candle = {
   time: UTCTimestamp;
@@ -44,15 +45,16 @@ export default function ChartViewCustom({
   const [high24h, setHigh24h] = useState(0);
   const [low24h, setLow24h] = useState(0);
   const [volume24h, setVolume24h] = useState(0);
+  const [quoteVolume24h, setQuoteVolume24h] = useState(0);
   const timeframes = [
-    { value: "1m", label: "1M" },
-    { value: "5m", label: "5M" },
-    { value: "15m", label: "15M" },
-    { value: "30m", label: "30M" },
-    { value: "1h", label: "1H" },
-    { value: "1d", label: "1D" },
-    { value: "1w", label: "1WEEK" },
-    { value: "1M", label: "1MON" },
+    { label: "1 " + t("TradePage.title21"), value: "1m" },
+    { label: "5 " + t("TradePage.title21"), value: "5m" },
+    { label: "15 " + t("TradePage.title21"), value: "15m" },
+    { label: "30 " + t("TradePage.title21"), value: "30m" },
+    { label: "1 " + t("TradePage.title22"), value: "1h" },
+    { label: "1 " + t("TradePage.title23"), value: "1d" },
+    { label: "1 " + t("TradePage.title24"), value: "1w" },
+    { label: "1 " + t("TradePage.title25"), value: "1M" },
   ];
 
   // ================= INIT CHART =================
@@ -61,7 +63,7 @@ export default function ChartViewCustom({
 
     const chart = createChart(chartContainerRef.current, {
       layout: {
-        background: { type: ColorType.Solid, color: "#111827" },
+        background: { type: ColorType.Solid, color: "#0E0F18" },
         textColor: "#A0AEC0",
       },
       grid: {
@@ -73,7 +75,7 @@ export default function ChartViewCustom({
         },
       },
       rightPriceScale: {
-        borderColor: "#1e2a3a",
+        borderColor: "#0E0F18",
         autoScale: true,
         scaleMargins: {
           top: 0.2,
@@ -82,7 +84,7 @@ export default function ChartViewCustom({
       },
 
       timeScale: {
-        borderColor: "#1e2a3a",
+        borderColor: "#0E0F18",
         timeVisible: true,
         fixLeftEdge: true,
         fixRightEdge: true,
@@ -94,7 +96,7 @@ export default function ChartViewCustom({
         pinch: true,
       },
       width: chartContainerRef.current.clientWidth,
-      height: 450,
+      height: 380,
     });
 
     const candleSeries = chart.addSeries(CandlestickSeries, {
@@ -190,6 +192,7 @@ export default function ChartViewCustom({
       setHigh24h(parseFloat(data.h));
       setLow24h(parseFloat(data.l));
       setVolume24h(parseFloat(data.v));
+      setQuoteVolume24h(parseFloat(data.q));
     };
 
     return () => ws.close();
@@ -206,7 +209,6 @@ export default function ChartViewCustom({
 
       const open = parseFloat(k.o);
       const close = parseFloat(k.c);
-      const percentValue = ((close - open) / open) * 100;
 
       const candle: Candle = {
         time: (k.t / 1000) as UTCTimestamp,
@@ -242,170 +244,223 @@ export default function ChartViewCustom({
   return (
     <Box
       sx={{
-        maxWidth: "768px",
+        maxWidth: { xs: "100%", sm: "448px" },
         margin: "auto",
-        background: "#111827",
+        background: "#0E0F18",
+        position: "relative",
+        pb: "50px",
       }}
     >
-      <Stack direction="row" justifyContent="space-between" mb={2}>
-        <Box>
-          {loading ? (
-            <>
-              <Skeleton
-                variant="text"
-                width={120}
-                height={40}
-                animation="wave"
-              />
-              <Skeleton
-                variant="rounded"
-                width={70}
-                height={24}
-                animation="wave"
-              />
-            </>
-          ) : (
-            <>
-              <Typography
-                fontSize={25}
-                fontWeight="bold"
-                color={percent >= 0 ? "#10b981" : "#ef4444"}
-              >
-                {Number(price).toLocaleString()}
-              </Typography>
-              <Box sx={{ display: "flex", alignItems: "center", gap: "3px" }}>
-                <Typography
-                  sx={{
-                    color: percent >= 0 ? "#10b981" : "#ef4444",
-                    fontSize: "14px",
-                  }}
-                >
-                  {percent.toFixed(2)}%
-                </Typography>
-
-                {Number(percent) < 0 ? (
-                  <DownIcon width="16px" height="16px" fill="#ef4444" />
-                ) : (
-                  <UpIcon width="16px" height="16px" fill="#22c55e" />
-                )}
-              </Box>
-            </>
-          )}
-        </Box>
-
-        <Box textAlign="right">
-          {loading ? (
-            <>
-              <Skeleton
-                variant="text"
-                width={70}
-                height={18}
-                animation="wave"
-              />
-              <Skeleton
-                variant="text"
-                width={80}
-                height={20}
-                animation="wave"
-              />
-              <Skeleton
-                variant="text"
-                width={120}
-                height={20}
-                animation="wave"
-              />
-              <Skeleton
-                variant="text"
-                width={120}
-                height={20}
-                animation="wave"
-              />
-            </>
-          ) : (
-            <>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography color="#9ca3af" fontSize={13} textAlign="left">
-                  High
-                </Typography>
-                <Typography color="#ffffff" fontSize={13} textAlign="right">
-                  {high24h.toLocaleString("en-US", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
-                </Typography>
-              </Box>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography color="#9ca3af" fontSize={13} textAlign="left">
-                  Low
-                </Typography>
-
-                <Typography color="#ffffff" fontSize={13} textAlign="left">
-                  {Number(low24h).toLocaleString()}
-                </Typography>
-              </Box>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography color="#9ca3af" fontSize={13} textAlign="left">
-                  24H quantity
-                </Typography>
-                <Typography color="#ffffff" fontSize={13} textAlign="left">
-                  {Number(volume24h).toLocaleString()}
-                </Typography>
-              </Box>
-            </>
-          )}
-        </Box>
-      </Stack>
-
-      <Box
-        sx={{
-          overflowX: "auto",
-          whiteSpace: "nowrap",
-          pb: 1,
-        }}
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="flex-start"
+        spacing={3}
+        mb={1}
       >
-        <Stack
-          direction="row"
-          spacing={1}
-          sx={{
-            minWidth: "max-content",
-          }}
-        >
-          {timeframes.map((tf) => {
-            const active = tf.value === interval;
+        {/* LEFT */}
+        <Box>
+          <Typography
+            sx={{
+              fontSize: 36,
+              lineHeight: 1,
+              fontWeight: 700,
+              color: percent >= 0 ? "#0ECB81" : "#F6465D",
+            }}
+          >
+            {Number(price).toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </Typography>
 
-            return (
-              <Button
-                key={tf.value}
-                onClick={() => setInterval(tf.value)}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 0.5,
+              mt: 1,
+            }}
+          >
+            <Typography
+              sx={{
+                color: "#fff",
+                fontSize: 13,
+                fontWeight: 600,
+              }}
+            >
+              ≈ $
+              {Number(price).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </Typography>
+
+            <Typography
+              sx={{
+                color: percent >= 0 ? "#0ECB81" : "#F6465D",
+                fontSize: 13,
+                fontWeight: 700,
+              }}
+            >
+              {percent >= 0 ? "+" : ""}
+              {percent.toFixed(3)}%
+            </Typography>
+          </Box>
+
+          <Typography
+            sx={{
+              mt: 0.5,
+              color: "#8B93A6",
+              fontSize: 13,
+            }}
+          >
+            {t("TradePage.title26")}
+            <Box
+              component="span"
+              sx={{
+                color: "#fff",
+                pl: "10px",
+              }}
+            >
+              {Number(openPrice).toLocaleString()}
+            </Box>
+          </Typography>
+        </Box>
+
+        {/* RIGHT */}
+        <Stack spacing={0.8} sx={{ minWidth: 165 }}>
+          {[
+            {
+              label: t("TradePage.title27"),
+              value: high24h,
+            },
+            {
+              label: t("TradePage.title28"),
+              value: low24h,
+            },
+            {
+              label: t("TradePage.title29"),
+              value: volume24h,
+            },
+            {
+              label: t("TradePage.title30"),
+              value: quoteVolume24h,
+            },
+          ].map((item) => (
+            <Box
+              key={item.label}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <Typography
                 sx={{
-                  minWidth: 55,
-                  height: 25,
-                  px: 1,
-                  borderRadius: "999px",
-                  fontSize: "11px",
-                  fontWeight: 600,
-
-                  color: active ? "white" : "#9ca3af",
-                  backgroundColor: active ? "#22c55e" : "#1f2937",
-
-                  "&:hover": {
-                    backgroundColor: "#22c55e",
-                    color: "white",
-                  },
+                  color: "#8B93A6",
+                  fontSize: 13,
                 }}
               >
-                {tf.label}
-              </Button>
-            );
-          })}
-        </Stack>
-      </Box>
+                {item.label}
+              </Typography>
 
+              <Typography
+                sx={{
+                  color: "#fff",
+                  fontSize: 13,
+                  fontWeight: 600,
+                }}
+              >
+                {Number(item.value).toLocaleString(undefined, {
+                  maximumFractionDigits: 2,
+                })}
+              </Typography>
+            </Box>
+          ))}
+        </Stack>
+      </Stack>
+
+      <Box sx={{ display: "flex", alignItems: "center", py: "10px" }}>
+        <Typography sx={{ color: "white", fontSize: 12, width: 130 }}>
+          {t("TradePage.title20")}:
+        </Typography>
+        <Box
+          sx={{
+            overflowX: "auto",
+            overflowY: "hidden",
+            whiteSpace: "nowrap",
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+            scrollbarWidth: "none", // Firefox
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1.5,
+              flexWrap: "nowrap", // Không xuống dòng
+              width: "max-content",
+
+              py: 1,
+            }}
+          >
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                minWidth: "max-content",
+              }}
+            >
+              {timeframes.map((tf) => {
+                const active = tf.value === interval;
+
+                return (
+                  <Box
+                    key={tf.value}
+                    onClick={() => setInterval(tf.value)}
+                    sx={{
+                      position: "relative",
+                      cursor: "pointer",
+                      flexShrink: 0, // Không bị co lại
+                      fontSize: 13,
+                      fontWeight: active ? 700 : 500,
+                      color: active ? "#fff" : "rgba(255,255,255,0.55)",
+                      transition: "0.2s",
+                      userSelect: "none",
+
+                      "&:hover": {
+                        color: "#fff",
+                      },
+
+                      "&::after": active
+                        ? {
+                            content: '""',
+                            position: "absolute",
+                            left: 0,
+                            bottom: -10,
+                            width: "100%",
+                            height: "2px",
+                            background: "#1976d2",
+                            borderRadius: 999,
+                          }
+                        : {},
+                    }}
+                  >
+                    {tf.label}
+                  </Box>
+                );
+              })}
+            </Stack>
+          </Box>
+        </Box>
+      </Box>
       <Box
         ref={chartContainerRef}
         sx={{
           borderRadius: 2,
           overflow: "hidden",
+          zIndex: 1,
         }}
       />
     </Box>

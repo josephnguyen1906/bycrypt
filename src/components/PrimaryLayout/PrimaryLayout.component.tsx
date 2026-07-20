@@ -75,7 +75,8 @@ export default function PrimaryLayoutComponent({
           {path !== "/login/" &&
             path !== "/signup/" &&
             path !== "/chat/" &&
-            path !== "/trade/" && <NavMobileBottom />}
+            path !== "/trade/" &&
+            path !== "/trade-chart/" && <NavMobileBottom />}
 
           {/* <MenuPopupComponent
             open={open}

@@ -2,7 +2,6 @@
 
 import { Box } from "@mui/material";
 import { useEffect, useRef, useMemo } from "react";
-import { toBinanceSymbol } from "@/services/binance";
 
 export default function TradingChart({
   symbol,
@@ -15,7 +14,7 @@ export default function TradingChart({
 
   // MAP SYMBOL
   const tvSymbol = useMemo(() => {
-    const s = toBinanceSymbol(symbol);
+    const s = symbol;
 
     switch (s) {
       // GOLD
@@ -24,7 +23,7 @@ export default function TradingChart({
 
       // SILVER
       case "XAGUSD":
-        return "OANDA:XAGUSD";
+        return "XAGUSD";
 
       // FOREX
       case "GBPUSD":
@@ -39,9 +38,9 @@ export default function TradingChart({
       // STOCK
       case "EURUSD":
         return "OANDA:EURUSD";
-      // DEFAULT CRYPTO (btc-usdt → BINANCE:BTCUSDT)
+      // DEFAULT CRYPTO
       default:
-        return `BINANCE:${s}`;
+        return `OKX:${symbol}`;
     }
   }, [symbol]);
 

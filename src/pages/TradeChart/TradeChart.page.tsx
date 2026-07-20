@@ -1,75 +1,70 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import Header from "./Header";
-import { Box, Button, Grid, Stack, Typography } from "@mui/material";
-import OrderBook from "./OrderBook";
-import TradeForm from "./TradeForm";
-import BottomTabs from "./BottomTabs";
-import { useTranslation } from "react-i18next";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import TradePanel from "./TradePanel";
 import {
-  getBuySellConfig,
+  Box,
+  Button,
+  Drawer,
+  IconButton,
+  Menu,
+  Stack,
+  Tab,
+  Tabs,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import MenuCoin from "@/components/subMenu/MenuCoin";
+import ChartViewCustom from "@/components/ChartView/ChartViewCustom";
+import {
+  DashboardIcon,
+  DownIcon,
+  FileIcon,
+  HistoryIcon,
+  InternetIcon,
+  MenuIcon,
+  UpIcon,
+} from "@/shared/Svgs/Svg.component";
+import CoinMenuMobile from "@/components/coins/CoinMenuMobile";
+import { useTranslation } from "react-i18next";
+import {
   getContractjc,
   getFinaceCoin,
   getListCoin,
+  getWebsiteConfig,
 } from "@/services/User.service";
 import { useUserStore } from "@/stores/useUserStore";
-import { IHistoryOpen } from "@/shared/interfaces";
-import TradingChartPopup from "@/components/coins/TradingChartPopup";
-import { IcoinFinace } from "@/interface/user.interface";
-import CoinMenuMobile from "@/components/coins/CoinMenuMobile";
-import { COINS, MONEYCOIN } from "@/datafake/home";
+import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
+import { Icoin, IcoinFinace } from "@/interface/user.interface";
 import { useRouter } from "next/navigation";
-export interface IcoinType {
-  symbol: string;
-  priceChange: string;
-  priceChangePercent: string;
-  weightedAvgPrice: string;
-  prevClosePrice: string;
-  lastPrice: string;
-  lastQty: string;
-  bidPrice: string;
-  bidQty: string;
-  askPrice: string;
-  askQty: string;
-  openPrice: string;
-  highPrice: string;
-  lowPrice: string;
-  volume: string;
-  quoteVolume: string;
-  openTime: number;
-  closeTime: number;
-  firstId: number;
-  lastId: number;
-  count: number;
-}
+import { IHistoryOpen } from "@/shared/interfaces";
+import Image from "next/image";
+import OrderBookChart from "./OrderBookChart";
+import { COINS } from "@/datafake/home";
+
 interface DepthItem {
   price: number;
   quantity: number;
 }
 
-export default function TradePage() {
-  const { t } = useTranslation();
-  const { user } = useUserStore();
+export default function TradeChartPage() {
+  const { t, i18n } = useTranslation();
+  const [coin, setCoin] = useState("btcusdt");
   const [amount, setAmount] = useState("");
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [tab, setTab] = useState(0);
   const [percent, setPercent] = useState(0);
   const [ticker, setTicker] = useState<any>();
-  const [coin, setCoin] = useState("btcusdt");
-  const [openChart, setOpenChart] = useState(false);
-  const ws = useRef<WebSocket | null>(null);
-  const [orderData, setOrderData] = useState<any>(null);
-  const [orderOpen, setOderOpen] = useState<IHistoryOpen[]>([]);
-  const [openConfirm, setOpenConfirm] = useState(false);
+  const [price, setPrice] = useState<number>();
+  const { user, fetchUser } = useUserStore();
+  const [interval, setInterval] = useState("1m");
+  const [listCoin, setListCoin] = useState<IcoinFinace[]>([]);
+  const router = useRouter();
+  const [history, setHisstory] = useState<IHistoryOpen[]>([]);
   const [asks, setAsks] = useState<DepthItem[]>([]);
   const [bids, setBids] = useState<DepthItem[]>([]);
-  const [listCoin, setListCoin] = useState<any[]>([]);
   const [lastPrice, setLastPrice] = useState(0);
   const [priceColor, setPriceColor] = useState("#fff");
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const ws = useRef<WebSocket | null>(null);
   const lastPriceRef = useRef(0);
-  const router = useRouter();
 
   useEffect(() => {
     const WS_URL = `wss://stream.binance.com:9443/stream?streams=${coin}@depth20@100ms/${coin}@ticker`;
@@ -130,45 +125,37 @@ export default function TradePage() {
       ws.current?.close();
     };
   }, [coin]);
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
+  useEffect(() => {
+    referral();
+    historyOpen();
+  }, []);
 
   const historyOpen = async () => {
     try {
       const his: any = await getContractjc();
       if (his.status === true) {
-        setOderOpen(his.data);
+        setHisstory(his.data);
       }
     } catch (errors: any) {
       console.log(errors?.message);
     }
   };
 
-  useEffect(() => {
-    historyOpen();
-    // referral();
-  }, []);
+  const referral = async () => {
+    try {
+      const listCoin: any = await getFinaceCoin();
 
-  const fetchHistorty = async (res: any) => {
-    if (res?.data) {
-      const his: any = await getContractjc();
-      if (his.data?.length > 0) {
-        setOderOpen(his.data);
+      if (listCoin.status === true) {
+        setListCoin(listCoin.data);
       }
-      setOrderData(res.data);
-      setOpenConfirm(true);
+    } catch (errors: any) {
+      console.log(errors?.message);
     }
   };
-  // realCoin menu
-  // const referral = async () => {
-  //   try {
-  //     const listCoin: any = await getListCoin();
-
-  //     if (listCoin.status === true) {
-  //       setListCoin(listCoin.data);
-  //     }
-  //   } catch (errors: any) {
-  //     // console.log(errors?.message);
-  //   }
-  // };
 
   // fake coin Menu
   const coinList = useMemo(
@@ -189,17 +176,74 @@ export default function TradePage() {
       sx={{
         maxWidth: { xs: "100%", sm: "448px" },
         margin: "auto",
-        minHeight: "100vh",
         background: "#0E0F18",
         position: "relative",
       }}
     >
-      <Header
-        symbol={ticker?.s}
-        percent={Number(Number(ticker?.P || 0).toFixed(3))}
-        onIndicator={() => setDrawerOpen(true)}
-        onBack={() => router.back()}
-      />
+      {" "}
+      <Box
+        sx={{
+          height: 72,
+          px: 2,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          bgcolor: "#0D1018",
+          borderBottom: "1px solid rgba(255,255,255,.05)",
+        }}
+      >
+        {/* Left */}
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            gap: "50px",
+            alignItems: "center",
+          }}
+        >
+          <IconButton
+            onClick={() => router.back()}
+            sx={{
+              color: "#fff",
+            }}
+          >
+            <ArrowBackIosNewRoundedIcon fontSize="small" />
+          </IconButton>
+
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+            }}
+          >
+            <IconButton
+              sx={{ width: 22, background: "none" }}
+              onClick={() => setDrawerOpen(true)}
+            >
+              <Image
+                src={"/images/arrowicon.png"}
+                width={22}
+                height={22}
+                alt=""
+              />
+            </IconButton>
+
+            <Typography
+              sx={{
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: 12,
+                textTransform: "uppercase",
+              }}
+            >
+              {coin?.replace("usdt", "/usdt")}
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
       <Box sx={{ width: "95%", margin: "auto" }}>
         <Stack direction="row" spacing={2} mb={1}>
           <Button
@@ -237,39 +281,19 @@ export default function TradePage() {
             {t("TradePage.title15")}
           </Button>
         </Stack>
-        <Grid container spacing={2}>
-          <Grid size={{ xs: 5 }}>
-            <OrderBook
-              asks={asks}
-              bids={bids}
-              lastPrice={lastPrice}
-              priceColor={priceColor}
-              symbol={coin}
-            />
-          </Grid>
-
-          <Grid size={{ xs: 7 }}>
-            {tab == 0 ? (
-              <TradeForm
-                coin={lastPrice}
-                amount={amount}
-                setAmount={setAmount}
-                percent={percent}
-                setPercent={setPercent}
-              />
-            ) : (
-              <TradePanel symbol={coin} user={user} onSuccess={fetchHistorty} />
-            )}
-          </Grid>
-        </Grid>
-        <Box
-          sx={{
-            width: "100%",
-            mt: 2,
-          }}
-        >
-          <BottomTabs orderOpen={orderOpen} />
-        </Box>
+        <ChartViewCustom
+          symbol={coin}
+          changePrice={(c) => setPrice(c)}
+          interval={interval}
+          setInterval={setInterval}
+        />
+        <OrderBookChart
+          asks={asks}
+          bids={bids}
+          lastPrice={lastPrice}
+          priceColor={priceColor}
+          symbol={coin}
+        />
         <Box
           sx={{
             position: "fixed",
@@ -295,39 +319,53 @@ export default function TradePage() {
             cursor: "pointer",
             zIndex: 1200,
           }}
-          onClick={() => setOpenChart(true)}
         >
-          <Box display="flex" gap={1} alignItems="center">
-            <Typography
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              gap: "10px",
+            }}
+          >
+            <Button
+              fullWidth
               sx={{
-                fontSize: 18,
-                textTransform: "uppercase",
+                width: "100%",
+                height: 40,
+                bgcolor: "#08D27A",
                 color: "#fff",
+                borderRadius: "9px",
+                fontSize: 18,
+                textTransform: "none",
+                "&:hover": {
+                  bgcolor: "#08D27A",
+                },
               }}
+              onClick={() => router.push("/trade")}
             >
-              {coin.replace("usdt", "/usdt")}
-            </Typography>
-
-            <Typography sx={{ fontSize: 18, color: "#fff" }}>
-              {t("TradePage.title16")}
-            </Typography>
+              {t("TradePage.title6")}
+            </Button>
+            <Button
+              fullWidth
+              sx={{
+                width: "100%",
+                height: 40,
+                bgcolor: "#FF4B45",
+                color: "#fff",
+                borderRadius: "9px",
+                fontSize: 18,
+                fontWeight: 600,
+                textTransform: "none",
+                "&:hover": {
+                  bgcolor: "#FF4B45",
+                },
+              }}
+              onClick={() => router.push("/trade")}
+            >
+              {t("TradePage.title7")}
+            </Button>
           </Box>
-
-          <KeyboardArrowUpIcon sx={{ color: "#fff", fontSize: 25 }} />
-        </Box>
-        <Box
-          sx={{
-            width: {
-              xs: "100%",
-              sm: "448px",
-            },
-          }}
-        >
-          <TradingChartPopup
-            open={openChart}
-            onClose={() => setOpenChart(false)}
-            symbol={coin.toUpperCase()}
-          />
         </Box>
         <CoinMenuMobile
           menu={coin}

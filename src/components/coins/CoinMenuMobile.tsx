@@ -9,41 +9,37 @@ import {
   Avatar,
   Stack,
   IconButton,
+  Drawer,
 } from "@mui/material";
 
 import { DownIcon, UpIcon } from "@/shared/Svgs/Svg.component";
 
 import { IcoinFinace } from "@/interface/user.interface";
 
-import { iconMap } from "./CoinPage";
+import { logos } from "./CoinPage";
 
 import { getDataChartSiderbar } from "@/services/User.service";
 import { CloseOutlined } from "@mui/icons-material";
 import { toBinanceSymbol } from "@/services/binance";
 import { isCryptoCoinSymbol } from "@/utils/specialCoins";
-
-type Coin = {
-  symbol: string;
-  name: string;
-  title: string;
-  price: number;
-  changePercent: number;
-};
+import { t } from "i18next";
 
 interface Props {
   menu: string;
   listCoin: Array<IcoinFinace & { symbol: string; coinname?: string }>;
   setMenu: (v: string) => void;
   changePercent: (s: string) => void;
-  handleDrawerClose: () => void;
   interval: string;
+  open: boolean;
+  onClose: () => void;
 }
 
 export default function CoinMenuMobile({
   menu,
   listCoin,
   setMenu,
-  handleDrawerClose,
+  open,
+  onClose,
 }: Props) {
   const [marketData, setMarketData] = useState<any>({});
 
@@ -65,6 +61,7 @@ export default function CoinMenuMobile({
             try {
               const symbol = coin.symbol;
               const binanceSymbol = toBinanceSymbol(symbol);
+
               const res = await fetch(
                 `https://api.binance.com/api/v3/ticker/24hr?symbol=${binanceSymbol}`,
               );
@@ -126,145 +123,197 @@ export default function CoinMenuMobile({
   }, [listCoin]);
 
   return (
-    <Box
+    <Drawer
+      anchor="left"
+      open={open}
+      onClose={onClose}
       sx={{
-        minHeight: "100vh",
+        "& .MuiPaper-root": {
+          width: { xs: "80%", sm: "20%" },
+          left: {
+            xs: 0,
+            sm: "35%",
+          },
 
-        background: "#111827",
-
-        pb: "100px",
-
-        overflowY: "auto",
-
-        scrollbarWidth: "none",
-
-        msOverflowStyle: "none",
-
-        "&::-webkit-scrollbar": {
-          display: "none",
+          right: "auto",
+          bottom: 0,
+          height: "100vh",
+          bgcolor: "#0E0F18",
+          borderTopLeftRadius: 16,
+          borderTopRightRadius: 16,
         },
       }}
     >
-      {/* HEADER */}
       <Box
         sx={{
-          width: "80px",
+          minHeight: "100vh",
 
-          mb: "10px",
+          background: "#0E0F18",
 
-          p: 2,
+          pb: "100px",
+
+          overflowY: "auto",
+
+          scrollbarWidth: "none",
+
+          msOverflowStyle: "none",
+
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
         }}
       >
-        <IconButton onClick={handleDrawerClose}>
-          <CloseOutlined
-            sx={{ color: "white", width: "20px", height: "20px" }}
-          />
-        </IconButton>
-      </Box>
+        {/* HEADER */}
+        <Box
+          sx={{
+            width: "100%",
+            height: "20px",
+            p: 2,
+            mb: 2,
+            textAlign: "right",
+          }}
+        >
+          <IconButton onClick={onClose}>
+            <CloseOutlined
+              sx={{ color: "white", width: "20px", height: "20px" }}
+            />
+          </IconButton>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-around",
+            px: "10px",
+            py: "10px",
+          }}
+        >
+          <Typography sx={{ color: "#868c9a", fontSize: 14 }}>
+            {t("TradePage.title31")}
+          </Typography>
+          <Typography sx={{ color: "#868c9a", fontSize: 14 }}>
+            {" "}
+            {t("TradePage.title32")}
+          </Typography>
+        </Box>
 
-      {/* LIST */}
-      {listCoin?.map((coin: any) => {
-        const symbol = coin.symbol;
+        {/* LIST */}
+        {listCoin?.map((coin: any) => {
+          const symbol = String(coin.symbol).toLowerCase();
 
-        const data = marketData[symbol];
+          const data = marketData[coin.symbol];
 
-        const active = menu?.toUpperCase() === symbol;
+          const active = menu?.toUpperCase() === coin.symbol;
 
-        return (
-          <Box
-            key={coin.id}
-            onClick={() => setMenu(symbol)}
-            sx={{
-              width: "100%",
+          return (
+            <Box
+              key={coin.id}
+              onClick={() => {
+                setMenu(symbol);
+                onClose();
+              }}
+              sx={{
+                width: "100%",
 
-              display: "flex",
+                display: "flex",
 
-              justifyContent: "space-between",
+                justifyContent: "space-between",
 
-              alignItems: "center",
+                alignItems: "center",
 
-              cursor: "pointer",
+                cursor: "pointer",
 
-              p: 2,
+                p: 2,
 
-              background: active ? "#374151" : "#111827",
+                background: active ? "#374151" : "#0E0F18",
 
-              transition: "0.2s",
+                transition: "0.2s",
 
-              "&:hover": {
-                background: "#1f2937",
-              },
-            }}
-          >
-            {/* LEFT */}
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Avatar
-                src={
-                  iconMap[coin.symbol] ||
-                  `https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/${coin?.coinname?.toLowerCase()}.png`
-                }
-                sx={{
-                  width: 30,
-                  height: 30,
-                }}
-              >
-                {coin.symbol.charAt(0)}
-              </Avatar>
+                "&:hover": {
+                  background: "#1f2937",
+                },
+              }}
+            >
+              {/* LEFT */}
 
-              <Typography
-                fontWeight="bold"
-                sx={{
-                  fontSize: 12,
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Avatar
+                  src={
+                    logos[coin.symbol] ||
+                    `https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/${coin?.coinname?.toLowerCase()}.png`
+                  }
+                  sx={{
+                    width: 30,
+                    height: 30,
+                  }}
+                >
+                  {coin.symbol.charAt(0)}
+                </Avatar>
+                <Box>
+                  <Typography
+                    fontWeight="bold"
+                    sx={{
+                      fontSize: 12,
 
-                  color: "white",
-                }}
-              >
-                {coin.title}
-              </Typography>
-            </Stack>
+                      color: "white",
+                    }}
+                  >
+                    {coin.title}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: 12,
 
-            {/* RIGHT */}
-            <Box textAlign="right">
-              <Typography
-                fontWeight="bold"
-                sx={{
-                  fontSize: 12,
+                      color: "#868c9a",
+                    }}
+                  >
+                    {t("TradePage.title14")}
+                  </Typography>
+                </Box>
+              </Stack>
 
-                  color: "white",
-                }}
-              >
-                {data?.close ? Number(data.close).toLocaleString() : "--"}
-              </Typography>
+              {/* RIGHT */}
+              <Box textAlign="right">
+                <Typography
+                  fontWeight="bold"
+                  sx={{
+                    fontSize: 12,
 
-              <Typography
-                sx={{
-                  fontSize: 12,
+                    color: "white",
+                  }}
+                >
+                  {data?.close ? Number(data.close).toLocaleString() : "--"}
+                </Typography>
 
-                  display: "flex",
+                <Typography
+                  sx={{
+                    fontSize: 12,
 
-                  alignItems: "center",
+                    display: "flex",
 
-                  justifyContent: "flex-end",
+                    alignItems: "center",
 
-                  gap: 0.5,
+                    justifyContent: "flex-end",
 
-                  color: Number(data?.change) < 0 ? "#ef4444" : "#22c55e",
-                }}
-              >
-                {Number(data?.change) < 0 ? (
-                  <DownIcon width="16px" height="16px" fill="#ef4444" />
-                ) : (
-                  <UpIcon width="16px" height="16px" fill="#22c55e" />
-                )}
+                    gap: 0.5,
 
-                {data?.change !== undefined
-                  ? `${Number(data.change).toFixed(2)}%`
-                  : "--"}
-              </Typography>
+                    color: Number(data?.change) < 0 ? "#ef4444" : "#22c55e",
+                  }}
+                >
+                  {Number(data?.change) < 0 ? (
+                    <DownIcon width="16px" height="16px" fill="#ef4444" />
+                  ) : (
+                    <UpIcon width="16px" height="16px" fill="#22c55e" />
+                  )}
+
+                  {data?.change !== undefined
+                    ? `${Number(data.change).toFixed(2)}%`
+                    : "--"}
+                </Typography>
+              </Box>
             </Box>
-          </Box>
-        );
-      })}
-    </Box>
+          );
+        })}
+      </Box>
+    </Drawer>
   );
 }

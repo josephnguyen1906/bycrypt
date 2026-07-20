@@ -39,40 +39,25 @@ const symbols = [
   "bnbusdt",
   "usdcusdt",
 ];
-export const iconMap: Record<string, string> = {
-  BTCUSDT:
-    "https://cdn.jsdelivr.net/gh/simplr-sh/coin-logos/images/bitcoin/small.png",
-  ETHUSDT:
-    "https://cdn.jsdelivr.net/gh/simplr-sh/coin-logos/images/ethereum/small.png",
-  BCHUSDT:
-    "https://cdn.jsdelivr.net/gh/simplr-sh/coin-logos/images/bitcoin-cash/small.png",
-  LTCUSDT:
-    "https://cdn.jsdelivr.net/gh/simplr-sh/coin-logos/images/litecoin/small.png",
-  UNIUSDT:
-    "https://cdn.jsdelivr.net/gh/simplr-sh/coin-logos/images/uniswap/small.png",
-  DOTUSDT:
-    "https://cdn.jsdelivr.net/gh/simplr-sh/coin-logos/images/polkadot/small.png",
-  SOL: "https://cdn.jsdelivr.net/gh/simplr-sh/coin-logos/images/solana/small.png",
-  TRBUSDT:
-    "https://cdn.jsdelivr.net/gh/simplr-sh/coin-logos/images/tellor/small.png",
-  TRXUSDT:
-    "https://cdn.jsdelivr.net/gh/simplr-sh/coin-logos/images/tron/small.png",
-  XRPUSDT:
-    "https://cdn.jsdelivr.net/gh/simplr-sh/coin-logos/images/ripple/small.png",
-  XAUUSD: "https://s3-symbol-logo.tradingview.com/metal/gold--600.png",
-  XAGUSD: "https://s3-symbol-logo.tradingview.com/metal/silver--big.svg",
-  GBPUSD: "https://api.tradest6.com/symbol_logo/GBPUSD.png",
-  EURUSD: "https://api.tradest6.com/symbol_logo/EURUSD.png",
-  AAPL: "https://s3-symbol-logo.tradingview.com/apple--600.png",
-  PAXG: "/images/18a638a4-aed3-4306-9e18-ad35e03d442a.png",
-  TRUMP:
-    "https://cdn.jsdelivr.net/gh/simplr-sh/coin-logos/images/maga/small.png",
-  DOGE: "/images/22ef2baf-b210-4882-afd9-1317bb7a3603.png",
-  TAO: "/images/e46210b3-26dd-4eeb-976c-c209a90c3613.png",
-  LINK: "/images/1eda1f7f-585a-4f16-abd7-a7104221414a.png",
-  APT: "/images/f3dff438-2cc0-4d32-b419-935ab660b3ea.png",
-  BNB: "/images/94863af2-c980-42cf-a139-7b9f462a36c2.png",
-  USDC: "/images/4cf7d633-92fb-4d37-80ed-458c7d1ea410.png",
+export const logos: Record<string, string> = {
+  BTCUSDT: "https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=040",
+  ETHUSDT: "https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040",
+  SOLUSDT: "https://cryptologos.cc/logos/solana-sol-logo.png?v=040",
+  DOTUSDT: "https://cryptologos.cc/logos/polkadot-new-dot-logo.png?v=040",
+  XAUTUSDT: "https://cryptologos.cc/logos/tether-gold-xaut-logo.png?v=040",
+  XTZUSDT: "https://cryptologos.cc/logos/tezos-xtz-logo.png?v=040",
+  ADAUSDT: "https://cryptologos.cc/logos/cardano-ada-logo.png?v=040",
+  MLNUSDT: "https://cryptologos.cc/logos/enzyme-mln-logo.png?v=040",
+  YFIUSDT: "https://cryptologos.cc/logos/yearn-finance-yfi-logo.png?v=040",
+  DAIUSDT:
+    "https://cryptologos.cc/logos/multi-collateral-dai-dai-logo.png?v=040",
+  ETCUSDT: "https://cryptologos.cc/logos/ethereum-classic-etc-logo.png?v=040",
+  XRPUSDT: "https://cryptologos.cc/logos/xrp-xrp-logo.png?v=040",
+  LTCUSDT: "https://cryptologos.cc/logos/litecoin-ltc-logo.png?v=040",
+  USDCUSDT: "https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040",
+  KNCUSDT:
+    "https://cryptologos.cc/logos/kyber-network-crystal-v2-knc-logo.png?v=040",
+  DOGEUSDT: "https://cryptologos.cc/logos/dogecoin-doge-logo.png?v=040",
 };
 export default function CoinPage() {
   const [coins, setCoins] = useState<Record<string, Coin>>({});

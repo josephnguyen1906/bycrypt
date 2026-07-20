@@ -6,6 +6,7 @@ import CandlestickChartRoundedIcon from "@mui/icons-material/CandlestickChartRou
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 
 interface HeaderProps {
   symbol?: string;
@@ -24,7 +25,7 @@ export default function Header({
 }: HeaderProps) {
   const isUp = Number(percent || 0) >= 0;
   const { t } = useTranslation();
-
+  const router = useRouter();
   return (
     <Box
       sx={{
@@ -66,7 +67,10 @@ export default function Header({
             textAlign: "center",
           }}
         >
-          <IconButton sx={{ width: 22, background: "none" }}>
+          <IconButton
+            onClick={onIndicator}
+            sx={{ width: 22, background: "none" }}
+          >
             <Image
               src={"/images/arrowicon.png"}
               width={22}
@@ -106,15 +110,17 @@ export default function Header({
             {Number(percent || 0).toFixed(3)}%
           </Typography>
         </Box>
+
         <IconButton
-          onClick={onIndicator}
           sx={{
             color: "#9CA3AF",
-            bgcolor: "rgba(255,255,255,.04)",
+            bgcolor: "none",
             "&:hover": {
-              bgcolor: "rgba(255,255,255,.08)",
+              bgcolor: "none",
             },
           }}
+          href="/trade-chart"
+          // onClick={() => router.push("/trade-chart")}
         >
           <CandlestickChartRoundedIcon />
         </IconButton>

@@ -9,6 +9,7 @@ import CommandOpen from "../Contact/CommandOpen";
 import CommandClose from "../Contact/CommandClose";
 import { useUserStore } from "@/stores/useUserStore";
 import { IHistoryClose, IHistoryOpen } from "@/shared/interfaces";
+import Image from "next/image";
 
 export default function HistoryContact() {
   const { t, i18n } = useTranslation();
@@ -25,6 +26,7 @@ export default function HistoryContact() {
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
+
   useEffect(() => {
     historyOpen();
     referral();
@@ -56,50 +58,64 @@ export default function HistoryContact() {
   return (
     <Box
       sx={{
-        width: "100%",
+        maxWidth: { xs: "100%", sm: "448px" },
+        margin: "auto",
         minHeight: "100vh",
-        background: "#141A1F",
-        paddingTop: {
-          xs: "0px",
-          sm: "80px",
-        },
+        background: "#0E0F18",
+        position: "relative",
       }}
     >
       <Box
         sx={{
-          width: { xs: "100%", sm: "500px" },
-          backgroundColor: "#202630",
+          width: "95%",
           margin: "auto",
-          minHeight: { xs: "100vh", sm: "700px" },
-          borderRadius: {
-            xs: 0,
-            sm: "16px",
-          },
-          padding: "16px",
-          position: "relative",
-          pb: {
-            xs: "120px",
-            sm: 0,
-          },
+          pt: 5,
         }}
       >
-        <Box
-          display="flex"
-          alignItems="center"
-          mb={3}
-          gap={"10px"}
-          justifyContent={"space-between"}
-        >
-          <IconButton
-            onClick={() => router.back()}
-            sx={{ background: "#232932" }}
-          >
+        <Box display="flex" alignItems="center" mb={3} gap={"50px"}>
+          <IconButton onClick={() => router.back()} sx={{ background: "none" }}>
             <ArrowBackIosNewIcon
               sx={{ cursor: "pointer", color: "white", fontSize: "14px" }}
             />
           </IconButton>
+          <Typography sx={{ color: "white", fontSize: 18 }}>
+            {t("HistoryPage.title1")}{" "}
+          </Typography>
         </Box>
-        {user && (
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="wrapped label tabs example"
+          variant="fullWidth"
+          sx={{
+            bgcolor: "#1A1D27",
+            p: "4px",
+            borderRadius: "8px",
+
+            "& .MuiTabs-indicator": {
+              display: "none",
+            },
+
+            "& .MuiTab-root": {
+              color: "#8D93A6",
+              fontSize: 13,
+              fontWeight: 600,
+              textTransform: "none",
+              borderRadius: "6px",
+              minHeight: 32,
+              width: 120,
+            },
+
+            "& .MuiTab-root.Mui-selected": {
+              bgcolor: "#00A609",
+              color: "#fff",
+            },
+          }}
+        >
+          <Tab value="one" label={t("HistoryPage.tab1")} wrapped />
+          <Tab value="two" label={t("HistoryPage.tab2")} />
+        </Tabs>
+        {user ? (
           <>
             <Tabs
               value={value}
@@ -168,25 +184,25 @@ export default function HistoryContact() {
                                 textTransform: "capitalize",
                               }}
                             >
-                              {t("AssetPage.label")}
+                              {t("HistoryPage.title3")}
                             </Button>
                           </Box>
                           <Typography
                             sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
                           >
-                            {t("StakingPage.amount")}
+                            {t("HistoryPage.title4")}
                           </Typography>
 
                           <Typography
                             sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
                           >
-                            {t("BuySellPage.price_buy")}
+                            {t("HistoryPage.price_buy")}
                           </Typography>
 
                           <Typography
                             sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
                           >
-                            {t("MiningPage.time")}
+                            {t("TradePage.title18")}
                           </Typography>
                         </Box>
 
@@ -200,7 +216,9 @@ export default function HistoryContact() {
                               marginBottom: "6px",
                             }}
                           >
-                            {item.hyzd === 1 ? "Mua lên" : "Mua xuống"}
+                            {item.hyzd === 1
+                              ? t("HistoryPage.title6")
+                              : t("HistoryPage.title7")}
                           </Typography>
                           <Typography
                             sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
@@ -224,16 +242,41 @@ export default function HistoryContact() {
                     </Box>
                   ))
                 ) : (
-                  <Typography
+                  <Box
                     sx={{
-                      color: "#9ca3af",
-                      fontSize: "12px",
-                      fontWeight: 600,
+                      width: "100%",
                       textAlign: "center",
+                      margin: "auto",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "10px",
+                      justifyContent: "center",
+                      justifyItems: "center",
+                      pt: "50px",
                     }}
                   >
-                    {t("AssetPage.no_tran")}
-                  </Typography>
+                    <Image
+                      src={"/images/no-data-fc5efa8b.png"}
+                      width={90}
+                      height={90}
+                      alt=""
+                      style={{
+                        width: "100%",
+                        textAlign: "center",
+                        objectFit: "contain",
+                      }}
+                    />
+                    <Typography
+                      sx={{
+                        color: "#9ca3af",
+                        fontSize: "12px",
+                        fontWeight: 600,
+                        textAlign: "center",
+                      }}
+                    >
+                      {t("HistoryPage.title2")}
+                    </Typography>
+                  </Box>
                 )}
               </Box>
             )}
@@ -281,32 +324,32 @@ export default function HistoryContact() {
                                 textTransform: "capitalize",
                               }}
                             >
-                              {t("AssetPage.label")}
+                              {t("HistoryPage.title3")}
                             </Button>
                           </Box>
                           <Typography
                             sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
                           >
-                            {t("StakingPage.amount")}
+                            {t("HistoryPage.title4")}
                           </Typography>
                           {item.hyzd === 1 ? (
                             <Typography
                               sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
                             >
-                              {t("BuySellPage.price_buy")}
+                              {t("HistoryPage.price_buy")}
                             </Typography>
                           ) : (
                             <Typography
                               sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
                             >
-                              {t("BuySellPage.price_sell")}
+                              {t("HistoryPage.price_sell")}
                             </Typography>
                           )}
 
                           <Typography
                             sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
                           >
-                            {t("MiningPage.time")}
+                            {t("TradePage.title18")}
                           </Typography>
                         </Box>
 
@@ -333,8 +376,8 @@ export default function HistoryContact() {
                               }}
                             >
                               {item.is_win === 1
-                                ? t("BuySellPage.WIN")
-                                : t("BuySellPage.LOSS")}
+                                ? t("HistoryPage.WIN")
+                                : t("HistoryPage.LOSS")}
                             </Typography>
                             <Typography
                               sx={{
@@ -345,7 +388,9 @@ export default function HistoryContact() {
                                 pt: "10px",
                               }}
                             >
-                              {item.hyzd === 1 ? "Mua lên" : "Mua xuống"}
+                              {item.hyzd === 1
+                                ? t("HistoryPage.title6")
+                                : t("HistoryPage.title7")}
                             </Typography>
                           </Box>
                           <Typography
@@ -370,20 +415,81 @@ export default function HistoryContact() {
                     </Box>
                   ))
                 ) : (
-                  <Typography
+                  <Box
                     sx={{
-                      color: "#9ca3af",
-                      fontSize: "12px",
-                      fontWeight: 600,
+                      width: "100%",
                       textAlign: "center",
+                      margin: "auto",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "10px",
+                      justifyContent: "center",
+                      justifyItems: "center",
+                      pt: "50px",
                     }}
                   >
-                    {t("AssetPage.no_tran")}
-                  </Typography>
+                    <Image
+                      src={"/images/no-data-fc5efa8b.png"}
+                      width={90}
+                      height={90}
+                      alt=""
+                      style={{
+                        width: "100%",
+                        textAlign: "center",
+                        objectFit: "contain",
+                      }}
+                    />
+                    <Typography
+                      sx={{
+                        color: "#9ca3af",
+                        fontSize: "12px",
+                        fontWeight: 600,
+                        textAlign: "center",
+                      }}
+                    >
+                      {t("HistoryPage.title2")}
+                    </Typography>
+                  </Box>
                 )}
               </Box>
             )}
           </>
+        ) : (
+          <Box
+            sx={{
+              width: "100%",
+              textAlign: "center",
+              margin: "auto",
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+              justifyContent: "center",
+              justifyItems: "center",
+              pt: "50px",
+            }}
+          >
+            <Image
+              src={"/images/no-data-fc5efa8b.png"}
+              width={90}
+              height={90}
+              alt=""
+              style={{
+                width: "100%",
+                textAlign: "center",
+                objectFit: "contain",
+              }}
+            />
+            <Typography
+              sx={{
+                color: "#9ca3af",
+                fontSize: "12px",
+                fontWeight: 600,
+                textAlign: "center",
+              }}
+            >
+              {t("HistoryPage.title2")}
+            </Typography>
+          </Box>
         )}
       </Box>
     </Box>

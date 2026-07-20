@@ -140,7 +140,7 @@ export default function TradeForm({
           sx={{
             flex: 1,
             color: "#fff",
-            fontSize: 14,
+            fontSize: 16,
             "& input::placeholder": {
               color: "#888",
               opacity: 1,

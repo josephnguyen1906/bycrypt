@@ -45,6 +45,7 @@ export default function NavMobileBottom() {
         },
         margin: "auto",
         // pb: "5px",
+        zIndex: 10000,
       }}
     >
       <BottomNavigation
