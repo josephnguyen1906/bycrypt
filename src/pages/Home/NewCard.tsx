@@ -9,10 +9,26 @@ import ShareIcon from "@mui/icons-material/Share";
 import Image from "next/image";
 
 interface Props {
-  news: any;
+  news: {
+    id: number;
+    author: string;
+    avatar: string;
+    time: string;
+    title: string;
+    description: string;
+    image: string;
+    likes: number;
+    views: number;
+    coins: {
+      name: string;
+      value: string;
+    }[];
+    users: string[];
+  };
 }
 
 export default function NewsCard({ news }: Props) {
+  if (!news) return null;
   return (
     <Box
       sx={{
@@ -182,10 +198,10 @@ export default function NewsCard({ news }: Props) {
               alignItems: "center",
             }}
           >
-            {news.users.map((avatar: string, index: number) => (
+            {news?.users?.map((avatar: string, index: number) => (
               <Avatar
                 key={index}
-                src={avatar}
+                src={avatar || "A"}
                 sx={{
                   width: 28,
                   height: 28,
@@ -198,7 +214,7 @@ export default function NewsCard({ news }: Props) {
 
           {/* Coin */}
           <Stack direction="row" spacing={3}>
-            {news.coins.map((coin: any) => (
+            {news?.coins?.map((coin: any) => (
               <Typography
                 key={coin.name}
                 sx={{

@@ -88,7 +88,10 @@ export default function Tab1Page({ user }: { user: IUser | null }) {
         sx={{ display: "flex", justifyContent: "center", gap: "30px", mt: 2 }}
       >
         {MenuAccount.map((item) => (
-          <Box sx={{ display: "grid", justifyContent: "center", gap: "5px" }}>
+          <Box
+            key={item.id}
+            sx={{ display: "grid", justifyContent: "center", gap: "5px" }}
+          >
             <IconButton sx={{ width: 54, height: 54, background: "#1A1B24" }}>
               {item.icon}
             </IconButton>

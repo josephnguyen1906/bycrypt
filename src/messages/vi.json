@@ -90,5 +90,30 @@
     "menu2": "Điểm",
     "menu3": "Hợp đồng",
     "menu4": "Tài chính"
+  },
+  "TradePage": {
+    "title1": "Đi qua",
+    "title2": "Thị trường",
+    "title3": "Tổng cộng",
+    "title4": "Có sẵn",
+    "title5": "Chốt lời và Cắt lỗ",
+    "title6": "Mua",
+    "title7": "Bán",
+    "title8": "Khối lượng khả dụng",
+    "title9": "khả dụng",
+    "title10": "Ký quỹ",
+    "title11": "Phí dịch vụ",
+    "title12": "Đơn giá",
+    "title13": "Số",
+    "title14": "Vĩnh viễn",
+    "title15": "Hợp đồng thứ 2",
+    "title16": "Biểu đồ đường K",
+    "title17": "Đi qua",
+    "title18": "Thời gian",
+    "title19": "Tối thiểu",
+    "tab1": "Giữ vị thế",
+    "tab2": "Lệnh đang mở",
+    "noti1": "Bạn hiện không có vị thế nào",
+    "noti2": "Chưa có lệnh giao dịch nào"
   }
 }

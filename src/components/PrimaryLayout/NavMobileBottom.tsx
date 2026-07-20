@@ -106,7 +106,14 @@ export default function NavMobileBottom() {
         />
         <BottomNavigationAction
           label={t("NavMobile.menu3")}
-          icon={<TransferIcon width="20px" height="20px" />}
+          icon={
+            <TransferIcon
+              width="20px"
+              height="20px"
+              fill={path == "/trade/" ? "#00A609" : "#888888"}
+            />
+          }
+          onClick={() => router.push("/trade")}
         />
 
         <BottomNavigationAction

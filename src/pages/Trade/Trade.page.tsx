@@ -1,652 +1,227 @@
 "use client";
-import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import {
-  createOrder,
-  getBuySellConfig,
-  getContractjc,
-  getListCoin,
-  getOrderResult,
-  getProgressContract,
-} from "@/services/User.service";
-import { toast } from "react-toastify";
-import useAuth from "@/hook/useAuth";
+import React, { useEffect, useRef, useState } from "react";
+import Header from "./Header";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import OrderBook from "./OrderBook";
+import TradeForm from "./TradeForm";
+import BottomTabs from "./BottomTabs";
 import { useTranslation } from "react-i18next";
-import CoinSidebar from "@/components/coins/CoinSidebar";
-import CoinHeader from "@/components/coins/CoinHeader";
-import TradingChart from "@/components/coins/TradingChart";
-import TradeForm, { ITypeTrade } from "@/components/coins/TradeForm";
-import CommandOpen from "../Contact/CommandOpen";
-import { useUserStore } from "@/stores/useUserStore";
-import { IHistoryOpen } from "@/shared/interfaces";
-import TradePopup from "@/components/popup/TradePopup";
-import { NextIcon, PreviousIcon } from "@/shared/Svgs/Svg.component";
-import { useRouter } from "next/navigation";
-import { formatCurrency } from "@/utils/formatMoney";
-import { getTradeLockMessage, isTradeLocked } from "@/utils/tradeLock";
-
-export interface Icoin {
-  coinname: string;
-  id: number;
-  name: string;
-  sort: number;
-  status: number;
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import TradePanel from "./TradePanel";
+export interface IcoinType {
   symbol: string;
-  title: string;
+  priceChange: string;
+  priceChangePercent: string;
+  weightedAvgPrice: string;
+  prevClosePrice: string;
+  lastPrice: string;
+  lastQty: string;
+  bidPrice: string;
+  bidQty: string;
+  askPrice: string;
+  askQty: string;
+  openPrice: string;
+  highPrice: string;
+  lowPrice: string;
+  volume: string;
+  quoteVolume: string;
+  openTime: number;
+  closeTime: number;
+  firstId: number;
+  lastId: number;
+  count: number;
 }
-const TIMEFRAMES = [
-  {
-    label: "1m",
-    value: "1",
-    min: 10,
-    max: 100,
-    percent: 5,
-  },
-  {
-    label: "5m",
-    value: "5",
-    min: 30,
-    max: 300,
-    percent: 8,
-  },
-  {
-    label: "15m",
-    value: "15",
-    min: 50,
-    max: 500,
-    percent: 12,
-  },
-  {
-    label: "1h",
-    value: "60",
-    min: 100,
-    max: 1000,
-    percent: 18,
-  },
-  {
-    label: "4h",
-    value: "240",
-    min: 200,
-    max: 2000,
-    percent: 25,
-  },
-  {
-    label: "1d",
-    value: "D",
-    min: 500,
-    max: 5000,
-    percent: 40,
-  },
-  {
-    label: "1w",
-    value: "W",
-    min: 1000,
-    max: 10000,
-    percent: 60,
-  },
-];
+interface DepthItem {
+  price: number;
+  quantity: number;
+}
 
 export default function TradePage() {
   const { t } = useTranslation();
-  const { user, fetchUser } = useUserStore();
-  const [selectedCoin, setSelectedCoin] = useState<Icoin>({
-    id: 1,
-    coinname: "xau",
-    name: "XAUUSD",
-    symbol: "XAUUSD",
-    title: "XAU/USD",
-    sort: 1,
-    status: 1,
-  });
-
-  const [tab, setTab] = useState("BUY");
-  const [openTrade, setOpenTrade] = useState(false);
-  const [listCoin, setListCoin] = useState<Icoin[] | null>(null);
-  const [history, setHisstory] = useState<IHistoryOpen[]>([]);
-  const [result, setResult] = useState<any>(null);
-  const [progressContract, setProgressContract] = useState<any>(null);
-  const [trade, setTrade] = useState<any>(null);
-  const [showPopup, setShowPopup] = useState(false);
-  const [tradeYn, setTradeYn] = useState(false);
-  const [time, setTime] = useState("1");
-  const [timeValue, setTimeValue] = useState("1m");
-  const router = useRouter();
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const tradeIdRef = useRef<number | null>(null);
-  const submittingRef = useRef(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [amount, setAmount] = useState("");
+  const [tab, setTab] = useState(0);
+  const [percent, setPercent] = useState(0);
+  const [ticker, setTicker] = useState<any>();
+  const [coin, setCoin] = useState("btcusdt");
+  const ws = useRef<WebSocket | null>(null);
+  const [asks, setAsks] = useState<DepthItem[]>([]);
+  const [bids, setBids] = useState<DepthItem[]>([]);
+  const [lastPrice, setLastPrice] = useState(0);
+  const [priceColor, setPriceColor] = useState("#fff");
+  const lastPriceRef = useRef(0);
+  const WS_URL =
+    "wss://stream.binance.com:9443/stream?streams=btcusdt@depth20@100ms/btcusdt@ticker";
 
   useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
+    ws.current = new WebSocket(WS_URL);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const resCoin: any = await getListCoin();
+    ws.current.onmessage = (event) => {
+      const json = JSON.parse(event.data);
+      const { stream, data } = json;
 
-      if (resCoin.data) {
-        setListCoin(resCoin.data);
-        setSelectedCoin((prev) => {
-          const current = resCoin.data.find(
-            (coin: Icoin) =>
-              coin.symbol.toUpperCase() === prev.symbol.toUpperCase(),
-          );
-          return current ?? resCoin.data[0];
-        });
-      }
-    };
-    fetchData();
-    historyOpen();
-  }, []);
-
-  const historyOpen = async () => {
-    // try {
-    const his: any = await getContractjc();
-    if (his.status === true) {
-      setHisstory(his.data);
-      if (his?.data?.length > 0) {
-        setTradeYn(true);
-      }
-    }
-    // } catch (errors: any) {
-    //   console.log(errors?.message);
-    // }
-  };
-
-  const preloadImage = (src: string): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => resolve();
-      img.onerror = () => {
-        resolve(); // Tiếp tục thực thi thay vì reject
-      };
-    });
-  };
-
-  const handleSubmit = async (data: ITypeTrade, orderSymbol: string) => {
-    if (submittingRef.current) return;
-
-    if (!user) {
-      toast.error(t("BuySellPage.title"));
-      return;
-    }
-    if (user?.rzstatus !== 2) {
-      toast.error(t("Toast.buysell5"));
-      return;
-    }
-
-    if (isTradeLocked(user)) {
-      toast.error(getTradeLockMessage(user));
-      return;
-    }
-
-    if (!data.hytime || !data.price) {
-      toast.error(t("Toast.buysell1"));
-      return;
-    }
-
-    submittingRef.current = true;
-    setIsSubmitting(true);
-
-    try {
-      const formData = new FormData();
-
-      formData.append("ctime", data.hytime);
-      formData.append("amount", String(data.price));
-      formData.append("coinname", orderSymbol);
-      formData.append("method", data.method);
-      formData.append("uprate", data.hyykbl);
-
-      const res = (await createOrder(formData)) as unknown as {
-        status?: boolean;
-        message?: string;
-        data?: { id?: number };
-      };
-
-      console.log("CREATE ORDER:", res);
-
-      if (!res?.status) {
-        toast.error(res?.message || t("Toast.buysell4"));
-        return;
-      }
-
-      if (res.status) {
-        try {
-          tradeIdRef.current = res.data?.id ?? null;
-          setProgressContract(res.data);
-
-          await fetchUser();
-          historyOpen();
-          setTradeYn(true);
-          toast.success(t("Toast.buysell3"));
-        } catch (innerErr) {
-          console.log("INNER ERROR:", innerErr);
+      // Trade
+      if (stream === "btcusdt@ticker") {
+        setTicker(data);
+        const price = Number(data.c);
+        if (price > lastPriceRef.current) {
+          setPriceColor("#0ECB81");
+        } else if (price < lastPriceRef.current) {
+          setPriceColor("#F6465D");
         }
 
+        lastPriceRef.current = price;
+        setLastPrice(price);
+
         return;
       }
-    } catch (error: any) {
-      console.log("MAIN ERROR:", error);
-      toast.error(error?.message || t("Toast.buysell4"));
-    } finally {
-      submittingRef.current = false;
-      setIsSubmitting(false);
-    }
-  };
-  const fetchResult = async (id: number) => {
-    try {
-      const res = await getOrderResult(id);
 
-      setResult(res.data);
-      setTrade(null);
+      // Depth
+      if (
+        stream === "btcusdt@depth20@100ms" &&
+        Array.isArray(data.asks) &&
+        Array.isArray(data.bids)
+      ) {
+        const askData = data.asks
+          .slice(0, 11)
+          .map((x: string[]) => ({
+            price: Number(x[0]),
+            quantity: Number(x[1]),
+          }))
+          .sort(
+            (a: { price: number }, b: { price: number }) => b.price - a.price,
+          );
 
-      await fetchUser();
+        const bidData = data.bids
+          .slice(0, 11)
+          .map((x: string[]) => ({
+            price: Number(x[0]),
+            quantity: Number(x[1]),
+          }))
+          .sort(
+            (a: { price: number }, b: { price: number }) => b.price - a.price,
+          );
 
-      await preloadImage("/images/thongbao.png");
+        setAsks(askData);
+        setBids(bidData);
+      }
+    };
 
-      setShowPopup(true);
-
-      tradeIdRef.current = null;
-    } catch (error) {
-      console.log("FETCH RESULT ERROR:", error);
-      toast.error(t("Toast.buysell"));
-    }
-  };
-
-  useEffect(() => {
-    if (showPopup) {
-      const timeout = setTimeout(() => {
-        setShowPopup(false);
-        setResult(null);
-        historyOpen();
-        setTradeYn(false);
-        fetchUser();
-      }, 5000);
-
-      return () => clearTimeout(timeout);
-    }
-  }, [showPopup, fetchUser]);
+    return () => {
+      ws.current?.close();
+    };
+  }, []);
 
   return (
-    <Box sx={{ background: "#000", paddingTop: { xs: "0px", sm: "70px" } }}>
-      <Box
-        sx={{
-          pt: 1,
-        }}
-      >
-        <Box
-          sx={{
-            display: {
-              xs: "block",
-              sm: "none",
-            },
-          }}
-        >
-          <IconButton onClick={() => router.back()}>
-            <PreviousIcon width="20px" height="20px" />
-          </IconButton>
-        </Box>
-        <CoinHeader
-          coin={selectedCoin}
-          time={timeValue}
-          setMenuCoin={(symbol: string) => {
-            const data = listCoin?.find(
-              (i) => i.symbol.toUpperCase() === symbol.toUpperCase(),
-            );
-            if (data) setSelectedCoin(data);
-          }}
-        />
-        <Box
-          sx={{
-            display: {
-              xs: "block",
-              sm: "flex",
-            },
-            gap: "10px",
-          }}
-        >
-          <Box
+    <Box
+      sx={{
+        maxWidth: { xs: "100%", sm: "448px" },
+        margin: "auto",
+        minHeight: "100vh",
+        background: "#0E0F18",
+      }}
+    >
+      <Header
+        symbol={ticker?.s}
+        percent={Number(Number(ticker?.P || 0).toFixed(3))}
+      />
+      <Box sx={{ width: "95%", margin: "auto" }}>
+        <Stack direction="row" spacing={2} mb={1}>
+          <Button
+            fullWidth
             sx={{
-              width: "100%",
+              bgcolor: tab == 0 ? "#08D27A" : "transparent",
+              color: "#fff",
+              borderRadius: "8px",
+              height: 34,
+              fontSize: 12,
+              fontWeight: 700,
+              textTransform: "none",
+              "&:hover": {
+                bgcolor: "#08D27A",
+              },
             }}
+            onClick={() => setTab(0)}
           >
-            <Box
-              sx={{
-                width: "100%",
-                height: "100vh",
-                display: "grid",
-                gridTemplateColumns: {
-                  xs: "1fr",
-                  sm: "280px 1fr",
-                },
-                background: "#000",
-              }}
+            {t("TradePage.title14")}
+          </Button>
+
+          <Button
+            fullWidth
+            sx={{
+              bgcolor: tab == 1 ? "#08D27A" : "transparent",
+              color: "#fff",
+              borderRadius: "8px",
+              height: 34,
+              fontSize: 12,
+              fontWeight: 700,
+              textTransform: "none",
+            }}
+            onClick={() => setTab(1)}
+          >
+            {t("TradePage.title15")}
+          </Button>
+        </Stack>
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 5 }}>
+            <OrderBook
+              asks={asks}
+              bids={bids}
+              lastPrice={lastPrice}
+              priceColor={priceColor}
+              symbol={coin}
+            />
+          </Grid>
+
+          <Grid size={{ xs: 7 }}>
+            {tab == 0 ? (
+              <TradeForm
+                coin={lastPrice}
+                amount={amount}
+                setAmount={setAmount}
+                percent={percent}
+                setPercent={setPercent}
+              />
+            ) : (
+              <TradePanel />
+            )}
+          </Grid>
+        </Grid>
+        <Box
+          sx={{
+            width: "100%",
+            mt: 2,
+          }}
+        >
+          <BottomTabs />
+        </Box>
+        <Box
+          sx={{
+            width: "100%",
+            height: 52,
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            display: "flex",
+            justifyContent: "space-between",
+            background: "#0E0F18",
+            alignItems: "center",
+            px: 4,
+            cursor: "pointer",
+          }}
+        >
+          <Box display={"flex"} gap={1} height={52} alignItems={"center"}>
+            <Typography
+              sx={{ fontSize: 18, textTransform: "uppercase", color: "white" }}
             >
-              <Box sx={{ display: { xs: "none", sm: "block" } }}>
-                <CoinSidebar
-                  time={timeValue}
-                  coins={listCoin}
-                  selectedCoin={selectedCoin}
-                  onSelect={setSelectedCoin}
-                />
-              </Box>
-
-              {/* RIGHT */}
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  borderLeft: "1px solid #111",
-                  overflowY: "auto",
-                  background: "#0E1316",
-                }}
-              >
-                <Box sx={{ minHeight: { sm: "550px", xs: "400px" } }}>
-                  <Box
-                    sx={{
-                      px: 2,
-                      height: 42,
-                      display: "flex",
-                      alignItems: "center",
-
-                      borderTop: "1px solid rgba(255,255,255,0.08)",
-                      borderBottom: "1px solid rgba(255,255,255,0.08)",
-
-                      background: "#111",
-
-                      overflowX: "auto",
-
-                      "&::-webkit-scrollbar": {
-                        display: "none",
-                      },
-                    }}
-                  >
-                    <Stack
-                      direction="row"
-                      spacing={3}
-                      sx={{
-                        minWidth: "max-content",
-                      }}
-                    >
-                      {TIMEFRAMES.map((item) => {
-                        const active = time === item.value;
-
-                        return (
-                          <Box
-                            key={item.value}
-                            onClick={() => {
-                              setTime(item.value);
-                              setTimeValue(item.label);
-                            }}
-                            sx={{
-                              position: "relative",
-
-                              cursor: "pointer",
-
-                              fontSize: 13,
-                              fontWeight: active ? 700 : 500,
-
-                              color: active ? "#fff" : "rgba(255,255,255,0.55)",
-
-                              transition: "0.2s",
-
-                              userSelect: "none",
-
-                              "&:hover": {
-                                color: "#fff",
-                              },
-
-                              "&::after": active
-                                ? {
-                                    content: '""',
-                                    position: "absolute",
-                                    left: 0,
-                                    bottom: -10,
-                                    width: "100%",
-                                    height: "2px",
-                                    background: "#1976d2",
-                                    borderRadius: 999,
-                                  }
-                                : {},
-                            }}
-                          >
-                            {item.label}
-                          </Box>
-                        );
-                      })}
-                    </Stack>
-                  </Box>
-
-                  <TradingChart symbol={selectedCoin?.symbol} interval={time} />
-                </Box>
-                <Box
-                  sx={{
-                    display: {
-                      xs: "none",
-                      sm: "block",
-                    },
-                  }}
-                >
-                  <TradeForm
-                    onSubmit={handleSubmit}
-                    symbol={selectedCoin.symbol}
-                    user={user}
-                    tradeYn={tradeYn}
-                    isSubmitting={isSubmitting}
-                  />
-                </Box>
-                <Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      p: {
-                        xs: "20px 10px",
-                        sm: "20px 40px",
-                      },
-                      mt: {
-                        xs: "40px",
-                        sm: 0,
-                      },
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        borderBottom: "2px solid white",
-                        color: "white",
-                        fontSize: "14px",
-                        fontWeight: 600,
-                        p: 1,
-                      }}
-                    >
-                      {t("HistoryPage.tab1")} ({history.length})
-                    </Typography>
-                    <Button
-                      onClick={() => {
-                        if (user) router.push("/contact/history");
-                      }}
-                      sx={{
-                        display: "flex",
-                        gap: "5px",
-                        background: "#ffffff0d",
-                        color: "white",
-                        borderRadius: "8px",
-                        padding: "8px 20px",
-                        textTransform: "capitalize",
-                      }}
-                    >
-                      <img
-                        src={"/images/history-icon.png"}
-                        width={20}
-                        height={20}
-                        alt=""
-                      />
-                      {t("BuySellPage.history")}
-                    </Button>
-                  </Box>
-
-                  <CommandOpen
-                    user={user}
-                    history={history}
-                    onCLose={(e) => {
-                      fetchResult(e);
-                    }}
-                  />
-                </Box>
-                <Box
-                  sx={{
-                    width: "100%",
-                    position: "fixed",
-                    bottom: 0,
-                    left: 0,
-                    background: "#0E1316",
-                    p: 2,
-                    display: {
-                      xs: "block",
-                      sm: "none",
-                    },
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-around",
-                      mt: 2,
-                    }}
-                  >
-                    <Button
-                      disabled={!user}
-                      sx={{
-                        width: "48%",
-                        height: "40px",
-                        background: "#2dd4bf",
-                        textTransform: "none",
-                        color: "black",
-                        "&:hover": { background: "#2dd4bf" },
-                        "&:disabled": {
-                          background: "gray",
-                        },
-                      }}
-                      onClick={() => {
-                        setOpenTrade(true);
-                        setTab("BUY");
-                      }}
-                    >
-                      {t("BuySellPage.buy")}
-                    </Button>
-                    <Button
-                      disabled={!user}
-                      sx={{
-                        width: "48%",
-                        height: "40px",
-                        background: "#ef4444",
-                        textTransform: "none",
-                        color: "white",
-                        "&:hover": { background: "#ef4444" },
-                        "&:disabled": {
-                          background: "gray",
-                        },
-                      }}
-                      onClick={() => {
-                        setOpenTrade(true);
-                        setTab("SELL");
-                      }}
-                    >
-                      {t("BuySellPage.sell")}
-                    </Button>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
+              {coin.replace("usdt", "/usdt")}
+            </Typography>
+            <Typography sx={{ fontSize: 18, color: "white" }}>
+              {t("TradePage.title16")}
+            </Typography>
           </Box>
+          <KeyboardArrowUpIcon sx={{ color: "white", fontSize: 25 }} />
         </Box>
       </Box>
-      {showPopup && (
-        <Box
-          sx={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            background: "rgba(53, 53, 53, 0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 1000,
-          }}
-        >
-          <Box
-            sx={{
-              position: "relative",
-              width: "90%",
-              maxWidth: "300px",
-              borderRadius: "10px",
-              marginTop: "-20%",
-            }}
-          >
-            {/* Ảnh nền */}
-            <Box
-              component="img"
-              src="/images/thongbao.png"
-              alt="Thông báo"
-              onLoad={() => setImageLoaded(true)}
-              sx={{
-                width: "100%",
-                height: "auto",
-                display: "block",
-                borderRadius: "10px",
-              }}
-            />
-            {imageLoaded && (
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  textAlign: "center",
-                  width: "100%",
-                  px: 2,
-                }}
-              >
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontSize: "35px",
-                    fontWeight: "bold",
-                    color: result?.is_win === 1 ? "#00c853" : "red",
-                  }}
-                >
-                  {result?.is_win === 1 ? "+" : "-"}
-                  {result
-                    ? formatCurrency(Number(result?.ploss), "en", "USD")
-                    : 0}
-                </Typography>
-              </Box>
-            )}
-          </Box>
-        </Box>
-      )}
-      {user && (
-        <TradePopup
-          open={openTrade}
-          user={user}
-          tab={tab}
-          history={history}
-          onLoadHitory={() => {
-            historyOpen();
-          }}
-          onClose={() => {
-            setOpenTrade(false);
-            fetchUser();
-            historyOpen();
-          }}
-          symbol={selectedCoin.symbol}
-        />
-      )}
     </Box>
   );
 }
