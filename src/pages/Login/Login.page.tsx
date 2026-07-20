@@ -64,7 +64,6 @@ export default function LoginPage() {
       await loginUser(formData)
         .then((res: any) => {
           if (res?.status === true) {
-            toast.success(t("Toast.login1"));
             window.localStorage.setItem("token", res.token);
             window.location.href = "/";
           } else {

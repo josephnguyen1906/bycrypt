@@ -134,9 +134,12 @@ export interface IOrepool {
 
 export interface IOrepoolIterm {
   id: number;
+  kjtitle: string;
   title: string;
   allnum: number;
   sellnum: number;
+  synum: number;
+  outnum: number;
   pricecoin: string;
   cycle: number;
   suanl: number;

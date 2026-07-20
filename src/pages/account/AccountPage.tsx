@@ -10,6 +10,9 @@ import { useTranslation } from "react-i18next";
 import MenuIcon from "@mui/icons-material/Menu";
 import { CustomTabPanel } from "../DepositWithdraw/DepositWithdraw.page";
 import Tab1Page from "./tabs/Tab1Page";
+import Tab2Page from "./tabs/Tab2Page";
+import Tab3Page from "./tabs/Tab3Page";
+import Tab4Page from "./tabs/Tab4Page";
 
 function a11yProps(index: number) {
   return {
@@ -22,8 +25,8 @@ export default function AccountPage() {
   const router = useRouter();
   const { user, fetchUser, loading } = useUserStore();
   const [load, setLoad] = useState(true);
+  const [value, setValue] = useState(0);
 
-  const [value, setValue] = useState(1);
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
@@ -110,14 +113,23 @@ export default function AccountPage() {
             },
           }}
         >
-          <Tab label={t("AccountPage.menu1")} {...a11yProps(1)} />
-          <Tab label={t("AccountPage.menu2")} {...a11yProps(2)} />
-          <Tab label={t("AccountPage.menu3")} {...a11yProps(3)} />
-          <Tab label={t("AccountPage.menu4")} {...a11yProps(4)} />
+          <Tab label={t("AccountPage.menu1")} {...a11yProps(0)} />
+          <Tab label={t("AccountPage.menu2")} {...a11yProps(1)} />
+          <Tab label={t("AccountPage.menu3")} {...a11yProps(2)} />
+          <Tab label={t("AccountPage.menu4")} {...a11yProps(3)} />
         </Tabs>
       </Box>
-      <CustomTabPanel value={value} index={1}>
+      <CustomTabPanel value={value} index={0}>
         <Tab1Page user={user} />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+        <Tab2Page user={user} />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+        <Tab3Page user={user} />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={3}>
+        <Tab4Page user={user} />
       </CustomTabPanel>
     </Box>
   );
