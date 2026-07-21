@@ -94,6 +94,8 @@ export default function Tab1Page({ user }: { user: IUser | null }) {
             key={item.id}
             sx={{ display: "grid", justifyContent: "center", gap: "5px" }}
             onClick={() => {
+              if (!item.link) return;
+
               router.push(item.link);
             }}
           >
