@@ -32,6 +32,25 @@
     "menu4": "Thông tin",
     "menu5": "Tài sản"
   },
+  "Menu": {
+    "home": "Trang chủ",
+    "deposit": "Tiền cọc",
+    "trading": "Giao dịch",
+    "tradingOption": "Lựa chọn",
+    "tradingPoint": "Điểm",
+    "tradingContract": "Hợp đồng",
+    "financialManagement": "Quản lý tài chính",
+    "finance": "Tài chính",
+    "history": "Lịch sử",
+    "assets": "Tài sản",
+    "fundPassword": "Mật khẩu quỹ",
+    "security": "An toàn",
+    "verification": "Xác thực",
+    "referral": "Chương trình giới thiệu",
+    "support": "Trung tâm trợ giúp",
+    "language": "Ngôn ngữ",
+    "logout": "Đăng xuất"
+  },
   "HomePage": {
     "title1": "Máy đào",
     "title2": "Thị trường",
@@ -271,7 +290,109 @@
     "title13": "Tổng số lượt giới thiệu",
     "title14": "Tổng số tiền nạp",
     "title15": "Không có dữ liệu",
+    "title17": "Cách tiếp cận lấy người dùng làm trung tâm",
+    "title18": "Các sản phẩm mang tính đổi mới cùng trải nghiệm người dùng được tinh chỉnh hoàn thiện hơn. Đồng thời, sản phẩm sở hữu hiệu năng ổn định, đáng tin cậy và đi kèm dịch vụ hỗ trợ người dùng toàn cầu hoạt động 24/7.",
+    "title19": "Hệ thống kết nối hàng đầu trong ngành",
+    "title20": "Một công cụ khớp lệnh ổn định và hiệu quả, có khả năng xử lý tới 100.000 lệnh mỗi giây với độ trễ tối thiểu chỉ 5 mili giây.",
     "button1": " Quảng bá ngay bây giờ",
-    "button": "Sao chép mã"
+    "button": "Sao chép mã",
+    "follow": "Theo dõi",
+    "followed": "Đang theo dõi"
+  },
+  "loan": {
+    "title": "Vay hỗ trợ",
+    "rule": "Quy tắc vay",
+    "warning": "Sau khi được duyệt bởi nền tảng, bạn có thể xin vay từ nền tảng!",
+    "info": {
+      "expectedAmount": "Số tiền vay mong đợi",
+      "paymentCycle": "Chu kỳ thanh toán",
+      "dailyInterestRate": "Lãi suất hàng ngày",
+      "paymentMethod": "Phương thức thanh toán",
+      "paymentMethodValue": "Thanh toán một lần khi đến hạn",
+      "interest": "Tiền lãi",
+      "lender": "Cơ quan cho vay"
+    },
+    "upload": {
+      "title": "Khoản vay theo hình thức tín dụng",
+      "description": "(Vui lòng đảm bảo hình ảnh rõ ràng)",
+      "idImage": "Ảnh ID cầm tay",
+      "documentAlt": "Giấy tờ vay",
+      "selectImage": "Chọn hình ảnh"
+    },
+    "form": {
+      "confirm": "Xác nhận",
+      "processing": "Đang xử lý..."
+    },
+    "values": {
+      "paymentCycle": "7 ngày",
+      "dailyInterestRate": "0.04%",
+      "interest": "0.0028",
+      "lender": "ICICI BANK"
+    },
+    "history": {
+      "title": "Lịch sử vay",
+      "tabs": {
+        "all": "Tất cả",
+        "pending": "Đang được phê duyệt",
+        "failed": "Thất bại trong phê duyệt"
+      },
+      "amount": "Số tiền vay",
+      "note": "Ghi chú:",
+      "pending": "Đang được phê duyệt",
+      "detail": "Chi tiết"
+    }
+  },
+  "LoanRulesPage": {
+    "title": "Quy tắc vay",
+    "rules": {
+      "rule1": {
+        "title": "1. Vay Bybit là gì?",
+        "content": "Vay Bybit là một dịch vụ tài chính được cung cấp phối hợp với một công ty cho vay bên thứ ba, cung cấp khoản vay để đáp ứng nhu cầu vốn thanh toán ngắn hạn."
+      },
+      "rule2": {
+        "title": "2. Làm thế nào để nhận được vay? Yêu cầu gì cần đáp ứng?",
+        "content": "Quy trình vay càng đơn giản càng tốt. Bạn chỉ cần một tài khoản Bybit. Hãy đảm bảo bạn có đủ tài sản thế chấp trong tài khoản Bybit của bạn để đăng ký vay, đồng ý các điều khoản và sau đó liên hệ với dịch vụ khách hàng để xác nhận."
+      },
+      "rule3": {
+        "title": "3. Các sản phẩm nào có thể giao dịch bằng tài sản đã vay trên Bybit?",
+        "content": "Các token đã vay có thể được sử dụng cho bất kỳ giao dịch nào trên Bybit (giao dịch đòn bẩy, giao dịch hợp đồng, khai thác Staking)."
+      },
+      "rule4": {
+        "title": "4. Có thể rút tài sản đã vay được không?",
+        "content": "Có, bạn có thể rút các tài sản đã vay. Tuy nhiên, lưu ý rằng khoản trả nợ của bạn sẽ không được khấu trừ trực tiếp từ tài khoản Bybit của bạn. Bạn phải hoàn tất thanh toán trước khi có thể sử dụng chức năng rút tiền."
+      },
+      "rule5": {
+        "title": "5. Vay được cấp dưới hình thức nào?",
+        "content": "Vay có thể được cấp trong các loại tiền điện tử phổ biến như USDT, BTC, ETH, v.v., và sẽ được gửi vào tổng tài sản của bạn trong vòng 24 giờ sau khi hoàn tất việc duyệt vay."
+      },
+      "rule6": {
+        "title": "6. Thời hạn vay tối thiểu là bao lâu?",
+        "content": "Hiện tại, khoản vay có thời hạn 7 ngày, 14 ngày, 30 ngày và 60 ngày, và người dùng có thể trả lại các token đã vay bất kỳ lúc nào. Nếu có bất kỳ thắc mắc nào, vui lòng liên hệ dịch vụ khách hàng để được tư vấn chi tiết."
+      },
+      "rule7": {
+        "title": "7. Tôi có thể trả lại khoản vay bằng một loại tiền tệ khác với tiền tệ của khoản vay không?",
+        "content": "Có, bạn có thể trả lại khoản vay bằng một số lượng tương đương của BTC, ETH hoặc USDT."
+      },
+      "rule8": {
+        "title": "8. Lãi suất vay được tính như thế nào?",
+        "content": "Lãi suất được tính dựa trên thời gian vay thực tế (ít hơn một tháng được tính là một tháng), với lãi suất hàng tháng là 0,01. (Ví dụ, nếu bạn vay $100,000, lãi suất trả hàng tháng là $1000).\n\nBa ngày cuối cùng của mỗi tháng là ngày cuối cùng để trả nợ, nhưng bạn cũng có thể hoàn tất việc thanh toán trước. Nếu ba ngày cuối cùng của tháng trùng vào thứ Bảy, Chủ Nhật hoặc ngày nghỉ, ngày trả nợ sẽ được dời lùi 1-3 ngày."
+      },
+      "rule9": {
+        "title": "9. Có thể thanh toán trước toàn bộ hoặc một phần của khoản vay không?",
+        "content": "Bạn có thể thanh toán trước khoản vay. Bạn có thể liên hệ với dịch vụ khách hàng để yêu cầu thanh toán trước và hoàn tất giao dịch này.\n\nNếu thanh toán trước và vượt quá $3000 (hoặc $3500 hoặc €3500), tổng số tiền phải trả (bao gồm phí) không được vượt quá số tiền bạn phải trả vào cuối kỳ hạn gốc. Điều này có nghĩa là trong trường hợp thanh toán trước, bạn phải trả cùng một số tiền."
+      },
+      "rule10": {
+        "title": "10. Làm cách nào để thanh toán số tiền vốn và lãi?",
+        "content": "Vui lòng liên hệ với nhân viên dịch vụ khách hàng, họ sẽ cung cấp cho bạn một tài khoản thanh toán riêng."
+      },
+      "rule11": {
+        "title": "11. Sau khi hết hạn, khoản vay có được thanh toán tự động không?",
+        "content": "Hiện tại chưa hỗ trợ thanh toán tự động."
+      },
+      "rule12": {
+        "title": "12. Nếu tôi không thanh toán đúng hạn, điều gì sẽ xảy ra?",
+        "content": "Để tránh bỏ lỡ ngày thanh toán, dịch vụ khách hàng của chúng tôi sẽ thông báo cho bạn nhiều lần trước ngày thanh toán. Nếu bạn bỏ lỡ ngày thanh toán, khoản vay của bạn sẽ được gia hạn tự động thêm 7 ngày. Trong trường hợp này, bạn sẽ bị tính phí lãi suất quá hạn bổ sung là 0,025 của số tiền vay."
+      }
+    }
   }
 }

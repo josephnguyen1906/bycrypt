@@ -5,8 +5,6 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { getContractjc, getContractpc } from "@/services/User.service";
-import CommandOpen from "../Contact/CommandOpen";
-import CommandClose from "../Contact/CommandClose";
 import { useUserStore } from "@/stores/useUserStore";
 import { IHistoryClose, IHistoryOpen } from "@/shared/interfaces";
 import Image from "next/image";

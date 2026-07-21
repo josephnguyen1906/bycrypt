@@ -1,4 +1,4 @@
-import WithdrawPage from "@/pages/withdraw/WithdrawPage";
+import WithdrawPage from "@/pages/DepositWithdraw/WithdrawPage";
 import React from "react";
 
 export default function page() {

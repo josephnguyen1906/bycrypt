@@ -35,6 +35,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface AccountDrawerProps {
   open: boolean;
@@ -46,104 +47,98 @@ export default function AccountDrawer({ open, onClose }: AccountDrawerProps) {
   const router = useRouter();
   const [openFinance, setOpenFinance] = useState(false);
   const { user, fetchUser } = useUserStore();
-
+  const { t } = useTranslation();
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
   const menuItems = [
     {
       id: 1,
-      name: "Trang chủ",
+      name: "Menu.home",
       icon: <Home />,
       link: "/",
     },
     {
       id: 2,
-      name: "Tiền cọc",
+      name: "Menu.deposit",
       icon: <AccountBalanceWallet />,
       link: "/deposit",
     },
     {
       id: 3,
-      name: "Giao dịch",
+      name: "Menu.trading",
       icon: <PieChart />,
       hasChildren: true,
       children: [
         {
-          name: "Option",
-          link: "/buy",
+          name: "Menu.tradingOption",
+          link: "/futures",
         },
         {
-          name: "Điểm",
-          link: "/sell",
+          name: "Menu.tradingPoint",
+          link: "/futures",
         },
         {
-          name: "Hợp đồng",
-          link: "/convert",
+          name: "Menu.tradingContract",
+          link: "/futures",
         },
       ],
     },
     {
       id: 4,
-      name: "Financial Management",
+      name: "Menu.financialManagement",
       icon: <SwapHoriz />,
       hasChildren: true,
       children: [
         {
-          name: "Tài chính",
-          link: "/finance",
+          name: "Menu.finance",
+          link: "/loan",
         },
         {
-          name: "Lịch sử",
-          link: "/finance/history",
+          name: "Menu.history",
+          link: "/loan/history",
         },
       ],
     },
     {
       id: 5,
-      name: "Tài sản",
+      name: "Menu.assets",
       icon: <Inventory2 />,
       link: "/account",
     },
     {
       id: 6,
-      name: "Mật khẩu quỹ",
+      name: "Menu.fundPassword",
       icon: <Lock />,
       link: "/change-tran-pass/",
     },
-    // {
-    //   id: 7,
-    //   name: "Thêm một Phương thức thanh toán",
-    //   icon: <AddCard />,
-    //   link: "/payment-method",
-    // },
     {
       id: 8,
-      name: "An toàn",
+      name: "Menu.security",
       icon: <Shield />,
       link: "/change-login-pass",
     },
     {
       id: 9,
-      name: "Xác thực",
+      name: "Menu.verification",
       icon: <Security />,
       link: "/verified",
     },
     {
       id: 10,
-      name: "Chương trình giới thiệu",
+      name: "Menu.referral",
       icon: <Share />,
       link: "/referral",
     },
     {
       id: 11,
-      name: "Trung tâm trợ giúp",
+      name: "Menu.support",
       icon: <Info />,
       link: "/support",
     },
     {
       id: 12,
-      name: "Ngôn ngữ",
+      name: "Menu.language",
       icon: <Language />,
       link: "/language",
     },
@@ -296,7 +291,7 @@ export default function AccountDrawer({ open, onClose }: AccountDrawerProps) {
 
         {/* Status */}
 
-        <Box
+        {/* <Box
           sx={{
             display: "inline-flex",
             mt: 2,
@@ -314,7 +309,7 @@ export default function AccountDrawer({ open, onClose }: AccountDrawerProps) {
           >
             Chưa được chứng nhận
           </Typography>
-        </Box>
+        </Box> */}
       </Box>
 
       {/* ================= MENU ================= */}
@@ -326,9 +321,9 @@ export default function AccountDrawer({ open, onClose }: AccountDrawerProps) {
         }}
       >
         {menuItems.map((item) => {
-          const isTransaction = item.name === "Giao dịch";
+          const isTransaction = item.id === 3;
 
-          const isFinance = item.name === "Financial Management";
+          const isFinance = item.id === 4;
 
           const isOpen = isTransaction
             ? openTransaction
@@ -375,7 +370,7 @@ export default function AccountDrawer({ open, onClose }: AccountDrawerProps) {
                 </ListItemIcon>
 
                 <ListItemText
-                  primary={item.name}
+                  primary={t(item.name)}
                   primaryTypographyProps={{
                     fontSize: 17,
                     fontWeight: 400,
@@ -410,7 +405,7 @@ export default function AccountDrawer({ open, onClose }: AccountDrawerProps) {
                         }}
                       >
                         <ListItemText
-                          primary={child.name}
+                          primary={t(child.name)}
                           primaryTypographyProps={{
                             fontSize: 15,
                           }}
@@ -429,12 +424,12 @@ export default function AccountDrawer({ open, onClose }: AccountDrawerProps) {
         <ListItemButton
           onClick={() => {
             onClose();
-
-            // xử lý logout
+            window.localStorage.removeItem("token");
+            window.location.href = "/";
           }}
           sx={{
             minHeight: 40,
-            px: 1,
+            px: 2,
             color: "#fff",
             borderRadius: "10px",
 
@@ -445,7 +440,7 @@ export default function AccountDrawer({ open, onClose }: AccountDrawerProps) {
         >
           <ListItemIcon
             sx={{
-              minWidth: 68,
+              minWidth: 40,
               color: "#fff",
             }}
           >
@@ -453,7 +448,7 @@ export default function AccountDrawer({ open, onClose }: AccountDrawerProps) {
           </ListItemIcon>
 
           <ListItemText
-            primary="Log out"
+            primary={t("Menu.logout")}
             primaryTypographyProps={{
               fontSize: 18,
             }}

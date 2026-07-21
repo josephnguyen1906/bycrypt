@@ -5,11 +5,13 @@ import { useEffect, useRef } from "react";
 interface SparklineCanvasProps {
   data: number[];
   positive: boolean;
+  width?: number;
 }
 
 export default function SparklineCanvas({
   data,
   positive,
+  width,
 }: SparklineCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -101,7 +103,7 @@ export default function SparklineCanvas({
     <canvas
       ref={canvasRef}
       style={{
-        width: 120,
+        width: width ? width : 120,
         height: 55,
         display: "block",
       }}
