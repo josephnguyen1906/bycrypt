@@ -14,6 +14,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useState } from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useTranslation } from "react-i18next";
+import LeverageDrawer from "./LeverageDrawer";
 const marks = [
   { value: 0, label: "0%" },
   { value: 25, label: "25%" },
@@ -36,7 +37,8 @@ export default function TradeForm({
   setPercent: (e: number) => void;
 }) {
   const { t } = useTranslation();
-
+  const [open, setOpen] = useState(false);
+  const [leverage, setLeverage] = useState(1);
   return (
     <Box
       sx={{
@@ -65,6 +67,8 @@ export default function TradeForm({
             width="100%"
             alignItems="center"
             gap={1}
+            onClick={() => setOpen(true)}
+            sx={{ cursor: "pointer" }}
           >
             <Typography color="#fff" fontSize={12} fontWeight={700}>
               1x
@@ -380,6 +384,14 @@ export default function TradeForm({
           </Typography>
         </Stack>
       </Stack>
+
+      <LeverageDrawer
+        open={open}
+        onClose={() => setOpen(false)}
+        leverage={leverage}
+        onChange={setLeverage}
+        available={0}
+      />
     </Box>
   );
 }

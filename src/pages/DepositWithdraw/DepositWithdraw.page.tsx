@@ -139,7 +139,10 @@ export default function DepositWithdrawPage() {
             {t("DepositWithdrawPage.title8")}
           </Typography>
 
-          <IconButton sx={{ color: "#fff" }}>
+          <IconButton
+            sx={{ color: "#fff" }}
+            onClick={() => router.push("/deposit/history")}
+          >
             <DescriptionOutlined />
           </IconButton>
         </Box>

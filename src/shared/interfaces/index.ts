@@ -251,6 +251,7 @@ export interface IWithdrawHistory {
   sort: number;
   addtime: Date;
   endtime: Date;
+  st: number;
   status: number;
   to_user: number;
   admin_view: number;
