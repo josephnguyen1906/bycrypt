@@ -438,6 +438,7 @@
         "title2": "Persentase Keuntungan",
         "title3": "Keuntungan",
         "Opening": "Waktu Pembukaan",
-        "Close": "Waktu Penutupan"
+        "Close": "Waktu Penutupan",
+        "type": "jenis"
     }
 }

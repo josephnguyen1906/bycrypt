@@ -438,6 +438,7 @@
     "title2": "Phần trăm lợi nhuận",
     "title3": "Lợi nhuận",
     "Opening": "Thời gian mở",
-    "Close": "Thời gian đóng"
+    "Close": "Thời gian đóng",
+    "type": "Loại"
   }
 }

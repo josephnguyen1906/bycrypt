@@ -437,7 +437,8 @@
       "title2": "Profit percentage",
       "title3": "Profit",
       "Opening": "Opening time",
-      "Close": "Closing time"
+      "Close": "Closing time",
+      "type": "Type"
     }
   }
 }

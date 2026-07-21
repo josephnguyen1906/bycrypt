@@ -438,6 +438,7 @@
         "title2": "Percentuale di profitto",
         "title3": "Profitto",
         "Opening": "Orario di apertura",
-        "Close": "Orario di chiusura"
+        "Close": "Orario di chiusura",
+        "type": "tipo"
     }
 }

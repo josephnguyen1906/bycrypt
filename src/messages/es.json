@@ -438,6 +438,7 @@
         "title2": "Porcentaje de beneficio",
         "title3": "Beneficio",
         "Opening": "Hora de apertura",
-        "Close": "Hora de cierre"
+        "Close": "Hora de cierre",
+        "type": "tipo"
     }
 }

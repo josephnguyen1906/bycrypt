@@ -185,7 +185,7 @@ export default function OrderConfirmModal({
 
             {/* Info */}
             <InfoRow
-              label={t("ProfilePage.tran_type")}
+              label={t("Toast.type")}
               value={
                 type === "1" ? t("TradePage.title6") : t("TradePage.title7")
               }
@@ -230,7 +230,7 @@ export default function OrderConfirmModal({
             </Typography>
 
             <InfoRow
-              label={t("ProfilePage.tran_type")}
+              label={t("Toast.type")}
               value={
                 type === "1" ? t("TradePage.title6") : t("TradePage.title7")
               }

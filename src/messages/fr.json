@@ -438,6 +438,7 @@
         "title2": "Pourcentage de profit",
         "title3": "Profit",
         "Opening": "Heure d'ouverture",
-        "Close": "Heure de clôture"
+        "Close": "Heure de clôture",
+        "type": "taper"
     }
 }
