@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { IHistoryOpen } from "@/shared/interfaces";
 import { useRouter } from "next/navigation";
+import { timeAgo } from "../historyContact/HistoryContact";
 
 export default function BottomTabs({
   orderOpen,
@@ -17,6 +18,7 @@ export default function BottomTabs({
   const [historyId, setHisstoryId] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState<{ [key: number]: number }>({});
   const router = useRouter();
+
   useEffect(() => {
     if (!orderOpen) return;
 
@@ -116,8 +118,8 @@ export default function BottomTabs({
       </Box>
       <Box
         sx={{
-          minHeight: 180,
-          p: 2,
+          pb: "100px",
+          pt: 3,
         }}
       >
         {tab === 0 && (
@@ -214,9 +216,147 @@ export default function BottomTabs({
                 justifyContent: "center",
                 alignItems: "center",
                 borderRadius: 2,
+                width: "100%",
+                pt: 2,
               }}
             >
-              <Typography color="#666">{t("TradePage.noti2")}</Typography>
+              {orderOpen && orderOpen.length > 0 ? (
+                orderOpen.map((item: IHistoryOpen, index: number) => (
+                  <Box
+                    key={index}
+                    sx={{
+                      width: "100%",
+                      background: "#1c2735",
+                      borderRadius: "14px",
+                      padding: "16px 18px",
+                      marginBottom: "12px",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "flex-start",
+                      }}
+                    >
+                      {/* LEFT */}
+                      <Box>
+                        <Box sx={{ display: "flex", gap: "10px" }}>
+                          <Typography
+                            sx={{
+                              color: "#fff",
+                              fontSize: "14px",
+                              fontWeight: 500,
+                              marginBottom: "6px",
+                            }}
+                          >
+                            {item.coinname?.replace("-", "/")}
+                          </Typography>
+                          <Button
+                            sx={{
+                              color: "#d1d5db",
+                              background: "#374151",
+                              fontWeight: 400,
+                              height: "25px",
+                              fontSize: "10px",
+                              textTransform: "capitalize",
+                            }}
+                          >
+                            {t("HistoryPage.title3")}
+                          </Button>
+                        </Box>
+                        <Typography
+                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
+                        >
+                          {t("HistoryPage.title4")}
+                        </Typography>
+
+                        <Typography
+                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
+                        >
+                          {t("HistoryPage.price_buy")}
+                        </Typography>
+
+                        <Typography
+                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
+                        >
+                          {t("TradePage.title18")}
+                        </Typography>
+                      </Box>
+
+                      {/* RIGHT */}
+                      <Box sx={{ textAlign: "right" }}>
+                        <Typography
+                          sx={{
+                            color: item.hyzd === 1 ? "#4ade80" : "#ef4444",
+                            fontWeight: 500,
+                            fontSize: 13,
+                            marginBottom: "6px",
+                          }}
+                        >
+                          {item.hyzd === 1
+                            ? t("TradePage.title6")
+                            : t("TradePage.title7")}
+                        </Typography>
+                        <Typography
+                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
+                        >
+                          {Number(item.num).toLocaleString()} USDT
+                        </Typography>
+
+                        <Typography
+                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
+                        >
+                          {Number(item.buyprice).toLocaleString()}
+                        </Typography>
+
+                        <Typography
+                          sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
+                        >
+                          {timeLeft[item.id] || 0}s
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+                ))
+              ) : (
+                <Box
+                  sx={{
+                    width: "100%",
+                    textAlign: "center",
+                    margin: "auto",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                    justifyContent: "center",
+                    justifyItems: "center",
+                    pt: "50px",
+                  }}
+                >
+                  <Image
+                    src={"/images/no-data-fc5efa8b.png"}
+                    width={90}
+                    height={90}
+                    alt=""
+                    style={{
+                      width: "100%",
+                      textAlign: "center",
+                      objectFit: "contain",
+                    }}
+                  />
+                  <Typography
+                    sx={{
+                      color: "#9ca3af",
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      textAlign: "center",
+                    }}
+                  >
+                    {t("HistoryPage.title2")}
+                  </Typography>
+                </Box>
+              )}
             </Box>
           </Stack>
         )}

@@ -94,6 +94,7 @@ export default function TradePanel({
           setOderOpen(his.data[0]);
         }
         setOpenConfirm(true);
+        onSuccess(his.data[0]);
       }
       toast.success(t("Toast.buysell3"));
     } catch (error: any) {

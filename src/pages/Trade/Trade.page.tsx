@@ -153,7 +153,7 @@ export default function TradePage() {
       if (his.data?.length > 0) {
         setOderOpen(his.data);
       }
-      setOrderData(res.data);
+      setOrderData(his.data);
       setOpenConfirm(true);
     }
   };
