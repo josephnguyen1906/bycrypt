@@ -28,7 +28,7 @@ export default function TradePanel({
   user: IUser | null;
   onSuccess: (a: any) => void;
 }) {
-  const [openConfirm, setOpenConfirm] = useState(true);
+  const [openConfirm, setOpenConfirm] = useState(false);
   const [tab, setTab] = useState("1");
   const [amount, setAmount] = useState("");
   const [type, setType] = useState<any>(null);
