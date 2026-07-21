@@ -50,7 +50,7 @@ export default function FuturesPage() {
           sx={{
             position: "relative",
             width: "100%",
-            height: "197px",
+            height: "160px",
             borderRadius: "10px",
           }}
         >
