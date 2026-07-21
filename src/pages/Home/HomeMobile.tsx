@@ -35,6 +35,7 @@ import CoinTicker from "@/components/CoinTicker/CoinTicker";
 import { COINS, MONEYCOIN, news } from "@/datafake/home";
 import NewsCard from "./NewCard";
 import HeaderMobile from "@/components/PrimaryLayout/HeaderMobile";
+import AccountDrawer from "@/components/subMenu/AccountDrawer";
 
 export default function HomeMobile({
   user,
@@ -741,7 +742,6 @@ export default function HomeMobile({
           </Box>
         </Box>
       </Box>
-
       <Dialog
         open={isLangMenuOpen}
         onClose={handleLangMenuClose}

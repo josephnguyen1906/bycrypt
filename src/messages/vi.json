@@ -185,6 +185,93 @@
     "title32": "Yêu cầu đã được gửi",
     "BANK": "Ngân hàng",
     "label1": "Đòn bẩy",
-    "label2": " Khối lượng khả dụng"
+    "label2": " Khối lượng khả dụng",
+    "label3": "vào địa chỉ tiền kỹ thuật số",
+    "label4": "Chọn tiền tệ",
+    "label5": "Mạng Blockchain",
+    "label6": "Địa chỉ",
+    "label7": "Nhập địa chỉ",
+    "label8": "Vui lòng nhập số tiền rút",
+    "label9": "Tất cả",
+    "label10": "Mật khẩu thanh toán",
+    "label11": "Nhập mật khẩu thanh toán",
+    "label12": "Số lượng hiện có",
+    "label13": "Phí rút tiền",
+    "label14": "Hướng dẫn rút tiền",
+    "label15": "phí xử lý",
+    "label16": "Từ",
+    "label17": "Đến",
+    "label18": "Tối đa",
+    "label19": "Yêu cầu"
+  },
+  "ChangePass": {
+    "title1": " Thay đổi mật khẩu quỹ",
+    "title2": "Mật khẩu mới",
+    "title3": "Mật khẩu cũ",
+    "title4": " Vui lòng nhập 6 chữ số",
+    "title5": "Xác nhận mật khẩu mới",
+    "title6": "Vui lòng nhập mật khẩu",
+    "title7": "Xác minh email",
+    "title8": "Xác minh của Google",
+    "title9": "Xác minh ",
+    "title10": "Vui lòng nhập mã xác minh",
+    "title11": "Gửi mã xác minh",
+    "title12": "Đang xử lý...",
+    "title13": "Thay đổi mật khẩu đăng nhập",
+    "title14": " Vui lòng nhập 6-12 ký tự, bao gồm số hoặc chữ cái"
+  },
+  "VerifiedPage": {
+    "title": "Xác thực tài khoản",
+    "label1": "Họ và tên",
+    "label2": "Vui lòng nhập tên thật của bạn",
+    "label3": "Số chứng chỉ/hộ chiếu",
+    "label4": "Vui lòng nhập ID/hộ chiếu của bạn",
+    "label5": "Ảnh chứng nhận/Tài liệu hộ chiếu",
+    "label6": "Mặt trước thông tin xác thực",
+    "label7": "Mặt sau thông tin xác thực",
+    "button": "Đăng ký xác thực",
+    "note": "Không thể tải lên ảnh ID, vui lòng liên hệ với dịch vụ khách hàng để lấy địa chỉ email để gửi ảnh ID hoặc tải lên lại Ví dụ Chụp",
+    "note1": "liên hệ với dịch vụ khách hàng"
+  },
+  "SupportPage": {
+    "title": "Trung tâm trợ giúp",
+    "fee": {
+      "title": "Về phí xử lý",
+      "content": "Phí xử lý là khoản phí được áp dụng cho một số giao dịch trên hệ thống. Mức phí có thể thay đổi tùy thuộc vào loại giao dịch và phương thức sử dụng dịch vụ."
+    },
+    "futures": {
+      "title": "Các quy tắc của giao dịch tương lai là gì?",
+      "content": "Giao dịch tương lai cho phép người dùng mua hoặc bán tài sản tại một mức giá đã được xác định trước trong tương lai. Người dùng cần chú ý đến đòn bẩy, ký quỹ và các mức thanh lý khi thực hiện giao dịch."
+    },
+    "limitMarket": {
+      "title": "Lệnh giới hạn và lệnh thị trường là gì?",
+      "content": "Lệnh giới hạn cho phép bạn đặt mức giá cụ thể mà bạn muốn mua hoặc bán. Lệnh thị trường sẽ được thực hiện ngay lập tức theo mức giá tốt nhất hiện có trên thị trường."
+    },
+    "contract": {
+      "title": "Các quy tắc của giao dịch hợp đồng là gì?",
+      "content": "Giao dịch hợp đồng có thể bao gồm các quy định về ký quỹ, đòn bẩy, phí giao dịch và thanh lý. Người dùng nên đọc kỹ các điều khoản trước khi thực hiện giao dịch."
+    }
+  },
+  "InvitationPage": {
+    "title1": "Mã giới thiệu",
+    "h2": " Mời bạn bè để kiếm được tiền.",
+    "h3": " Nạp tiền ngay bây giờ để nhận hoa hồng ngay lập tức.",
+    "menu": "Chương trình giới thiệu",
+    "title2": " Tổng khuyến mãi",
+    "title3": " Tổng số tiền nạp",
+    "title4": "Quy tắc",
+    "title5": " Số lượng hạng Một",
+    "title6": " Số lượng hạng Hai",
+    "title7": " Số lượng hạng Ba",
+    "title8": " Giới thiệu của tôi",
+    "title9": " Hạng Một",
+    "title10": " Hạng Hai",
+    "title11": " Hạng Ba",
+    "title12": "Tên tài khoản",
+    "title13": "Tổng số lượt giới thiệu",
+    "title14": "Tổng số tiền nạp",
+    "title15": "Không có dữ liệu",
+    "button1": " Quảng bá ngay bây giờ",
+    "button": "Sao chép mã"
   }
 }

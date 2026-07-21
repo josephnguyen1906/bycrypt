@@ -15,7 +15,8 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/stores/useUserStore";
 import { useEffect, useRef, useState } from "react";
-import { VisibilityOffOutlined } from "@mui/icons-material";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import CancelIcon from "@mui/icons-material/Cancel";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { verifiUser } from "@/services/User.service";
@@ -82,393 +83,385 @@ export default function VerifiedPage() {
     <Box
       sx={{
         width: "100%",
-        minHeight: "100vh",
-        background: "#141A1F",
-        paddingTop: {
-          xs: "0px",
-          sm: "80px",
+        maxWidth: {
+          xs: "100%",
+          sm: "448px",
         },
+        minHeight: "100vh",
+        mx: "auto",
+        bgcolor: "#0E0F18",
+        color: "#fff",
+        pb: 10,
       }}
     >
+      {/* Header */}
       <Box
         sx={{
-          width: { xs: "100%", sm: "500px" },
-          backgroundColor: "#202630",
-          margin: "auto",
-          minHeight: { xs: "100vh", sm: "700px" },
-          borderRadius: {
-            xs: 0,
-            sm: "16px",
-          },
-          padding: "16px",
+          height: "45px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           position: "relative",
-          pb: {
-            xs: "120px",
-            sm: 0,
-          },
+          px: "14px",
         }}
       >
-        {/* login button */}
-        {!user ? (
-          <Button
-            variant="contained"
+        <IconButton
+          onClick={() => router.back()}
+          sx={{
+            position: "absolute",
+            left: "8px",
+            top: "50%",
+            transform: "translateY(-50%)",
+            width: "32px",
+            height: "32px",
+            color: "#fff",
+            p: 0,
+          }}
+        >
+          <ArrowBackIosNewIcon
             sx={{
-              background: "#22c55e",
-              borderRadius: "8px",
-              textTransform: "none",
-              mb: 2,
-              "&:hover": {
-                background: "#1da850ff",
+              fontSize: "20px",
+              color: "#fff",
+            }}
+          />
+        </IconButton>
+
+        <Typography
+          sx={{
+            color: "#fff",
+            fontSize: "14px",
+            fontWeight: 700,
+            lineHeight: 1,
+          }}
+        >
+          {t("VerifiedPage.title")}
+        </Typography>
+      </Box>
+
+      {/* Content */}
+      <Box
+        sx={{
+          width: "100%",
+          px: "14px",
+          pt: "2px",
+          pb: "40px",
+        }}
+      >
+        {/* Họ tên */}
+        <Typography
+          sx={{
+            color: "#fff",
+            fontSize: "13px",
+            fontWeight: 400,
+            mb: "7px",
+            mt: "0px",
+          }}
+        >
+          {t("VerifiedPage.label1")}
+        </Typography>
+
+        <Box
+          sx={{
+            position: "relative",
+            width: "100%",
+            height: "41px",
+            bgcolor: "#1B1C25",
+            borderRadius: "4px",
+            mb: "20px",
+          }}
+        >
+          <InputBase
+            value={fullName ?? ""}
+            onChange={(e) => setFullName(e.target.value)}
+            placeholder={t("VerifiedPage.label2")}
+            sx={{
+              width: "100%",
+              height: "100%",
+              px: "20px",
+              pr: "45px",
+              color: "#fff",
+              fontSize: "13px",
+
+              "& input": {
+                padding: 0,
+                color: "#fff",
+                fontSize: "13px",
+
+                "&::placeholder": {
+                  color: "#777985",
+                  opacity: 1,
+                },
               },
             }}
-            onClick={() => router.push("/login")}
-          >
-            Go to login
-          </Button>
-        ) : (
-          <>
-            <Box
-              display="flex"
-              alignItems="center"
-              mb={3}
-              gap={"10px"}
-              justifyContent={"space-between"}
+          />
+
+          {fullName && (
+            <IconButton
+              onClick={() => setFullName("")}
+              sx={{
+                position: "absolute",
+                right: "8px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                width: "24px",
+                height: "24px",
+                p: 0,
+                color: "#A4A6AF",
+              }}
             >
-              <IconButton
-                onClick={() => router.back()}
-                sx={{ background: "#232932" }}
-              >
-                <ArrowBackIosNewIcon
-                  sx={{ cursor: "pointer", color: "white", fontSize: "14px" }}
+              <CancelIcon sx={{ fontSize: "14px" }} />
+            </IconButton>
+          )}
+        </Box>
+
+        {/* Số CCCD / Hộ chiếu */}
+        <Typography
+          sx={{
+            color: "#fff",
+            fontSize: "13px",
+            fontWeight: 400,
+            mb: "7px",
+          }}
+        >
+          {t("VerifiedPage.label3")}
+        </Typography>
+
+        <Box
+          sx={{
+            position: "relative",
+            width: "100%",
+            height: "41px",
+            bgcolor: "#1B1C25",
+            borderRadius: "4px",
+            mb: "20px",
+          }}
+        >
+          <InputBase
+            value={cardNumber ?? ""}
+            onChange={(e) => setCardNumber(e.target.value)}
+            placeholder={t("VerifiedPage.label4")}
+            sx={{
+              width: "100%",
+              height: "100%",
+              px: "20px",
+              pr: "45px",
+              color: "#fff",
+              fontSize: "13px",
+
+              "& input": {
+                padding: 0,
+                color: "#fff",
+                fontSize: "13px",
+
+                "&::placeholder": {
+                  color: "#777985",
+                  opacity: 1,
+                },
+              },
+            }}
+          />
+
+          {cardNumber && (
+            <IconButton
+              onClick={() => setCardNumber("")}
+              sx={{
+                position: "absolute",
+                right: "8px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                width: "24px",
+                height: "24px",
+                p: 0,
+                color: "#A4A6AF",
+              }}
+            >
+              <CancelIcon sx={{ fontSize: "14px" }} />
+            </IconButton>
+          )}
+        </Box>
+
+        {/* Upload CCCD */}
+        <Typography
+          sx={{
+            color: "#fff",
+            fontSize: "13px",
+            fontWeight: 400,
+            mb: "8px",
+          }}
+        >
+          {t("VerifiedPage.label5")}
+        </Typography>
+
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "20px",
+            mb: "2px",
+            mt: 1,
+          }}
+        >
+          {/* Mặt trước */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Box
+              onClick={handleFrontClick}
+              sx={{
+                width: "74px",
+                height: "74px",
+                bgcolor: "#4B506A",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                overflow: "hidden",
+              }}
+            >
+              {frontImage ? (
+                <Box
+                  component="img"
+                  src={URL.createObjectURL(frontImage)}
+                  alt={t("VerifiedPage.label6")}
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
                 />
-              </IconButton>
-
-              <Typography fontSize={20} fontWeight={600} color={"white"}>
-                {t("HomePage.verified")}
-              </Typography>
-              <IconButton></IconButton>
+              ) : (
+                <CameraIcon width="24px" height="24px" fill="#E8EAF0" />
+              )}
             </Box>
-            {!user.cccd ? (
-              <Box sx={{ mt: 2 }}>
-                <Typography
-                  variant="h6"
-                  mb={2}
-                  sx={{ color: "#d1d5db", fontSize: "16px" }}
-                >
-                  {t("ProfilePage.verified_title1")}
-                </Typography>
 
-                <Box sx={{ mt: 2, textAlign: "center" }}>
-                  <Typography
-                    variant="h6"
-                    mb={1}
-                    mt={1}
-                    sx={{
-                      color: "#d1d5db",
-                      fontSize: "12px",
-                      textAlign: "left",
-                    }}
-                  >
-                    {t("ProfilePage.verified_title4")}
-                  </Typography>
-                  <InputBase
-                    type="string"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    placeholder={t("ProfilePage.verified_title3")}
-                    sx={{
-                      width: "100%",
-                      mt: "5px",
-                      mb: "10px",
-                      "& input": {
-                        border: "1px solid rgb(220, 223, 230)",
-                        borderRadius: "10px",
-                        height: "40px",
-                        color: "#fff",
-                        fontSize: "16px",
-                        pl: "10px",
-                      },
-                    }}
-                  />
+            <Typography
+              sx={{
+                mt: "8px",
+                color: "#A8A9B3",
+                fontSize: "13px",
+                textAlign: "center",
+                lineHeight: "18px",
+              }}
+            >
+              {t("VerifiedPage.label6")}
+            </Typography>
 
-                  <Typography
-                    variant="h6"
-                    mb={1}
-                    mt={1}
-                    sx={{
-                      color: "#d1d5db",
-                      fontSize: "12px",
-                      textAlign: "left",
-                    }}
-                  >
-                    {t("ProfilePage.verified_title5")}
-                  </Typography>
-                  <InputBase
-                    type="string"
-                    value={cardNumber}
-                    onChange={(e) => setCardNumber(e.target.value)}
-                    placeholder={t("ProfilePage.verified_title2")}
-                    sx={{
-                      width: "100%",
-                      mt: "5px",
-                      mb: "10px",
-                      "& input": {
-                        border: "1px solid rgb(220, 223, 230)",
-                        borderRadius: "10px",
-                        height: "40px",
-                        color: "#fff",
-                        fontSize: "16px",
-                        pl: "10px",
-                      },
-                    }}
-                  />
-                </Box>
+            <input
+              type="file"
+              accept="image/*"
+              ref={frontFileInput}
+              style={{ display: "none" }}
+              onChange={handleFrontChange}
+            />
+          </Box>
 
+          {/* Mặt sau */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Box
+              onClick={handleBackClick}
+              sx={{
+                width: "74px",
+                height: "74px",
+                bgcolor: "#4B506A",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                overflow: "hidden",
+              }}
+            >
+              {backImage ? (
                 <Box
+                  component="img"
+                  src={URL.createObjectURL(backImage)}
+                  alt={t("VerifiedPage.label7")}
                   sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                    gap: 2,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
                   }}
-                >
-                  <Typography
-                    variant="h6"
-                    mb={1}
-                    mt={1}
-                    sx={{
-                      color: "#4ade80",
-                      fontSize: "16px",
-                      textAlign: "center",
-                      fontWeight: 400,
-                    }}
-                  >
-                    {t("ProfilePage.verified_title6")}
-                  </Typography>
-                  <Box
-                    sx={{
-                      width: "70%",
-                      textAlign: "center",
-                      margin: "auto",
-                    }}
-                  >
-                    {frontImage ? (
-                      <>
-                        <Box
-                          component="img"
-                          src={frontImage && URL.createObjectURL(frontImage)}
-                          alt="Mặt trước CCCD"
-                          onClick={handleFrontClick}
-                          sx={{
-                            width: "100%",
-                            borderRadius: "8px",
-                            boxShadow: 2,
-                            cursor: "pointer",
-                            objectFit: "cover",
-                          }}
-                        />
-                      </>
-                    ) : (
-                      <Box
-                        onClick={handleFrontClick}
-                        sx={{
-                          width: "120px",
-                          height: "120px",
-                          borderRadius: "8px",
-                          boxShadow: 2,
-                          cursor: "pointer",
-                          background: "#1f2937",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          margin: "0 auto",
-                        }}
-                      >
-                        <CameraIcon width="35px" height="35px" fill="white" />
-                      </Box>
-                    )}
-                    <Typography
-                      sx={{
-                        color: "#d1d5db",
-                        width: "100%",
-                        textAlign: "center",
-                        paddingBottom: "10px",
-                        fontWeight: 400,
-                        fontSize: "14px",
-                        pt: "8px",
-                      }}
-                    >
-                      {t("ProfilePage.before")}
-                    </Typography>
+                />
+              ) : (
+                <CameraIcon width="24px" height="24px" fill="#E8EAF0" />
+              )}
+            </Box>
 
-                    <input
-                      type="file"
-                      accept="image/*"
-                      ref={frontFileInput}
-                      style={{ display: "none" }}
-                      onChange={handleFrontChange}
-                    />
-                  </Box>
+            <Typography
+              sx={{
+                mt: "8px",
+                color: "#A8A9B3",
+                fontSize: "13px",
+                textAlign: "center",
+                lineHeight: "18px",
+              }}
+            >
+              {t("VerifiedPage.label7")}
+            </Typography>
 
-                  <Box
-                    sx={{
-                      width: "70%",
-                      textAlign: "center",
-                      margin: "auto",
-                    }}
-                  >
-                    {backImage ? (
-                      <>
-                        <Box
-                          component="img"
-                          src={
-                            backImage
-                              ? URL.createObjectURL(backImage)
-                              : "/images/cccdms.png"
-                          }
-                          alt="Mặt sau CCCD"
-                          onClick={handleBackClick}
-                          sx={{
-                            width: "100%",
-                            borderRadius: "8px",
-                            boxShadow: 2,
-                            cursor: "pointer",
-                            objectFit: "cover",
-                          }}
-                        />
-                      </>
-                    ) : (
-                      <Box
-                        onClick={handleBackClick}
-                        sx={{
-                          width: "120px",
-                          height: "120px",
-                          borderRadius: "8px",
-                          boxShadow: 2,
-                          cursor: "pointer",
-                          background: "#1f2937",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          margin: "0 auto",
-                        }}
-                      >
-                        <CameraIcon width="35px" height="35px" fill="white" />
-                      </Box>
-                    )}
-                    <Typography
-                      align="center"
-                      sx={{
-                        color: "#d1d5db",
-                        width: "100%",
-                        textAlign: "center",
-                        paddingBottom: "10px",
-                        fontWeight: 400,
-                        fontSize: "14px",
-                        pt: "8px",
-                      }}
-                    >
-                      {t("ProfilePage.after")}
-                    </Typography>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      ref={backFileInput}
-                      style={{ display: "none" }}
-                      onChange={handleBackChange}
-                    />
-                  </Box>
+            <input
+              type="file"
+              accept="image/*"
+              ref={backFileInput}
+              style={{ display: "none" }}
+              onChange={handleBackChange}
+            />
+          </Box>
+        </Box>
 
-                  <Button
-                    type="button"
-                    sx={{
-                      display: "flex",
-                      background: "#22c55e",
-                      color: "#000",
-                      width: "100%",
-                      height: "50px",
-                      borderRadius: "15px",
-                      margin: "0 auto",
-                      mt: "30px",
-                      textTransform: "capitalize",
-                      "&:hover": {
-                        background: "#22c55e",
-                      },
-                    }}
-                    onClick={handleSubmit}
-                  >
-                    {t("ProfilePage.verified_button")}
-                  </Button>
-                </Box>
-              </Box>
-            ) : (
-              <Box
-                sx={{
-                  mt: 5,
-                  background: "#1f2937",
-                  borderRadius: "12px",
-                  padding: "20px",
-                  textAlign: "center",
-                }}
-              >
-                <Typography
-                  sx={{
-                    color: "#4ade80",
-                    fontWeight: "bold",
-                    fontSize: "16px",
-                    mb: 2,
-                  }}
-                >
-                  ✅
-                  {t("ProfilePage.verified_success") || "Verified successfully"}
-                </Typography>
+        {/* Button */}
+        <Button
+          type="button"
+          onClick={handleSubmit}
+          fullWidth
+          sx={{
+            height: "46px",
+            mt: "10px",
+            bgcolor: "#00B900",
+            color: "#fff",
+            borderRadius: "4px",
+            fontSize: "13px",
+            fontWeight: 500,
+            textTransform: "none",
 
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 2,
-                    textAlign: "left",
-                  }}
-                >
-                  <Box>
-                    <Typography sx={{ color: "#9ca3af", fontSize: "12px" }}>
-                      {t("ProfilePage.verified_title4")}
-                    </Typography>
+            "&:hover": {
+              bgcolor: "#00B900",
+            },
+          }}
+        >
+          {t("VerifiedPage.button")}
+        </Button>
 
-                    <Typography
-                      sx={{
-                        color: "#fff",
-                        background: "#111827",
-                        padding: "10px",
-                        borderRadius: "8px",
-                      }}
-                    >
-                      {user.fullname}
-                    </Typography>
-                  </Box>
-
-                  <Box>
-                    <Typography sx={{ color: "#9ca3af", fontSize: "12px" }}>
-                      {t("ProfilePage.verified_title5")}
-                    </Typography>
-
-                    <Typography
-                      sx={{
-                        color: "#fff",
-                        background: "#111827",
-                        padding: "10px",
-                        borderRadius: "8px",
-                      }}
-                    >
-                      ***********
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-            )}
-          </>
-        )}
+        {/* Note */}
+        <Typography
+          sx={{
+            mt: "18px",
+            color: "#7E818D",
+            fontSize: "12px",
+            lineHeight: "17px",
+          }}
+        >
+          {t("VerifiedPage.note")}{" "}
+          <Box
+            component="span"
+            sx={{
+              color: "#1683E8",
+              textDecoration: "underline",
+              cursor: "pointer",
+            }}
+          >
+            {t("VerifiedPage.note1")}
+          </Box>
+        </Typography>
       </Box>
     </Box>
   );

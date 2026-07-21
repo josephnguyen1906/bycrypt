@@ -3,11 +3,17 @@
 import { ArrowBackIosNew, Check } from "@mui/icons-material";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-export default function DepositSuccessPage() {
+export default function DepositSuccessPage({ tab }: { tab: number }) {
   const router = useRouter();
   const { t } = useTranslation();
+  const [currentTime, setCurrentTime] = useState("");
+
+  useEffect(() => {
+    setCurrentTime(new Date().toLocaleString("vi-VN"));
+  }, []);
   return (
     <Box
       sx={{
@@ -108,7 +114,7 @@ export default function DepositSuccessPage() {
           </Typography>
 
           <Typography mt={1} color="#8A8FA8" fontSize={15}>
-            {new Date().toLocaleString("vi-VN")}
+            {currentTime}
           </Typography>
         </Box>
 
@@ -142,7 +148,9 @@ export default function DepositSuccessPage() {
         <Button
           fullWidth
           variant="contained"
-          onClick={() => router.push("/deposit/history")}
+          onClick={() =>
+            router.push(tab == 0 ? "/deposit/history" : "/withdraw/history")
+          }
           sx={{
             height: 50,
             bgcolor: "#08B300",

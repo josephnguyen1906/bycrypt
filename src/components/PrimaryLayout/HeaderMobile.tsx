@@ -3,12 +3,14 @@ import { InternetIcon } from "@/shared/Svgs/Svg.component";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Box, Button, IconButton, Tooltip, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import AccountDrawer from "../subMenu/AccountDrawer";
 
 export default function HeaderMobile({ user }: { user: IUser | null }) {
   const route = useRouter();
   const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
   return (
     <Box
       sx={{
@@ -21,7 +23,10 @@ export default function HeaderMobile({ user }: { user: IUser | null }) {
       }}
     >
       <Box>
-        <Button sx={{ width: 40, height: 40, background: "#0E0F18" }}>
+        <Button
+          sx={{ width: 40, height: 40, background: "#0E0F18" }}
+          onClick={() => setOpen(true)}
+        >
           <MenuIcon sx={{ color: "white" }} />
         </Button>
       </Box>
@@ -72,6 +77,8 @@ export default function HeaderMobile({ user }: { user: IUser | null }) {
           </IconButton>
         </Tooltip>
       </Box>
+
+      <AccountDrawer onClose={() => setOpen(false)} open={open} />
     </Box>
   );
 }

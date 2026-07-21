@@ -1,32 +1,31 @@
 "use client";
 
 import {
+  KeyboardArrowDown,
+  QrCodeScannerOutlined,
+  Visibility,
+  VisibilityOff,
+} from "@mui/icons-material";
+import HistoryIcon from "@mui/icons-material/History";
+import {
   Box,
   Button,
   IconButton,
   InputAdornment,
-  InputBase,
   MenuItem,
   Select,
-  Stack,
   TextField,
   Typography,
 } from "@mui/material";
-
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import WalletOutlinedIcon from "@mui/icons-material/WalletOutlined";
-
-import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import { useUserStore } from "@/stores/useUserStore";
 import { getFinaceCoin, sellCoins } from "@/services/User.service";
-import { toast } from "react-toastify";
-import { useTranslation } from "react-i18next";
-import { useRouter } from "next/navigation";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import useWithdrawTimeCheck from "@/hook/useWithdrawTimeCheck";
-import WithdrawTimeDialog from "@/components/popup/WithdrawTimeDialog";
 
+import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 interface IListcoin {
   id: number;
   name: string;
@@ -49,47 +48,34 @@ interface IListcoin {
   hysxf: number;
   bank: number;
 }
+
 export default function WithdrawPage() {
+  const router = useRouter();
   const { t } = useTranslation();
   const [amount, setAmount] = useState<number | null>(null);
-  const [currency, setCurrency] = useState("VND");
+  const [currency, setCurrency] = useState("TRC20");
   const [password, setPassword] = useState("");
-  const { user, fetchUser } = useUserStore();
-  const [listCoin, setListCoin] = useState<IListcoin[] | null>(null);
-  const [selectedCoin, setSelectedCoin] = useState<IListcoin | null>({
-    id: 2,
-    name: "usdt",
-    czline: "TJASXiXxAcdBqEfD1UFwrrtKZcxeM7LbNT",
-    type: 1,
-    title: "USDT",
-    sort: 1,
-    addtime: "2026-06-04T03:39:14.000000Z",
-    status: 1,
-    czstatus: 1,
-    czaddress: "TWPncVw8KgYBwBAasZrgZ3VGQ6sNayES2R",
-    czminnum: 100,
-    txstatus: 1,
-    sxftype: 1,
-    txsxf: 0,
-    txsxf_n: 0,
-    txminnum: 100,
-    txmaxnum: 1000000,
-    bbsxf: 0.03,
-    hysxf: 0,
-    bank: 28000,
-  });
+  const [walletAddress, setWalletAddress] = useState("");
+  const [listCoin, setListCoin] = useState<IListcoin[]>([]);
+  const [selectedCoin, setSelectedCoin] = useState<IListcoin | null>(null);
   const [showPassword, setShowPassword] = useState(false);
-  const handleClickShowPassword = () => setShowPassword(!showPassword);
-  const router = useRouter();
-  const { open, setOpen } = useWithdrawTimeCheck();
-  useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
+  const { user, fetchUser } = useUserStore();
 
   const fetchCoin = async () => {
-    const res = await getFinaceCoin();
-    if (res.status) {
-      setListCoin(res.data);
+    try {
+      const res = await getFinaceCoin();
+
+      if (res.status) {
+        setListCoin(res.data);
+        const usdt = res.data.find(
+          (item: IListcoin) => item.name?.toLowerCase() === "usdt",
+        );
+        if (usdt) {
+          setSelectedCoin(usdt);
+        }
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -97,66 +83,129 @@ export default function WithdrawPage() {
     fetchCoin();
   }, []);
 
+  const availableBalance = useMemo(() => {
+    if (!selectedCoin || !user) return 0;
+
+    return Number(user?.balance.usdt ?? 0);
+  }, [selectedCoin, user]);
+
+  const withdrawFee = useMemo(() => {
+    if (!selectedCoin) return 0;
+
+    return Number(selectedCoin.bbsxf || 0);
+  }, [selectedCoin]);
+
+  const actualAmount = useMemo(() => {
+    if (!amount) return 0;
+
+    return Math.max(Number(amount) - withdrawFee, 0);
+  }, [amount, withdrawFee]);
+
+  const handlePasteAddress = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+
+      setWalletAddress(text);
+    } catch (error) {
+      toast.error("Không thể lấy dữ liệu từ clipboard");
+    }
+  };
+
+  const handleChangeCoin = (coinId: number) => {
+    const coin = listCoin.find((item) => item.id === coinId);
+
+    if (coin) {
+      setSelectedCoin(coin);
+    }
+  };
+
+  const handleSelectAll = () => {
+    setAmount(availableBalance);
+  };
+
   const hanldeWithdraw = async () => {
     try {
       if (!selectedCoin) {
-        toast.error(t("Toast.widthraw_title5"));
+        toast.error("Vui lòng chọn loại tiền");
         return;
       }
+      if (!walletAddress.trim()) {
+        toast.error("Vui lòng nhập địa chỉ ví");
+        return;
+      }
+      if (!amount || amount <= 0) {
+        toast.error("Vui lòng nhập số tiền rút");
+        return;
+      }
+      if (amount < selectedCoin.txminnum) {
+        toast.error(
+          `Số tiền rút tối thiểu là ${selectedCoin.txminnum} ${selectedCoin.name.toUpperCase()}`,
+        );
+        return;
+      }
+      if (selectedCoin.txmaxnum > 0 && amount > selectedCoin.txmaxnum) {
+        toast.error(
+          `Số tiền rút tối đa là ${selectedCoin.txmaxnum} ${selectedCoin.name.toUpperCase()}`,
+        );
+        return;
+      }
+      if (amount > availableBalance) {
+        toast.error("Số dư không đủ");
+        return;
+      }
+      if (!password) {
+        toast.error("Vui lòng nhập mật khẩu thanh toán");
+        return;
+      }
+
       const formdata = new FormData();
-      formdata.append("cid", String(selectedCoin?.id));
+      formdata.append("cid", String(selectedCoin.id));
       formdata.append("amount", String(amount));
       formdata.append("paypassword", String(password));
+      formdata.append("address", walletAddress);
+
       const res = await sellCoins(formdata);
 
       if (res.status) {
-        toast.success(t("DepositWithdrawPage.status_true"));
+        router.push("/withdraw/success");
         setAmount(null);
         setPassword("");
-        return;
+        setWalletAddress("");
+        fetchUser?.();
       }
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error(err?.message || "Rút tiền thất bại");
     }
   };
-  console.log("sel", selectedCoin);
 
   return (
     <Box
       sx={{
-        width: "100%",
+        maxWidth: { xs: "100%", sm: "448px" },
+        margin: "auto",
         minHeight: "100vh",
-        background: "#141A1F",
-        paddingTop: {
-          xs: "0px",
-          sm: "100px",
-        },
+        background: "#0E0F18",
+        pb: "100px",
       }}
     >
       <Box
         sx={{
-          width: { xs: "100%", sm: "500px" },
-          backgroundColor: "#202630",
-          margin: "auto",
-          height: { xs: "100%", sm: "980px" },
-          borderRadius: {
-            xs: 0,
-            sm: "16px",
-          },
-          padding: "16px",
-          position: "relative",
-          pb: "150px",
+          height: 60,
+          px: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          bgcolor: "#0D1018",
+          borderBottom: "1px solid rgba(255,255,255,.05)",
         }}
       >
-        {/* HEADER */}
+        {/* Left */}
         <Box
           sx={{
-            height: 64,
-            px: 1,
-            borderBottom: "1px solid rgba(255,255,255,0.06)",
+            width: "100%",
             display: "flex",
-            alignItems: "center",
             justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
           <IconButton
@@ -165,410 +214,463 @@ export default function WithdrawPage() {
               color: "#fff",
             }}
           >
-            <ArrowBackIosNewIcon fontSize="small" />
+            <ArrowBackIosNewRoundedIcon fontSize="small" />
           </IconButton>
 
-          <Typography
-            sx={{
-              color: "#fff",
-              fontSize: 18,
-              fontWeight: 700,
-            }}
-          >
-            {t("AssetPage.menu3")}
-          </Typography>
-
           <Box
-            onClick={() => {
-              router.push("/withdraw/history");
-            }}
             sx={{
-              width: 46,
-              height: 46,
-              borderRadius: "12px",
-              background: "rgba(255,255,255,0.04)",
+              width: "70%",
+              margin: "auto",
               display: "flex",
-              alignItems: "center",
+              gap: 1,
               justifyContent: "center",
-              cursor: "pointer",
+              alignItems: "center",
+              textAlign: "center",
             }}
           >
-            <WalletOutlinedIcon
+            <Typography
               sx={{
                 color: "#fff",
+                fontWeight: 500,
+                fontSize: 19,
               }}
-            />
+            >
+              {t("AccountPage.menuTab2")}
+            </Typography>
           </Box>
-        </Box>
 
-        {/* BODY */}
-        <Box
+          <IconButton
+            sx={{
+              color: "#9CA3AF",
+              bgcolor: "none",
+              "&:hover": {
+                bgcolor: "none",
+              },
+            }}
+            // href="/trade-chart"
+            onClick={() => router.push("/withdraw/history")}
+          >
+            <HistoryIcon />
+          </IconButton>
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          px: {
+            xs: 2,
+            sm: 4,
+          },
+          maxWidth: 900,
+          mx: "auto",
+        }}
+      >
+        <Typography
           sx={{
-            p: 2.5,
+            fontSize: 16,
+            fontWeight: 500,
+            mt: 3,
+            color: "white",
           }}
         >
-          <CardBox sx={{ mb: 2 }}>
-            <RowItem
-              left={t("AssetPage.Network")}
-              right={
-                <Typography
-                  sx={{
-                    color: "#fff",
-                    fontWeight: 700,
-                    fontSize: 14,
-                  }}
-                >
-                  {selectedCoin?.title ?? "USDT"}
-                </Typography>
-              }
-            />
-          </CardBox>
-          {/* AMOUNT */}
-          <CardBox>
-            <Typography
-              sx={{
-                color: "#fff",
-                fontWeight: 700,
-                fontSize: 14,
-                mb: 2,
-              }}
-            >
-              {t("Toast.widthraw_title1")}
-            </Typography>
+          {t("AccountPage.menuTab2")}
+          {selectedCoin?.name?.toUpperCase() || "USDT"}
+        </Typography>
 
-            <Box
-              sx={{
-                height: 48,
-                borderRadius: "16px",
-                background: "#141A1F",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                px: 2,
-              }}
-            >
-              <InputBase
-                value={amount}
-                onChange={(e) => setAmount(Number(e.target.value))}
-                // placeholder="0"
-                sx={{
-                  flex: 1,
-                  color: "#fff",
-                  fontSize: 16,
-                  fontWeight: 700,
+        <Typography
+          sx={{
+            color: "#868c9a",
+            fontSize: 16,
+            mt: 1,
+          }}
+        >
+          {t("AccountPage.menuTab2")}
+          {selectedCoin?.name?.toUpperCase() || "USDT"}{" "}
+          {t("DepositWithdrawPage.label3")}
+        </Typography>
 
-                  "& input::placeholder": {
-                    color: "#fff",
-                    opacity: 1,
-                  },
-                }}
-              />
-
-              <Typography
-                sx={{
-                  color: "#8e98a7",
-                  fontSize: 14,
-                }}
-              >
-                {t("Toast.widthraw_title2")}{" "}
-                {Number((selectedCoin?.bbsxf ?? 0) * 100) ?? 0}%
-              </Typography>
-            </Box>
-
-            <Box sx={{ display: "flex", gap: "10px" }}>
-              <Typography
-                sx={{
-                  textAlign: "right",
-                  color: "#8e98a7",
-                  fontSize: 14,
-                  mt: 2,
-                }}
-              >
-                {t("ProfilePage.Available_balance")}:
-              </Typography>
-              <Typography
-                sx={{
-                  textAlign: "right",
-                  color: "#fff",
-                  fontSize: 14,
-                  mt: 2,
-                }}
-              >
-                {Number(user?.balance.usdt).toLocaleString()} (USDT)
-              </Typography>
-            </Box>
-          </CardBox>
-
-          <CardBox sx={{ mt: 2 }}>
-            <Typography
-              sx={{
-                color: "#fff",
-                fontWeight: 700,
-                fontSize: 14,
-                mb: 2,
-              }}
-            >
-              {t("DepositWithdrawPage.Password")}
-            </Typography>
-
-            <TextField
-              id="outlined-basic"
-              variant="outlined"
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              sx={{
-                width: "100%",
-                background: "#141A1F",
-                borderRadius: "16px",
-                borderColor: "none",
-                "& .MuiInputBase-input": {
-                  color: "white",
-                  background: "#141A1F",
-                  borderRadius: "20px",
-                  // Fix autofill background
-                  "&:-webkit-autofill": {
-                    WebkitBoxShadow: "0 0 0 1000px black inset", // chỉnh màu nền
-                    WebkitTextFillColor: "white",
-                    transition: "background-color 5000s ease-in-out 0s",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "white",
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "white",
-                },
-                marginBottom: "20px",
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "none",
-                    borderRadius: "16px",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "none",
-                    borderRadius: "16px",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#141A1F",
-                    borderRadius: "16px",
-                  },
-                },
-              }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleClickShowPassword}
-                      edge="end"
-                      sx={{ color: "white" }}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </CardBox>
-
-          {/* RECEIVE TYPE */}
-          <CardBox sx={{ mt: 2 }}>
-            <RowItem
-              left={t("Toast.widthraw_title3")}
-              right={
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Box
-                    sx={{
-                      width: 34,
-                      height: 34,
-                      borderRadius: "50%",
-                      background: "#e5002d",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      color: "#ffde00",
-                      fontWeight: 700,
-                      fontSize: 18,
-                    }}
-                  >
-                    ★
-                  </Box>
-
-                  <Select
-                    value={currency}
-                    onChange={(e) => setCurrency(e.target.value)}
-                    variant="standard"
-                    disableUnderline
-                    IconComponent={KeyboardArrowDownIcon}
-                    sx={{
-                      color: "#fff",
-                      fontWeight: 700,
-                      fontSize: 14,
-
-                      "& .MuiSelect-icon": {
-                        color: "#fff",
-                      },
-                    }}
-                  >
-                    <MenuItem value="VND">VND</MenuItem>
-                  </Select>
-                </Stack>
-              }
-            />
-          </CardBox>
-
-          {/* BANK */}
-          <CardBox sx={{ mt: 2 }}>
-            <Typography
-              sx={{
-                color: "#fff",
-                fontWeight: 700,
-                fontSize: 14,
-                mb: 2,
-              }}
-            >
-              {t("Toast.widthraw_title4")}
-            </Typography>
-
-            <Box
-              sx={{
-                width: "100%",
-                height: "130px",
-                borderRadius: "18px",
-                padding: "26px",
-                background: "linear-gradient(90deg, #3F7A42 0%, #17323A 100%)",
-                position: "relative",
-                overflow: "hidden",
-              }}
-            >
-              {/* Bank Name */}
-              <Typography
-                sx={{
-                  color: "#fff",
-                  fontSize: "20px",
-                  fontWeight: 700,
-                  mb: 1,
-                }}
-              >
-                {user?.bank_name || "--"}
-              </Typography>
-
-              {/* Bank Number */}
-              <Typography
-                sx={{
-                  color: "#fff",
-                  fontSize: "18px",
-                  fontWeight: 600,
-                  letterSpacing: "1px",
-                }}
-              >
-                ************{user?.bank_acc_no?.slice(-6)}
-              </Typography>
-              {/* Account Name */}
-              <Typography
-                sx={{
-                  color: "#D7D7D7",
-                  fontSize: "14px",
-                  fontWeight: 600,
-                  letterSpacing: "1px",
-                }}
-              >
-                {user?.bank_acc_name || "--"}
-              </Typography>
-
-              {/* Mastercard Icon */}
-              <Box
-                sx={{
-                  position: "absolute",
-                  right: 24,
-                  bottom: 24,
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <Box
-                  sx={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: "50%",
-                    background: "red",
-                    opacity: 0.95,
-                  }}
-                />
-
-                <Box
-                  sx={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: "50%",
-                    background: "orange",
-                    marginLeft: "-10px",
-                    opacity: 0.95,
-                  }}
-                />
-              </Box>
-            </Box>
-          </CardBox>
-
-          {/* BUTTON */}
-          <Button
-            fullWidth
-            onClick={hanldeWithdraw}
+        <Box
+          sx={{
+            mt: 3,
+            height: 50,
+            bgcolor: "#1A1B24",
+            borderRadius: "16px",
+            px: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography
             sx={{
-              mt: 12,
-              height: 54,
-              borderRadius: "14px",
+              fontSize: 14,
+              fontWeight: 500,
+              color: "white",
+            }}
+          >
+            {selectedCoin?.name?.toUpperCase() || "USDT"}
+          </Typography>
 
-              background: "linear-gradient(90deg,#47e0a1 0%, #12c87b 100%)",
-
+          <Select
+            value={""}
+            onChange={(e) => handleChangeCoin(Number(e.target.value))}
+            displayEmpty
+            variant="standard"
+            IconComponent={KeyboardArrowDown}
+            disableUnderline
+            sx={{
+              minWidth: 220,
               color: "#fff",
-              fontSize: 20,
-              fontWeight: 700,
-              textTransform: "none",
-
-              "&:hover": {
-                background: "linear-gradient(90deg,#47e0a1 0%, #12c87b 100%)",
+              fontSize: 14,
+              textAlign: "right",
+              "& .MuiSelect-icon": {
+                color: "#8D93A6",
+                fontSize: 14,
+              },
+              "& .MuiSelect-select": {
+                py: 1,
               },
             }}
           >
-            {t("AssetPage.menu3")}
-          </Button>
+            <MenuItem value=""> {t("DepositWithdrawPage.label4")}</MenuItem>
+
+            {/* {listCoin.map((coin) => (
+              <MenuItem key={coin.id} value={coin.id}>
+                {coin.name.toUpperCase()}
+              </MenuItem>
+            ))} */}
+          </Select>
         </Box>
+
+        <Typography
+          sx={{
+            fontSize: 14,
+            color: "white",
+            mt: 2,
+            mb: 1,
+          }}
+        >
+          {t("DepositWithdrawPage.label5")}
+        </Typography>
+
+        <Box
+          sx={{
+            display: "flex",
+            gap: 5,
+          }}
+        >
+          {(selectedCoin?.czline || "ERC20,TRC20").split(",").map((network) => {
+            const name = network.trim();
+
+            const active = currency === name;
+
+            return (
+              <Button
+                key={name}
+                onClick={() => setCurrency(name)}
+                sx={{
+                  py: 1,
+                  px: 3,
+                  borderRadius: "8px",
+                  border: active ? "1px solid #00C853" : "1px solid #fff",
+                  color: active ? "#00C853" : "#fff",
+                  fontSize: 14,
+                  textTransform: "none",
+                }}
+              >
+                {name}
+              </Button>
+            );
+          })}
+        </Box>
+
+        <Typography
+          sx={{
+            fontSize: 14,
+            color: "white",
+            mt: 2,
+            mb: 1,
+          }}
+        >
+          {t("DepositWithdrawPage.label6")}
+        </Typography>
+
+        <TextField
+          fullWidth
+          value={walletAddress}
+          onChange={(e) => setWalletAddress(e.target.value)}
+          placeholder={t("DepositWithdrawPage.label7")}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 2,
+                  }}
+                >
+                  <Typography
+                    onClick={handlePasteAddress}
+                    sx={{
+                      color: "#00C853",
+                      cursor: "pointer",
+                      fontSize: 14,
+                      pr: "-10px",
+                    }}
+                  >
+                    {t("DepositWithdrawPage.title14")}
+                  </Typography>
+
+                  <IconButton
+                    sx={{
+                      color: "#8D93A6",
+                      width: 30,
+                    }}
+                  >
+                    <QrCodeScannerOutlined
+                      sx={{
+                        fontSize: 30,
+                      }}
+                    />
+                  </IconButton>
+                </Box>
+              </InputAdornment>
+            ),
+          }}
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              height: 50,
+              bgcolor: "#1A1B24",
+              borderRadius: "12px",
+              color: "#fff",
+              fontSize: 16,
+              px: 2,
+              "& fieldset": {
+                border: "none",
+              },
+            },
+            "& input::placeholder": {
+              color: "#A4A9BA",
+              opacity: 1,
+            },
+          }}
+        />
+
+        <Typography
+          sx={{
+            fontSize: 14,
+            color: "white",
+            mt: 2,
+            mb: 1,
+          }}
+        >
+          {t("TradePage.title13")}
+        </Typography>
+
+        <TextField
+          fullWidth
+          type="number"
+          value={amount ?? ""}
+          onChange={(e) => {
+            const value = e.target.value;
+
+            setAmount(value === "" ? null : Number(value));
+          }}
+          placeholder={t("DepositWithdrawPage.label8")}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1.5,
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "#8D93A6",
+                      fontSize: 14,
+                    }}
+                  >
+                    {selectedCoin?.name?.toUpperCase() || "USDT"}
+                  </Typography>
+
+                  <Typography
+                    onClick={handleSelectAll}
+                    sx={{
+                      color: "#00C853",
+                      fontSize: 14,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {t("DepositWithdrawPage.label9")}
+                  </Typography>
+                </Box>
+              </InputAdornment>
+            ),
+          }}
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              height: 50,
+              bgcolor: "#1A1B24",
+              borderRadius: "12px",
+              color: "#fff",
+              fontSize: 16,
+              px: 2,
+              "& fieldset": {
+                border: "none",
+              },
+            },
+            "& input::placeholder": {
+              color: "#A4A9BA",
+              opacity: 1,
+            },
+          }}
+        />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            mt: 1,
+          }}
+        >
+          <Typography
+            sx={{
+              color: "#8D93A6",
+              fontSize: 14,
+            }}
+          >
+            {t("TradePage.title4")}
+          </Typography>
+
+          <Typography
+            sx={{
+              color: "#8D93A6",
+              fontSize: 14,
+            }}
+          >
+            {availableBalance.toLocaleString()}{" "}
+            {selectedCoin?.name?.toUpperCase() || "USDT"}
+          </Typography>
+        </Box>
+        <Typography
+          sx={{
+            fontSize: 14,
+            color: "white",
+            mt: 2,
+            mb: 1,
+          }}
+        >
+          {t("DepositWithdrawPage.label10")}
+        </Typography>
+
+        <TextField
+          fullWidth
+          type={showPassword ? "text" : "password"}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder={t("DepositWithdrawPage.label11")}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword(!showPassword)}
+                  sx={{
+                    color: "#8D93A6",
+                  }}
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              height: 50,
+              bgcolor: "#1A1B24",
+              borderRadius: "12px",
+              color: "#fff",
+              fontSize: 16,
+              "& fieldset": {
+                border: "none",
+              },
+            },
+          }}
+        />
+
+        <Typography
+          sx={{
+            color: "#8D93A6",
+            fontSize: 14,
+            mt: 3,
+          }}
+        >
+          {t("DepositWithdrawPage.label12")}
+        </Typography>
+
+        <Typography
+          sx={{
+            fontSize: 16,
+            color: "white",
+            mt: 2,
+            fontWeight: 700,
+          }}
+        >
+          {actualAmount.toFixed(2)}{" "}
+          <Typography
+            component="span"
+            sx={{
+              color: "#8D93A6",
+              fontSize: 16,
+              fontWeight: 400,
+            }}
+          >
+            {selectedCoin?.name?.toUpperCase() || "USDT"}
+          </Typography>
+        </Typography>
+
+        <Typography
+          sx={{
+            color: "#8D93A6",
+            fontSize: 14,
+            mt: 1,
+          }}
+        >
+          {t("DepositWithdrawPage.label13")}: {withdrawFee.toFixed(2)}{" "}
+          {selectedCoin?.name?.toUpperCase() || "USDT"}
+        </Typography>
+
+        <Typography
+          sx={{
+            fontSize: 14,
+            color: "white",
+            mt: 3,
+            mb: 1,
+          }}
+        >
+          {t("DepositWithdrawPage.label14")}:
+        </Typography>
+
+        <Button
+          fullWidth
+          onClick={hanldeWithdraw}
+          sx={{
+            height: 44,
+            bgcolor: "#00B900",
+            color: "#fff",
+            borderRadius: "8px",
+            fontSize: 16,
+            textTransform: "none",
+            "&:hover": {
+              bgcolor: "#00A500",
+            },
+          }}
+        >
+          {t("AccountPage.menuTab2")}
+        </Button>
       </Box>
-      <WithdrawTimeDialog open={open} onClose={() => setOpen(false)} />
     </Box>
-  );
-}
-
-function CardBox({ children, sx }: { children: React.ReactNode; sx?: any }) {
-  return (
-    <Box
-      sx={{
-        background: "#283142",
-        borderRadius: "18px",
-        p: 2,
-        ...sx,
-      }}
-    >
-      {children}
-    </Box>
-  );
-}
-
-function RowItem({ left, right }: { left: string; right: React.ReactNode }) {
-  return (
-    <Stack direction="row" alignItems="center" justifyContent="space-between">
-      <Typography
-        sx={{
-          color: "#fff",
-          fontWeight: 700,
-          fontSize: 16,
-        }}
-      >
-        {left}
-      </Typography>
-
-      {right}
-    </Stack>
   );
 }

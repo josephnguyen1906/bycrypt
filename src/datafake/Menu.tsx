@@ -333,18 +333,18 @@ export const MenuAccount = [
     id: 2,
     icon: <AccountMenu2Icon />,
     name: "AccountPage.menuTab2",
-    link: "#",
+    link: "/withdraw",
   },
   {
     id: 3,
     icon: <AccountMenu3Icon />,
     name: "AccountPage.menuTab3",
-    link: "#",
+    link: "/history",
   },
   {
     id: 4,
     icon: <AccountMenu4Icon />,
     name: "AccountPage.menuTab4",
-    link: "#",
+    link: "/convert",
   },
 ];

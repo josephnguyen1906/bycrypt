@@ -117,29 +117,6 @@ export default function HistoryContact() {
         </Tabs>
         {user ? (
           <>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              aria-label="wrapped label tabs example"
-              TabIndicatorProps={{
-                sx: {
-                  backgroundColor: "#34d399",
-                  height: 2,
-                },
-              }}
-              sx={{
-                "& .MuiTab-root": {
-                  color: "#9ca3af",
-                  textTransform: "capitalize",
-                },
-                "& .MuiTab-root.Mui-selected": {
-                  color: "#34d399",
-                },
-              }}
-            >
-              <Tab value="one" label={t("BuySellPage.transaction")} wrapped />
-              <Tab value="two" label={t("BuySellPage.Position")} />
-            </Tabs>
             {value == "one" && (
               <Box sx={{ width: "95%", margin: "auto", paddingTop: "20px" }}>
                 {history && history.length > 0 ? (
@@ -217,8 +194,8 @@ export default function HistoryContact() {
                             }}
                           >
                             {item.hyzd === 1
-                              ? t("HistoryPage.title6")
-                              : t("HistoryPage.title7")}
+                              ? t("TradePage.title6")
+                              : t("TradePage.title7")}
                           </Typography>
                           <Typography
                             sx={{ color: "#9aa4b2", fontSize: 13, mt: "5px" }}
@@ -389,8 +366,8 @@ export default function HistoryContact() {
                               }}
                             >
                               {item.hyzd === 1
-                                ? t("HistoryPage.title6")
-                                : t("HistoryPage.title7")}
+                                ? t("TradePage.title6")
+                                : t("TradePage.title7")}
                             </Typography>
                           </Box>
                           <Typography

@@ -1,274 +1,480 @@
 "use client";
-import { updatePassword, updatePaymentPassword } from "@/services/User.service";
-import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
+import {
+  Box,
+  Button,
+  IconButton,
+  InputAdornment,
+  Radio,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { useUserStore } from "@/stores/useUserStore";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import CancelIcon from "@mui/icons-material/Cancel";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import LoadingComponent from "@/components/Loading";
+import { useTranslation } from "react-i18next";
+import { useUserStore } from "@/stores/useUserStore";
+import { toast } from "react-toastify";
+import { updatePaymentPassword } from "@/services/User.service";
 
-export default function ChangePassWithdraw() {
+const ChangePaymentPassword = () => {
   const { t } = useTranslation();
   const { user, loading, fetchUser } = useUserStore();
-  const [oldPassword, setOldPassword] = useState<string | null>(null);
-  const [load, setLoad] = useState(false);
+
+  const router = useRouter();
+
+  const [oldPassword, setOldPassword] = useState("");
   const [newPaymentPassword, setNewPaymentPassword] = useState("");
   const [confirmPaymentPassword, setConfirmPaymentPassword] = useState("");
-  const router = useRouter();
+
+  const [verificationCode, setVerificationCode] = useState("");
+
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [verifyType, setVerifyType] = useState<"email" | "google">("email");
+
+  const [load, setLoad] = useState(false);
 
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
 
-  if (loading && load) {
-    return <LoadingComponent />;
-  }
-
-  const handleSubmitPayment = async (e: any) => {
-    setLoad(true);
+  const handleSubmitPayment = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (newPaymentPassword !== confirmPaymentPassword) {
       toast.warning(t("Toast.change_pass4"));
       return;
     }
-    if (oldPassword && newPaymentPassword && confirmPaymentPassword) {
+
+    setLoad(true);
+
+    try {
       const formData = new FormData();
-      formData.append("current_paypassword", oldPassword);
+
+      if (user?.wdstatus === 1 && oldPassword) {
+        formData.append("current_paypassword", oldPassword);
+      }
+
       formData.append("paypassword", newPaymentPassword);
       formData.append("confirm_paypassword", confirmPaymentPassword);
-      await updatePaymentPassword(formData)
-        .then((response: any) => {
-          if (response.status === true) {
-            toast.success(t("Toast.change_pass4"));
-            setNewPaymentPassword("");
-            setOldPassword("");
-            setConfirmPaymentPassword("");
-            fetchUser();
-          } else {
-            toast.error(t("Toast.change_pass5"));
-          }
-        })
-        .catch((error) => {
-          toast.error(error.message);
-        });
+
+      // Nếu API cần verification code
+      formData.append("verification_code", verificationCode);
+
+      // Nếu API cần loại xác minh
+      formData.append("verify_type", verifyType);
+
+      const response: any = await updatePaymentPassword(formData);
+
+      if (response.status === true) {
+        toast.success(
+          user?.wdstatus === 1
+            ? t("Toast.change_pass4")
+            : t("Toast.change_pass6"),
+        );
+
+        setOldPassword("");
+        setNewPaymentPassword("");
+        setConfirmPaymentPassword("");
+        setVerificationCode("");
+
+        fetchUser();
+      } else {
+        toast.error(
+          user?.wdstatus === 1
+            ? t("Toast.change_pass5")
+            : t("Toast.change_pass7"),
+        );
+      }
+    } catch (error: any) {
+      toast.error(error?.message || "Có lỗi xảy ra");
+    } finally {
+      setLoad(false);
     }
-    if (!oldPassword && newPaymentPassword && confirmPaymentPassword) {
-      const formData = new FormData();
-      formData.append("paypassword", newPaymentPassword);
-      formData.append("confirm_paypassword", confirmPaymentPassword);
-      await updatePaymentPassword(formData)
-        .then((response: any) => {
-          if (response.status === true) {
-            toast.success(t("Toast.change_pass6"));
-            fetchUser();
-            setNewPaymentPassword("");
-            setOldPassword("");
-            setConfirmPaymentPassword("");
-          } else {
-            toast.error(t("Toast.change_pass7"));
-          }
-        })
-        .catch((error) => {
-          toast.error(error.message);
-        });
-    }
-    setLoad(false);
   };
+
+  const inputSx = {
+    "& .MuiOutlinedInput-root": {
+      height: "41px",
+      backgroundColor: "#1A1B24",
+      borderRadius: "3px",
+      fontSize: "13px",
+      color: "#fff",
+      paddingRight: "8px",
+
+      "& fieldset": {
+        border: "none",
+      },
+
+      "&:hover fieldset": {
+        border: "none",
+      },
+
+      "&.Mui-focused fieldset": {
+        border: "1px solid #2A64C4",
+      },
+    },
+
+    "& .MuiInputBase-input": {
+      padding: "0 18px",
+      color: "#fff",
+      height: "41px",
+      boxSizing: "border-box",
+    },
+
+    "& .MuiInputBase-input::placeholder": {
+      color: "#888A96",
+      opacity: 1,
+    },
+  };
+
+  if (loading) {
+    return <LoadingComponent />;
+  }
+
   return (
     <Box
       sx={{
-        width: "100%",
+        maxWidth: { xs: "100%", sm: "448px" },
+        margin: "auto",
         minHeight: "100vh",
-        background: "#141A1F",
-        paddingTop: {
-          xs: "0px",
-          sm: "80px",
-        },
+        background: "#0E0F18",
+        pb: "100px",
       }}
     >
       <Box
+        component="form"
+        onSubmit={handleSubmitPayment}
         sx={{
-          width: { xs: "100%", sm: "500px" },
-          backgroundColor: "#202630",
-          margin: "auto",
-          minHeight: { xs: "100vh", sm: "700px" },
-          borderRadius: {
-            xs: 0,
-            sm: "16px",
+          width: {
+            xs: "100%",
+            sm: "410px",
           },
-          padding: "16px",
-          position: "relative",
-          pb: {
-            xs: "120px",
-            sm: 0,
-          },
+          minHeight: "100vh",
+          margin: "0 auto",
+          backgroundColor: "#0D0E16",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         <Box
-          display="flex"
-          alignItems="center"
-          justifyContent={"space-between"}
-          p={2}
+          sx={{
+            height: "50px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
+            flexShrink: 0,
+          }}
         >
           <IconButton
             onClick={() => router.back()}
-            sx={{ background: "#232932" }}
+            sx={{
+              position: "absolute",
+              left: "12px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              color: "#fff",
+              padding: "4px",
+            }}
           >
             <ArrowBackIosNewIcon
-              sx={{ cursor: "pointer", color: "white", fontSize: "14px" }}
+              sx={{
+                fontSize: "20px",
+              }}
             />
           </IconButton>
 
           <Typography
-            fontSize={20}
-            fontWeight={600}
-            textAlign={"center"}
-            color={"white"}
+            sx={{
+              fontSize: "15px",
+              fontWeight: 600,
+              color: "#fff",
+            }}
           >
-            {t("DepositWithdrawPage.Password")}
+            {t("ChangePass.title1")}
           </Typography>
-          <IconButton></IconButton>
         </Box>
-        <Typography
+
+        {/* ================= CONTENT ================= */}
+        <Box
           sx={{
-            width: "90%",
-            p: 2,
-            background: "#3b82f61a",
-            color: "#60a5fa",
-            border: "1px solid #3b82f633",
-            fontSize: "12px",
-            margin: "auto",
-            borderRadius: "10px",
+            padding: "4px 19px 30px",
           }}
         >
-          {t("ProfilePage.change_pay_note")}
-        </Typography>
-        <form onSubmit={handleSubmitPayment} style={{ padding: "15px" }}>
-          {user && user.wdstatus === 1 && (
-            <TextField
-              fullWidth
-              placeholder={t("ProfilePage.change_label1")}
-              type="password"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-              required
-              InputProps={{
-                sx: {
-                  color: "#ffffffe6",
-                  background: "#3b4338",
-                  borderRadius: "20px",
-                  "& .MuiInputBase-input::placeholder": {
-                    color: "#ffffffe6", // Placeholder màu trắng
-                    opacity: 1,
-                  },
-                },
-              }}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  mt: 1,
-                  fontSize: "12px",
-                  "& fieldset": {
-                    border: "none",
-                  },
-                  "&:hover fieldset": {
-                    border: "none",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "none",
-                  },
-                },
-              }}
-            />
-          )}
+          {/* Mật khẩu mới */}
+          <Typography
+            sx={{
+              fontSize: "13px",
+              fontWeight: 600,
+              color: "#fff",
+              mb: "9px",
+            }}
+          >
+            {t("ChangePass.title2")}
+          </Typography>
+
           <TextField
             fullWidth
-            placeholder={t("ProfilePage.change_label2")}
-            type="password"
+            placeholder={t("ChangePass.title6")}
+            type={showNewPassword ? "text" : "password"}
             value={newPaymentPassword}
             onChange={(e) => setNewPaymentPassword(e.target.value)}
             required
+            sx={inputSx}
             InputProps={{
-              sx: {
-                color: "#ffffffe6",
-                background: "#3b4338",
-                borderRadius: "20px",
-                "& .MuiInputBase-input::placeholder": {
-                  color: "#ffffffe6", // Placeholder màu trắng
-                  opacity: 1,
-                },
-              },
-            }}
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                mt: 1,
-                fontSize: "12px",
-                "& fieldset": {
-                  border: "none",
-                },
-                "&:hover fieldset": {
-                  border: "none",
-                },
-                "&.Mui-focused fieldset": {
-                  border: "none",
-                },
-              },
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    size="small"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                    sx={{
+                      color: "#999BA5",
+                      padding: "4px",
+                    }}
+                  >
+                    {showNewPassword ? (
+                      <VisibilityIcon sx={{ fontSize: 17 }} />
+                    ) : (
+                      <VisibilityOffIcon sx={{ fontSize: 17 }} />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
             }}
           />
+
+          <Typography
+            sx={{
+              fontSize: "12px",
+              color: "#8B8D98",
+              mt: "8px",
+              mb: "20px",
+            }}
+          >
+            {t("ChangePass.title4")}
+          </Typography>
+
+          {/* Xác nhận mật khẩu mới */}
+          <Typography
+            sx={{
+              fontSize: "13px",
+              fontWeight: 600,
+              color: "#fff",
+              mb: "9px",
+            }}
+          >
+            {t("ChangePass.title5")}
+          </Typography>
+
           <TextField
             fullWidth
-            placeholder={t("ProfilePage.change_label3")}
-            type="password"
+            placeholder={t("ChangePass.title6")}
+            type={showConfirmPassword ? "text" : "password"}
             value={confirmPaymentPassword}
             onChange={(e) => setConfirmPaymentPassword(e.target.value)}
             required
+            sx={inputSx}
             InputProps={{
-              sx: {
-                color: "#ffffffe6",
-                background: "#3b4338",
-                borderRadius: "20px",
-                "& .MuiInputBase-input::placeholder": {
-                  color: "#ffffffe6", // Placeholder màu trắng
-                  opacity: 1,
-                },
-              },
-            }}
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                mt: 1,
-                fontSize: "12px",
-                "& fieldset": {
-                  border: "none",
-                },
-                "&:hover fieldset": {
-                  border: "none",
-                },
-                "&.Mui-focused fieldset": {
-                  border: "none",
-                },
-              },
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    size="small"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    sx={{
+                      color: "#999BA5",
+                      padding: "4px",
+                    }}
+                  >
+                    {showConfirmPassword ? (
+                      <VisibilityIcon sx={{ fontSize: 17 }} />
+                    ) : (
+                      <VisibilityOffIcon sx={{ fontSize: 17 }} />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
             }}
           />
+
+          <Typography
+            sx={{
+              fontSize: "12px",
+              color: "#8B8D98",
+              mt: "8px",
+              mb: "28px",
+            }}
+          >
+            {t("ChangePass.title4")}
+          </Typography>
+
+          {/* ================= VERIFY TYPE ================= */}
+          <Stack>
+            {/* Email */}
+            <Box
+              onClick={() => setVerifyType("email")}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+                height: "30px",
+              }}
+            >
+              <Radio
+                checked={verifyType === "email"}
+                onChange={() => setVerifyType("email")}
+                sx={{
+                  padding: "0",
+                  mr: "10px",
+                  color: "#777984",
+
+                  "&.Mui-checked": {
+                    color: "#00C853",
+                  },
+
+                  "& .MuiSvgIcon-root": {
+                    fontSize: "16px",
+                  },
+                }}
+              />
+
+              <Typography
+                sx={{
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  color: "#fff",
+                }}
+              >
+                {t("ChangePass.title7")}
+              </Typography>
+            </Box>
+
+            {/* Google */}
+            <Box
+              onClick={() => setVerifyType("google")}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+                height: "30px",
+              }}
+            >
+              <Radio
+                checked={verifyType === "google"}
+                onChange={() => setVerifyType("google")}
+                sx={{
+                  padding: "0",
+                  mr: "10px",
+                  color: "#777984",
+
+                  "&.Mui-checked": {
+                    color: "#00C853",
+                  },
+
+                  "& .MuiSvgIcon-root": {
+                    fontSize: "16px",
+                  },
+                }}
+              />
+
+              <Typography
+                sx={{
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  color: "#fff",
+                }}
+              >
+                {t("ChangePass.title8")}
+              </Typography>
+            </Box>
+          </Stack>
+
+          {/* ================= VERIFICATION CODE ================= */}
+          <Typography
+            sx={{
+              fontSize: "13px",
+              fontWeight: 600,
+              color: "#fff",
+              mt: "24px",
+              mb: "9px",
+            }}
+          >
+            {t("ChangePass.title9")}
+          </Typography>
+
+          <TextField
+            fullWidth
+            placeholder={t("ChangePass.title10")}
+            value={verificationCode}
+            onChange={(e) => setVerificationCode(e.target.value)}
+            sx={inputSx}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Button
+                    type="button"
+                    sx={{
+                      minWidth: "auto",
+                      padding: 0,
+                      color: "#00C853",
+                      fontSize: "12px",
+                      textTransform: "none",
+                      whiteSpace: "nowrap",
+
+                      "&:hover": {
+                        background: "transparent",
+                        color: "#00E676",
+                      },
+                    }}
+                  >
+                    {t("ChangePass.title11")}
+                  </Button>
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          {/* ================= SUBMIT ================= */}
           <Button
             type="submit"
+            disabled={load}
+            fullWidth
             sx={{
-              mt: 3,
-              backgroundColor: "#34d399",
-              color: "black",
-              width: "100%",
-              height: "50px",
-              borderRadius: "15px",
-              textTransform: "capitalize",
-              ":hover": {
-                backgroundColor: "#34d399",
+              height: "41px",
+              mt: "10px",
+
+              backgroundColor: "#2196F3",
+              color: "#fff",
+
+              borderRadius: "3px",
+
+              fontSize: "14px",
+              fontWeight: 500,
+
+              textTransform: "none",
+
+              "&:hover": {
+                backgroundColor: "#1E88E5",
+              },
+
+              "&.Mui-disabled": {
+                backgroundColor: "#1976D2",
+                color: "#aaa",
               },
             }}
           >
-            {t("ProfilePage.button_change")}
+            {load ? t("ChangePass.title12") : "OK"}
           </Button>
-        </form>
+        </Box>
       </Box>
     </Box>
   );
-}
+};
+
+export default ChangePaymentPassword;
