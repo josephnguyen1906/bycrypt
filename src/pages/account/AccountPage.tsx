@@ -8,11 +8,11 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import LoadingComponent from "@/components/Loading";
 import { useTranslation } from "react-i18next";
 import MenuIcon from "@mui/icons-material/Menu";
-import { CustomTabPanel } from "../DepositWithdraw/DepositWithdraw.page";
 import Tab1Page from "./tabs/Tab1Page";
 import Tab2Page from "./tabs/Tab2Page";
 import Tab3Page from "./tabs/Tab3Page";
 import Tab4Page from "./tabs/Tab4Page";
+import { CustomTabPanel } from "@/components/Tabs/TabComponent";
 
 function a11yProps(index: number) {
   return {

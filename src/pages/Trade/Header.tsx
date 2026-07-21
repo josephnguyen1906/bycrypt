@@ -3,7 +3,6 @@
 import { Box, Typography, IconButton, Stack, Button } from "@mui/material";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import CandlestickChartRoundedIcon from "@mui/icons-material/CandlestickChartRounded";
-import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
@@ -119,8 +118,8 @@ export default function Header({
               bgcolor: "none",
             },
           }}
-          href="/trade-chart"
-          // onClick={() => router.push("/trade-chart")}
+          // href="/trade-chart"
+          onClick={() => router.push("/trade-chart")}
         >
           <CandlestickChartRoundedIcon />
         </IconButton>

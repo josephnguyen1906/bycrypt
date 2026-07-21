@@ -1,0 +1,163 @@
+"use client";
+
+import { ArrowBackIosNew, Check } from "@mui/icons-material";
+import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
+
+export default function DepositSuccessPage() {
+  const router = useRouter();
+  const { t } = useTranslation();
+  return (
+    <Box
+      sx={{
+        maxWidth: { xs: "100%", sm: "448px" },
+        margin: "auto",
+        minHeight: "100vh",
+        background: "#0E0F18",
+        pb: "100px",
+        color: "#fff",
+      }}
+    >
+      {/* Header */}
+      <Box sx={{ p: 2 }}>
+        <IconButton sx={{ color: "#fff" }} onClick={() => router.back()}>
+          <ArrowBackIosNew />
+        </IconButton>
+      </Box>
+
+      <Stack
+        alignItems="center"
+        sx={{
+          px: 3,
+          flex: 1,
+        }}
+      >
+        {/* Success Icon */}
+        <Box
+          sx={{
+            position: "relative",
+            mt: 3,
+            mb: 4,
+          }}
+        >
+          <Box
+            sx={{
+              width: 120,
+              height: 120,
+              borderRadius: "50%",
+              bgcolor: "#39C58D",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Check
+              sx={{
+                fontSize: 70,
+                color: "#fff",
+              }}
+            />
+          </Box>
+
+          {/* Decoration */}
+          <Box
+            sx={{
+              width: 12,
+              height: 12,
+              bgcolor: "#39C58D",
+              position: "absolute",
+              left: -10,
+              top: 15,
+              transform: "rotate(30deg)",
+            }}
+          />
+
+          <Box
+            sx={{
+              width: 16,
+              height: 16,
+              bgcolor: "#39C58D",
+              position: "absolute",
+              right: -18,
+              top: -5,
+              transform: "rotate(25deg)",
+            }}
+          />
+
+          <Box
+            sx={{
+              width: 8,
+              height: 8,
+              bgcolor: "#39C58D",
+              position: "absolute",
+              right: 10,
+              bottom: -2,
+              transform: "rotate(45deg)",
+            }}
+          />
+        </Box>
+
+        <Typography fontSize={22} fontWeight={700} mb={6}>
+          {t("DepositWithdrawPage.title27")}
+        </Typography>
+
+        <Box width="100%">
+          <Typography fontSize={18} fontWeight={600}>
+            {t("DepositWithdrawPage.title27")}
+          </Typography>
+
+          <Typography mt={1} color="#8A8FA8" fontSize={15}>
+            {new Date().toLocaleString("vi-VN")}
+          </Typography>
+        </Box>
+
+        <Box width="100%" mt={7}>
+          <Typography fontSize={18} fontWeight={600}>
+            {t("DepositWithdrawPage.title27")}
+          </Typography>
+
+          <Typography mt={1} color="#8A8FA8">
+            {t("DepositWithdrawPage.title28")}
+            <Typography
+              component="span"
+              sx={{
+                color: "#1E88FF",
+                cursor: "pointer",
+                pl: "8px",
+              }}
+            >
+              {t("DepositWithdrawPage.title29")}
+            </Typography>
+          </Typography>
+        </Box>
+      </Stack>
+
+      {/* Bottom Button */}
+      <Box
+        sx={{
+          p: 2,
+        }}
+      >
+        <Button
+          fullWidth
+          variant="contained"
+          onClick={() => router.push("/deposit/history")}
+          sx={{
+            height: 50,
+            bgcolor: "#08B300",
+            borderRadius: "8px",
+            fontSize: 18,
+            mt: 5,
+            textTransform: "none",
+            "&:hover": {
+              bgcolor: "#079A00",
+            },
+          }}
+        >
+          {t("DepositWithdrawPage.title30")}
+        </Button>
+      </Box>
+    </Box>
+  );
+}

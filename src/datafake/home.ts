@@ -119,3 +119,23 @@ export const news = [
     ],
   },
 ];
+
+export const IconCoin: Record<string, string> = {
+  USDT: "/images/usdt-logo.png",
+  BTC: "https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=040",
+  ETH: "https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040",
+  SOL: "https://cryptologos.cc/logos/solana-sol-logo.png?v=040",
+  DOT: "https://cryptologos.cc/logos/polkadot-new-dot-logo.png?v=040",
+  XAUT: "https://cryptologos.cc/logos/tether-gold-xaut-logo.png?v=040",
+  XTZ: "https://cryptologos.cc/logos/tezos-xtz-logo.png?v=040",
+  ADA: "https://cryptologos.cc/logos/cardano-ada-logo.png?v=040",
+  MLN: "https://cryptologos.cc/logos/enzyme-mln-logo.png?v=040",
+  YFI: "https://cryptologos.cc/logos/yearn-finance-yfi-logo.png?v=040",
+  DAI: "https://cryptologos.cc/logos/multi-collateral-dai-dai-logo.png?v=040",
+  ETC: "https://cryptologos.cc/logos/ethereum-classic-etc-logo.png?v=040",
+  XRP: "https://cryptologos.cc/logos/xrp-xrp-logo.png?v=040",
+  LTC: "https://cryptologos.cc/logos/litecoin-ltc-logo.png?v=040",
+  USDC: "https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040",
+  KNC: "https://cryptologos.cc/logos/kyber-network-crystal-v2-knc-logo.png?v=040",
+  DOGE: "https://cryptologos.cc/logos/dogecoin-doge-logo.png?v=040",
+};

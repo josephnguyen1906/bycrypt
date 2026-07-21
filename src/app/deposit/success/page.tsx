@@ -1,6 +1,7 @@
 import Deposit from "@/pages/DepositWithdraw/Deposit";
+import DepositSuccessPage from "@/pages/DepositWithdraw/DepositSuccessPage";
 import React from "react";
 
 export default function page() {
-  return <Deposit />;
+  return <DepositSuccessPage />;
 }

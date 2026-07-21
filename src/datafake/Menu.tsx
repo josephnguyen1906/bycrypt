@@ -323,8 +323,28 @@ export const MenuAset2 = [
 ];
 
 export const MenuAccount = [
-  { id: 1, icon: <AccountMenu1Icon />, name: "AccountPage.menuTab1" },
-  { id: 2, icon: <AccountMenu2Icon />, name: "AccountPage.menuTab2" },
-  { id: 3, icon: <AccountMenu3Icon />, name: "AccountPage.menuTab3" },
-  { id: 4, icon: <AccountMenu4Icon />, name: "AccountPage.menuTab4" },
+  {
+    id: 1,
+    icon: <AccountMenu1Icon />,
+    name: "AccountPage.menuTab1",
+    link: "/deposit",
+  },
+  {
+    id: 2,
+    icon: <AccountMenu2Icon />,
+    name: "AccountPage.menuTab2",
+    link: "#",
+  },
+  {
+    id: 3,
+    icon: <AccountMenu3Icon />,
+    name: "AccountPage.menuTab3",
+    link: "#",
+  },
+  {
+    id: 4,
+    icon: <AccountMenu4Icon />,
+    name: "AccountPage.menuTab4",
+    link: "#",
+  },
 ];

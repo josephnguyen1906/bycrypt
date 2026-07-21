@@ -1,105 +1,66 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { styled } from "@mui/material/styles";
-import {
-  Autocomplete,
-  Box,
-  Button,
-  FormControl,
-  IconButton,
-  InputAdornment,
-  InputBase,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Tab,
-  Tabs,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import { toast } from "react-toastify";
 import {
   getMyWallet,
   getWebsiteConfig,
-  sellCoins,
   topUpCoins,
 } from "@/services/User.service";
-import { formatCurrency } from "@/utils/formatMoney";
-import useAuth from "@/hook/useAuth";
-import TradingViewTickerTape from "@/components/ChartView/TradingViewTickerTape";
-import AssetChartView from "@/components/ChartView/AssetChartView";
 import {
-  CopyAllOutlined,
-  Visibility,
-  VisibilityOff,
+  ArrowBackIosNew,
+  ContentCopy,
+  DescriptionOutlined,
+  FileUploadOutlined,
 } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/navigation";
-import Deposit from "./Deposit";
-import Convert from "./Convert";
-import Withdraw from "./Withdraw";
-import GuidePopup from "@/components/popup/GuidePopup";
-import { NextIcon, PreviousIcon } from "@/shared/Svgs/Svg.component";
-import Image from "next/image";
-import { useUserStore } from "@/stores/useUserStore";
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-type TabProps = {
-  value: number;
-};
-interface CountryType {
-  id: number;
-  name: string;
-  title: string;
-  addresss: string;
-  bank: number;
-  deposit_min: number;
-  withdraw_min: number;
-  withdraw_max: number;
-  withdraw_fee: number;
-  suggested?: boolean;
-}
-
-export function CustomTabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ p: 2 }}>{children}</Box>}
-    </div>
-  );
-}
-
-export function a11yProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
+import QRCode from "react-qr-code";
+import { toast } from "react-toastify";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
 
 export default function DepositWithdrawPage() {
   const { t } = useTranslation();
-  const [amount, setAmount] = useState<number | null>(null);
+  const [amount, setAmount] = useState("");
+  const [address, setAddress] = useState("");
+  const [coin, setCoin] = useState<string>();
+  const [bank, setbank] = useState(0);
+  const [method, setMethod] = useState(2);
+  const [wallet, setWallet] = useState<any>(null);
+  const [depositMin, setDepositMin] = useState(0);
   const [configs, setConfigs] = useState<any>();
+  const [frontImage, setFrontImage] = useState<File>();
   const router = useRouter();
-  const { user, fetchUser } = useUserStore();
+  const params = useParams();
+  const id = params?.id as string;
+
+  const handleFrontChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setFrontImage(file);
+    }
+  };
 
   useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
-
+    const referral = async () => {
+      const res: any = await getMyWallet();
+      if (res.status === true) {
+        const data = res.data.find((item: any) => item.id == id);
+        setWallet(data);
+        setCoin(data?.id?.toString() || "2");
+        setbank(data?.bank || 0);
+        setAddress(data?.addresss || "");
+        setDepositMin(data?.deposit_min || 0);
+      }
+    };
+    referral();
+  }, []);
   useEffect(() => {
     const referral = async () => {
       try {
@@ -115,189 +76,339 @@ export default function DepositWithdrawPage() {
     referral();
   }, []);
 
+  const handleSubmit = async () => {
+    if (!frontImage) {
+      toast.warning(t("Toast.Desposit1"));
+      return;
+    }
+    if (!amount || !method || !coin) {
+      toast.warning(t("Toast.Desposit2"));
+      return;
+    }
+    if (Number(amount) < depositMin) {
+      toast.warning(t("Toast.Desposit11") + depositMin);
+      return;
+    }
+    try {
+      const formData = new FormData();
+      formData.append("cid", coin);
+      formData.append("amount", amount);
+      formData.append("payimg", frontImage);
+      formData.append("method", "2");
+
+      await topUpCoins(formData);
+      router.push("/deposit/success");
+      setAmount("");
+      setMethod(0);
+    } catch (error: any) {
+      toast.error(t("Toast.Desposit4"));
+    }
+  };
+
   return (
     <Box
       sx={{
-        width: "100%",
-
-        background: "#141A1F",
-        paddingTop: {
-          xs: "10px",
-          sm: "80px",
-        },
-        marginTop: {
-          xs: "0",
-          sm: "50px",
-        },
-        height: "100vh",
+        maxWidth: { xs: "100%", sm: "448px" },
+        margin: "auto",
+        minHeight: "100vh",
+        background: "#0E0F18",
+        pb: "100px",
       }}
     >
       <Box
         sx={{
-          width: { xs: "100%", sm: "500px" },
-          backgroundColor: "#202630",
-          margin: "auto",
-          height: { xs: "100vh", sm: "500px" },
-          borderRadius: {
-            xs: 0,
-            sm: "10px",
-          },
+          bgcolor: "#0D0E18",
+          color: "#fff",
         }}
       >
+        {/* Header */}
         <Box
           sx={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            textAlign: "center",
-            borderBottom: "1px solid hsla(0,0%,100%,.050980392156862744)",
+            height: 60,
+            px: 2,
+            display: "flex",
             alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
-          <IconButton onClick={() => router.back()}>
-            <PreviousIcon width="25px" height="20px" />
+          <IconButton sx={{ color: "#fff" }} onClick={() => router.back()}>
+            <ArrowBackIosNew />
           </IconButton>
-          <Typography variant="h5" color={"white"}>
-            {t("AssetPage.menu2")}
+
+          <Typography fontSize={18} fontWeight={500}>
+            {t("DepositWithdrawPage.title8")}
           </Typography>
-          <Button
-            onClick={() => router.push("/deposit/history")}
+
+          <IconButton sx={{ color: "#fff" }}>
+            <DescriptionOutlined />
+          </IconButton>
+        </Box>
+
+        <Stack
+          spacing={3}
+          alignItems="center"
+          sx={{
+            px: 3,
+            pt: 2,
+          }}
+        >
+          {/* Title */}
+          <Typography fontSize={24} fontWeight={500}>
+            {wallet?.title} {t("DepositWithdrawPage.title9")}
+          </Typography>
+
+          {/* QR */}
+          <Box
             sx={{
+              bgcolor: "#fff",
+              p: 2,
+            }}
+          >
+            <QRCode value={address || ""} size={150} />
+          </Box>
+
+          {/* Save QR */}
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: "#06b000",
+              px: 5,
+              py: 1,
+              borderRadius: 0,
+              fontSize: 13,
               "&:hover": {
-                background: "#202630",
+                bgcolor: "#05a000",
               },
             }}
           >
-            <Image
-              src="/images/history-deposit.png"
-              width={50}
-              height={50}
-              alt=""
-              style={{ height: "50px", objectFit: "contain" }}
-            />
+            {t("DepositWithdrawPage.title10")}
           </Button>
-        </Box>
-        <Box sx={{ width: "100%" }} padding={2}>
-          <Box sx={{ background: "#2B313B", borderRadius: "10px", p: 2 }}>
-            <Typography
-              sx={{ color: "white", fontSize: "14px", fontWeight: 600 }}
-            >
-              {t("StakingPage.input_quantity")} (USD)
+
+          {/* Wallet */}
+          <Typography
+            sx={{
+              mt: 4,
+              wordBreak: "break-all",
+              textAlign: "center",
+              fontSize: 18,
+            }}
+          >
+            {address}
+          </Typography>
+
+          <Button
+            variant="outlined"
+            onClick={() => {
+              navigator.clipboard.writeText(address || "");
+            }}
+            sx={{
+              width: 170,
+              height: 44,
+              color: "#fff",
+              borderColor: "#777",
+              borderRadius: 0,
+              fontSize: 13,
+            }}
+          >
+            {t("DepositWithdrawPage.title11")}
+          </Button>
+
+          {/* Sender */}
+          <Box width="100%">
+            <Typography mb={1} fontSize={14}>
+              {t("DepositWithdrawPage.title12")}
             </Typography>
-            <InputBase
-              type="string"
-              value={amount}
-              onChange={(e) => {
-                setAmount(Number(e.target.value));
+
+            <TextField
+              fullWidth
+              placeholder={t("DepositWithdrawPage.title13")}
+              InputProps={{
+                endAdornment: (
+                  <Typography
+                    sx={{
+                      color: "#1e90ff",
+                      cursor: "pointer",
+                      fontSize: 12,
+                      width: "30px",
+                    }}
+                    onClick={async () => {
+                      const text = await navigator.clipboard.readText();
+                      setAddress(text);
+                    }}
+                  >
+                    {t("DepositWithdrawPage.title14")}
+                  </Typography>
+                ),
               }}
               sx={{
-                width: "100%",
-                mt: "5px",
-                mb: "10px",
-                "& input": {
-                  border: "1px solid rgb(220, 223, 230)",
-                  borderRadius: "10px",
-                  height: "40px",
+                "& .MuiOutlinedInput-root": {
+                  bgcolor: "#1A1B25",
                   color: "#fff",
-                  fontSize: "16px",
-                  fontWeight: 700,
-                  pl: "10px",
+                  borderRadius: 0,
+                },
+                "& fieldset": {
+                  border: 0,
                 },
               }}
             />
-            <Typography
-              sx={{
-                color: "white",
-                fontSize: "14px",
-                fontWeight: 500,
-              }}
-            >
-              {Number(amount).toLocaleString()} USDT
-            </Typography>
           </Box>
-          <Box
-            sx={{
-              mt: "10px",
-              display: "flex",
-              justifyContent: "space-between",
-              pb: "100px",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "grey",
-                fontSize: "14px",
-                fontWeight: 500,
-              }}
-            >
-              {t("AssetPage.Deposit_a")}
-            </Typography>{" "}
-            <Typography
-              sx={{
-                color: "white",
-                fontSize: "14px",
-                fontWeight: 500,
-              }}
-            >
-              {Number(amount).toLocaleString()} USDT
+
+          {/* Amount */}
+          <Box width="100%">
+            <Typography mb={1} fontSize={14}>
+              {t("DepositWithdrawPage.title15")}
             </Typography>
-          </Box>
-          <Box
-            sx={{
-              p: 1,
-              textAlign: "center",
-              position: {
-                xs: "fixed",
-                sm: "relative",
-              },
-              bottom: {
-                xs: 80,
-                sm: 0,
-              },
-              left: {
-                xs: 0,
-                sm: 0,
-              },
-            }}
-          >
-            <Typography
+
+            <TextField
+              fullWidth
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder={t("DepositWithdrawPage.title16")}
               sx={{
-                color: "white",
-                fontSize: "14px",
-                fontWeight: 500,
+                "& .MuiOutlinedInput-root": {
+                  bgcolor: "#1A1B25",
+                  color: "#fff",
+                  borderRadius: 0,
+                },
+                "& fieldset": {
+                  border: 0,
+                },
               }}
-            >
-              {t("AssetPage.noti")}
+            />
+          </Box>
+
+          {/* Network */}
+          <Box width="100%">
+            <Typography mb={2} fontSize={14}>
+              {t("DepositWithdrawPage.title17")}
+            </Typography>
+
+            <Stack direction="row" spacing={2}>
+              {wallet?.deposit_network == "ERC20" && (
+                <Button
+                  onClick={() => setMethod(1)}
+                  sx={{
+                    width: 120,
+                    height: 50,
+                    border:
+                      method === 1 ? "1px solid #00d000" : "1px solid #666",
+                    color: method === 1 ? "#00d000" : "#fff",
+                  }}
+                >
+                  ERC20
+                </Button>
+              )}
+              {wallet?.deposit_network == "TRC20" && (
+                <Button
+                  onClick={() => setMethod(2)}
+                  sx={{
+                    width: 120,
+                    height: 50,
+                    border:
+                      method === 2 ? "1px solid #00d000" : "1px solid #666",
+                    color: method === 2 ? "#00d000" : "#fff",
+                  }}
+                >
+                  TRC20
+                </Button>
+              )}
+            </Stack>
+          </Box>
+
+          {/* Upload */}
+          <Box width="100%">
+            <Typography mb={2} fontSize={14}>
+              {t("DepositWithdrawPage.title18")}
             </Typography>
             <Button
-              onClick={() => {
-                if (user) {
-                  const newWindow = window.open(
-                    configs.telegram,
-                    "_blank",
-                    "noopener,noreferrer",
-                  );
-                  if (newWindow) {
-                    newWindow.opener = null;
-                  }
-                } else {
-                  toast.error(t("BuySellPage.title"));
-                }
-              }}
+              component="label"
               sx={{
-                width: "100%",
-                background: "linear-gradient(90deg,#41efa6,#02c173)",
-                borderRadius: "20px",
-                height: "40px",
-                color: "white",
-                textTransform: "capitalize",
-                mb: 3,
-                mt: 2,
+                width: 120,
+                height: 120,
+                minWidth: 120,
+                p: 0,
+                border: "1px dashed #fff",
+                background: "#474B62",
+                overflow: "hidden",
+                position: "relative",
+                "&:hover": {
+                  background: "#474B62",
+                },
               }}
             >
-              {t("SignupPage.button3")}
+              {frontImage ? (
+                <Box
+                  component="img"
+                  src={URL.createObjectURL(frontImage)}
+                  alt="Payment"
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              ) : (
+                <CameraAltIcon
+                  sx={{
+                    color: "#fff",
+                    fontSize: 40,
+                  }}
+                />
+              )}
+
+              <input
+                hidden
+                type="file"
+                accept="image/*"
+                onChange={handleFrontChange}
+              />
             </Button>
           </Box>
-        </Box>
+
+          <Box
+            sx={{
+              p: "15px",
+              background: "#1A1B24",
+              borderRadius: "8px",
+              mt: 5,
+              pt: 3,
+            }}
+          >
+            <Typography mb={2} fontSize={16} sx={{ color: "white" }}>
+              {t("DepositWithdrawPage.title21")}
+            </Typography>
+            <Typography mb={2} fontSize={14} sx={{ color: "#868c9a" }}>
+              {t("DepositWithdrawPage.title22")}
+            </Typography>
+            <Typography mb={2} fontSize={14} sx={{ color: "#868c9a" }}>
+              {t("DepositWithdrawPage.title23")}
+            </Typography>
+            <Typography mb={2} fontSize={14} sx={{ color: "#868c9a" }}>
+              {t("DepositWithdrawPage.title24")}
+            </Typography>
+            <Typography mb={2} fontSize={14} sx={{ color: "#868c9a" }}>
+              {t("DepositWithdrawPage.title25")}
+            </Typography>
+            <Typography mb={2} fontSize={14} sx={{ color: "#868c9a" }}>
+              {t("DepositWithdrawPage.title26")}
+            </Typography>
+            <Button
+              fullWidth
+              onClick={handleSubmit}
+              variant="contained"
+              sx={{
+                mt: 3,
+                height: 52,
+                bgcolor: "#06b000",
+                fontSize: 18,
+                borderRadius: "8px",
+                textTransform: "capitalize",
+              }}
+            >
+              {t("DepositWithdrawPage.title20")}
+            </Button>
+          </Box>
+        </Stack>
       </Box>
     </Box>
   );
