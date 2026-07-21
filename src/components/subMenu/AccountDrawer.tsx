@@ -157,7 +157,7 @@ export default function AccountDrawer({ open, onClose }: AccountDrawerProps) {
 
   const handleNavigate = (link: string, isLogin: boolean) => {
     onClose();
-    if (isLogin) {
+    if (isLogin && !user) {
       router.push("/login");
     } else {
       router.push(link);

@@ -33,7 +33,6 @@ export const COINS = [
   "ADAUSDT",
   "MLNUSDT",
   "YFIUSDT",
-  "DAIUSDT",
   "ETCUSDT",
   "XRPUSDT",
   "LTCUSDT",
