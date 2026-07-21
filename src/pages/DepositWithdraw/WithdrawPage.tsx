@@ -107,7 +107,7 @@ export default function WithdrawPage() {
 
       setWalletAddress(text);
     } catch (error) {
-      toast.error("Không thể lấy dữ liệu từ clipboard");
+      toast.error(t("Toast.Withdraw1"));
     }
   };
 
@@ -126,35 +126,35 @@ export default function WithdrawPage() {
   const hanldeWithdraw = async () => {
     try {
       if (!selectedCoin) {
-        toast.error("Vui lòng chọn loại tiền");
+        toast.error(t("Toast.Withdraw2"));
         return;
       }
       if (!walletAddress.trim()) {
-        toast.error("Vui lòng nhập địa chỉ ví");
+        toast.error(t("Toast.Withdraw3"));
         return;
       }
       if (!amount || amount <= 0) {
-        toast.error("Vui lòng nhập số tiền rút");
+        toast.error(t("Toast.Withdraw4"));
         return;
       }
       if (amount < selectedCoin.txminnum) {
         toast.error(
-          `Số tiền rút tối thiểu là ${selectedCoin.txminnum} ${selectedCoin.name.toUpperCase()}`,
+          `${t("Toast.Withdraw5")} ${selectedCoin.txminnum} ${selectedCoin.name.toUpperCase()}`,
         );
         return;
       }
       if (selectedCoin.txmaxnum > 0 && amount > selectedCoin.txmaxnum) {
         toast.error(
-          `Số tiền rút tối đa là ${selectedCoin.txmaxnum} ${selectedCoin.name.toUpperCase()}`,
+          `${t("Toast.Withdraw6")}  ${selectedCoin.txmaxnum} ${selectedCoin.name.toUpperCase()}`,
         );
         return;
       }
       if (amount > availableBalance) {
-        toast.error("Số dư không đủ");
+        toast.error(t("Toast.Withdraw7"));
         return;
       }
       if (!password) {
-        toast.error("Vui lòng nhập mật khẩu thanh toán");
+        toast.error(t("Toast.Withdraw8"));
         return;
       }
 
@@ -174,7 +174,7 @@ export default function WithdrawPage() {
         fetchUser?.();
       }
     } catch (err: any) {
-      toast.error(err?.message || "Rút tiền thất bại");
+      toast.error(t("Toast.Withdraw9"));
     }
   };
 

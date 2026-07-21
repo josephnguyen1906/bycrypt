@@ -86,7 +86,7 @@ export default function DepositWithdrawPage() {
       return;
     }
     if (Number(amount) < depositMin) {
-      toast.warning(t("Toast.Desposit11") + depositMin);
+      toast.warning(t("Toast.Desposit3") + depositMin);
       return;
     }
     try {

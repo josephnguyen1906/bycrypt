@@ -76,13 +76,13 @@ export default function TransferPage() {
     try {
       if (method) {
         if (amount.length == 0) {
-          toast.warning(t("DepositWithdrawPage.transferInput"));
+          toast.warning(t("Toast.transferInput"));
         }
         const res = await postTranfer(method.id, amount, from, to);
 
         if (res.status) {
           setAmount("");
-          toast.success(t("DepositWithdrawPage.transferSuccess"));
+          toast.success(t("Toast.transferSuccess"));
           historyTranfer();
         }
       }

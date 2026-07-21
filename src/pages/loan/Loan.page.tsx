@@ -115,8 +115,6 @@ export default function LoanSupportPage() {
       await fetchUser();
       setFrontImage(undefined);
     } catch (error: any) {
-      console.error("Loan submit error:", error);
-
       toast.error(t(error?.message || "Toast.update_error"));
     } finally {
       setSubmitting(false);

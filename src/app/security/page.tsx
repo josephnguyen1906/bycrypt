@@ -1,6 +1,0 @@
-import ChangePassword from "@/pages/Profile/ChangePassword";
-import React from "react";
-
-export default function page() {
-  return <ChangePassword />;
-}

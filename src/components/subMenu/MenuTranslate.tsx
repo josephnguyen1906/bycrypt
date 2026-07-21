@@ -6,22 +6,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Typography from "@mui/material/Typography";
 import { Button, styled } from "@mui/material";
 import { useRouter } from "next/navigation";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import {
-  GiftMenuIcon,
-  HistoryMenuIcon,
-  InvoiceMenuIcon,
-  LiveChatMenuIcon,
-  LogoutMenuIcon,
-  NapIcon,
-  OverviewIcon,
-  ProfileIcon,
-  RutIcon,
-  UserIcon,
-} from "@/shared/Svgs/Svg.component";
-import NavigationGame from "@/hook/NavigationGame";
-import { MenuAset, menuItems } from "@/datafake/Menu";
-import Link from "next/link";
 import TranslateGoogle from "../GgTranstale/TranslateContext.component";
 
 export interface UserProps {
@@ -85,7 +69,7 @@ export default function MenuTranslate({ user }: UserProps) {
   const handleClick = (
     event: React.MouseEvent<HTMLElement>,
     type: "profile" | "submenu",
-    id?: string
+    id?: string,
   ) => {
     if (type === "profile") {
       if (profileAnchorEl) {

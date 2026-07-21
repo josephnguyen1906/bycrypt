@@ -1,5 +1,4 @@
-import ChangePassword from "@/pages/Profile/ChangePassword";
-import ChangePass from "@/pages/Profile/security/ChangePass";
+import ChangePass from "@/pages/account/ChangePass";
 import React from "react";
 
 export default function page() {

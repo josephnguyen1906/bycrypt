@@ -3,9 +3,14 @@
 import { useEffect, useState } from "react";
 import { Box, Button, Grid, InputBase, Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { createOrder, getBuySellConfig } from "@/services/User.service";
+import {
+  createOrder,
+  getBuySellConfig,
+  getContractjc,
+} from "@/services/User.service";
 import { toast } from "react-toastify";
 import { IUser } from "@/shared/interfaces";
+import OrderConfirmModal from "@/components/popup/OrderConfirmModal";
 
 const optionTimes = [
   { time: "60s", profit: "9~9%" },
@@ -23,12 +28,14 @@ export default function TradePanel({
   user: IUser | null;
   onSuccess: (a: any) => void;
 }) {
-  const [selected, setSelected] = useState(0);
+  const [openConfirm, setOpenConfirm] = useState(true);
+  const [tab, setTab] = useState("1");
   const [amount, setAmount] = useState("");
   const [type, setType] = useState<any>(null);
   const [hytime, setHytime] = useState<any>(null);
   const [buySellConfig, setBuySellConfig] = useState<any>(null);
   const [hyykbl, setHyykbl] = useState<any>(null);
+  const [orderOpen, setOderOpen] = useState<any>(null);
   const { t } = useTranslation();
   useEffect(() => {
     const referral = async () => {
@@ -44,6 +51,7 @@ export default function TradePanel({
             hy_ykbl: data.hy_ykbl?.split(",") || [],
             hy_tzed: data.hy_tzed?.split(",") || [],
             hy_min: data.hy_min?.split(",") || [],
+
             hy_min_per_frame: data.hy_min_per_frame?.split(",") || [],
             hy_max_per_frame: data.hy_max_per_frame?.split(",") || [],
           };
@@ -59,13 +67,14 @@ export default function TradePanel({
     };
     referral();
   }, []);
-  const handleSubmit = async () => {
+
+  const handleSubmit = async (method: string) => {
     if (user?.rzstatus !== 2) {
-      toast.error(t("Toast.buysell5"));
+      toast.error(t("Toast.buysell1"));
       return;
     }
     if (!hytime || !amount) {
-      toast.error(t("Toast.buysell1"));
+      toast.error(t("Toast.buysell2"));
       return;
     }
 
@@ -74,14 +83,18 @@ export default function TradePanel({
       formData.append("ctime", hytime);
       formData.append("amount", amount);
       formData.append("coinname", symbol);
-      formData.append("method", "1");
+      formData.append("method", method);
       formData.append("uprate", hyykbl);
 
-      await createOrder(formData).then((res) => {
-        if (res.data) {
-          onSuccess(res.data);
+      const res = await createOrder(formData);
+
+      if (res?.data) {
+        const his: any = await getContractjc();
+        if (his.data?.length > 0) {
+          setOderOpen(his.data[0]);
         }
-      });
+        setOpenConfirm(true);
+      }
       toast.success(t("Toast.buysell3"));
     } catch (error: any) {
       toast.error(t("Toast.buysell4"));
@@ -250,6 +263,10 @@ export default function TradePanel({
             bgcolor: "#09D57A",
           },
         }}
+        onClick={() => {
+          handleSubmit("1");
+          setTab("1");
+        }}
       >
         {t("TradePage.title6")}
       </Button>
@@ -279,6 +296,10 @@ export default function TradePanel({
       {/* Sell */}
       <Button
         fullWidth
+        onClick={() => {
+          handleSubmit("2");
+          setTab("2");
+        }}
         sx={{
           mt: 3,
           height: 47,
@@ -317,6 +338,15 @@ export default function TradePanel({
           </Typography>
         </Stack>
       </Stack>
+      <OrderConfirmModal
+        open={openConfirm}
+        onClose={() => {
+          setOpenConfirm(false);
+        }}
+        data={orderOpen}
+        type={tab}
+        profitability={Number(hyykbl)}
+      />
     </Box>
   );
 }

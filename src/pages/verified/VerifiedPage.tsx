@@ -56,7 +56,7 @@ export default function VerifiedPage() {
 
   const handleSubmit = async () => {
     if (!frontImage || !backImage || !fullName || !cardNumber) {
-      alert("Vui lòng upload ảnh căn cước công dân lên");
+      toast.success(t("Toast.verifide3"));
       return;
     }
 

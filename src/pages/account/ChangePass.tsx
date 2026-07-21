@@ -32,7 +32,7 @@ export default function ChangePass() {
     e.preventDefault();
 
     if (newPassword !== confirmPassword) {
-      toast.warning("Mật khẩu mới không trùng khớp!");
+      toast.warning(t("Toast.change_pass3"));
       return;
     }
 

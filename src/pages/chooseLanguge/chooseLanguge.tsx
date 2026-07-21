@@ -26,12 +26,86 @@ export default function LanguagePage() {
     router.push("/");
   };
 
+  const listLanguage = [
+    {
+      id: 0,
+      code: "en",
+      title: "English",
+      img: "https://flagcdn.com/us.svg",
+    },
+    {
+      id: 1,
+      code: "vi",
+      title: "Tiếng Việt",
+      img: "https://flagcdn.com/vn.svg",
+    },
+    {
+      id: 2,
+      code: "ja",
+      title: "日本語",
+      img: "https://flagcdn.com/jp.svg",
+    },
+    {
+      id: 3,
+      code: "id",
+      title: "Bahasa Indonesia",
+      img: "https://flagcdn.com/id.svg",
+    },
+    {
+      id: 4,
+      code: "de",
+      title: "Deutsch",
+      img: "https://flagcdn.com/de.svg",
+    },
+    {
+      id: 5,
+      code: "es",
+      title: "Español",
+      img: "https://flagcdn.com/es.svg",
+    },
+    {
+      id: 6,
+      code: "po",
+      title: "Portugal",
+      img: "https://flagcdn.com/pt.svg",
+    },
+    {
+      id: 7,
+      code: "fr",
+      title: "Français",
+      img: "https://flagcdn.com/fr.svg",
+    },
+    {
+      id: 8,
+      code: "it",
+      title: "Italiano",
+      img: "https://flagcdn.com/it.svg",
+    },
+    {
+      id: 9,
+      code: "ko",
+      title: "한국인",
+      img: "https://flagcdn.com/kr.svg",
+    },
+    {
+      id: 10,
+      code: "th",
+      title: "ไทย",
+      img: "https://flagcdn.com/th.svg",
+    },
+    {
+      id: 11,
+      code: "gr",
+      title: "Ελληνικά",
+      img: "https://flagcdn.com/gr.svg",
+    },
+  ];
   return (
     <Box
       sx={{
         width: "100%",
         minHeight: "100vh",
-        background: "#141A1F",
+        background: "#0E0F18",
         paddingTop: {
           xs: "0px",
           sm: "80px",
@@ -41,7 +115,7 @@ export default function LanguagePage() {
       <Box
         sx={{
           width: { xs: "100%", sm: "500px" },
-          backgroundColor: "#202630",
+          backgroundColor: "#0E0F18",
           margin: "auto",
           minHeight: { xs: "100vh", sm: "700px" },
           borderRadius: {
@@ -59,17 +133,22 @@ export default function LanguagePage() {
         {/* header */}
         <Box
           sx={{
-            display: "flex",
-            alignItems: "center",
+            width: "100%",
+            position: "relative",
             mb: 3,
           }}
         >
           <IconButton
             onClick={() => router.back()}
-            sx={{ background: "#232932" }}
+            sx={{
+              background: "none",
+              position: "absolute",
+              top: "0",
+              left: "10px",
+            }}
           >
             <ArrowBackIosNewIcon
-              sx={{ cursor: "pointer", color: "white", fontSize: "14px" }}
+              sx={{ cursor: "pointer", color: "white", fontSize: "20px" }}
             />
           </IconButton>
 
@@ -93,84 +172,36 @@ export default function LanguagePage() {
             width: "100%",
             display: "flex",
             flexDirection: "column",
-            gap: "10px",
+            gap: "15px",
           }}
         >
-          {/* English */}
-          <Box
-            sx={{
-              height: "50px",
-              cursor: "pointer",
-              padding: "10px",
-              display: "flex",
-              gap: "20px",
-              alignItems: "center",
-              color: lang === "en" ? "#4ade80" : "white",
-              background: "#1f2937",
-              borderRadius: "15px",
-              border: lang === "en" ? "1px solid #4ade80" : "none",
-            }}
-            onClick={() => changeLanguage("en")}
-          >
-            <Image
-              src="https://flagcdn.com/us.svg"
-              width={30}
-              height={30}
-              style={{ height: "20px", objectFit: "contain" }}
-              alt="us"
-            />
-            English
-          </Box>
-
-          {/* Vietnamese */}
-          <Box
-            sx={{
-              height: "50px",
-              cursor: "pointer",
-              padding: "10px",
-              display: "flex",
-              gap: "20px",
-              alignItems: "center",
-              color: lang === "vi" ? "#4ade80" : "white",
-              background: "#1f2937",
-              borderRadius: "15px",
-              border: lang === "vi" ? "1px solid #4ade80" : "none",
-            }}
-            onClick={() => changeLanguage("vi")}
-          >
-            <Image
-              src="https://flagcdn.com/vn.svg"
-              width={30}
-              height={30}
-              style={{ height: "20px", objectFit: "contain" }}
-              alt="vn"
-            />
-            Tiếng việt
-          </Box>
-          <Box
-            sx={{
-              height: "50px",
-              cursor: "pointer",
-              padding: "10px",
-              display: "flex",
-              gap: "20px",
-              alignItems: "center",
-              color: lang === "ja" ? "#4ade80" : "white",
-              background: "#1f2937",
-              borderRadius: "15px",
-              border: lang === "ja" ? "1px solid #4ade80" : "none",
-            }}
-            onClick={() => changeLanguage("ja")}
-          >
-            <Image
-              src="https://flagcdn.com/jp.svg"
-              width={30}
-              height={30}
-              style={{ height: "20px", objectFit: "contain" }}
-              alt="jp"
-            />
-            日本語
-          </Box>
+          {listLanguage.map((item) => (
+            <Box
+              key={item.id}
+              sx={{
+                height: "50px",
+                cursor: "pointer",
+                padding: "10px",
+                display: "flex",
+                gap: "20px",
+                alignItems: "center",
+                color: lang === item.code ? "#4ade80" : "white",
+                background: "#1f2937",
+                borderRadius: "15px",
+                border: lang === item.code ? "1px solid #4ade80" : "none",
+              }}
+              onClick={() => changeLanguage(item.code)}
+            >
+              <Image
+                src={item.img}
+                width={30}
+                height={30}
+                style={{ height: "20px", objectFit: "contain" }}
+                alt={item.code}
+              />
+              {item.title}
+            </Box>
+          ))}
         </Box>
       </Box>
     </Box>

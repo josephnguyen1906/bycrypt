@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import "./Event.css";
 import Image from "next/image";
 import LoadingComponent from "@/components/Loading";
-import NavigationGameComponent from "@/hook/NavigationGame";
-import swal from "sweetalert";
 import Carousel from "react-multi-carousel";
 import { slideImg, slideImgPromotion } from "@/datafake/slide";
 import { IpromotionResponse } from "@/interface/promotion.interface";

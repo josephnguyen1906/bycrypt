@@ -50,20 +50,7 @@ import {
   UpIcon,
   WarningIcon,
 } from "@/shared/Svgs/Svg.component";
-import NavigationGame from "@/hook/NavigationGame";
-import {
-  MenuAset,
-  MenuAset2,
-  menuItemMobile,
-  menuItemMobile2,
-  menuItems,
-} from "@/datafake/Menu";
-import TranslateGoogle from "../GgTranstale/TranslateContext.component";
-import LanguageSwitcher from "../Language/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
-import AddToHomeScreenButton from "../Button/AddToHomeScreenButton";
-import { Visibility } from "@mui/icons-material";
-import { formatDateTime } from "@/utils/formatDateTime";
 import {
   getFinaceCoin,
   getListCoin,

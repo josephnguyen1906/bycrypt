@@ -91,7 +91,8 @@ export default function OrderConfirmModal({
       const left = data.selltime
         ? resolveSecondsLeft()
         : Math.max(
-            fallbackDurationSeconds - Math.floor((Date.now() - startedAt) / 1000),
+            fallbackDurationSeconds -
+              Math.floor((Date.now() - startedAt) / 1000),
             0,
           );
       setCountdown(left);
@@ -179,36 +180,36 @@ export default function OrderConfirmModal({
             </Box>
 
             <Typography textAlign="center" color="#7c8aa0" fontSize={13} mb={3}>
-              {t("BuySellPage.title1")}
+              {t("Toast.title1")}
             </Typography>
 
             {/* Info */}
             <InfoRow
               label={t("ProfilePage.tran_type")}
               value={
-                type === "BUY" ? t("BuySellPage.BUY") : t("BuySellPage.SELL")
+                type === "1" ? t("TradePage.title6") : t("TradePage.title7")
               }
               color="green"
             />
             <InfoRow
-              label={t("AssetPage.quantity")}
+              label={t("HistoryPage.title4")}
               value={Number(data?.num).toLocaleString()}
             />
             <InfoRow
-              label={t("BuySellPage.Purchase")}
+              label={t("HistoryPage.price_buy")}
               value={Number(data?.buyprice).toLocaleString()}
             />
             <InfoRow
-              label={t("BuySellPage.duration")}
+              label={t("TradePage.title18")}
               value={`${data?.time} phút`}
             />
             <InfoRow
-              label={t("BuySellPage.Profitability")}
+              label={t("Toast.title2")}
               value={`${profitability}%`}
               color="green"
             />
             <InfoRow
-              label={t("BuySellPage.payout")}
+              label={t("Toast.title3")}
               value={Number(
                 (data?.num * (1 + profitability / 100)).toFixed(2),
               ).toLocaleString()}
@@ -231,30 +232,27 @@ export default function OrderConfirmModal({
             <InfoRow
               label={t("ProfilePage.tran_type")}
               value={
-                type === "BUY" ? t("BuySellPage.BUY") : t("BuySellPage.SELL")
+                type === "1" ? t("TradePage.title6") : t("TradePage.title7")
               }
               color="green"
             />
-            <InfoRow label={t("AssetPage.quantity")} value={dataOrder?.num} />
+            <InfoRow label={t("HistoryPage.title4")} value={dataOrder?.num} />
             <InfoRow
-              label={t("BuySellPage.Purchase")}
+              label={t("HistoryPage.price_buy")}
               value={Number(dataOrder?.buyprice).toLocaleString()}
             />
             <InfoRow
-              label={t("BuySellPage.price")}
+              label={t("HistoryPage.price_sell")}
               value={Number(dataOrder?.sellprice).toLocaleString()}
             />
+            <InfoRow label={t("TradePage.title18")} value={data?.time} />
             <InfoRow
-              label={t("BuySellPage.Transaction_time")}
-              value={data?.time}
-            />
-            <InfoRow
-              label={t("BuySellPage.Profitability")}
+              label={t("Toast.title2")}
               value={`${dataOrder?.hybl}%`}
               color="green"
             />
             <InfoRow
-              label={t("BuySellPage.Profit_loss")}
+              label={t("Toast.title3")}
               value={
                 dataOrder.is_win === 1
                   ? `+ ${Number(dataOrder?.ploss).toLocaleString()}`
@@ -264,11 +262,11 @@ export default function OrderConfirmModal({
             />
             {/* <InfoRow label="Handling fee" value="0.10" /> */}
             <InfoRow
-              label={t("BuySellPage.Opening")}
+              label={t("Toast.Opening")}
               value={formatDateTime(dataOrder?.buytime)}
             />
             <InfoRow
-              label={t("BuySellPage.Close")}
+              label={t("Toast.Close")}
               value={formatDateTime(dataOrder?.selltime)}
             />
 

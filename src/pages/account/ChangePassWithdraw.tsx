@@ -75,7 +75,7 @@ const ChangePaymentPassword = () => {
       if (response.status === true) {
         toast.success(
           user?.wdstatus === 1
-            ? t("Toast.change_pass4")
+            ? t("Toast.change_pass5")
             : t("Toast.change_pass6"),
         );
 
@@ -88,7 +88,7 @@ const ChangePaymentPassword = () => {
       } else {
         toast.error(
           user?.wdstatus === 1
-            ? t("Toast.change_pass5")
+            ? t("Toast.change_pass6")
             : t("Toast.change_pass7"),
         );
       }
