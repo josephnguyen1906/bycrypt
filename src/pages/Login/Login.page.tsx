@@ -13,6 +13,9 @@ import {
   IconButton,
   Link,
   InputAdornment,
+  List,
+  ListItemButton,
+  Dialog,
 } from "@mui/material";
 import { getWebsiteConfig, loginUser } from "@/services/User.service";
 import { toast } from "react-toastify";
@@ -22,7 +25,102 @@ import { NextIcon, PreviousIcon } from "@/shared/Svgs/Svg.component";
 import { useRouter } from "next/navigation";
 import CloseIcon from "@mui/icons-material/Close";
 import CancelIcon from "@mui/icons-material/Cancel";
+import SearchIcon from "@mui/icons-material/Search";
+import Image from "next/image";
+interface Country {
+  id: number;
+  name: string;
+  code: string;
+  phoneCode: string;
+  img: string;
+}
 
+const listLanguage = [
+  {
+    id: 0,
+    code: "en",
+    name: "English",
+    phoneCode: "1",
+    img: "https://flagcdn.com/us.svg",
+  },
+  {
+    id: 1,
+    code: "vi",
+    name: "Tiếng Việt",
+    phoneCode: "84",
+    img: "https://flagcdn.com/vn.svg",
+  },
+  {
+    id: 2,
+    code: "ja",
+    name: "日本語",
+    phoneCode: "81",
+    img: "https://flagcdn.com/jp.svg",
+  },
+  {
+    id: 3,
+    code: "id",
+    name: "Bahasa Indonesia",
+    phoneCode: "62",
+    img: "https://flagcdn.com/id.svg",
+  },
+  {
+    id: 4,
+    code: "de",
+    name: "Deutsch",
+    phoneCode: "49",
+    img: "https://flagcdn.com/de.svg",
+  },
+  {
+    id: 5,
+    code: "es",
+    name: "Español",
+    phoneCode: "34",
+    img: "https://flagcdn.com/es.svg",
+  },
+  {
+    id: 6,
+    code: "po",
+    name: "Portugal",
+    phoneCode: "351",
+    img: "https://flagcdn.com/pt.svg",
+  },
+  {
+    id: 7,
+    code: "fr",
+    name: "Français",
+    phoneCode: "33",
+    img: "https://flagcdn.com/fr.svg",
+  },
+  {
+    id: 8,
+    code: "it",
+    name: "Italiano",
+    phoneCode: "39",
+    img: "https://flagcdn.com/it.svg",
+  },
+  {
+    id: 9,
+    code: "ko",
+    name: "한국인",
+    phoneCode: "82",
+    img: "https://flagcdn.com/kr.svg",
+  },
+  {
+    id: 10,
+    code: "th",
+    name: "ไทย",
+    phoneCode: "66",
+    img: "https://flagcdn.com/th.svg",
+  },
+  {
+    id: 11,
+    code: "gr",
+    name: "Ελληνικά",
+    phoneCode: "30",
+    img: "https://flagcdn.com/gr.svg",
+  },
+];
 export default function LoginPage() {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
@@ -33,6 +131,17 @@ export default function LoginPage() {
   const handlePassword = (e: any) => setPassword(e.target.value);
   const handleUsername = (e: any) => setEmail(e.target.value);
   const toggleShowPassword = () => setShowPassword(!showPassword);
+  const [loginType, setLoginType] = useState<"phone" | "email">("phone");
+  const [phone, setPhone] = useState("");
+  const [countryModal, setCountryModal] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<Country>({
+    id: 0,
+    code: "en",
+    name: "English",
+    img: "https://flagcdn.com/us.svg",
+    phoneCode: "1",
+  });
+  const [countrySearch, setCountrySearch] = useState("");
   const [configs, setConfigs] = useState<any>();
   const router = useRouter();
 
@@ -135,6 +244,51 @@ export default function LoginPage() {
           >
             {t("LoginPage.title1")}
           </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              mb: 2,
+            }}
+          >
+            <Box
+              onClick={() => setLoginType("phone")}
+              sx={{
+                flex: 1,
+                height: 40,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "6px",
+                background: loginType === "phone" ? "#181923" : "transparent",
+                color: loginType === "phone" ? "#00A609" : "#92929B",
+                fontSize: "13px",
+                cursor: "pointer",
+                transition: "all .2s",
+              }}
+            >
+              {t("LoginPage.label3")}
+            </Box>
+
+            <Box
+              onClick={() => setLoginType("email")}
+              sx={{
+                flex: 1,
+                height: 40,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "6px",
+                background: loginType === "email" ? "#181923" : "transparent",
+                color: loginType === "email" ? "#00A609" : "#92929B",
+                fontSize: "13px",
+                cursor: "pointer",
+                transition: "all .2s",
+              }}
+            >
+              {t("LoginPage.label1")}
+            </Box>
+          </Box>
 
           {error.length > 0 && (
             <Typography
@@ -144,29 +298,106 @@ export default function LoginPage() {
             </Typography>
           )}
           <form>
-            <InputLabel sx={{ color: "white", mt: "10px", mb: "5px" }}>
-              {t("SignupPage.label1")}
-            </InputLabel>
-            <TextField
-              fullWidth
-              placeholder={t("LoginPage.placeholder1")}
-              variant="outlined"
-              value={email}
-              type="email"
-              onChange={handleUsername}
-              sx={textField}
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={() => setEmail("")}>
-                        <CancelIcon fontSize="small" sx={{ color: "white" }} />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                },
+            <InputLabel
+              sx={{
+                color: "white",
+                mb: "5px",
               }}
-            />
+            >
+              {loginType === "phone"
+                ? t("LoginPage.label3")
+                : t("LoginPage.label1")}
+            </InputLabel>
+
+            {loginType === "phone" ? (
+              <TextField
+                fullWidth
+                placeholder={t("LoginPage.placeholder3")}
+                variant="outlined"
+                value={phone}
+                onChange={(e) => {
+                  // Chỉ cho nhập số
+                  const value = e.target.value.replace(/\D/g, "");
+                  setPhone(value);
+                }}
+                sx={textField}
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Box
+                          onClick={() => setCountryModal(true)}
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 0.8,
+                            cursor: "pointer",
+                            pr: 1.5,
+                            borderRight: "1px solid rgba(255,255,255,.1)",
+                            height: "30px",
+                          }}
+                        >
+                          <Image
+                            src={selectedCountry.img}
+                            width={30}
+                            height={30}
+                            style={{ height: "20px", objectFit: "contain" }}
+                            alt={selectedCountry.code}
+                          />
+
+                          <Typography
+                            sx={{
+                              color: "white",
+                              fontSize: "13px",
+                            }}
+                          >
+                            +{selectedCountry.phoneCode}
+                          </Typography>
+
+                          <Typography
+                            sx={{
+                              color: "#777",
+                              fontSize: "12px",
+                            }}
+                          >
+                            ▼
+                          </Typography>
+                        </Box>
+                      </InputAdornment>
+                    ),
+
+                    endAdornment: phone ? (
+                      <InputAdornment position="end">
+                        <IconButton onClick={() => setPhone("")} size="small">
+                          <CancelIcon fontSize="small" sx={{ color: "#999" }} />
+                        </IconButton>
+                      </InputAdornment>
+                    ) : undefined,
+                  },
+                }}
+              />
+            ) : (
+              <TextField
+                fullWidth
+                placeholder={t("LoginPage.placeholder1")}
+                variant="outlined"
+                value={email}
+                type="email"
+                onChange={handleUsername}
+                sx={textField}
+                slotProps={{
+                  input: {
+                    endAdornment: email ? (
+                      <InputAdornment position="end">
+                        <IconButton onClick={() => setEmail("")} size="small">
+                          <CancelIcon fontSize="small" sx={{ color: "#999" }} />
+                        </IconButton>
+                      </InputAdornment>
+                    ) : undefined,
+                  },
+                }}
+              />
+            )}
 
             <InputLabel sx={{ color: "white" }}>
               {t("LoginPage.label2")}
@@ -301,6 +532,154 @@ export default function LoginPage() {
               </Typography>
             </Box>
           </form>
+          <Dialog
+            open={countryModal}
+            onClose={() => setCountryModal(false)}
+            fullWidth
+            maxWidth="xs"
+            PaperProps={{
+              sx: {
+                background: "#20243F",
+                color: "white",
+                borderRadius: "14px",
+                maxHeight: "80vh",
+                margin: "12px",
+              },
+            }}
+          >
+            {/* Header */}
+            <Box
+              sx={{
+                height: 58,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "relative",
+                borderBottom: "1px solid rgba(255,255,255,.05)",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: "16px",
+                  fontWeight: 600,
+                }}
+              >
+                {t("LoginPage.title6")}
+              </Typography>
+
+              <IconButton
+                onClick={() => setCountryModal(false)}
+                sx={{
+                  position: "absolute",
+                  right: 8,
+                  color: "#bbb",
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Box>
+
+            {/* Search */}
+            <Box sx={{ p: 1.5 }}>
+              <TextField
+                fullWidth
+                size="small"
+                placeholder={t("LoginPage.title7")}
+                value={countrySearch}
+                onChange={(e) => setCountrySearch(e.target.value)}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    background: "#181B30",
+                    color: "white",
+                    borderRadius: "8px",
+                  },
+
+                  "& input::placeholder": {
+                    color: "#777",
+                    opacity: 1,
+                  },
+
+                  "& fieldset": {
+                    borderColor: "rgba(255,255,255,.08)",
+                  },
+                }}
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon
+                          sx={{
+                            color: "#777",
+                            fontSize: 20,
+                          }}
+                        />
+                      </InputAdornment>
+                    ),
+                  },
+                }}
+              />
+            </Box>
+
+            {/* Country List */}
+            <List
+              disablePadding
+              sx={{
+                overflowY: "auto",
+                maxHeight: "55vh",
+              }}
+            >
+              {listLanguage
+                .filter((item) =>
+                  item.name.toLowerCase().includes(countrySearch.toLowerCase()),
+                )
+                .map((country) => (
+                  <ListItemButton
+                    key={`${country.name}-${country.code}`}
+                    onClick={() => {
+                      setSelectedCountry(country);
+                      setCountryModal(false);
+                      setCountrySearch("");
+                    }}
+                    sx={{
+                      minHeight: 58,
+                      px: 2,
+                      borderBottom: "1px solid rgba(255,255,255,.04)",
+                      "&:hover": {
+                        background: "#292D4A",
+                      },
+                    }}
+                  >
+                    <Image
+                      src={country.img}
+                      width={30}
+                      height={30}
+                      style={{ height: "20px", objectFit: "contain" }}
+                      alt={country.code}
+                    />
+
+                    <Typography
+                      sx={{
+                        flex: 1,
+                        color: "white",
+                        fontSize: "13px",
+                        pl: "10px",
+                      }}
+                    >
+                      {country.name}
+                    </Typography>
+
+                    <Typography
+                      sx={{
+                        color: "white",
+                        fontSize: "13px",
+                      }}
+                    >
+                      +{country.phoneCode}
+                    </Typography>
+                  </ListItemButton>
+                ))}
+            </List>
+          </Dialog>
         </Box>
       </Box>
     </Box>

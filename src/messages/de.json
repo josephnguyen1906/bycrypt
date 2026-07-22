@@ -5,9 +5,14 @@
     "placeholder1": "Bitte geben Sie Ihre E-Mail-Adresse ein",
     "label2": "Passwort",
     "placeholder2": "Bitte geben Sie Ihr Passwort ein",
-    "title2": "Sie haben Ihr Passwort vergessen?",
+    "label3": "Telefonnummer",
+    "placeholder3": "Bitte geben Sie Ihre Telefonnummer ein",
+    "title2": "Haben Sie Ihr Passwort vergessen?",
     "title3": "Mit Wallet anmelden",
     "title4": "Noch kein Konto?",
+    "title6": "Ländervorwahl auswählen",
+    "title7": "Land suchen",
+    "title8": "Suchen",
     "title5": "Zur Registrierung"
   },
   "SignupPage": {

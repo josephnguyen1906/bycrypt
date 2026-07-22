@@ -2,13 +2,18 @@
   "LoginPage": {
     "title1": "Se connecter",
     "label1": "E-mail",
-    "placeholder1": "Veuillez saisir votre e-mail",
+    "placeholder1": "Veuillez saisir votre adresse e-mail",
     "label2": "Mot de passe",
     "placeholder2": "Veuillez saisir votre mot de passe",
+    "label3": "Numéro de téléphone",
+    "placeholder3": "Veuillez saisir votre numéro de téléphone",
     "title2": "Vous avez oublié votre mot de passe ?",
     "title3": "Se connecter avec un portefeuille",
-    "title4": "Vous n'avez pas encore de compte",
-    "title5": "Créer un compte"
+    "title4": "Vous n'avez pas de compte ?",
+    "title6": "Sélectionner l'indicatif du pays",
+    "title7": "Rechercher un pays",
+    "title8": "Rechercher",
+    "title5": "Aller à l'inscription"
   },
   "SignupPage": {
     "title1": "Créer un compte",

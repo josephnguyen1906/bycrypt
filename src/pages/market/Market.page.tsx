@@ -49,7 +49,7 @@ export default function MarketPage() {
         <Box mb={2}>
           <TextField
             fullWidth
-            placeholder="Tìm Kiếm"
+            placeholder={t("LoginPage.title8")}
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             sx={{

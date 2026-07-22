@@ -2,13 +2,18 @@
   "LoginPage": {
     "title1": "Entrar",
     "label1": "E-mail",
-    "placeholder1": "Digite seu e-mail",
+    "placeholder1": "Por favor, insira seu e-mail",
     "label2": "Senha",
-    "placeholder2": "Digite sua senha",
+    "placeholder2": "Por favor, insira sua senha",
+    "label3": "Número de telefone",
+    "placeholder3": "Por favor, insira seu número de telefone",
     "title2": "Esqueceu sua senha?",
-    "title3": "Entrar com carteira",
-    "title4": "Ainda não tem uma conta",
-    "title5": "Ir para cadastro"
+    "title3": "Entrar com a carteira",
+    "title4": "Ainda não tem uma conta?",
+    "title6": "Selecionar código do país",
+    "title7": "Pesquisar país",
+    "title8": "Pesquisar",
+    "title5": "Ir para o cadastro"
   },
   "SignupPage": {
     "title1": "Cadastrar-se",

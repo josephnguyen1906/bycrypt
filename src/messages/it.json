@@ -2,12 +2,17 @@
   "LoginPage": {
     "title1": "Accedi",
     "label1": "Email",
-    "placeholder1": "Inserisci l'email",
+    "placeholder1": "Inserisci la tua email",
     "label2": "Password",
-    "placeholder2": "Inserisci la password",
+    "placeholder2": "Inserisci la tua password",
+    "label3": "Numero di telefono",
+    "placeholder3": "Inserisci il tuo numero di telefono",
     "title2": "Hai dimenticato la password?",
-    "title3": "Accedi con il portafoglio",
-    "title4": "Non hai ancora un account",
+    "title3": "Accedi con Wallet",
+    "title4": "Non hai ancora un account?",
+    "title6": "Seleziona il prefisso internazionale",
+    "title7": "Cerca paese",
+    "title8": "Cerca",
     "title5": "Vai alla registrazione"
   },
   "SignupPage": {

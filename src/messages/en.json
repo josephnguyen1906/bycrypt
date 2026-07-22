@@ -5,9 +5,14 @@
     "placeholder1": "Please enter your email",
     "label2": "Password",
     "placeholder2": "Please enter your password",
+    "label3": "Phone Number",
+    "placeholder3": "Please enter your phone number",
     "title2": "Forgot your password?",
     "title3": "Login with Wallet",
     "title4": "Don't have an account?",
+    "title6": "Select Country Code",
+    "title7": "Search Country",
+    "title8": "Search",
     "title5": "Go to Sign Up"
   },
   "SignupPage": {

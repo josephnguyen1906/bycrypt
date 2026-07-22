@@ -2,12 +2,17 @@
   "LoginPage": {
     "title1": "Iniciar sesión",
     "label1": "Correo electrónico",
-    "placeholder1": "Por favor, introduce tu correo electrónico",
+    "placeholder1": "Por favor, introduzca su correo electrónico",
     "label2": "Contraseña",
-    "placeholder2": "Por favor, introduce tu contraseña",
-    "title2": "¿Has olvidado tu contraseña?",
-    "title3": "Iniciar sesión con la billetera",
-    "title4": "¿Aún no tienes una cuenta?",
+    "placeholder2": "Por favor, introduzca su contraseña",
+    "label3": "Número de teléfono",
+    "placeholder3": "Por favor, introduzca su número de teléfono",
+    "title2": "¿Olvidó su contraseña?",
+    "title3": "Iniciar sesión con Wallet",
+    "title4": "¿No tiene una cuenta?",
+    "title6": "Seleccionar código de país",
+    "title7": "Buscar país",
+    "title8": "Buscar",
     "title5": "Ir al registro"
   },
   "SignupPage": {

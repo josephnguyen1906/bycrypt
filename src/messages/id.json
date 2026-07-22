@@ -2,12 +2,17 @@
   "LoginPage": {
     "title1": "Masuk",
     "label1": "Email",
-    "placeholder1": "Silakan masukkan email",
+    "placeholder1": "Silakan masukkan email Anda",
     "label2": "Kata Sandi",
-    "placeholder2": "Silakan masukkan kata sandi",
+    "placeholder2": "Silakan masukkan kata sandi Anda",
+    "label3": "Nomor Telepon",
+    "placeholder3": "Silakan masukkan nomor telepon Anda",
     "title2": "Lupa kata sandi Anda?",
-    "title3": "Masuk dengan Dompet",
-    "title4": "Belum memiliki akun?",
+    "title3": "Masuk dengan Wallet",
+    "title4": "Belum punya akun?",
+    "title6": "Pilih Kode Negara",
+    "title7": "Cari Negara",
+    "title8": "Cari",
     "title5": "Daftar Sekarang"
   },
   "SignupPage": {

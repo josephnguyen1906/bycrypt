@@ -5,9 +5,14 @@
     "placeholder1": "이메일을 입력해 주세요",
     "label2": "비밀번호",
     "placeholder2": "비밀번호를 입력해 주세요",
+    "label3": "전화번호",
+    "placeholder3": "전화번호를 입력해 주세요",
     "title2": "비밀번호를 잊으셨나요?",
     "title3": "지갑으로 로그인",
     "title4": "계정이 없으신가요?",
+    "title6": "국가 코드를 선택하세요",
+    "title7": "국가 검색",
+    "title8": "검색",
     "title5": "회원가입으로 이동"
   },
   "SignupPage": {

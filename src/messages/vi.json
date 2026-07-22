@@ -5,9 +5,14 @@
     "placeholder1": "Vui lòng nhập Email",
     "label2": "Mật khẩu",
     "placeholder2": "Vui lòng nhập mật khẩu",
+    "label3": "Số điện thoại",
+    "placeholder3": "Vui lòng nhập số điện thoại",
     "title2": " Bạn quên mật khẩu của bạn?",
     "title3": "Đăng nhập bằng ví",
     "title4": "Chưa có tài khoản",
+    "title6": "Chọn mã vùng",
+    "title7": "Tìm quốc gia",
+    "title8": "Tìm kiếm",
     "title5": "Đi đến đăng ký"
   },
   "SignupPage": {
