@@ -53,6 +53,7 @@ export interface IWallet {
 export interface IUser {
   id: string;
   username: string;
+  ui_locale?: string;
   phone: string;
   cccd: string;
   fullname: string;

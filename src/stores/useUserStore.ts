@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { getMe } from "@/services/User.service";
 import { IUser } from "@/shared/interfaces";
+import { applyAppLocale } from "@/utils/appLocale";
 
 interface UserState {
   user: IUser | null;
@@ -28,8 +29,12 @@ export const useUserStore = create<UserState>((set) => ({
     set({ loading: true });
     try {
       const res: any = await getMe();
-      if (res?.status) set({ user: res.data });
-      else set({ user: null });
+      if (res?.status) {
+        set({ user: res.data });
+        if (res.data?.ui_locale) {
+          applyAppLocale(String(res.data.ui_locale));
+        }
+      } else set({ user: null });
     } catch {
       set({ user: null });
       window.localStorage.removeItem("betRulesAccepted");
