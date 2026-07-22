@@ -38,10 +38,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const seo = await getSeo();
 
   return {
-    title: seo.title,
+    title: "ByCrypt",
     description: seo.description,
     icons: {
-      icon: "/images/loll.png",
+      icon: "/images/fattion-logo.png",
     },
   };
 }
@@ -63,7 +63,11 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/philfung/add-to-homescreen@3.2/dist/add-to-homescreen.min.css"
         />
-        <link rel="apple-touch-icon" sizes="180x180" href="/images/loll.png" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/images/fattion-logo.png"
+        />
       </head>
 
       <body className={inter.className}>
