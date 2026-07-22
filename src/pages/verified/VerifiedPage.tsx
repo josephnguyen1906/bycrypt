@@ -25,13 +25,14 @@ import { CameraIcon } from "@/shared/Svgs/Svg.component";
 export default function VerifiedPage() {
   const [fullName, setFullName] = useState<string | null>(null);
   const [cardNumber, setCardNumber] = useState<string | null>(null);
+  const [isVerified, setIsVerified] = useState(false);
   const [frontImage, setFrontImage] = useState<File>();
   const frontFileInput = useRef<HTMLInputElement>(null);
   const [backImage, setBackImage] = useState<File>();
   const backFileInput = useRef<HTMLInputElement>(null);
   const { t } = useTranslation();
   const router = useRouter();
-  const { user, fetchUser } = useUserStore();
+  const { user, fetchUser, isLiveActive } = useUserStore();
   const handleFrontClick = () => {
     frontFileInput.current?.click();
   };
@@ -70,6 +71,13 @@ export default function VerifiedPage() {
       await verifiUser(formData);
       toast.success(t("Toast.verifide1"));
       fetchUser();
+      if (user?.cccd) {
+        setCardNumber(user.cccd);
+        setIsVerified(true);
+      } else {
+        setCardNumber("");
+        setIsVerified(false);
+      }
     } catch (error) {
       console.error("Error submitting verification:", error);
       toast.error(t("Toast.verifide2"));
@@ -174,6 +182,7 @@ export default function VerifiedPage() {
             value={fullName ?? ""}
             onChange={(e) => setFullName(e.target.value)}
             placeholder={t("VerifiedPage.label2")}
+            readOnly={isVerified}
             sx={{
               width: "100%",
               height: "100%",
@@ -240,6 +249,7 @@ export default function VerifiedPage() {
             value={cardNumber ?? ""}
             onChange={(e) => setCardNumber(e.target.value)}
             placeholder={t("VerifiedPage.label4")}
+            readOnly={isVerified}
             sx={{
               width: "100%",
               height: "100%",
@@ -419,27 +429,29 @@ export default function VerifiedPage() {
         </Box>
 
         {/* Button */}
-        <Button
-          type="button"
-          onClick={handleSubmit}
-          fullWidth
-          sx={{
-            height: "46px",
-            mt: "10px",
-            bgcolor: "#00B900",
-            color: "#fff",
-            borderRadius: "4px",
-            fontSize: "13px",
-            fontWeight: 500,
-            textTransform: "none",
-
-            "&:hover": {
+        {!isVerified && (
+          <Button
+            type="button"
+            onClick={handleSubmit}
+            fullWidth
+            sx={{
+              height: "46px",
+              mt: "10px",
               bgcolor: "#00B900",
-            },
-          }}
-        >
-          {t("VerifiedPage.button")}
-        </Button>
+              color: "#fff",
+              borderRadius: "4px",
+              fontSize: "13px",
+              fontWeight: 500,
+              textTransform: "none",
+
+              "&:hover": {
+                bgcolor: "#00B900",
+              },
+            }}
+          >
+            {t("VerifiedPage.button")}
+          </Button>
+        )}
 
         {/* Note */}
         <Typography
