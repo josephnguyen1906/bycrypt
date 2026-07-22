@@ -13,6 +13,7 @@ import Tab2Page from "./tabs/Tab2Page";
 import Tab3Page from "./tabs/Tab3Page";
 import Tab4Page from "./tabs/Tab4Page";
 import { CustomTabPanel } from "@/components/Tabs/TabComponent";
+import AccountDrawer from "@/components/subMenu/AccountDrawer";
 
 function a11yProps(index: number) {
   return {
@@ -21,7 +22,8 @@ function a11yProps(index: number) {
   };
 }
 export default function AccountPage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
   const router = useRouter();
   const { user, fetchUser, loading } = useUserStore();
   const [load, setLoad] = useState(true);
@@ -68,12 +70,15 @@ export default function AccountPage() {
         }}
       >
         <Box>
-          <Button sx={{ width: 40, height: 40, background: "#0E0F18" }}>
+          <Button
+            sx={{ width: 40, height: 40, background: "#0E0F18" }}
+            onClick={() => setOpen(true)}
+          >
             <MenuIcon sx={{ color: "white" }} />
           </Button>
         </Box>
         <Typography sx={{ color: "white", fontSize: 16 }}>
-          {t("AccountPage.title")}{" "}
+          {t("AccountPage.title")}
         </Typography>
       </Box>
       <Box
@@ -131,6 +136,8 @@ export default function AccountPage() {
       <CustomTabPanel value={value} index={3}>
         <Tab4Page user={user} />
       </CustomTabPanel>
+
+      <AccountDrawer onClose={() => setOpen(false)} open={open} />
     </Box>
   );
 }

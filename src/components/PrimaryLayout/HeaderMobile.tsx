@@ -7,10 +7,15 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import AccountDrawer from "../subMenu/AccountDrawer";
 
-export default function HeaderMobile({ user }: { user: IUser | null }) {
+export default function HeaderMobile({
+  user,
+  onClick,
+}: {
+  user: IUser | null;
+  onClick: () => void;
+}) {
   const route = useRouter();
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
   return (
     <Box
       sx={{
@@ -25,7 +30,7 @@ export default function HeaderMobile({ user }: { user: IUser | null }) {
       <Box>
         <Button
           sx={{ width: 40, height: 40, background: "#0E0F18" }}
-          onClick={() => setOpen(true)}
+          onClick={onClick}
         >
           <MenuIcon sx={{ color: "white" }} />
         </Button>
@@ -77,8 +82,6 @@ export default function HeaderMobile({ user }: { user: IUser | null }) {
           </IconButton>
         </Tooltip>
       </Box>
-
-      <AccountDrawer onClose={() => setOpen(false)} open={open} />
     </Box>
   );
 }

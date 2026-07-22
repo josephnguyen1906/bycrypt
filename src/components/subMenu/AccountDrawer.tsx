@@ -174,22 +174,19 @@ export default function AccountDrawer({ open, onClose }: AccountDrawerProps) {
       }}
       sx={{
         zIndex: 999,
-        "& .MuiBackdrop-root": {
-          backgroundColor: "rgba(0, 0, 0, 0.75)",
-        },
         "& .MuiPaper-root": {
-          width: {
-            xs: "80%",
-            sm: 448,
+          width: { xs: "80%", sm: "20%" },
+          left: {
+            xs: 0,
+            sm: "35%",
           },
-          maxWidth: "448px",
+
+          right: "auto",
+          bottom: 0,
           height: "100vh",
           bgcolor: "#0E0F18",
-          color: "#fff",
-          borderRadius: {
-            xs: "0 20px 20px 0",
-            sm: "0 20px 20px 0",
-          },
+          borderTopLeftRadius: 16,
+          borderTopRightRadius: 16,
           overflowY: "auto",
           "&::-webkit-scrollbar": {
             width: 4,
@@ -325,7 +322,10 @@ export default function AccountDrawer({ open, onClose }: AccountDrawerProps) {
 
       <List
         sx={{
-          px: 3,
+          px: {
+            xs: 1,
+            sm: 3,
+          },
           pb: 10,
         }}
       >

@@ -49,7 +49,7 @@ export default function HomeMobile({
   const [langAnchorEl, setLangAnchorEl] = useState<null | HTMLElement>(null);
   const isLangMenuOpen = Boolean(langAnchorEl);
   const [stakingData, setStakingData] = useState<IOrepool>();
-
+  const [open, setOpen] = useState(false);
   const fetchStakingData = async () => {
     try {
       const res: any = await getOrepool();
@@ -82,7 +82,7 @@ export default function HomeMobile({
       }}
     >
       <Box>
-        <HeaderMobile user={user} />
+        <HeaderMobile user={user} onClick={() => setOpen(true)} />
 
         <Box
           sx={{
@@ -202,9 +202,6 @@ export default function HomeMobile({
               {t(`HomePage.title2`)}
             </Typography>
           </Box>
-          <IconButton sx={{ background: "none", border: "none" }}>
-            <ArrowForwardIcon sx={{ color: "white", fontSize: 24 }} />
-          </IconButton>
         </Box>
 
         <Box
@@ -779,6 +776,8 @@ export default function HomeMobile({
           </Box>
         </Box>
       </Dialog>
+
+      <AccountDrawer onClose={() => setOpen(false)} open={open} />
     </Box>
   );
 }
