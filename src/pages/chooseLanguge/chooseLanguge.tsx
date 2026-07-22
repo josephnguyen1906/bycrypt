@@ -10,7 +10,7 @@ export default function LanguagePage() {
   const router = useRouter();
   const { t, i18n } = useTranslation();
 
-  const [lang, setLang] = useState<string>("en");
+  const [lang, setLang] = useState<string>("vi");
 
   useEffect(() => {
     const savedLang = localStorage.getItem("lang");
