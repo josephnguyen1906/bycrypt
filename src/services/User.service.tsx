@@ -247,7 +247,6 @@ const apiExchangeQuote = (from: string, to: string, amount: number) => {
   });
 };
 
-
 const getHistoryExchange = (from: number, limit: number) => {
   return contentInstance.get(
     `/api/finance/exchange/history?page=${from}&limit=${limit}`,
@@ -315,6 +314,35 @@ const postTradeMarket = (
     },
   });
 };
+
+const getTradeOpenOrders = () => {
+  return contentInstance.get("/api/trade/open-orders");
+};
+
+const getPerpSettings = () => contentInstance.get("/api/perp/settings");
+const getPerpBalance = () => contentInstance.get("/api/perp/balance");
+const getPerpPositions = () => contentInstance.get("/api/perp/positions");
+const getPerpHistory = (limit = 20) =>
+  contentInstance.get(`/api/perp/history?limit=${limit}`);
+const getFinanceStats = () => contentInstance.get("/api/finance/stats");
+const postPerpOrder = (payload: {
+  symbol: string;
+  side: "buy" | "sell";
+  qty: string;
+  leverage: number;
+}) =>
+  contentInstance.post("/api/perp/order", payload, {
+    headers: { "Content-Type": "application/json" },
+  });
+const postPerpClose = (payload: {
+  position_id?: number;
+  symbol?: string;
+  qty?: string;
+}) =>
+  contentInstance.post("/api/perp/close", payload, {
+    headers: { "Content-Type": "application/json" },
+  });
+
 const getDataChart = (parms: string) => {
   return contentInstance.get("/api/contract/price?symbol=" + parms);
 };
@@ -381,6 +409,14 @@ export {
   postTranfer,
   postUpdateUser,
   postTradeMarket,
+  getTradeOpenOrders,
+  getPerpSettings,
+  getPerpBalance,
+  getPerpPositions,
+  getPerpHistory,
+  getFinanceStats,
+  postPerpOrder,
+  postPerpClose,
   getListNew,
   getListNewDetail,
   getWithdrawCancelled,

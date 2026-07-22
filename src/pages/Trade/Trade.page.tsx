@@ -9,10 +9,9 @@ import { useTranslation } from "react-i18next";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import TradePanel from "./TradePanel";
 import {
-  getBuySellConfig,
   getContractjc,
-  getFinaceCoin,
-  getListCoin,
+  getPerpHistory,
+  getPerpPositions,
 } from "@/services/User.service";
 import { useUserStore } from "@/stores/useUserStore";
 import { IHistoryOpen } from "@/shared/interfaces";
@@ -66,6 +65,8 @@ export default function TradePage() {
   const [asks, setAsks] = useState<DepthItem[]>([]);
   const [bids, setBids] = useState<DepthItem[]>([]);
   const [listCoin, setListCoin] = useState<any[]>([]);
+  const [perpPositions, setPerpPositions] = useState<any[]>([]);
+  const [perpHistory, setPerpHistory] = useState<any[]>([]);
   const [lastPrice, setLastPrice] = useState(0);
   const [priceColor, setPriceColor] = useState("#fff");
   const lastPriceRef = useRef(0);
@@ -142,10 +143,35 @@ export default function TradePage() {
     }
   };
 
+  const fetchPerpData = async () => {
+    if (!user) {
+      setPerpPositions([]);
+      setPerpHistory([]);
+      return;
+    }
+    try {
+      const [posRes, histRes]: any[] = await Promise.all([
+        getPerpPositions(),
+        getPerpHistory(20),
+      ]);
+      if (posRes?.status === true) {
+        setPerpPositions(posRes.data ?? []);
+      }
+      if (histRes?.status === true) {
+        setPerpHistory(histRes.data ?? []);
+      }
+    } catch (errors: any) {
+      console.log(errors?.message);
+    }
+  };
+
   useEffect(() => {
-    historyOpen();
-    // referral();
-  }, []);
+    if (tab === 0) {
+      fetchPerpData();
+    } else {
+      historyOpen();
+    }
+  }, [tab, user?.id]);
 
   const fetchHistorty = async (res: any) => {
     if (res?.data) {
@@ -256,6 +282,9 @@ export default function TradePage() {
                 setAmount={setAmount}
                 percent={percent}
                 setPercent={setPercent}
+                symbol={coin}
+                user={user}
+                onSuccess={fetchPerpData}
               />
             ) : (
               <TradePanel symbol={coin} user={user} onSuccess={fetchHistorty} />
@@ -268,7 +297,12 @@ export default function TradePage() {
             mt: 2,
           }}
         >
-          <BottomTabs orderOpen={orderOpen} />
+          <BottomTabs
+            orderOpen={tab === 0 ? [] : orderOpen}
+            perpetualMode={tab === 0}
+            perpPositions={perpPositions}
+            perpHistory={perpHistory}
+          />
         </Box>
         <Box
           sx={{

@@ -1,25 +1,51 @@
-import { IOrepool, IUser } from "@/shared/interfaces";
-import {
-  Avatar,
-  Box,
-  Button,
-  IconButton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { IUser } from "@/shared/interfaces";
+import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import Image from "next/image";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
-import { MenuAccount } from "@/datafake/Menu";
-import { getOrepool } from "@/services/User.service";
+import { getFinanceStats } from "@/services/User.service";
 import { useRouter } from "next/navigation";
+
+type FinanceStats = {
+  estimated_diy: number;
+  revenue: number;
+  holdings: number;
+};
 
 export default function Tab4Page({ user }: { user: IUser | null }) {
   const [show, setShow] = useState(true);
   const [tab, setTab] = useState(0);
+  const [stats, setStats] = useState<FinanceStats>({
+    estimated_diy: 0,
+    revenue: 0,
+    holdings: 0,
+  });
   const { t } = useTranslation();
   const router = useRouter();
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res: any = await getFinanceStats();
+        if (cancelled || res?.status !== true) return;
+        const data = res.data ?? {};
+        setStats({
+          estimated_diy: Number(data.estimated_diy ?? 0),
+          revenue: Number(data.revenue ?? 0),
+          holdings: Number(data.holdings ?? 0),
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const fmt = (n: number) => (show ? n.toLocaleString() : "*****");
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -123,10 +149,10 @@ export default function Tab4Page({ user }: { user: IUser | null }) {
             {t("AccountPage.title10")} (USDT)
           </Typography>
           <Typography sx={{ color: "white", fontSize: 25, fontWeight: 600 }}>
-            {show ? Number(0).toLocaleString() : "*****"}
+            {fmt(stats.estimated_diy)}
           </Typography>
           <Typography sx={{ color: "#868c9a", fontSize: 16, mt: "-5px" }}>
-            ≈${Number(0).toLocaleString()}
+            ≈${fmt(stats.estimated_diy)}
           </Typography>
         </Box>
 
@@ -135,10 +161,10 @@ export default function Tab4Page({ user }: { user: IUser | null }) {
             {t("AccountPage.title11")} (USDT)
           </Typography>
           <Typography sx={{ color: "white", fontSize: 25, fontWeight: 600 }}>
-            {show ? Number(user?.balance?.usdt_d).toLocaleString() : "*****"}
+            {fmt(stats.revenue)}
           </Typography>
           <Typography sx={{ color: "#868c9a", fontSize: 16, mt: "-5px" }}>
-            ≈${Number(user?.balance?.usdt_d).toLocaleString()}
+            ≈${fmt(stats.revenue)}
           </Typography>
         </Box>
       </Box>
@@ -148,10 +174,10 @@ export default function Tab4Page({ user }: { user: IUser | null }) {
           {t("AccountPage.title12")} (USDT)
         </Typography>
         <Typography sx={{ color: "white", fontSize: 25, fontWeight: 600 }}>
-          {show ? Number(0).toLocaleString() : "*****"}
+          {fmt(stats.holdings)}
         </Typography>
         <Typography sx={{ color: "#868c9a", fontSize: 16, mt: "-5px" }}>
-          ≈${Number(0).toLocaleString()}
+          ≈${fmt(stats.holdings)}
         </Typography>
       </Box>
     </Box>

@@ -10,8 +10,14 @@ import { timeAgo } from "../historyContact/HistoryContact";
 
 export default function BottomTabs({
   orderOpen,
+  perpetualMode = false,
+  perpPositions = [],
+  perpHistory = [],
 }: {
   orderOpen: IHistoryOpen[];
+  perpetualMode?: boolean;
+  perpPositions?: any[];
+  perpHistory?: any[];
 }) {
   const { t } = useTranslation();
   const [tab, setTab] = useState(0);
@@ -58,6 +64,54 @@ export default function BottomTabs({
     const now = Date.now();
     return Math.max(Math.floor((end - now) / 1000), 0);
   };
+
+  const openOrdersForTab = perpetualMode ? perpHistory : orderOpen;
+  const hasOpenOrders = openOrdersForTab && openOrdersForTab.length > 0;
+
+  const renderPerpPosition = (item: any, index: number) => (
+    <Box
+      key={item.id ?? index}
+      sx={{
+        background: "#1c2735",
+        borderRadius: "14px",
+        padding: "16px 18px",
+        marginBottom: "12px",
+        border: "1px solid rgba(255,255,255,0.08)",
+      }}
+    >
+      <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
+        <Box>
+          <Typography sx={{ color: "#fff", fontSize: 14, fontWeight: 500 }}>
+            {String(item.symbol ?? "").replace("USDT", "/USDT")}
+          </Typography>
+          <Typography sx={{ color: "#9aa4b2", fontSize: 13 }}>
+            {t("TradePage.title13")}: {item.qty} · {item.leverage}x
+          </Typography>
+          <Typography sx={{ color: "#9aa4b2", fontSize: 13 }}>
+            {t("TradePage.title12")}: {Number(item.entry_price).toLocaleString()}
+          </Typography>
+        </Box>
+        <Box sx={{ textAlign: "right" }}>
+          <Typography
+            sx={{
+              color: item.side === "long" ? "#4ade80" : "#ef4444",
+              fontWeight: 600,
+              fontSize: 14,
+            }}
+          >
+            {item.side === "long" ? t("TradePage.title6") : t("TradePage.title7")}
+          </Typography>
+          <Typography sx={{ color: "#9aa4b2", fontSize: 13 }}>
+            PnL: {Number(item.unrealized_pnl ?? 0).toFixed(2)} USDT
+          </Typography>
+          <Typography sx={{ color: "#9aa4b2", fontSize: 13 }}>
+            Liq: {Number(item.liq_price ?? 0).toLocaleString()}
+          </Typography>
+        </Box>
+      </Stack>
+    </Box>
+  );
+
   return (
     <Box
       sx={{
@@ -124,7 +178,23 @@ export default function BottomTabs({
       >
         {tab === 0 && (
           <Stack spacing={2}>
-            {orderOpen && orderOpen.length > 0 ? (
+            {perpetualMode ? (
+              perpPositions.length > 0 ? (
+                perpPositions.map(renderPerpPosition)
+              ) : (
+                <Box
+                  sx={{
+                    height: 120,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderRadius: 2,
+                  }}
+                >
+                  <Typography color="#666">{t("TradePage.noti1")}</Typography>
+                </Box>
+              )
+            ) : !perpetualMode && orderOpen && orderOpen.length > 0 ? (
               orderOpen.map((item: IHistoryOpen, index: number) => (
                 <Box
                   key={index}
@@ -220,7 +290,40 @@ export default function BottomTabs({
                 pt: 2,
               }}
             >
-              {orderOpen && orderOpen.length > 0 ? (
+              {hasOpenOrders ? (
+                perpetualMode ? (
+                  perpHistory.map((item: any, index: number) => (
+                    <Box
+                      key={item.id ?? index}
+                      sx={{
+                        width: "100%",
+                        background: "#1c2735",
+                        borderRadius: "14px",
+                        padding: "16px 18px",
+                        marginBottom: "12px",
+                        border: "1px solid rgba(255,255,255,0.08)",
+                      }}
+                    >
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="flex-start"
+                      >
+                        <Box>
+                          <Typography sx={{ color: "#fff", fontSize: 14 }}>
+                            {String(item.symbol ?? "").replace("USDT", "/USDT")}
+                          </Typography>
+                          <Typography sx={{ color: "#9aa4b2", fontSize: 13 }}>
+                            {item.status === 3 ? "Liquidated" : "Closed"}
+                          </Typography>
+                        </Box>
+                        <Typography sx={{ color: "#9aa4b2", fontSize: 13 }}>
+                          {Number(item.realized_pnl ?? 0).toFixed(2)} USDT
+                        </Typography>
+                      </Stack>
+                    </Box>
+                  ))
+                ) : (
                 orderOpen.map((item: IHistoryOpen, index: number) => (
                   <Box
                     key={index}
@@ -320,6 +423,7 @@ export default function BottomTabs({
                     </Box>
                   </Box>
                 ))
+                )
               ) : (
                 <Box
                   sx={{
