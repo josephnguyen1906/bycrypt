@@ -12,14 +12,16 @@ import {
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import CancelIcon from "@mui/icons-material/Cancel";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import LoadingComponent from "@/components/Loading";
 import { useTranslation } from "react-i18next";
 import { useUserStore } from "@/stores/useUserStore";
 import { toast } from "react-toastify";
-import { updatePaymentPassword } from "@/services/User.service";
+import {
+  sendPaypasswordCode,
+  updatePaymentPassword,
+} from "@/services/User.service";
 
 const ChangePaymentPassword = () => {
   const { t } = useTranslation();
@@ -27,10 +29,8 @@ const ChangePaymentPassword = () => {
 
   const router = useRouter();
 
-  const [oldPassword, setOldPassword] = useState("");
   const [newPaymentPassword, setNewPaymentPassword] = useState("");
   const [confirmPaymentPassword, setConfirmPaymentPassword] = useState("");
-
   const [verificationCode, setVerificationCode] = useState("");
 
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -39,16 +39,65 @@ const ChangePaymentPassword = () => {
   const [verifyType, setVerifyType] = useState<"email" | "google">("email");
 
   const [load, setLoad] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [countdown, setCountdown] = useState(0);
 
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
 
+  useEffect(() => {
+    if (countdown <= 0) return;
+    const timer = setInterval(() => {
+      setCountdown((c) => (c <= 1 ? 0 : c - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [countdown]);
+
+  const handleSendCode = async () => {
+    if (countdown > 0 || sending) return;
+
+    if (verifyType === "google") {
+      toast.warning("Xác minh Google chưa được hỗ trợ");
+      return;
+    }
+
+    setSending(true);
+    try {
+      const res: any = await sendPaypasswordCode();
+      if (res?.status === true) {
+        toast.success(res?.message || "Đã gửi mã xác minh");
+        setCountdown(120);
+      } else {
+        toast.error(res?.message || "Gửi mã thất bại");
+      }
+    } catch (error: any) {
+      toast.error(error?.message || "Gửi mã thất bại");
+    } finally {
+      setSending(false);
+    }
+  };
+
   const handleSubmitPayment = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!/^\d{6}$/.test(newPaymentPassword)) {
+      toast.warning(t("ChangePass.title4") || "Vui lòng nhập 6 chữ số");
+      return;
+    }
+
     if (newPaymentPassword !== confirmPaymentPassword) {
       toast.warning(t("Toast.change_pass4"));
+      return;
+    }
+
+    if (!verificationCode.trim()) {
+      toast.warning(t("ChangePass.title10") || "Vui lòng nhập mã xác minh");
+      return;
+    }
+
+    if (verifyType === "google") {
+      toast.warning("Xác minh Google chưa được hỗ trợ");
       return;
     }
 
@@ -56,18 +105,9 @@ const ChangePaymentPassword = () => {
 
     try {
       const formData = new FormData();
-
-      if (user?.wdstatus === 1 && oldPassword) {
-        formData.append("current_paypassword", oldPassword);
-      }
-
       formData.append("paypassword", newPaymentPassword);
       formData.append("confirm_paypassword", confirmPaymentPassword);
-
-      // Nếu API cần verification code
-      formData.append("verification_code", verificationCode);
-
-      // Nếu API cần loại xác minh
+      formData.append("verification_code", verificationCode.trim());
       formData.append("verify_type", verifyType);
 
       const response: any = await updatePaymentPassword(formData);
@@ -79,18 +119,13 @@ const ChangePaymentPassword = () => {
             : t("Toast.change_pass6"),
         );
 
-        setOldPassword("");
         setNewPaymentPassword("");
         setConfirmPaymentPassword("");
         setVerificationCode("");
 
         fetchUser();
       } else {
-        toast.error(
-          user?.wdstatus === 1
-            ? t("Toast.change_pass6")
-            : t("Toast.change_pass7"),
-        );
+        toast.error(response?.message || t("Toast.change_pass7"));
       }
     } catch (error: any) {
       toast.error(error?.message || "Có lỗi xảy ra");
@@ -202,13 +237,11 @@ const ChangePaymentPassword = () => {
           </Typography>
         </Box>
 
-        {/* ================= CONTENT ================= */}
         <Box
           sx={{
             padding: "4px 19px 30px",
           }}
         >
-          {/* Mật khẩu mới */}
           <Typography
             sx={{
               fontSize: "13px",
@@ -225,8 +258,11 @@ const ChangePaymentPassword = () => {
             placeholder={t("ChangePass.title6")}
             type={showNewPassword ? "text" : "password"}
             value={newPaymentPassword}
-            onChange={(e) => setNewPaymentPassword(e.target.value)}
+            onChange={(e) =>
+              setNewPaymentPassword(e.target.value.replace(/\D/g, "").slice(0, 6))
+            }
             required
+            inputProps={{ inputMode: "numeric", maxLength: 6 }}
             sx={inputSx}
             InputProps={{
               endAdornment: (
@@ -261,7 +297,6 @@ const ChangePaymentPassword = () => {
             {t("ChangePass.title4")}
           </Typography>
 
-          {/* Xác nhận mật khẩu mới */}
           <Typography
             sx={{
               fontSize: "13px",
@@ -278,15 +313,22 @@ const ChangePaymentPassword = () => {
             placeholder={t("ChangePass.title6")}
             type={showConfirmPassword ? "text" : "password"}
             value={confirmPaymentPassword}
-            onChange={(e) => setConfirmPaymentPassword(e.target.value)}
+            onChange={(e) =>
+              setConfirmPaymentPassword(
+                e.target.value.replace(/\D/g, "").slice(0, 6),
+              )
+            }
             required
+            inputProps={{ inputMode: "numeric", maxLength: 6 }}
             sx={inputSx}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
                     size="small"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    onClick={() =>
+                      setShowConfirmPassword(!showConfirmPassword)
+                    }
                     sx={{
                       color: "#999BA5",
                       padding: "4px",
@@ -314,9 +356,7 @@ const ChangePaymentPassword = () => {
             {t("ChangePass.title4")}
           </Typography>
 
-          {/* ================= VERIFY TYPE ================= */}
           <Stack>
-            {/* Email */}
             <Box
               onClick={() => setVerifyType("email")}
               sx={{
@@ -355,7 +395,6 @@ const ChangePaymentPassword = () => {
               </Typography>
             </Box>
 
-            {/* Google */}
             <Box
               onClick={() => setVerifyType("google")}
               sx={{
@@ -395,7 +434,6 @@ const ChangePaymentPassword = () => {
             </Box>
           </Stack>
 
-          {/* ================= VERIFICATION CODE ================= */}
           <Typography
             sx={{
               fontSize: "13px",
@@ -412,13 +450,18 @@ const ChangePaymentPassword = () => {
             fullWidth
             placeholder={t("ChangePass.title10")}
             value={verificationCode}
-            onChange={(e) => setVerificationCode(e.target.value)}
+            onChange={(e) =>
+              setVerificationCode(e.target.value.replace(/\D/g, "").slice(0, 6))
+            }
+            inputProps={{ inputMode: "numeric", maxLength: 6 }}
             sx={inputSx}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
                   <Button
                     type="button"
+                    disabled={sending || countdown > 0}
+                    onClick={handleSendCode}
                     sx={{
                       minWidth: "auto",
                       padding: 0,
@@ -431,16 +474,23 @@ const ChangePaymentPassword = () => {
                         background: "transparent",
                         color: "#00E676",
                       },
+
+                      "&.Mui-disabled": {
+                        color: "#5a5c66",
+                      },
                     }}
                   >
-                    {t("ChangePass.title11")}
+                    {countdown > 0
+                      ? `${countdown}s`
+                      : sending
+                        ? t("ChangePass.title12")
+                        : t("ChangePass.title11")}
                   </Button>
                 </InputAdornment>
               ),
             }}
           />
 
-          {/* ================= SUBMIT ================= */}
           <Button
             type="submit"
             disabled={load}
