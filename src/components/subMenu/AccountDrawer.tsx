@@ -122,7 +122,7 @@ export default function AccountDrawer({ open, onClose }: AccountDrawerProps) {
       id: 8,
       name: "Menu.security",
       icon: <Shield />,
-      link: "/change-login-pass",
+      link: "/security",
       isLogin: true,
     },
     {
