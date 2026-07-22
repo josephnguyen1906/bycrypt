@@ -1,26 +1,58 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Box, Typography, Button, TextField, IconButton } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import QRCode from "react-qr-code";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
+import {
+  enableGoogleAuth,
+  getGoogleAuthSetup,
+} from "@/services/User.service";
+
 export default function GoogleAuthenticatorPage() {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
+  const [secretKey, setSecretKey] = useState("");
+  const [otpauthUrl, setOtpauthUrl] = useState("");
+  const [enabled, setEnabled] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const { t } = useTranslation();
-  const secretKey = "62ZECHTT4A3GX2RP";
+
+  const loadSetup = async () => {
+    setLoading(true);
+    try {
+      const res: any = await getGoogleAuthSetup();
+      if (res?.status) {
+        setEnabled(Boolean(res.data?.enabled));
+        setSecretKey(res.data?.secret || "");
+        setOtpauthUrl(res.data?.otpauth_url || "");
+        if (res.data?.enabled) {
+          toast.info(res.message || "Google Authenticator đã được bật");
+        }
+      } else {
+        toast.error(res?.message || "Không tải được khóa xác thực");
+      }
+    } catch (err: any) {
+      toast.error(err?.message || "Không tải được khóa xác thực");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadSetup();
+  }, []);
 
   const handleChange = (index: number, value: string) => {
     const newValue = value.replace(/\D/g, "").slice(-1);
-
     const newCode = [...code];
-
     newCode[index] = newValue;
-
     setCode(newCode);
 
     if (newValue && index < inputRefs.current.length - 1) {
@@ -37,16 +69,33 @@ export default function GoogleAuthenticatorPage() {
     }
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     const verificationCode = code.join("");
-
-    if (verificationCode.length !== 6) {
+    if (verificationCode.length !== 6 || submitting || enabled) {
       return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res: any = await enableGoogleAuth(verificationCode);
+      if (res?.status) {
+        setEnabled(true);
+        toast.success(res.message || "Bật Google Authenticator thành công");
+        router.push("/security");
+      } else {
+        toast.error(res?.message || "Mã xác minh không hợp lệ");
+      }
+    } catch (err: any) {
+      toast.error(err?.message || "Mã xác minh không hợp lệ");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   const copySecret = async () => {
+    if (!secretKey) return;
     await navigator.clipboard.writeText(secretKey);
+    toast.success(t("Toast.copy"));
   };
 
   return (
@@ -69,12 +118,9 @@ export default function GoogleAuthenticatorPage() {
           onClick={() => router.back()}
           sx={{
             transform: "translateY(-50%)",
-
             padding: 0,
             pt: 2,
-
             color: "#fff",
-
             "&:hover": {
               backgroundColor: "transparent",
             },
@@ -111,14 +157,24 @@ export default function GoogleAuthenticatorPage() {
               bgcolor: "#fff",
               border: "1px solid #A4A6B2",
               display: "flex",
+              minWidth: 160,
+              minHeight: 160,
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <QRCode
-              value={`otpauth://totp/App?secret=${secretKey}&issuer=App`}
-              size={150}
-              bgColor="#ffffff"
-              fgColor="#000000"
-            />
+            {otpauthUrl ? (
+              <QRCode
+                value={otpauthUrl}
+                size={150}
+                bgColor="#ffffff"
+                fgColor="#000000"
+              />
+            ) : (
+              <Typography sx={{ color: "#333", fontSize: 12 }}>
+                {loading ? "..." : enabled ? "ON" : "—"}
+              </Typography>
+            )}
           </Box>
         </Box>
 
@@ -136,20 +192,24 @@ export default function GoogleAuthenticatorPage() {
             sx={{
               fontSize: "14px",
               color: "#fff",
+              wordBreak: "break-all",
             }}
           >
-            {secretKey}
+            {secretKey || (enabled ? "********" : "—")}
           </Typography>
 
-          <IconButton
-            onClick={() => window.location.reload()}
-            sx={{
-              p: 0,
-              color: "#8D93A4",
-            }}
-          >
-            <RefreshIcon sx={{ fontSize: 18 }} />
-          </IconButton>
+          {!enabled && (
+            <IconButton
+              onClick={loadSetup}
+              disabled={loading}
+              sx={{
+                p: 0,
+                color: "#8D93A4",
+              }}
+            >
+              <RefreshIcon sx={{ fontSize: 18 }} />
+            </IconButton>
+          )}
         </Box>
 
         <Typography
@@ -173,6 +233,7 @@ export default function GoogleAuthenticatorPage() {
         >
           <Button
             onClick={copySecret}
+            disabled={!secretKey}
             variant="outlined"
             sx={{
               width: "122px",
@@ -233,6 +294,7 @@ export default function GoogleAuthenticatorPage() {
             <TextField
               key={index}
               value={item}
+              disabled={enabled}
               inputRef={(element) => {
                 inputRefs.current[index] = element;
               }}
@@ -311,6 +373,7 @@ export default function GoogleAuthenticatorPage() {
         <Button
           fullWidth
           onClick={handleConfirm}
+          disabled={enabled || submitting || code.join("").length !== 6}
           variant="contained"
           sx={{
             height: "41px",
@@ -323,9 +386,13 @@ export default function GoogleAuthenticatorPage() {
             "&:hover": {
               bgcolor: "#218AF3",
             },
+            "&:disabled": {
+              bgcolor: "#3a4a63",
+              color: "#bbb",
+            },
           }}
         >
-          {t("LoginPage.title16")}
+          {enabled ? "Đã bật" : t("LoginPage.title16")}
         </Button>
       </Box>
     </Box>

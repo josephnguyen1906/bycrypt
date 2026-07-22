@@ -164,6 +164,38 @@ const getLocalePhones = (locale?: string) => {
   const q = locale ? `?locale=${encodeURIComponent(locale)}` : "";
   return contentInstance.get(`/api/locale-phones${q}`);
 };
+
+const getSecurityStatus = () => {
+  return contentInstance.get("/api/user/security/status");
+};
+
+const getGoogleAuthSetup = () => {
+  return contentInstance.get("/api/user/security/google/setup");
+};
+
+const enableGoogleAuth = (code: string) => {
+  return contentInstance.post(
+    "/api/user/security/google/enable",
+    { code },
+    { headers: { "Content-Type": "application/json" } },
+  );
+};
+
+const sendSecurityEmailCode = (email: string) => {
+  return contentInstance.post(
+    "/api/user/security/email/send-code",
+    { email },
+    { headers: { "Content-Type": "application/json" } },
+  );
+};
+
+const verifySecurityEmail = (email: string, code: string) => {
+  return contentInstance.post(
+    "/api/user/security/email/verify",
+    { email, code },
+    { headers: { "Content-Type": "application/json" } },
+  );
+};
 const getListCoin = () => {
   return contentInstance.get("/api/contract/coin");
 };
@@ -396,6 +428,11 @@ export {
   topUpCoins,
   getWebsiteConfig,
   getLocalePhones,
+  getSecurityStatus,
+  getGoogleAuthSetup,
+  enableGoogleAuth,
+  sendSecurityEmailCode,
+  verifySecurityEmail,
   updatePaymentPassword,
   sendPaypasswordCode,
   sellCoins,

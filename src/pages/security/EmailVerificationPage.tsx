@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Box,
@@ -15,37 +15,92 @@ import { useRouter } from "next/navigation";
 
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
+import {
+  getSecurityStatus,
+  sendSecurityEmailCode,
+  verifySecurityEmail,
+} from "@/services/User.service";
+
 export default function EmailVerificationPage() {
   const [email, setEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
+  const [sending, setSending] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [verified, setVerified] = useState(false);
   const router = useRouter();
   const [countdown, setCountdown] = useState(0);
   const { t } = useTranslation();
-  const handleSendCode = () => {
-    if (!email || countdown > 0) {
+
+  useEffect(() => {
+    getSecurityStatus()
+      .then((res: any) => {
+        if (res?.status && res.data) {
+          if (res.data.default_email) {
+            setEmail(res.data.default_email);
+          }
+          setVerified(Boolean(res.data.security_email_verified));
+        }
+      })
+      .catch(() => {
+        /* ignore */
+      });
+  }, []);
+
+  useEffect(() => {
+    if (countdown <= 0) return;
+    const timer = setInterval(() => {
+      setCountdown((prev) => (prev <= 1 ? 0 : prev - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [countdown]);
+
+  const handleSendCode = async () => {
+    if (!email || countdown > 0 || sending) {
       return;
     }
 
-    // TODO:
-    // Call API gửi mã xác minh email
-
-    setCountdown(60);
-
-    const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          return 0;
-        }
-
-        return prev - 1;
-      });
-    }, 1000);
+    setSending(true);
+    try {
+      const res: any = await sendSecurityEmailCode(email.trim());
+      if (res?.status) {
+        toast.success(res.message || t("Toast.signup3"));
+        setCountdown(60);
+      } else {
+        toast.error(res?.message || "Gửi mã thất bại");
+      }
+    } catch (err: any) {
+      toast.error(err?.message || "Gửi mã thất bại");
+    } finally {
+      setSending(false);
+    }
   };
 
-  const handleConfirm = () => {
-    if (!email || !verificationCode) {
+  const handleConfirm = async () => {
+    if (!email || !verificationCode || submitting) {
       return;
+    }
+
+    const code = verificationCode.replace(/\D/g, "").slice(0, 6);
+    if (code.length !== 6) {
+      toast.error(t("ChangePass.title10"));
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res: any = await verifySecurityEmail(email.trim(), code);
+      if (res?.status) {
+        setVerified(true);
+        toast.success(res.message || "Xác minh email thành công");
+        router.push("/security");
+      } else {
+        toast.error(res?.message || "Xác minh thất bại");
+      }
+    } catch (err: any) {
+      toast.error(err?.message || "Xác minh thất bại");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -69,12 +124,9 @@ export default function EmailVerificationPage() {
           onClick={() => router.back()}
           sx={{
             transform: "translateY(-50%)",
-
             padding: 0,
             pt: 2,
-
             color: "#fff",
-
             "&:hover": {
               backgroundColor: "transparent",
             },
@@ -116,8 +168,9 @@ export default function EmailVerificationPage() {
           onChange={(event) => setEmail(event.target.value)}
           placeholder={t("SignupPage.placeholder1")}
           variant="outlined"
+          disabled={verified}
           InputProps={{
-            endAdornment: email ? (
+            endAdornment: email && !verified ? (
               <InputAdornment position="end">
                 <IconButton
                   size="small"
@@ -173,15 +226,18 @@ export default function EmailVerificationPage() {
         <TextField
           fullWidth
           value={verificationCode}
-          onChange={(event) => setVerificationCode(event.target.value)}
+          onChange={(event) =>
+            setVerificationCode(event.target.value.replace(/\D/g, "").slice(0, 6))
+          }
           placeholder={t("ChangePass.title10")}
           variant="outlined"
+          disabled={verified}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
                 <Button
                   onClick={handleSendCode}
-                  disabled={countdown > 0}
+                  disabled={verified || !email || sending || countdown > 0}
                   sx={{
                     minWidth: "auto",
                     p: 0,
@@ -191,7 +247,9 @@ export default function EmailVerificationPage() {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {countdown > 0 ? `${countdown}s` : "Gửi mã xác minh"}
+                  {countdown > 0
+                    ? `${countdown}s`
+                    : t("ChangePass.title11")}
                 </Button>
               </InputAdornment>
             ),
@@ -227,6 +285,7 @@ export default function EmailVerificationPage() {
           fullWidth
           variant="contained"
           onClick={handleConfirm}
+          disabled={verified || submitting || !email || verificationCode.length !== 6}
           sx={{
             height: "41px",
             bgcolor: "#218AF3",
@@ -238,11 +297,15 @@ export default function EmailVerificationPage() {
             "&:hover": {
               bgcolor: "#218AF3",
             },
+            "&:disabled": {
+              bgcolor: "#3a4a63",
+              color: "#bbb",
+            },
           }}
         >
-          {t("LoginPage.title16")}
+          {verified ? "Đã xác minh" : t("LoginPage.title16")}
         </Button>
-      </Box>{" "}
+      </Box>
     </Box>
   );
 }
