@@ -9,27 +9,72 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import StarIcon from "@mui/icons-material/Star";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 import { useRouter } from "next/navigation";
-import { useUserStore } from "@/stores/useUserStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { getVerificationStatus } from "@/services/User.service";
+
+type VerificationInfo = {
+  fullname?: string | null;
+  cccd?: string | null;
+  rzstatus: number;
+  rzstatus_label: string;
+  primary_certified: boolean;
+  advanced_certified: boolean;
+  personal_info_done: boolean;
+  government_id_done: boolean;
+  review_days: number;
+  can_submit: boolean;
+  locale: string;
+  country_name: string;
+  flag_png: string;
+  flag_url: string;
+  detail_path: string;
+};
+
+const STATUS_TEXT: Record<string, string> = {
+  none: "Chưa xác minh",
+  pending: "Đang chờ duyệt",
+  approved: "Đã xác minh",
+  rejected: "Bị từ chối",
+};
 
 export default function VerificationCenterPage() {
   const router = useRouter();
-
-  const { user, fetchUser } = useUserStore();
+  const [info, setInfo] = useState<VerificationInfo | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
+    let cancelled = false;
+    getVerificationStatus()
+      .then((res: any) => {
+        if (cancelled) return;
+        if (res?.status && res.data) {
+          setInfo(res.data as VerificationInfo);
+        }
+      })
+      .catch(() => {
+        /* keep empty state */
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
 
-  /**
-   * Chuyển sang màn hình VerifiedPage
-   * Đây chính là file code bạn đã gửi.
-   */
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const handleCheckDetail = () => {
-    router.push("/verified");
+    router.push(info?.detail_path || "/verified");
   };
+
+  const statusLabel =
+    STATUS_TEXT[info?.rzstatus_label || "none"] || STATUS_TEXT.none;
+  const primaryOn = Boolean(info?.primary_certified || info?.rzstatus === 1);
+  const personalDone = Boolean(info?.personal_info_done);
+  const idDone = Boolean(info?.government_id_done);
 
   return (
     <Box
@@ -112,7 +157,7 @@ export default function VerificationCenterPage() {
               fontWeight: 400,
             }}
           >
-            Personal Center
+            {info?.fullname || "Personal Center"}
           </Typography>
 
           {/* Quốc kỳ */}
@@ -127,8 +172,8 @@ export default function VerificationCenterPage() {
           >
             <Box
               component="img"
-              src="https://flagcdn.com/w80/us.png"
-              alt="US"
+              src={info?.flag_png || info?.flag_url || "https://flagcdn.com/w80/vn.png"}
+              alt={info?.country_name || "flag"}
               sx={{
                 width: "100%",
                 height: "100%",
@@ -163,7 +208,7 @@ export default function VerificationCenterPage() {
             },
           }}
         >
-          Xem các tính năng hiện tại
+          {loading ? "Đang tải..." : `Trạng thái: ${statusLabel}`}
         </Button>
 
         {/* ================= VERIFICATION TYPE ================= */}
@@ -180,13 +225,14 @@ export default function VerificationCenterPage() {
             sx={{
               height: "38px",
               borderRadius: "22px",
-              bgcolor: "#00B900",
+              bgcolor: primaryOn ? "#00B900" : "transparent",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               position: "relative",
               cursor: "pointer",
             }}
+            onClick={handleCheckDetail}
           >
             <Box
               sx={{
@@ -203,7 +249,7 @@ export default function VerificationCenterPage() {
               <VerifiedIcon
                 sx={{
                   fontSize: "15px",
-                  color: "#00B900",
+                  color: primaryOn ? "#00B900" : "#62B5FF",
                 }}
               />
             </Box>
@@ -229,7 +275,8 @@ export default function VerificationCenterPage() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              cursor: "pointer",
+              cursor: "default",
+              opacity: info?.advanced_certified ? 1 : 0.55,
             }}
           >
             <Box
@@ -293,6 +340,7 @@ export default function VerificationCenterPage() {
               alignItems: "center",
               cursor: "pointer",
             }}
+            onClick={handleCheckDetail}
           >
             <PersonOutlineIcon
               sx={{
@@ -307,10 +355,15 @@ export default function VerificationCenterPage() {
                 fontSize: "12px",
                 fontWeight: 600,
                 color: "#fff",
+                flex: 1,
               }}
             >
               Thông tin cá nhân
             </Typography>
+
+            {personalDone && (
+              <CheckCircleIcon sx={{ fontSize: 18, color: "#00B900" }} />
+            )}
           </Box>
 
           {/* Government ID */}
@@ -321,6 +374,7 @@ export default function VerificationCenterPage() {
               alignItems: "center",
               cursor: "pointer",
             }}
+            onClick={handleCheckDetail}
           >
             <BadgeIcon
               sx={{
@@ -335,10 +389,15 @@ export default function VerificationCenterPage() {
                 fontSize: "12px",
                 fontWeight: 600,
                 color: "#fff",
+                flex: 1,
               }}
             >
               Government Issued ID
             </Typography>
+
+            {idDone && (
+              <CheckCircleIcon sx={{ fontSize: 18, color: "#00B900" }} />
+            )}
           </Box>
         </Stack>
 
@@ -376,7 +435,7 @@ export default function VerificationCenterPage() {
               fontSize: "11px",
             }}
           >
-            Thời gian xem lại:3 days
+            Thời gian xem lại:{info?.review_days ?? 3} days
           </Typography>
         </Box>
 
@@ -443,7 +502,11 @@ export default function VerificationCenterPage() {
             },
           }}
         >
-          Chi tiết kiểm tra
+          {info?.can_submit === false && info?.rzstatus === 2
+            ? "Xem chi tiết"
+            : info?.rzstatus === 1
+              ? "Đang chờ duyệt"
+              : "Chi tiết kiểm tra"}
         </Button>
       </Box>
     </Box>

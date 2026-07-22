@@ -68,6 +68,10 @@ const verifiUser = (formData: FormData) => {
   });
 };
 
+const getVerificationStatus = () => {
+  return contentInstance.get("/api/user/verification");
+};
+
 const topUpCoins = (formData: FormData) => {
   return contentInstance.post("/api/finance/deposit", formData, {
     headers: {
@@ -425,6 +429,7 @@ export {
   getBills,
   getMyWallet,
   verifiUser,
+  getVerificationStatus,
   topUpCoins,
   getWebsiteConfig,
   getLocalePhones,
