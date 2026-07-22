@@ -170,20 +170,21 @@ export default function EmailVerificationPage() {
           variant="outlined"
           disabled={verified}
           InputProps={{
-            endAdornment: email && !verified ? (
-              <InputAdornment position="end">
-                <IconButton
-                  size="small"
-                  onClick={() => setEmail("")}
-                  sx={{
-                    color: "#9A9EAB",
-                    p: 0,
-                  }}
-                >
-                  <CancelIcon sx={{ fontSize: 13 }} />
-                </IconButton>
-              </InputAdornment>
-            ) : undefined,
+            endAdornment:
+              email && !verified ? (
+                <InputAdornment position="end">
+                  <IconButton
+                    size="small"
+                    onClick={() => setEmail("")}
+                    sx={{
+                      color: "#9A9EAB",
+                      p: 0,
+                    }}
+                  >
+                    <CancelIcon sx={{ fontSize: 13 }} />
+                  </IconButton>
+                </InputAdornment>
+              ) : undefined,
           }}
           sx={{
             mb: "26px",
@@ -227,7 +228,9 @@ export default function EmailVerificationPage() {
           fullWidth
           value={verificationCode}
           onChange={(event) =>
-            setVerificationCode(event.target.value.replace(/\D/g, "").slice(0, 6))
+            setVerificationCode(
+              event.target.value.replace(/\D/g, "").slice(0, 6),
+            )
           }
           placeholder={t("ChangePass.title10")}
           variant="outlined"
@@ -241,15 +244,13 @@ export default function EmailVerificationPage() {
                   sx={{
                     minWidth: "auto",
                     p: 0,
-                    color: countdown > 0 ? "#777" : "#00C853",
+                    color: countdown > 0 ? "#fff" : "#00C853",
                     fontSize: "11px",
                     textTransform: "none",
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {countdown > 0
-                    ? `${countdown}s`
-                    : t("ChangePass.title11")}
+                  {countdown > 0 ? `${countdown}s` : t("ChangePass.title11")}
                 </Button>
               </InputAdornment>
             ),
@@ -285,7 +286,9 @@ export default function EmailVerificationPage() {
           fullWidth
           variant="contained"
           onClick={handleConfirm}
-          disabled={verified || submitting || !email || verificationCode.length !== 6}
+          disabled={
+            verified || submitting || !email || verificationCode.length !== 6
+          }
           sx={{
             height: "41px",
             bgcolor: "#218AF3",
