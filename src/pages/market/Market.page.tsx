@@ -16,6 +16,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 import Image from "next/image";
 import HeaderMobile from "@/components/PrimaryLayout/HeaderMobile";
+import AccountDrawer from "@/components/subMenu/AccountDrawer";
 
 export default function MarketPage() {
   const { t } = useTranslation();
@@ -23,6 +24,7 @@ export default function MarketPage() {
   const [tab, setTab] = useState(0);
   const [searchText, setSearchText] = useState<string | null>(null);
 
+  const [open, setOpen] = useState(false);
   const coinList = useMemo(() => {
     return tab == 1 ? MONEYCOIN : COINS;
   }, [tab]);
@@ -36,7 +38,7 @@ export default function MarketPage() {
         pb: "100px",
       }}
     >
-      <HeaderMobile user={user} />
+      <HeaderMobile user={user} onClick={() => setOpen(true)} />
       <Box
         sx={{
           width: "95%",
@@ -168,6 +170,8 @@ export default function MarketPage() {
           search={searchText}
         />
       </Box>
+
+      <AccountDrawer onClose={() => setOpen(false)} open={open} />
     </Box>
   );
 }

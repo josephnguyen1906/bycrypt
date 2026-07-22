@@ -12,18 +12,17 @@ import { useUserStore } from "@/stores/useUserStore";
 import { useTranslation } from "react-i18next";
 import CoinTicker from "@/components/CoinTicker/CoinTicker";
 import { COINS, MONEYCOIN } from "@/datafake/home";
-import CloseIcon from "@mui/icons-material/Close";
-import SearchIcon from "@mui/icons-material/Search";
 import Image from "next/image";
 import HeaderMobile from "@/components/PrimaryLayout/HeaderMobile";
 import { SquareIcon } from "@/shared/Svgs/Svg.component";
 import CoinTickerVertical from "@/components/CoinTicker/CoinTickerVertical";
+import AccountDrawer from "@/components/subMenu/AccountDrawer";
 
 export default function FuturesPage() {
   const { t } = useTranslation();
   const { user } = useUserStore();
   const [tab, setTab] = useState(0);
-  const [searchText, setSearchText] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
 
   const coinList = useMemo(() => {
     return tab == 1 ? MONEYCOIN : COINS;
@@ -38,7 +37,7 @@ export default function FuturesPage() {
         pb: "100px",
       }}
     >
-      <HeaderMobile user={user} />
+      <HeaderMobile user={user} onClick={() => setOpen(true)} />
       <Box
         sx={{
           width: "95%",
@@ -204,6 +203,8 @@ export default function FuturesPage() {
           </Box>
         </Box>
       </Box>
+
+      <AccountDrawer onClose={() => setOpen(false)} open={open} />
     </Box>
   );
 }
