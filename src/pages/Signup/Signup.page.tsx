@@ -37,8 +37,9 @@ export default function SignupPage() {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [paypassword, setPayPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
   const [inviteCode, setInviteCode] = useState("");
+  const [code, setCode] = useState("");
   const [sending, setSending] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [mailSent, setMailSent] = useState(false);
@@ -54,11 +55,11 @@ export default function SignupPage() {
     setSelectedCountry,
   } = useLocalePhoneCountries();
   const [countrySearch, setCountrySearch] = useState("");
-  const [showPayPassword, setShowPayPassword] = useState<boolean>(false);
+  const [showRePassword, setShowRePassword] = useState<boolean>(false);
   const handlePassword = (e: any) => setPassword(e.target.value);
   const handleUsername = (e: any) => setEmail(e.target.value);
   const toggleShowPassword = () => setShowPassword(!showPassword);
-  const toggleShowPayPassword = () => setShowPayPassword(!showPayPassword);
+  const toggleShowRePassword = () => setShowRePassword(!showRePassword);
   const router = useRouter();
   useEffect(() => {
     if (countdown <= 0) return;
@@ -121,7 +122,7 @@ export default function SignupPage() {
       } else {
         formData.append("invit", inviteCode);
       }
-      formData.append("paypassword", paypassword);
+      formData.append("Repassword", rePassword);
 
       const res: any = await signupUser(formData);
 
@@ -161,7 +162,7 @@ export default function SignupPage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          mt: { xs: 0, sm: 3 },
+          mt: { xs: 0, sm: 1 },
           height: { xs: "100vh", sm: "auto" },
           pb: "30px",
           borderRadius: {
@@ -175,8 +176,6 @@ export default function SignupPage() {
           <IconButton
             sx={{
               background: "#0E0F18",
-              position: "fixed",
-              top: "20px",
               "&:hover": {
                 background: "#2a313aff",
               },
@@ -351,7 +350,7 @@ export default function SignupPage() {
             )}
 
             <InputLabel sx={{ color: "white" }}>
-              {t("SignupPage.title2")}
+              {t("SignupPage.label2")}
             </InputLabel>
             <Box
               sx={{
@@ -414,18 +413,18 @@ export default function SignupPage() {
                 fullWidth
                 placeholder={t("SignupPage.placeholder3")}
                 variant="outlined"
-                type={showPayPassword ? "text" : "password"}
-                value={paypassword}
-                onChange={(e) => setPayPassword(e.target.value)}
+                type={showRePassword ? "text" : "password"}
+                value={rePassword}
+                onChange={(e) => setRePassword(e.target.value)}
                 sx={textField}
                 slotProps={{
                   input: {
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
-                          onClick={() => setShowPayPassword(!showPassword)}
+                          onClick={() => setShowRePassword(!showRePassword)}
                         >
-                          {showPayPassword ? (
+                          {showRePassword ? (
                             <Visibility
                               fontSize="small"
                               sx={{ color: "white" }}
@@ -444,11 +443,54 @@ export default function SignupPage() {
               />
             </Box>
             {/* Invite code */}
-            <InputLabel sx={{ color: "white", mt: 2 }}>
+            {loginType == "email" && (
+              <>
+                <InputLabel sx={{ color: "white", mt: 2 }}>
+                  {t("ChangePass.title7")}
+                </InputLabel>
+                <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
+                  <TextField
+                    fullWidth
+                    placeholder={t("ChangePass.title10")}
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                    sx={textField}
+                  />
+
+                  <Button
+                    onClick={handleSendInvite}
+                    disabled={email.length === 0 || sending || countdown > 0}
+                    sx={{
+                      minWidth: 100,
+                      height: 48,
+                      borderRadius: "14px",
+                      background: "#5BFF00",
+                      color: "#000",
+                      fontWeight: 600,
+                      fontSize: 10,
+                      textTransform: "none",
+                      "&:disabled": {
+                        background: "#9aa4b2",
+                      },
+                      "&:hover": {
+                        background: "#4de000",
+                      },
+                    }}
+                  >
+                    {countdown > 0 ? `${countdown}s` : t("ChangePass.title11")}
+                  </Button>
+                </Box>
+                {mailSent && (
+                  <Typography color="#4ade80" fontSize={13} mt={1}>
+                    {t("Toast.signup3")}
+                  </Typography>
+                )}
+              </>
+            )}
+            <InputLabel sx={{ color: "white", mt: 1 }}>
               {" "}
               {t("SignupPage.label4")}
             </InputLabel>
-
             <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
               <TextField
                 fullWidth
@@ -457,33 +499,8 @@ export default function SignupPage() {
                 onChange={(e) => setInviteCode(e.target.value)}
                 sx={textField}
               />
-
-              {/* <Button
-                onClick={handleSendInvite}
-                disabled={email.length === 0 || sending || countdown > 0}
-                sx={{
-                  minWidth: 80,
-                  borderRadius: "14px",
-                  background: "#5BFF00",
-                  color: "#000",
-                  fontWeight: 600,
-                  textTransform: "none",
-                  "&:disabled": {
-                    background: "#9aa4b2",
-                  },
-                  "&:hover": {
-                    background: "#4de000",
-                  },
-                }}
-              >
-                {countdown > 0 ? `${countdown}s` : t("SignupPage.button3")}
-              </Button> */}
             </Box>
-            {mailSent && (
-              <Typography color="#4ade80" fontSize={13} mt={1}>
-                {t("Toast.signup3")}
-              </Typography>
-            )}
+
             <Box display={"flex"} gap={"10px"} alignItems={"center"}>
               <Checkbox
                 icon={

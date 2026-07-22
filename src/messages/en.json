@@ -25,8 +25,8 @@
     "placeholder1": "Please enter your email",
     "label2": "Set Password",
     "placeholder2": "Password (6-12 characters)",
-    "label3": "Set Withdrawal Password",
-    "placeholder3": "Please confirm your withdrawal password",
+    "label3": "Set  RePassword",
+    "placeholder3": "Please confirm your  Repassword",
     "label4": "Invitation Code (Optional)",
     "placeholder4": "Please enter your invitation code"
   },
