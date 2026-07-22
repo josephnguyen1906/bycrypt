@@ -42,7 +42,8 @@ function formatQty(value: number, digits = 8): string {
 }
 
 function symbolForApi(coinStream: string): string {
-  const raw = coinStream.toLowerCase().replace(/usdt$/i, "");
+  // prerender can call with undefined; default keeps build from crashing
+  const raw = (coinStream || "btcusdt").toLowerCase().replace(/usdt$/i, "");
   return `${raw.toUpperCase()}USDT`;
 }
 
