@@ -440,5 +440,30 @@
         "Opening": "Heure d'ouverture",
         "Close": "Heure de clôture",
         "type": "taper"
+    },
+    "News": {
+        "follow": "Suivre",
+        "items": {
+            "1": {
+                "author": "Scott Matherson",
+                "time": "17/07/2026 07:02:08",
+                "title": "L'intérêt ouvert de Bitcoin et Ethereum approche de niveaux records : que s'est-il passé la dernière fois ?",
+                "description": "L'intérêt ouvert de Bitcoin et Ethereum approche de niveaux records : que s'est-il passé la dernière fois ?",
+                "coins": {
+                    "ICP": "+0%",
+                    "ATOM": "+0.3653%"
+                }
+            },
+            "2": {
+                "author": "Aayush Jindal",
+                "time": "17/07/2026 19:45:32",
+                "title": "La reprise du prix de XRP échoue – XRP connaîtra-t-il une nouvelle baisse ?",
+                "description": "La reprise du prix de XRP échoue – XRP connaîtra-t-il une nouvelle baisse ?",
+                "coins": {
+                    "XRP": "+2.31%",
+                    "BTC": "+0.91%"
+                }
+            }
+        }
     }
 }

@@ -440,5 +440,30 @@
     "Opening": "Thời gian mở",
     "Close": "Thời gian đóng",
     "type": "Loại"
+  },
+  "News": {
+    "follow": "Theo dõi",
+    "items": {
+      "1": {
+        "author": "Scott Matherson",
+        "time": "17/07/2026 07:02:08",
+        "title": "Bitcoin và Ethereum có Open Interest gần mức ATH, chuyện gì đã xảy ra lần trước?",
+        "description": "Bitcoin và Ethereum có Open Interest gần mức ATH, chuyện gì đã xảy ra lần trước?",
+        "coins": {
+          "ICP": "+0%",
+          "ATOM": "+0.3653%"
+        }
+      },
+      "2": {
+        "author": "Aayush Jindal",
+        "time": "17/07/2026 19:45:32",
+        "title": "Đà phục hồi giá XRP thất bại – Liệu XRP có lại đối mặt với một đợt sụt giảm khác?",
+        "description": "Đà phục hồi giá XRP thất bại – Liệu XRP có lại đối mặt với một đợt sụt giảm khác?",
+        "coins": {
+          "XRP": "+2.31%",
+          "BTC": "+0.91%"
+        }
+      }
+    }
   }
 }

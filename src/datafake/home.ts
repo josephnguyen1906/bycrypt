@@ -58,24 +58,16 @@ export const MONEYCOIN = [
 export const news = [
   {
     id: 1,
-    author: "Scott Matherson",
     avatar: "/images/user1.webp",
-    time: "2026-07-17 07:02:08",
-    title:
-      "Bitcoin, Ethereum Open Interest Are Sitting Close To ATH Levels, What Happened Last Time?",
-    description:
-      "Bitcoin, Ethereum Open Interest Are Sitting Close To ATH Levels, What Happened Last Time?",
     image: "/images/news2-84612b87.webp",
     likes: 4548,
     views: 3438,
     coins: [
       {
         name: "ICP",
-        value: "+0%",
       },
       {
         name: "ATOM",
-        value: "+0.3653%",
       },
     ],
     users: [
@@ -89,23 +81,16 @@ export const news = [
   },
   {
     id: 2,
-    author: "Aayush Jindal",
     avatar: "/images/user2.jpg",
-    time: "2026-07-17 19:45:32",
-    title: "XRP Price Recovery Fails – Is It Doomed for Another Collapse?",
-    description:
-      "XRP Price Recovery Fails – Is It Doomed for Another Collapse?",
     image: "/images/news2-84612b87.webp",
     likes: 3254,
     views: 1854,
     coins: [
       {
         name: "XRP",
-        value: "+2.31%",
       },
       {
         name: "BTC",
-        value: "+0.91%",
       },
     ],
     users: [

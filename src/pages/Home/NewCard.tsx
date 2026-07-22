@@ -7,15 +7,12 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import ShareIcon from "@mui/icons-material/Share";
 
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   news: {
     id: number;
-    author: string;
     avatar: string;
-    time: string;
-    title: string;
-    description: string;
     image: string;
     likes: number;
     views: number;
@@ -27,7 +24,8 @@ interface Props {
   };
 }
 
-export default function NewsCard({ news }: Props) {
+export default function NewsCard({ news }: any) {
+  const { t } = useTranslation();
   if (!news) return null;
   return (
     <Box
@@ -45,7 +43,6 @@ export default function NewsCard({ news }: Props) {
       }}
     >
       {/* Header */}
-
       <Stack
         direction="row"
         justifyContent="space-between"
@@ -58,11 +55,11 @@ export default function NewsCard({ news }: Props) {
 
           <Box>
             <Typography fontWeight={700} fontSize={17}>
-              {news.author}
+              {t(`News.items.${news.id}.author`)}
             </Typography>
 
             <Typography fontSize={13} color="#2A8DFF">
-              {news.time}
+              {t(`News.items.${news.id}.time`)}
             </Typography>
           </Box>
         </Stack>
@@ -81,15 +78,14 @@ export default function NewsCard({ news }: Props) {
             },
           }}
         >
-          Follow
+          {t("News.follow")}
         </Button>
       </Stack>
 
       {/* Content */}
-
       <Box px={2} py={2}>
         <Typography fontWeight={700} fontSize={24} lineHeight={1.3} mb={1}>
-          {news.title}
+          {t(`News.items.${news.id}.title`)}
         </Typography>
 
         <Typography
@@ -102,12 +98,11 @@ export default function NewsCard({ news }: Props) {
             WebkitLineClamp: 2,
           }}
         >
-          {news.description}
+          {t(`News.items.${news.id}.description`)}
         </Typography>
       </Box>
 
       {/* Image */}
-
       <Box
         sx={{
           position: "relative",
@@ -116,7 +111,7 @@ export default function NewsCard({ news }: Props) {
       >
         <Image
           src={news.image}
-          alt=""
+          alt={t(`News.items.${news.id}.title`)}
           fill
           style={{
             objectFit: "cover",
@@ -125,7 +120,6 @@ export default function NewsCard({ news }: Props) {
       </Box>
 
       {/* Footer */}
-
       <Box
         sx={{
           px: 2,
@@ -134,6 +128,7 @@ export default function NewsCard({ news }: Props) {
       >
         {/* Row 1 */}
         <Stack direction="row" alignItems="center" spacing={4} mb={1.5}>
+          {/* Likes */}
           <Stack direction="row" spacing={1} alignItems="center">
             <Box
               sx={{
@@ -146,12 +141,18 @@ export default function NewsCard({ news }: Props) {
                 justifyContent: "center",
               }}
             >
-              <FavoriteIcon sx={{ fontSize: 13, color: "#D7D7D7" }} />
+              <FavoriteIcon
+                sx={{
+                  fontSize: 13,
+                  color: "#D7D7D7",
+                }}
+              />
             </Box>
 
             <Typography fontSize={15}>{news.likes}</Typography>
           </Stack>
 
+          {/* Views */}
           <Stack direction="row" spacing={1} alignItems="center">
             <Box
               sx={{
@@ -164,12 +165,18 @@ export default function NewsCard({ news }: Props) {
                 justifyContent: "center",
               }}
             >
-              <VisibilityIcon sx={{ fontSize: 13, color: "#D7D7D7" }} />
+              <VisibilityIcon
+                sx={{
+                  fontSize: 13,
+                  color: "#D7D7D7",
+                }}
+              />
             </Box>
 
             <Typography fontSize={15}>{news.views}</Typography>
           </Stack>
 
+          {/* Share */}
           <Box
             sx={{
               width: 22,
@@ -181,7 +188,12 @@ export default function NewsCard({ news }: Props) {
               justifyContent: "center",
             }}
           >
-            <ShareIcon sx={{ fontSize: 14, color: "#D7D7D7" }} />
+            <ShareIcon
+              sx={{
+                fontSize: 14,
+                color: "#D7D7D7",
+              }}
+            />
           </Box>
         </Stack>
 
@@ -201,7 +213,7 @@ export default function NewsCard({ news }: Props) {
             {news?.users?.map((avatar: string, index: number) => (
               <Avatar
                 key={index}
-                src={avatar || "A"}
+                src={avatar}
                 sx={{
                   width: 28,
                   height: 28,
@@ -214,7 +226,7 @@ export default function NewsCard({ news }: Props) {
 
           {/* Coin */}
           <Stack direction="row" spacing={3}>
-            {news?.coins?.map((coin: any) => (
+            {news?.coins?.map((coin: { name: string }) => (
               <Typography
                 key={coin.name}
                 sx={{
@@ -233,7 +245,7 @@ export default function NewsCard({ news }: Props) {
                     fontWeight: 600,
                   }}
                 >
-                  {coin.value}
+                  {t(`News.items.${news.id}.coins.${coin.name}`)}
                 </Box>
               </Typography>
             ))}

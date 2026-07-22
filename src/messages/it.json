@@ -440,5 +440,30 @@
         "Opening": "Orario di apertura",
         "Close": "Orario di chiusura",
         "type": "tipo"
+    },
+    "News": {
+        "follow": "Segui",
+        "items": {
+            "1": {
+                "author": "Scott Matherson",
+                "time": "17/07/2026 07:02:08",
+                "title": "L'Open Interest di Bitcoin ed Ethereum si avvicina ai livelli ATH: cosa è successo l'ultima volta?",
+                "description": "L'Open Interest di Bitcoin ed Ethereum si avvicina ai livelli ATH: cosa è successo l'ultima volta?",
+                "coins": {
+                    "ICP": "+0%",
+                    "ATOM": "+0.3653%"
+                }
+            },
+            "2": {
+                "author": "Aayush Jindal",
+                "time": "17/07/2026 19:45:32",
+                "title": "La ripresa del prezzo di XRP fallisce: XRP subirà un altro calo?",
+                "description": "La ripresa del prezzo di XRP fallisce: XRP subirà un altro calo?",
+                "coins": {
+                    "XRP": "+2.31%",
+                    "BTC": "+0.91%"
+                }
+            }
+        }
     }
 }
