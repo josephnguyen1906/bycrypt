@@ -26,6 +26,7 @@ import {
   getTradeLockMessage,
   isTradeLocked,
 } from "@/utils/tradeLock";
+import { localizeTradeToast } from "@/utils/tradeToast";
 
 const marks = [
   { value: 0, label: "0%" },
@@ -66,7 +67,7 @@ export default function TradeForm({
   user: IUser | null;
   onSuccess?: () => void;
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [open, setOpen] = useState(false);
   const [leverage, setLeverage] = useState(1);
   const [submitting, setSubmitting] = useState<"buy" | "sell" | null>(null);
@@ -141,7 +142,7 @@ export default function TradeForm({
       return;
     }
     if (isTradeLocked(user)) {
-      toast.error(getTradeLockMessage(user));
+      toast.error(getTradeLockMessage(user, t));
       return;
     }
     if (user.rzstatus !== 2) {
@@ -149,11 +150,11 @@ export default function TradeForm({
       return;
     }
     if (!qty || qty <= 0) {
-      toast.error(t("Toast.buysell2"));
+      toast.error(t("Toast.invalid_qty"));
       return;
     }
     if (price <= 0) {
-      toast.error(t("Toast.buysell4"));
+      toast.error(t("Toast.price_fetch_failed"));
       return;
     }
 
@@ -167,16 +168,17 @@ export default function TradeForm({
       });
 
       if (res?.status === true) {
-        toast.success(res.message || t("Toast.buysell3"));
+        toast.success(localizeTradeToast(res, t, i18n, "Toast.order_success"));
         setAmount("");
         setPercent(0);
         await loadWallet();
         onSuccess?.();
       } else {
-        toast.error(res?.message || t("Toast.buysell4"));
+        toast.error(localizeTradeToast(res, t, i18n, "Toast.order_failed"));
       }
     } catch (err: any) {
-      toast.error(err?.message || t("Toast.buysell4"));
+      // contentInstance rejects with response.data ({ code, message }) already unwrapped
+      toast.error(localizeTradeToast(err, t, i18n, "Toast.order_failed"));
     } finally {
       setSubmitting(null);
     }
