@@ -321,13 +321,15 @@
     },
     "form": {
       "confirm": "Confirm",
-      "processing": "Processing..."
+      "processing": "Processing...",
+      "amountRange": "Amount must be between {{min}} and {{max}}"
     },
     "values": {
       "paymentCycle": "7 Days",
       "dailyInterestRate": "0.04%",
       "interest": "0.0028",
-      "lender": "ICICI BANK"
+      "lender": "ICICI BANK",
+      "days": "days"
     },
     "history": {
       "title": "Loan History",
@@ -339,6 +341,11 @@
       "amount": "Loan Amount",
       "note": "Note:",
       "pending": "Pending Approval",
+      "failed": "Approval Failed",
+      "active": "Active",
+      "repaid": "Repaid",
+      "overdue": "Overdue",
+      "dueAt": "Due",
       "detail": "Details"
     }
   },

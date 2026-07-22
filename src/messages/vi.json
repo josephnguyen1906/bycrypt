@@ -321,13 +321,15 @@
     },
     "form": {
       "confirm": "Xác nhận",
-      "processing": "Đang xử lý..."
+      "processing": "Đang xử lý...",
+      "amountRange": "Số tiền phải từ {{min}} đến {{max}}"
     },
     "values": {
       "paymentCycle": "7 ngày",
       "dailyInterestRate": "0.04%",
       "interest": "0.0028",
-      "lender": "ICICI BANK"
+      "lender": "ICICI BANK",
+      "days": "ngày"
     },
     "history": {
       "title": "Lịch sử vay",
@@ -339,6 +341,11 @@
       "amount": "Số tiền vay",
       "note": "Ghi chú:",
       "pending": "Đang được phê duyệt",
+      "failed": "Thất bại trong phê duyệt",
+      "active": "Đang vay",
+      "repaid": "Đã tất toán",
+      "overdue": "Quá hạn",
+      "dueAt": "Đến hạn",
       "detail": "Chi tiết"
     }
   },

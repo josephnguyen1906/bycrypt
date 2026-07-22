@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -10,112 +10,104 @@ import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import { postUpdateUser } from "@/services/User.service";
 import LoadingComponent from "@/components/Loading";
-import { useUserStore } from "@/stores/useUserStore";
+import {
+  calcLoanPreview,
+  getLoanConfig,
+  submitLoan,
+  type LoanConfig,
+} from "@/services/Loan.service";
 
 export default function LoanSupportPage() {
-  const [gender, setGender] = useState("1");
-  const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [bithday, setBithday] = useState("");
-  const [country, setCountry] = useState("");
-  const [phone, setPhone] = useState("");
-  const [certificate, setCertificate] = useState("cccd");
   const [frontImage, setFrontImage] = useState<File>();
   const [backImage, setBackImage] = useState<File>();
-  const [imgLoan, setImgLoan] = useState<string>("");
   const [submitting, setSubmitting] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [config, setConfig] = useState<LoanConfig | null>(null);
+  const [amount, setAmount] = useState("");
   const frontFileInput = useRef<HTMLInputElement>(null);
   const backFileInput = useRef<HTMLInputElement>(null);
   const { t } = useTranslation();
   const router = useRouter();
-  const { user, fetchUser, loading } = useUserStore();
-
-  const handleFrontClick = () => {
-    frontFileInput.current?.click();
-  };
-
-  const handleFrontChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-
-    if (file) {
-      setFrontImage(file);
-    }
-  };
-
-  const previewSrc = frontImage
-    ? URL.createObjectURL(frontImage)
-    : imgLoan || null;
-
-  const handleBackClick = () => {
-    backFileInput.current?.click();
-  };
-
-  const handleBackChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-
-    if (file) {
-      setBackImage(file);
-    }
-  };
-
-  const previewBackSrc = backImage
-    ? URL.createObjectURL(backImage)
-    : imgLoan || null;
 
   useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
+    let cancelled = false;
+    (async () => {
+      try {
+        setLoading(true);
+        const res = await getLoanConfig();
+        if (cancelled) return;
+        const data = res.data.data;
+        setConfig(data);
+        setAmount(data.max_amount);
+      } catch (error: any) {
+        if (!cancelled) {
+          toast.error(error?.response?.data?.message || t("Toast.update_error"));
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [t]);
 
-  useEffect(() => {
-    if (!user) return;
-    setName(user.firstname || "");
-    setLastName(user.lastname || "");
-    setPhone(user.phonenumber || "");
-    setBithday(user.dob || "");
-    setCertificate(user.loan || "cccd");
-    setImgLoan(user.img_loan || "");
-    setCountry(user.country || "");
-  }, [user]);
+  const preview = useMemo(() => {
+    if (!config) return { interest: 0, repay: 0 };
+    const num = Number(amount);
+    if (!Number.isFinite(num) || num <= 0) return { interest: 0, repay: 0 };
+    return calcLoanPreview(
+      num,
+      Number(config.daily_interest_rate),
+      config.duration_days,
+    );
+  }, [amount, config]);
+
+  const previewSrc = frontImage ? URL.createObjectURL(frontImage) : null;
+  const previewBackSrc = backImage ? URL.createObjectURL(backImage) : null;
 
   const handleSubmit = async () => {
-    if (!frontImage && !imgLoan) {
+    if (!config) return;
+
+    if (!config.can_apply) {
+      toast.warning(config.cannot_apply_reason || t("loan.warning"));
+      return;
+    }
+
+    const num = Number(amount);
+    const min = Number(config.min_amount);
+    const max = Number(config.max_amount);
+    if (!Number.isFinite(num) || num < min || num > max) {
+      toast.warning(
+        t("loan.form.amountRange", {
+          defaultValue: `Amount must be between ${min} and ${max}`,
+          min,
+          max,
+        }),
+      );
+      return;
+    }
+
+    if (!frontImage || !backImage) {
       toast.warning(t("Toast.uploadFIle"));
       return;
     }
 
     try {
       setSubmitting(true);
-
-      // const formData = new FormData();
-      // formData.append("firstname", name);
-      // formData.append("lastname", lastName);
-      // formData.append("gender", gender);
-      // if (bithday) {
-      //   const date = new Date(bithday);
-
-      //   const formatted = `${String(date.getDate()).padStart(2, "0")}/${String(
-      //     date.getMonth() + 1,
-      //   ).padStart(2, "0")}/${date.getFullYear()}`;
-
-      //   formData.append("dob", formatted);
-      // }
-      // formData.append("country", country);
-      // formData.append("phonenumber", phone);
-      // formData.append("loan", certificate);
-
-      // if (frontImage) {
-      //   formData.append("img_loan", frontImage);
-      // }
-
-      // await postUpdateUser(formData);
-
+      const formData = new FormData();
+      formData.append("amount", String(num));
+      formData.append("img_front", frontImage);
+      formData.append("img_back", backImage);
+      await submitLoan(formData);
       toast.success(t("Toast.update_succ"));
-      await fetchUser();
-      setFrontImage(undefined);
+      router.push("/loan/history");
     } catch (error: any) {
-      toast.error(t(error?.message || "Toast.update_error"));
+      toast.error(
+        error?.response?.data?.message ||
+          t(error?.message || "Toast.update_error"),
+      );
     } finally {
       setSubmitting(false);
     }
@@ -140,7 +132,6 @@ export default function LoanSupportPage() {
         pb: 10,
       }}
     >
-      {/* ================= HEADER ================= */}
       <Box
         sx={{
           height: "55px",
@@ -150,7 +141,6 @@ export default function LoanSupportPage() {
           position: "relative",
         }}
       >
-        {/* Back */}
         <IconButton
           onClick={() => router.back()}
           sx={{
@@ -163,25 +153,13 @@ export default function LoanSupportPage() {
             height: "40px",
           }}
         >
-          <ArrowBackIosNewIcon
-            sx={{
-              fontSize: "22px",
-            }}
-          />
+          <ArrowBackIosNewIcon sx={{ fontSize: "22px" }} />
         </IconButton>
 
-        {/* Title */}
-        <Typography
-          sx={{
-            color: "#fff",
-            fontSize: 14,
-            fontWeight: 500,
-          }}
-        >
+        <Typography sx={{ color: "#fff", fontSize: 14, fontWeight: 500 }}>
           {t("loan.title")}
         </Typography>
 
-        {/* Right buttons */}
         <Box
           sx={{
             position: "absolute",
@@ -196,17 +174,11 @@ export default function LoanSupportPage() {
               height: "25px",
               bgcolor: "#EDF2FF",
               color: "#095CE5",
-              "&:hover": {
-                bgcolor: "#EDF2FF",
-              },
+              "&:hover": { bgcolor: "#EDF2FF" },
             }}
             onClick={() => router.push("/loan/rule")}
           >
-            <InfoOutlinedIcon
-              sx={{
-                fontSize: "22px",
-              }}
-            />
+            <InfoOutlinedIcon sx={{ fontSize: "22px" }} />
           </IconButton>
 
           <IconButton
@@ -215,28 +187,16 @@ export default function LoanSupportPage() {
               height: "25px",
               bgcolor: "#EDF2FF",
               color: "#095CE5",
-              "&:hover": {
-                bgcolor: "#EDF2FF",
-              },
+              "&:hover": { bgcolor: "#EDF2FF" },
             }}
             onClick={() => router.push("/loan/history")}
           >
-            <DescriptionOutlinedIcon
-              sx={{
-                fontSize: "22px",
-              }}
-            />
+            <DescriptionOutlinedIcon sx={{ fontSize: "22px" }} />
           </IconButton>
         </Box>
       </Box>
 
-      {/* ================= CONTENT ================= */}
-      <Box
-        sx={{
-          px: "14px",
-        }}
-      >
-        {/* Warning */}
+      <Box sx={{ px: "14px" }}>
         <Typography
           sx={{
             color: "#FF4B57",
@@ -246,12 +206,10 @@ export default function LoanSupportPage() {
             mb: "35px",
           }}
         >
-          {t("loan.warning")}
+          {config?.cannot_apply_reason || t("loan.warning")}
         </Typography>
 
-        {/* ================= LOAN INFO ================= */}
         <Box>
-          {/* Số tiền vay */}
           <Box
             sx={{
               minHeight: "75px",
@@ -259,29 +217,32 @@ export default function LoanSupportPage() {
               alignItems: "center",
               justifyContent: "space-between",
               borderBottom: "1px solid #2D303A",
+              gap: "12px",
             }}
           >
-            <Typography
-              sx={{
-                color: "#9298A9",
-                fontSize: 14,
-              }}
-            >
+            <Typography sx={{ color: "#9298A9", fontSize: 14 }}>
               {t("loan.info.expectedAmount")}
             </Typography>
-
-            <Typography
+            <Box
+              component="input"
+              value={amount}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setAmount(e.target.value.replace(/[^\d.]/g, ""))
+              }
+              inputMode="decimal"
               sx={{
+                width: "140px",
+                border: "none",
+                outline: "none",
+                bgcolor: "transparent",
                 color: "#fff",
                 fontSize: 14,
                 fontWeight: 500,
+                textAlign: "right",
               }}
-            >
-              200000
-            </Typography>
+            />
           </Box>
 
-          {/* Chu kỳ */}
           <Box
             sx={{
               minHeight: "75px",
@@ -291,27 +252,14 @@ export default function LoanSupportPage() {
               borderBottom: "1px solid #2D303A",
             }}
           >
-            <Typography
-              sx={{
-                color: "#9298A9",
-                fontSize: 14,
-              }}
-            >
+            <Typography sx={{ color: "#9298A9", fontSize: 14 }}>
               {t("loan.info.paymentCycle")}
             </Typography>
-
-            <Typography
-              sx={{
-                color: "#fff",
-                fontSize: 14,
-                fontWeight: 500,
-              }}
-            >
-              {t("loan.values.paymentCycle")}
+            <Typography sx={{ color: "#fff", fontSize: 14, fontWeight: 500 }}>
+              {config ? `${config.duration_days} ${t("loan.values.days", { defaultValue: "ngày" })}` : "—"}
             </Typography>
           </Box>
 
-          {/* Lãi suất */}
           <Box
             sx={{
               minHeight: "75px",
@@ -321,27 +269,14 @@ export default function LoanSupportPage() {
               borderBottom: "1px solid #2D303A",
             }}
           >
-            <Typography
-              sx={{
-                color: "#9298A9",
-                fontSize: 14,
-              }}
-            >
+            <Typography sx={{ color: "#9298A9", fontSize: 14 }}>
               {t("loan.info.dailyInterestRate")}
             </Typography>
-
-            <Typography
-              sx={{
-                color: "#fff",
-                fontSize: 14,
-                fontWeight: 500,
-              }}
-            >
-              {t("loan.values.dailyInterestRate")}
+            <Typography sx={{ color: "#fff", fontSize: 14, fontWeight: 500 }}>
+              {config?.daily_interest_rate_percent ?? "—"}
             </Typography>
           </Box>
 
-          {/* Phương thức */}
           <Box
             sx={{
               minHeight: "100px",
@@ -352,15 +287,9 @@ export default function LoanSupportPage() {
               borderBottom: "1px solid #2D303A",
             }}
           >
-            <Typography
-              sx={{
-                color: "#9298A9",
-                fontSize: 14,
-              }}
-            >
+            <Typography sx={{ color: "#9298A9", fontSize: 14 }}>
               {t("loan.info.paymentMethod")}
             </Typography>
-
             <Typography
               sx={{
                 color: "#fff",
@@ -373,7 +302,6 @@ export default function LoanSupportPage() {
             </Typography>
           </Box>
 
-          {/* Tiền lãi */}
           <Box
             sx={{
               minHeight: "75px",
@@ -383,27 +311,14 @@ export default function LoanSupportPage() {
               borderBottom: "1px solid #2D303A",
             }}
           >
-            <Typography
-              sx={{
-                color: "#9298A9",
-                fontSize: 14,
-              }}
-            >
+            <Typography sx={{ color: "#9298A9", fontSize: 14 }}>
               {t("loan.info.interest")}
             </Typography>
-
-            <Typography
-              sx={{
-                color: "#fff",
-                fontSize: 14,
-                fontWeight: 500,
-              }}
-            >
-              {t("loan.values.interest")}
+            <Typography sx={{ color: "#fff", fontSize: 14, fontWeight: 500 }}>
+              {preview.interest}
             </Typography>
           </Box>
 
-          {/* Ngân hàng */}
           <Box
             sx={{
               minHeight: "75px",
@@ -413,28 +328,15 @@ export default function LoanSupportPage() {
               borderBottom: "1px solid #2D303A",
             }}
           >
-            <Typography
-              sx={{
-                color: "#9298A9",
-                fontSize: 14,
-              }}
-            >
+            <Typography sx={{ color: "#9298A9", fontSize: 14 }}>
               {t("loan.info.lender")}
             </Typography>
-
-            <Typography
-              sx={{
-                color: "#fff",
-                fontSize: 14,
-                fontWeight: 500,
-              }}
-            >
-              {t("loan.values.lender")}
+            <Typography sx={{ color: "#fff", fontSize: 14, fontWeight: 500 }}>
+              {config?.lender_name ?? "—"}
             </Typography>
           </Box>
         </Box>
 
-        {/* ================= UPLOAD ================= */}
         <Typography
           sx={{
             color: "#fff",
@@ -462,9 +364,8 @@ export default function LoanSupportPage() {
               alignItems: "center",
             }}
           >
-            {/* Image */}
             <Box
-              onClick={handleFrontClick}
+              onClick={() => frontFileInput.current?.click()}
               sx={{
                 width: "100%",
                 maxWidth: "100%",
@@ -483,41 +384,26 @@ export default function LoanSupportPage() {
                   component="img"
                   src={previewSrc}
                   alt={t("loan.upload.documentAlt")}
-                  sx={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
+                  sx={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               ) : (
-                <CameraAltIcon
-                  sx={{
-                    color: "#E8EAF0",
-                    fontSize: "45px",
-                  }}
-                />
+                <CameraAltIcon sx={{ color: "#E8EAF0", fontSize: "45px" }} />
               )}
             </Box>
-
-            {/* Label */}
             <Typography
-              sx={{
-                color: "#9295A3",
-                fontSize: "14px",
-                mt: "15px",
-                textAlign: "center",
-              }}
+              sx={{ color: "#9295A3", fontSize: "14px", mt: "15px", textAlign: "center" }}
             >
               {t("VerifiedPage.label6")}
             </Typography>
-
-            {/* Input */}
             <input
               ref={frontFileInput}
               type="file"
               accept="image/*"
               hidden
-              onChange={handleFrontChange}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) setFrontImage(file);
+              }}
             />
           </Box>
 
@@ -529,9 +415,8 @@ export default function LoanSupportPage() {
               alignItems: "center",
             }}
           >
-            {/* Image */}
             <Box
-              onClick={handleBackClick}
+              onClick={() => backFileInput.current?.click()}
               sx={{
                 width: "100%",
                 maxWidth: "100%",
@@ -550,50 +435,34 @@ export default function LoanSupportPage() {
                   component="img"
                   src={previewBackSrc}
                   alt={t("loan.upload.documentAlt")}
-                  sx={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
+                  sx={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               ) : (
-                <CameraAltIcon
-                  sx={{
-                    color: "#E8EAF0",
-                    fontSize: "45px",
-                  }}
-                />
+                <CameraAltIcon sx={{ color: "#E8EAF0", fontSize: "45px" }} />
               )}
             </Box>
-
-            {/* Label */}
             <Typography
-              sx={{
-                color: "#9295A3",
-                fontSize: "14px",
-                mt: "15px",
-                textAlign: "center",
-              }}
+              sx={{ color: "#9295A3", fontSize: "14px", mt: "15px", textAlign: "center" }}
             >
               {t("VerifiedPage.label7")}
             </Typography>
-
-            {/* Input */}
             <input
               ref={backFileInput}
               type="file"
               accept="image/*"
               hidden
-              onChange={handleBackChange}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) setBackImage(file);
+              }}
             />
           </Box>
         </Box>
 
-        {/* ================= SUBMIT ================= */}
         <Button
           fullWidth
           onClick={handleSubmit}
-          disabled={submitting}
+          disabled={submitting || !config?.can_apply}
           sx={{
             height: "55px",
             mt: "45px",
@@ -603,15 +472,8 @@ export default function LoanSupportPage() {
             fontSize: 14,
             fontWeight: 500,
             textTransform: "none",
-
-            "&:hover": {
-              bgcolor: "#00B900",
-            },
-
-            "&.Mui-disabled": {
-              bgcolor: "#087F08",
-              color: "#aaa",
-            },
+            "&:hover": { bgcolor: "#00B900" },
+            "&.Mui-disabled": { bgcolor: "#087F08", color: "#aaa" },
           }}
         >
           {submitting ? t("loan.form.processing") : t("loan.form.confirm")}
