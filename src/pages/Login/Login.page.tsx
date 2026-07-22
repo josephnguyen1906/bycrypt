@@ -28,9 +28,10 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import SearchIcon from "@mui/icons-material/Search";
 import Image from "next/image";
 import { useLocalePhoneCountries } from "@/hooks/useLocalePhoneCountries";
+import { applyAppLocale, resolveAuthLocale } from "@/utils/appLocale";
 
 export default function LoginPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -45,7 +46,7 @@ export default function LoginPage() {
   const {
     countries: listLanguage,
     selectedCountry,
-    setSelectedCountry,
+    selectCountry,
   } = useLocalePhoneCountries();
   const [countrySearch, setCountrySearch] = useState("");
   const [configs, setConfigs] = useState<any>();
@@ -79,6 +80,12 @@ export default function LoginPage() {
     const formData = new FormData();
     formData.append("email", loginId);
     formData.append("password", password);
+    const locale = resolveAuthLocale(
+      loginType,
+      selectedCountry.code,
+      i18n.language,
+    );
+    formData.append("locale", locale);
     if (loginType === "phone") {
       formData.append("phone_code", selectedCountry.phoneCode);
     }
@@ -86,6 +93,10 @@ export default function LoginPage() {
     await loginUser(formData)
         .then((res: any) => {
           if (res?.status === true) {
+            const uiLocale =
+              res?.data?.ui_locale ||
+              (loginType === "phone" ? selectedCountry.code : locale);
+            applyAppLocale(uiLocale);
             window.localStorage.setItem("token", res.token);
             window.location.href = "/";
           } else {
@@ -548,7 +559,7 @@ export default function LoginPage() {
                   <ListItemButton
                     key={`${country.name}-${country.code}`}
                     onClick={() => {
-                      setSelectedCountry(country);
+                      selectCountry(country);
                       setCountryModal(false);
                       setCountrySearch("");
                     }}

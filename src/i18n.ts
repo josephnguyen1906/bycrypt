@@ -37,4 +37,11 @@ i18n.use(initReactI18next).init({
   },
 });
 
+if (typeof window !== "undefined") {
+  const saved = window.localStorage.getItem("lang");
+  if (saved) {
+    i18n.changeLanguage(saved);
+  }
+}
+
 export default i18n;

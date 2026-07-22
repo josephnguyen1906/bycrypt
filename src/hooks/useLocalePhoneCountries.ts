@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getLocalePhones } from "@/services/User.service";
+import { applyAppLocale } from "@/utils/appLocale";
 
 export type LocalePhoneCountry = {
   id: number;
@@ -159,10 +160,16 @@ export function useLocalePhoneCountries() {
     [countries],
   );
 
+  const selectCountry = (country: LocalePhoneCountry) => {
+    setSelectedCountry(country);
+    applyAppLocale(country.code);
+  };
+
   return {
     countries,
     selectedCountry,
     setSelectedCountry,
+    selectCountry,
     countrySearchFilter,
   };
 }

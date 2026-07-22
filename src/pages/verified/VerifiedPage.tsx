@@ -78,11 +78,13 @@ export default function VerifiedPage() {
 
   useEffect(() => {
     fetchUser();
-    if (user) {
-      setFullName(user.fullname);
-      setCardNumber(user.cccd);
-    }
   }, [fetchUser]);
+
+  useEffect(() => {
+    if (!user) return;
+    setFullName(user.fullname || "");
+    setCardNumber(user.cccd || "");
+  }, [user]);
 
   return (
     <Box
@@ -179,7 +181,7 @@ export default function VerifiedPage() {
             value={fullName ?? ""}
             onChange={(e) => setFullName(e.target.value)}
             placeholder={t("VerifiedPage.label2")}
-            readOnly={user?.cccd.length == 0}
+            readOnly={Boolean(user?.cccd)}
             sx={{
               width: "100%",
               height: "100%",
@@ -246,7 +248,7 @@ export default function VerifiedPage() {
             value={cardNumber ?? ""}
             onChange={(e) => setCardNumber(e.target.value)}
             placeholder={t("VerifiedPage.label4")}
-            readOnly={user?.cccd.length == 0}
+            readOnly={Boolean(user?.cccd)}
             sx={{
               width: "100%",
               height: "100%",
@@ -376,7 +378,7 @@ export default function VerifiedPage() {
               accept="image/*"
               ref={frontFileInput}
               style={{ display: "none" }}
-              onChange={handleFrontClick}
+              onChange={handleFrontChange}
             />
           </Box>
 
@@ -453,7 +455,7 @@ export default function VerifiedPage() {
         </Box>
 
         {/* Button */}
-        {user?.cccd.length == 0 && (
+        {!user?.cccd && (
           <Button
             type="button"
             onClick={handleSubmit}

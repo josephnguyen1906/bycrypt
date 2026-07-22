@@ -30,11 +30,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import Image from "next/image";
 import {
   useLocalePhoneCountries,
-  type LocalePhoneCountry,
 } from "@/hooks/useLocalePhoneCountries";
+import { applyAppLocale, resolveAuthLocale } from "@/utils/appLocale";
 
 export default function SignupPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
@@ -52,7 +52,7 @@ export default function SignupPage() {
   const {
     countries: listLanguage,
     selectedCountry,
-    setSelectedCountry,
+    selectCountry,
   } = useLocalePhoneCountries();
   const [countrySearch, setCountrySearch] = useState("");
   const [showRePassword, setShowRePassword] = useState<boolean>(false);
@@ -106,27 +106,37 @@ export default function SignupPage() {
       setErrorMsg(t("Toast.signup1"));
       return;
     }
+    if (password !== rePassword) {
+      setErrorMsg(t("Toast.change_pass3"));
+      return;
+    }
 
     setLoadding(true);
     setErrorMsg(null);
 
     try {
+      const locale = resolveAuthLocale(
+        loginType,
+        selectedCountry.code,
+        i18n.language,
+      );
       const formData = new FormData();
       formData.append("email", loginId);
       formData.append("password", password);
+      formData.append("Repassword", rePassword);
+      formData.append("locale", locale);
       if (loginType === "phone") {
         formData.append("phone_code", selectedCountry.phoneCode);
       }
-      if (mailSent) {
-        formData.append("verification_code", inviteCode);
-      } else {
-        formData.append("invit", inviteCode);
+      if (loginType === "email" && mailSent) {
+        formData.append("verification_code", code);
       }
-      formData.append("Repassword", rePassword);
+      formData.append("invit", inviteCode.trim() || "999999");
 
       const res: any = await signupUser(formData);
 
       if (res?.status) {
+        applyAppLocale(res?.data?.ui_locale || locale);
         toast.success(t("Toast.signup2"));
         window.location.href = "/login";
       } else {
@@ -699,7 +709,7 @@ export default function SignupPage() {
                   <ListItemButton
                     key={`${country.name}-${country.code}`}
                     onClick={() => {
-                      setSelectedCountry(country);
+                      selectCountry(country);
                       setCountryModal(false);
                       setCountrySearch("");
                     }}
