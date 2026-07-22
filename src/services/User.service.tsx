@@ -56,6 +56,10 @@ const updatePaymentPassword = (formData: FormData) => {
   });
 };
 
+const sendPaypasswordCode = () => {
+  return contentInstance.post(`/api/user/send-paypassword-code`);
+};
+
 const verifiUser = (formData: FormData) => {
   return contentInstance.post("/api/user/verify-account", formData, {
     headers: {
@@ -112,9 +116,28 @@ const buySubscribe = (formData: FormData) => {
   });
 };
 
-// Cập nhập mật khẩu tài khoản
-const getReferral = () => {
-  return contentInstance.get(`/api/user/referral`);
+export type ReferralMember = {
+  username: string;
+  referral_count: number;
+  total_deposit: string;
+};
+
+export type ReferralData = {
+  total_bonus: string;
+  total_deposit: string;
+  level_one_count: number;
+  level_two_count: number;
+  level_three_count: number;
+  level: number;
+  members: ReferralMember[];
+  invit: string;
+  referral_url: string;
+};
+
+const getReferral = (level: number = 1) => {
+  return contentInstance.get<{ status: boolean; data: ReferralData }>(
+    `/api/user/referral?level=${level}`,
+  );
 };
 
 const getOrepool = () => {
@@ -368,6 +391,7 @@ export {
   topUpCoins,
   getWebsiteConfig,
   updatePaymentPassword,
+  sendPaypasswordCode,
   sellCoins,
   getListCoin,
   createOrder,
