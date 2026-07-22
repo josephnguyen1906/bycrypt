@@ -352,9 +352,9 @@ export default function DepositHistory({ tab }: { tab: number }) {
                             height: 8,
                             borderRadius: "50%",
                             bgcolor:
-                              item.status === 0
+                              item.status === 1
                                 ? "#FFD84D"
-                                : item.status === 1
+                                : item.status === 2
                                   ? "#22C55E"
                                   : "#EF4444",
                           }}
@@ -366,9 +366,9 @@ export default function DepositHistory({ tab }: { tab: number }) {
                             fontSize: 13,
                           }}
                         >
-                          {item.status === 0
+                          {item.status === 1
                             ? "Đang xử lý"
-                            : item.status === 1
+                            : item.status === 2
                               ? "Thành công"
                               : "Đã từ chối"}
                         </Typography>

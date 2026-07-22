@@ -6,12 +6,13 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { MenuAccount } from "@/datafake/Menu";
 import { getOrepool } from "@/services/User.service";
+import { useRouter } from "next/navigation";
 
 export default function Tab2Page({ user }: { user: IUser | null }) {
   const [show, setShow] = useState(true);
   const { t } = useTranslation();
   const [stakingData, setStakingData] = useState<IOrepool>();
-
+  const router = useRouter();
   const fetchStakingData = async () => {
     try {
       const res: any = await getOrepool();
@@ -85,6 +86,11 @@ export default function Tab2Page({ user }: { user: IUser | null }) {
           <Box
             key={item.id}
             sx={{ display: "grid", justifyContent: "center", gap: "5px" }}
+            onClick={() => {
+              if (!item.link) return;
+
+              router.push(item.link);
+            }}
           >
             <IconButton sx={{ width: 54, height: 54, background: "#1A1B24" }}>
               {item.icon}
