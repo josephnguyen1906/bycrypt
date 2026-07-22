@@ -24,6 +24,7 @@ import { toast } from "react-toastify";
 import OrderConfirmModal from "./OrderConfirmModal";
 import { CheckIcon } from "@/shared/Svgs/Svg.component";
 import { getTradeLockMessage, isTradeLocked } from "@/utils/tradeLock";
+import { localizeTradeToast } from "@/utils/tradeToast";
 
 interface Props {
   open: boolean;
@@ -44,7 +45,7 @@ export default function TradePopup({
   history,
   onLoadHitory,
 }: Props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [amount, setAmount] = useState("");
   const [type, setType] = useState<any>(null);
   const [hytime, setHytime] = useState<any>(null);
@@ -101,12 +102,12 @@ export default function TradePopup({
     }
 
     if (isTradeLocked(user)) {
-      toast.error(getTradeLockMessage(user));
+      toast.error(getTradeLockMessage(user, t));
       return;
     }
 
     if (!hytime || amount === "" || Number(amount) <= 0) {
-      toast.error(t("Toast.buysell1"));
+      toast.error(t("Toast.invalid_qty"));
       return;
     }
 
@@ -125,12 +126,13 @@ export default function TradePopup({
 
       const res = (await createOrder(formData)) as unknown as {
         status?: boolean;
+        code?: string;
         message?: string;
         data?: unknown;
       };
 
       if (!res?.status) {
-        toast.error(res?.message || t("Toast.buysell4"));
+        toast.error(localizeTradeToast(res, t, i18n, "Toast.order_failed"));
         return;
       }
 
@@ -142,12 +144,12 @@ export default function TradePopup({
         setOrderData(res.data);
         setOpenConfirm(true);
         onLoadHitory();
+      } else {
+        toast.success(localizeTradeToast(res, t, i18n, "Toast.order_success"));
       }
-
-      // onClose();
-      // toast.success(t("Toast.buysell3"));
     } catch (error: any) {
-      toast.error(error?.message || t("Toast.buysell4"));
+      // contentInstance rejects with response.data ({ code, message }) already unwrapped
+      toast.error(localizeTradeToast(error, t, i18n, "Toast.order_failed"));
     } finally {
       submittingRef.current = false;
       setIsSubmitting(false);

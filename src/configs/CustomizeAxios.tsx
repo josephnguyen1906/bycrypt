@@ -4,7 +4,7 @@ import swal from "sweetalert";
 
 // API instance for login and register
 const authInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "https://cms.wnskcex.com",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "https://cms.bycrypt.net",
   timeout: 10000,
 });
 
@@ -35,7 +35,7 @@ authInstance.interceptors.response.use(
 
 // API instance for content
 const contentInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "https://cms.wnskcex.com",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "https://cms.bycrypt.net",
   timeout: 10000,
 });
 
