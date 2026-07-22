@@ -14,6 +14,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getVerificationStatus } from "@/services/User.service";
+import { useTranslation } from "react-i18next";
 
 type VerificationInfo = {
   fullname?: string | null;
@@ -34,17 +35,17 @@ type VerificationInfo = {
 };
 
 const STATUS_TEXT: Record<string, string> = {
-  none: "Chưa xác minh",
-  pending: "Đang chờ duyệt",
-  approved: "Đã xác minh",
-  rejected: "Bị từ chối",
+  none: "VerifiedPage.label21",
+  pending: "VerifiedPage.label22",
+  approved: "VerifiedPage.label23",
+  rejected: "VerifiedPage.label24",
 };
 
 export default function VerificationCenterPage() {
   const router = useRouter();
   const [info, setInfo] = useState<VerificationInfo | null>(null);
   const [loading, setLoading] = useState(true);
-
+  const { t } = useTranslation();
   useEffect(() => {
     let cancelled = false;
     getVerificationStatus()
@@ -130,7 +131,7 @@ export default function VerificationCenterPage() {
             fontWeight: 700,
           }}
         >
-          Trung tâm chứng nhận
+          {t("VerifiedPage.label8")}
         </Typography>
       </Box>
 
@@ -172,7 +173,11 @@ export default function VerificationCenterPage() {
           >
             <Box
               component="img"
-              src={info?.flag_png || info?.flag_url || "https://flagcdn.com/w80/vn.png"}
+              src={
+                info?.flag_png ||
+                info?.flag_url ||
+                "https://flagcdn.com/w80/vn.png"
+              }
               alt={info?.country_name || "flag"}
               sx={{
                 width: "100%",
@@ -208,7 +213,9 @@ export default function VerificationCenterPage() {
             },
           }}
         >
-          {loading ? "Đang tải..." : `Trạng thái: ${statusLabel}`}
+          {loading
+            ? t("VerifiedPage.label10")
+            : `${t("VerifiedPage.label9")}: ${t(statusLabel)}`}
         </Button>
 
         {/* ================= VERIFICATION TYPE ================= */}
@@ -262,9 +269,7 @@ export default function VerificationCenterPage() {
                 fontWeight: 500,
               }}
             >
-              Primary
-              <br />
-              Certification
+              {t("VerifiedPage.label11")}
             </Typography>
           </Box>
 
@@ -307,9 +312,7 @@ export default function VerificationCenterPage() {
                 fontWeight: 500,
               }}
             >
-              Chứng nhận nâng
-              <br />
-              cao
+              {t("VerifiedPage.label12")}
             </Typography>
           </Box>
         </Box>
@@ -322,7 +325,7 @@ export default function VerificationCenterPage() {
             fontSize: "12px",
           }}
         >
-          yêu cầu
+          {t("DepositWithdrawPage.label19")}
         </Typography>
 
         {/* ================= REQUIREMENT LIST ================= */}
@@ -358,7 +361,7 @@ export default function VerificationCenterPage() {
                 flex: 1,
               }}
             >
-              Thông tin cá nhân
+              {t("VerifiedPage.label13")}
             </Typography>
 
             {personalDone && (
@@ -392,7 +395,7 @@ export default function VerificationCenterPage() {
                 flex: 1,
               }}
             >
-              Government Issued ID
+              {t("VerifiedPage.label14")}
             </Typography>
 
             {idDone && (
@@ -410,7 +413,7 @@ export default function VerificationCenterPage() {
             fontWeight: 500,
           }}
         >
-          Tính năng và Hạn chế
+          {t("VerifiedPage.label15")}
         </Typography>
 
         {/* Time */}
@@ -435,7 +438,8 @@ export default function VerificationCenterPage() {
               fontSize: "11px",
             }}
           >
-            Thời gian xem lại:{info?.review_days ?? 3} days
+            {t("VerifiedPage.label16")}: {info?.review_days ?? 3}{" "}
+            {t("HomePage.title7")}
           </Typography>
         </Box>
 
@@ -479,7 +483,7 @@ export default function VerificationCenterPage() {
               },
             }}
           >
-            Đánh giá
+            {t("VerifiedPage.label17")}
           </Button>
         </Box>
 
@@ -503,10 +507,10 @@ export default function VerificationCenterPage() {
           }}
         >
           {info?.can_submit === false && info?.rzstatus === 2
-            ? "Xem chi tiết"
+            ? t("VerifiedPage.label18")
             : info?.rzstatus === 1
-              ? "Đang chờ duyệt"
-              : "Chi tiết kiểm tra"}
+              ? t("VerifiedPage.label19")
+              : t("VerifiedPage.label20")}
         </Button>
       </Box>
     </Box>

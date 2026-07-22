@@ -129,7 +129,7 @@ export default function AccountDrawer({ open, onClose }: AccountDrawerProps) {
       id: 9,
       name: "Menu.verification",
       icon: <Security />,
-      link: "/verified",
+      link: "/verification",
       isLogin: true,
     },
     {

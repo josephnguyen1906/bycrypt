@@ -244,10 +244,13 @@ export default function EmailVerificationPage() {
                   sx={{
                     minWidth: "auto",
                     p: 0,
-                    color: countdown > 0 ? "#fff" : "#00C853",
+                    color: countdown > 0 ? "white" : "#00C853",
                     fontSize: "11px",
                     textTransform: "none",
                     whiteSpace: "nowrap",
+                    ":disabled": {
+                      color: countdown > 0 ? "white" : "#00C853",
+                    },
                   }}
                 >
                   {countdown > 0 ? `${countdown}s` : t("ChangePass.title11")}
@@ -262,7 +265,7 @@ export default function EmailVerificationPage() {
               height: "40px",
               bgcolor: "#191B26",
               borderRadius: "3px",
-
+              color: "#fff",
               "& fieldset": {
                 border: "none",
               },
