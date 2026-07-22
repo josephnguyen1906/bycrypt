@@ -1,10 +1,9 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
   Stack,
-  Paper,
   Avatar,
   ButtonBase,
   IconButton,
@@ -16,9 +15,27 @@ import { useRouter } from "next/navigation";
 
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useTranslation } from "react-i18next";
+import { getSecurityStatus } from "@/services/User.service";
+
 export default function SecurityPage() {
   const router = useRouter();
   const { t } = useTranslation();
+  const [googleEnabled, setGoogleEnabled] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(false);
+
+  useEffect(() => {
+    getSecurityStatus()
+      .then((res: any) => {
+        if (res?.status && res.data) {
+          setGoogleEnabled(Boolean(res.data.google2fa_enabled));
+          setEmailVerified(Boolean(res.data.security_email_verified));
+        }
+      })
+      .catch(() => {
+        /* ignore */
+      });
+  }, []);
+
   return (
     <Box
       sx={{
@@ -100,12 +117,14 @@ export default function SecurityPage() {
           <SecurityMethod
             icon={<SecurityIcon />}
             label="Google Authenticator"
+            done={googleEnabled}
             onClick={() => router.push("/google-authenticator")}
           />
 
           <SecurityMethod
             icon={<EmailOutlinedIcon />}
             label={t("ChangePass.title7")}
+            done={emailVerified}
             onClick={() => router.push("/email-verification")}
           />
         </Stack>
@@ -136,10 +155,11 @@ export default function SecurityPage() {
 interface SecurityMethodProps {
   icon: React.ReactNode;
   label: string;
+  done?: boolean;
   onClick: () => void;
 }
 
-function SecurityMethod({ icon, label, onClick }: SecurityMethodProps) {
+function SecurityMethod({ icon, label, done, onClick }: SecurityMethodProps) {
   return (
     <ButtonBase
       onClick={onClick}
@@ -185,7 +205,7 @@ function SecurityMethod({ icon, label, onClick }: SecurityMethodProps) {
             {icon}
           </Avatar>
 
-          {/* Warning badge */}
+          {/* Status badge */}
           <Box
             sx={{
               position: "absolute",
@@ -194,8 +214,8 @@ function SecurityMethod({ icon, label, onClick }: SecurityMethodProps) {
               width: 17,
               height: 17,
               borderRadius: "50%",
-              bgcolor: "#FFD43B",
-              color: "#555",
+              bgcolor: done ? "#00C853" : "#FFD43B",
+              color: done ? "#fff" : "#555",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -203,7 +223,7 @@ function SecurityMethod({ icon, label, onClick }: SecurityMethodProps) {
               fontWeight: 700,
             }}
           >
-            !
+            {done ? "✓" : "!"}
           </Box>
         </Box>
 
