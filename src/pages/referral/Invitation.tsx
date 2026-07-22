@@ -28,9 +28,9 @@ export default function InvitationPage() {
   const fetchReferral = useCallback(async (nextLevel: 1 | 2 | 3) => {
     try {
       setLoadingReferral(true);
-      const res = await getReferral(nextLevel);
-      if (res.data?.status) {
-        setReferral(res.data.data);
+      const res: any = await getReferral(nextLevel);
+      if (res?.status) {
+        setReferral(res.data);
       }
     } catch {
       // keep previous summary if tab switch fails
@@ -181,32 +181,61 @@ export default function InvitationPage() {
               }}
             >
               <Box>
-                <Typography sx={{ color: "#8D909B", fontSize: "12px", mb: "16px" }}>
+                <Typography
+                  sx={{ color: "#8D909B", fontSize: "12px", mb: "16px" }}
+                >
                   {t("InvitationPage.title2")}
                 </Typography>
                 <Typography
-                  sx={{ color: "#00D084", fontSize: "30px", lineHeight: 1, fontWeight: 600 }}
+                  sx={{
+                    color: "#00D084",
+                    fontSize: "30px",
+                    lineHeight: 1,
+                    fontWeight: 600,
+                  }}
                 >
                   {referral?.total_bonus ?? "0"}
                 </Typography>
               </Box>
 
               <Box>
-                <Typography sx={{ color: "#8D909B", fontSize: "12px", mb: "16px" }}>
+                <Typography
+                  sx={{ color: "#8D909B", fontSize: "12px", mb: "16px" }}
+                >
                   {t("InvitationPage.title3")}
                 </Typography>
                 <Typography
-                  sx={{ color: "#00D084", fontSize: "30px", lineHeight: 1, fontWeight: 600 }}
+                  sx={{
+                    color: "#00D084",
+                    fontSize: "30px",
+                    lineHeight: 1,
+                    fontWeight: 600,
+                  }}
                 >
                   {referral?.total_deposit ?? "0.00"}
                 </Typography>
               </Box>
 
-              <Box sx={{ display: "flex", alignItems: "center", cursor: "pointer", mt: "2px" }}>
-                <Typography sx={{ color: "#00D084", fontSize: "12px", whiteSpace: "nowrap" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  cursor: "pointer",
+                  mt: "2px",
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "#00D084",
+                    fontSize: "12px",
+                    whiteSpace: "nowrap",
+                  }}
+                >
                   {t("InvitationPage.title4")}
                 </Typography>
-                <KeyboardArrowRightIcon sx={{ color: "#008FFF", fontSize: "22px" }} />
+                <KeyboardArrowRightIcon
+                  sx={{ color: "#008FFF", fontSize: "22px" }}
+                />
               </Box>
             </Box>
           </Box>
@@ -224,7 +253,9 @@ export default function InvitationPage() {
               <Typography sx={{ color: "#8D909B", fontSize: "12px" }}>
                 {t("InvitationPage.title5")}
               </Typography>
-              <Typography sx={{ color: "#8D909B", fontSize: "20px", mt: "38px" }}>
+              <Typography
+                sx={{ color: "#8D909B", fontSize: "20px", mt: "38px" }}
+              >
                 {referral?.level_one_count ?? 0}
               </Typography>
             </Box>
@@ -232,7 +263,9 @@ export default function InvitationPage() {
               <Typography sx={{ color: "#8D909B", fontSize: "12px" }}>
                 {t("InvitationPage.title6")}
               </Typography>
-              <Typography sx={{ color: "#8D909B", fontSize: "20px", mt: "38px" }}>
+              <Typography
+                sx={{ color: "#8D909B", fontSize: "20px", mt: "38px" }}
+              >
                 {referral?.level_two_count ?? 0}
               </Typography>
             </Box>
@@ -240,7 +273,9 @@ export default function InvitationPage() {
               <Typography sx={{ color: "#8D909B", fontSize: "12px" }}>
                 {t("InvitationPage.title7")}
               </Typography>
-              <Typography sx={{ color: "#8D909B", fontSize: "20px", mt: "38px" }}>
+              <Typography
+                sx={{ color: "#8D909B", fontSize: "20px", mt: "38px" }}
+              >
                 {referral?.level_three_count ?? 0}
               </Typography>
             </Box>
@@ -268,7 +303,12 @@ export default function InvitationPage() {
 
           <Box sx={{ mt: "50px", px: "16px" }}>
             <Typography
-              sx={{ color: "#fff", fontSize: "16px", fontWeight: 500, mb: "25px" }}
+              sx={{
+                color: "#fff",
+                fontSize: "16px",
+                fontWeight: 500,
+                mb: "25px",
+              }}
             >
               {t("InvitationPage.title8")}
             </Typography>
@@ -281,13 +321,19 @@ export default function InvitationPage() {
               }}
             >
               <Box onClick={() => setLevel(1)}>
-                <Typography sx={tabSx(level === 1)}>{t("InvitationPage.title9")}</Typography>
+                <Typography sx={tabSx(level === 1)}>
+                  {t("InvitationPage.title9")}
+                </Typography>
               </Box>
               <Box onClick={() => setLevel(2)}>
-                <Typography sx={tabSx(level === 2)}>{t("InvitationPage.title10")}</Typography>
+                <Typography sx={tabSx(level === 2)}>
+                  {t("InvitationPage.title10")}
+                </Typography>
               </Box>
               <Box onClick={() => setLevel(3)}>
-                <Typography sx={tabSx(level === 3)}>{t("InvitationPage.title11")}</Typography>
+                <Typography sx={tabSx(level === 3)}>
+                  {t("InvitationPage.title11")}
+                </Typography>
               </Box>
             </Box>
 
@@ -300,13 +346,19 @@ export default function InvitationPage() {
                 gap: "10px",
               }}
             >
-              <Typography sx={{ color: "#8D909B", fontSize: "13px", lineHeight: "20px" }}>
+              <Typography
+                sx={{ color: "#8D909B", fontSize: "13px", lineHeight: "20px" }}
+              >
                 {t("InvitationPage.title12")}
               </Typography>
-              <Typography sx={{ color: "#8D909B", fontSize: "13px", lineHeight: "20px" }}>
+              <Typography
+                sx={{ color: "#8D909B", fontSize: "13px", lineHeight: "20px" }}
+              >
                 {t("InvitationPage.title13")}
               </Typography>
-              <Typography sx={{ color: "#8D909B", fontSize: "13px", lineHeight: "20px" }}>
+              <Typography
+                sx={{ color: "#8D909B", fontSize: "13px", lineHeight: "20px" }}
+              >
                 {t("InvitationPage.title14")}
               </Typography>
             </Box>
