@@ -239,6 +239,15 @@ const apiExchange = (from: string, to: string, amount: number) => {
   });
 };
 
+const apiExchangeQuote = (from: string, to: string, amount: number) => {
+  return contentInstance.post(`/api/finance/exchange/quote`, {
+    from,
+    to,
+    amount,
+  });
+};
+
+
 const getHistoryExchange = (from: number, limit: number) => {
   return contentInstance.get(
     `/api/finance/exchange/history?page=${from}&limit=${limit}`,
@@ -363,6 +372,7 @@ export {
   getCheckDeposit,
   sendCode,
   apiExchange,
+  apiExchangeQuote,
   getHistoryExchange,
   getDepositMethod,
   getFinaceBalance,
