@@ -28,100 +28,11 @@ import { useRouter } from "next/navigation";
 import CancelIcon from "@mui/icons-material/Cancel";
 import SearchIcon from "@mui/icons-material/Search";
 import Image from "next/image";
-interface Country {
-  id: number;
-  name: string;
-  code: string;
-  phoneCode: string;
-  img: string;
-}
+import {
+  useLocalePhoneCountries,
+  type LocalePhoneCountry,
+} from "@/hooks/useLocalePhoneCountries";
 
-const listLanguage = [
-  {
-    id: 0,
-    code: "en",
-    name: "English",
-    phoneCode: "1",
-    img: "https://flagcdn.com/us.svg",
-  },
-  {
-    id: 1,
-    code: "vi",
-    name: "Tiếng Việt",
-    phoneCode: "84",
-    img: "https://flagcdn.com/vn.svg",
-  },
-  {
-    id: 2,
-    code: "ja",
-    name: "日本語",
-    phoneCode: "81",
-    img: "https://flagcdn.com/jp.svg",
-  },
-  {
-    id: 3,
-    code: "id",
-    name: "Bahasa Indonesia",
-    phoneCode: "62",
-    img: "https://flagcdn.com/id.svg",
-  },
-  {
-    id: 4,
-    code: "de",
-    name: "Deutsch",
-    phoneCode: "49",
-    img: "https://flagcdn.com/de.svg",
-  },
-  {
-    id: 5,
-    code: "es",
-    name: "Español",
-    phoneCode: "34",
-    img: "https://flagcdn.com/es.svg",
-  },
-  {
-    id: 6,
-    code: "po",
-    name: "Portugal",
-    phoneCode: "351",
-    img: "https://flagcdn.com/pt.svg",
-  },
-  {
-    id: 7,
-    code: "fr",
-    name: "Français",
-    phoneCode: "33",
-    img: "https://flagcdn.com/fr.svg",
-  },
-  {
-    id: 8,
-    code: "it",
-    name: "Italiano",
-    phoneCode: "39",
-    img: "https://flagcdn.com/it.svg",
-  },
-  {
-    id: 9,
-    code: "ko",
-    name: "한국인",
-    phoneCode: "82",
-    img: "https://flagcdn.com/kr.svg",
-  },
-  {
-    id: 10,
-    code: "th",
-    name: "ไทย",
-    phoneCode: "66",
-    img: "https://flagcdn.com/th.svg",
-  },
-  {
-    id: 11,
-    code: "gr",
-    name: "Ελληνικά",
-    phoneCode: "30",
-    img: "https://flagcdn.com/gr.svg",
-  },
-];
 export default function SignupPage() {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
@@ -137,13 +48,11 @@ export default function SignupPage() {
   const [loginType, setLoginType] = useState<"phone" | "email">("phone");
   const [phone, setPhone] = useState("");
   const [countryModal, setCountryModal] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState<Country>({
-    id: 0,
-    code: "en",
-    name: "English",
-    img: "https://flagcdn.com/us.svg",
-    phoneCode: "1",
-  });
+  const {
+    countries: listLanguage,
+    selectedCountry,
+    setSelectedCountry,
+  } = useLocalePhoneCountries();
   const [countrySearch, setCountrySearch] = useState("");
   const [showPayPassword, setShowPayPassword] = useState<boolean>(false);
   const handlePassword = (e: any) => setPassword(e.target.value);
@@ -191,9 +100,9 @@ export default function SignupPage() {
   const signup = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !password) {
+    const loginId = loginType === "phone" ? phone.trim() : email.trim();
+    if (!loginId || !password) {
       setErrorMsg(t("Toast.signup1"));
-      // toast.error("Tên đăng nhập và mật khẩu không được để trống");
       return;
     }
 
@@ -202,8 +111,11 @@ export default function SignupPage() {
 
     try {
       const formData = new FormData();
-      formData.append("email", email);
+      formData.append("email", loginId);
       formData.append("password", password);
+      if (loginType === "phone") {
+        formData.append("phone_code", selectedCountry.phoneCode);
+      }
       if (mailSent) {
         formData.append("verification_code", inviteCode);
       } else {

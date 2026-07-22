@@ -159,6 +159,11 @@ const getMyWallet = () => {
 const getWebsiteConfig = () => {
   return contentInstance.get("/api/config");
 };
+
+const getLocalePhones = (locale?: string) => {
+  const q = locale ? `?locale=${encodeURIComponent(locale)}` : "";
+  return contentInstance.get(`/api/locale-phones${q}`);
+};
 const getListCoin = () => {
   return contentInstance.get("/api/contract/coin");
 };
@@ -390,6 +395,7 @@ export {
   verifiUser,
   topUpCoins,
   getWebsiteConfig,
+  getLocalePhones,
   updatePaymentPassword,
   sendPaypasswordCode,
   sellCoins,
