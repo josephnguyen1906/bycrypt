@@ -35,14 +35,16 @@ export default function LoanSupportPage() {
     (async () => {
       try {
         setLoading(true);
-        const res = await getLoanConfig();
+        const res: any = await getLoanConfig();
         if (cancelled) return;
-        const data = res.data.data;
+        const data = res.data;
         setConfig(data);
         setAmount(data.max_amount);
       } catch (error: any) {
         if (!cancelled) {
-          toast.error(error?.response?.data?.message || t("Toast.update_error"));
+          toast.error(
+            error?.response?.data?.message || t("Toast.update_error"),
+          );
         }
       } finally {
         if (!cancelled) setLoading(false);
@@ -256,7 +258,9 @@ export default function LoanSupportPage() {
               {t("loan.info.paymentCycle")}
             </Typography>
             <Typography sx={{ color: "#fff", fontSize: 14, fontWeight: 500 }}>
-              {config ? `${config.duration_days} ${t("loan.values.days", { defaultValue: "ngày" })}` : "—"}
+              {config
+                ? `${config.duration_days} ${t("loan.values.days", { defaultValue: "ngày" })}`
+                : "—"}
             </Typography>
           </Box>
 
@@ -391,7 +395,12 @@ export default function LoanSupportPage() {
               )}
             </Box>
             <Typography
-              sx={{ color: "#9295A3", fontSize: "14px", mt: "15px", textAlign: "center" }}
+              sx={{
+                color: "#9295A3",
+                fontSize: "14px",
+                mt: "15px",
+                textAlign: "center",
+              }}
             >
               {t("VerifiedPage.label6")}
             </Typography>
@@ -442,7 +451,12 @@ export default function LoanSupportPage() {
               )}
             </Box>
             <Typography
-              sx={{ color: "#9295A3", fontSize: "14px", mt: "15px", textAlign: "center" }}
+              sx={{
+                color: "#9295A3",
+                fontSize: "14px",
+                mt: "15px",
+                textAlign: "center",
+              }}
             >
               {t("VerifiedPage.label7")}
             </Typography>

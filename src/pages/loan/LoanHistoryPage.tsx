@@ -61,8 +61,8 @@ const LoanHistoryPage = () => {
       try {
         setLoading(true);
         const status = STATUS_BY_TAB[tab] ?? "all";
-        const res = await getLoanHistory(status);
-        if (!cancelled) setItems(res.data.data ?? []);
+        const res: any = await getLoanHistory(status);
+        if (!cancelled) setItems(res.data ?? []);
       } catch {
         if (!cancelled) setItems([]);
       } finally {
@@ -89,7 +89,12 @@ const LoanHistoryPage = () => {
         pt: "100px",
       }}
     >
-      <Image src={"/images/noData-7d35fd7d.png"} width={80} height={80} alt="" />
+      <Image
+        src={"/images/noData-7d35fd7d.png"}
+        width={80}
+        height={80}
+        alt=""
+      />
       <Typography sx={{ color: "#868D9A", fontSize: 14 }}>
         {t("HistoryPage.title2")}
       </Typography>
@@ -128,7 +133,7 @@ const LoanHistoryPage = () => {
           >
             {t("loan.history.amount")}:{" "}
             <Box component="span" sx={{ color: "#00D68F" }}>
-              +{loan.amount} {loan.currency}
+              +{Number(loan.amount).toLocaleString()} {loan.currency}
             </Box>
           </Typography>
 

@@ -245,6 +245,7 @@ export default function AccountDrawer({ open, onClose }: AccountDrawerProps) {
                 sx={{
                   fontSize: 14,
                   mb: 1,
+                  color: "white",
                 }}
               >
                 {user?.fullname}
@@ -260,6 +261,7 @@ export default function AccountDrawer({ open, onClose }: AccountDrawerProps) {
                 <Typography
                   sx={{
                     fontSize: 14,
+                    color: "white",
                   }}
                 >
                   ID: {user?.invit}
@@ -278,6 +280,7 @@ export default function AccountDrawer({ open, onClose }: AccountDrawerProps) {
                 sx={{
                   fontSize: 14,
                   mt: 1,
+                  color: "white",
                 }}
               >
                 Credit score:{" "}

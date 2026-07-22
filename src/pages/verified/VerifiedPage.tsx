@@ -25,7 +25,6 @@ import { CameraIcon } from "@/shared/Svgs/Svg.component";
 export default function VerifiedPage() {
   const [fullName, setFullName] = useState<string | null>(null);
   const [cardNumber, setCardNumber] = useState<string | null>(null);
-  const [isVerified, setIsVerified] = useState(false);
   const [frontImage, setFrontImage] = useState<File>();
   const frontFileInput = useRef<HTMLInputElement>(null);
   const [backImage, setBackImage] = useState<File>();
@@ -71,13 +70,6 @@ export default function VerifiedPage() {
       await verifiUser(formData);
       toast.success(t("Toast.verifide1"));
       fetchUser();
-      if (user?.cccd) {
-        setCardNumber(user.cccd);
-        setIsVerified(true);
-      } else {
-        setCardNumber("");
-        setIsVerified(false);
-      }
     } catch (error) {
       console.error("Error submitting verification:", error);
       toast.error(t("Toast.verifide2"));
@@ -86,7 +78,12 @@ export default function VerifiedPage() {
 
   useEffect(() => {
     fetchUser();
+    if (user) {
+      setFullName(user.fullname);
+      setCardNumber(user.cccd);
+    }
   }, [fetchUser]);
+
   return (
     <Box
       sx={{
@@ -182,7 +179,7 @@ export default function VerifiedPage() {
             value={fullName ?? ""}
             onChange={(e) => setFullName(e.target.value)}
             placeholder={t("VerifiedPage.label2")}
-            readOnly={isVerified}
+            readOnly={user?.cccd.length == 0}
             sx={{
               width: "100%",
               height: "100%",
@@ -249,7 +246,7 @@ export default function VerifiedPage() {
             value={cardNumber ?? ""}
             onChange={(e) => setCardNumber(e.target.value)}
             placeholder={t("VerifiedPage.label4")}
-            readOnly={isVerified}
+            readOnly={user?.cccd.length == 0}
             sx={{
               width: "100%",
               height: "100%",
@@ -312,6 +309,7 @@ export default function VerifiedPage() {
           }}
         >
           {/* Mặt trước */}
+
           <Box
             sx={{
               display: "flex",
@@ -333,10 +331,22 @@ export default function VerifiedPage() {
               }}
             >
               {frontImage ? (
+                // Ưu tiên ảnh mới được chọn
                 <Box
                   component="img"
                   src={URL.createObjectURL(frontImage)}
-                  alt={t("VerifiedPage.label6")}
+                  alt={t("VerifiedPage.label7")}
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              ) : user?.cardfm ? (
+                <Box
+                  component="img"
+                  src={user.cardfm}
+                  alt={t("VerifiedPage.label7")}
                   sx={{
                     width: "100%",
                     height: "100%",
@@ -344,6 +354,7 @@ export default function VerifiedPage() {
                   }}
                 />
               ) : (
+                // Không có ảnh
                 <CameraIcon width="24px" height="24px" fill="#E8EAF0" />
               )}
             </Box>
@@ -351,7 +362,7 @@ export default function VerifiedPage() {
             <Typography
               sx={{
                 mt: "8px",
-                color: "#A8A9B3",
+                color: "#606275ff",
                 fontSize: "13px",
                 textAlign: "center",
                 lineHeight: "18px",
@@ -365,7 +376,7 @@ export default function VerifiedPage() {
               accept="image/*"
               ref={frontFileInput}
               style={{ display: "none" }}
-              onChange={handleFrontChange}
+              onChange={handleFrontClick}
             />
           </Box>
 
@@ -391,6 +402,7 @@ export default function VerifiedPage() {
               }}
             >
               {backImage ? (
+                // Ưu tiên ảnh mới được chọn
                 <Box
                   component="img"
                   src={URL.createObjectURL(backImage)}
@@ -401,7 +413,19 @@ export default function VerifiedPage() {
                     objectFit: "cover",
                   }}
                 />
+              ) : user?.cardzm ? (
+                <Box
+                  component="img"
+                  src={user.cardzm}
+                  alt={t("VerifiedPage.label7")}
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
               ) : (
+                // Không có ảnh
                 <CameraIcon width="24px" height="24px" fill="#E8EAF0" />
               )}
             </Box>
@@ -409,7 +433,7 @@ export default function VerifiedPage() {
             <Typography
               sx={{
                 mt: "8px",
-                color: "#A8A9B3",
+                color: "#606275ff",
                 fontSize: "13px",
                 textAlign: "center",
                 lineHeight: "18px",
@@ -429,7 +453,7 @@ export default function VerifiedPage() {
         </Box>
 
         {/* Button */}
-        {!isVerified && (
+        {user?.cccd.length == 0 && (
           <Button
             type="button"
             onClick={handleSubmit}
