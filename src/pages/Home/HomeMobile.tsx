@@ -161,7 +161,7 @@ export default function HomeMobile({
           }}
         >
           <Box display={"flex"} justifyContent={"space-between"}></Box>
-          <PoolList pools={stakingData?.overview ?? []} />
+          <PoolList pools={stakingData?.overview ?? []} user={user} />
 
           <Box
             sx={{

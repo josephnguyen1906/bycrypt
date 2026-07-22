@@ -467,7 +467,10 @@
     "invalid_timeframe": "Invalid time frame selected",
     "settings_error": "Failed to load settings. Please contact support.",
     "amount_too_high": "Investment amount is too high for this time frame",
-    "trade_locked": "Trading is locked on this account"
+    "trade_locked": "Trading is locked on this account",
+    "mining1": "You are not logged in",
+    "mining2": "Mining machine purchased successfully",
+    "mining3": "Failed to purchase mining machine"
   },
   "News": {
     "follow": "Follow",

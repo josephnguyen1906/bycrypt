@@ -1,7 +1,11 @@
 "use client";
 import MiniChart from "@/components/chart/MiniChart.tsx";
+import { buyMining } from "@/services/User.service";
+import { IUser } from "@/shared/interfaces";
 import { Box, Button, Stack, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 interface PoolItem {
   id: number;
@@ -14,8 +18,34 @@ interface PoolItem {
   ycnum: number;
 }
 
-export default function PoolList({ pools }: { pools: PoolItem[] }) {
+export default function PoolList({
+  pools,
+  user,
+}: {
+  pools: PoolItem[];
+  user: IUser | null;
+}) {
   const { t, i18n } = useTranslation();
+  const router = useRouter();
+
+  const handleSubmit = async (item: any) => {
+    if (!user) {
+      toast.error(t("Toast.mining1"));
+      return;
+    }
+    if (Number(user.balance.usdt) < Number(item.pricenum)) {
+      router.push("/deposit");
+      return;
+    }
+    try {
+      const formData = new FormData();
+      formData.append("id", item.id);
+      await buyMining(formData);
+      toast.success(t("Toast.mining2"));
+    } catch (error) {
+      toast.error(t("Toast.mining3"));
+    }
+  };
   return (
     <Box
       sx={{
@@ -125,6 +155,7 @@ export default function PoolList({ pools }: { pools: PoolItem[] }) {
 
             <Button
               fullWidth
+              onClick={() => handleSubmit(item)}
               sx={{
                 mt: 2,
                 bgcolor: "#12C41F",

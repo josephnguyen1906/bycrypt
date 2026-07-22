@@ -460,7 +460,10 @@
     "invalid_timeframe": "선택한 시간 단위가 올바르지 않습니다",
     "settings_error": "설정을 불러오지 못했습니다. 지원팀에 문의하세요.",
     "amount_too_high": "이 시간 단위에 대한 투자 금액이 너무 큽니다",
-    "trade_locked": "이 계정은 거래가 잠겨 있습니다"
+    "trade_locked": "이 계정은 거래가 잠겨 있습니다",
+    "mining1": "로그인하지 않았습니다",
+    "mining2": "채굴기 구매에 성공했습니다",
+    "mining3": "채굴기 구매에 실패했습니다"
   },
   "News": {
     "follow": "팔로우",

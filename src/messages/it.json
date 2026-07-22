@@ -460,7 +460,10 @@
     "invalid_timeframe": "Intervallo di tempo selezionato non valido",
     "settings_error": "Impossibile caricare le impostazioni. Contatta l'assistenza.",
     "amount_too_high": "L'importo dell'investimento è troppo alto per questo intervallo",
-    "trade_locked": "Le negoziazioni sono bloccate su questo account"
+    "trade_locked": "Le negoziazioni sono bloccate su questo account",
+    "mining1": "Non hai effettuato l'accesso",
+    "mining2": "Macchina per il mining acquistata con successo",
+    "mining3": "Acquisto della macchina per il mining non riuscito"
   },
   "News": {
     "follow": "Segui",

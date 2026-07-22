@@ -460,7 +460,10 @@
     "invalid_timeframe": "Ungültiger Zeitrahmen ausgewählt",
     "settings_error": "Einstellungen konnten nicht geladen werden. Bitte Support kontaktieren.",
     "amount_too_high": "Investitionsbetrag ist für diesen Zeitrahmen zu hoch",
-    "trade_locked": "Der Handel ist für dieses Konto gesperrt"
+    "trade_locked": "Der Handel ist für dieses Konto gesperrt",
+    "mining1": "Sie sind nicht angemeldet",
+    "mining2": "Mining-Maschine erfolgreich gekauft",
+    "mining3": "Kauf der Mining-Maschine fehlgeschlagen"
   },
   "News": {
     "follow": "Folgen",

@@ -460,7 +460,10 @@
     "invalid_timeframe": "Marco temporal seleccionado no válido",
     "settings_error": "Error al cargar la configuración. Contacte con soporte.",
     "amount_too_high": "El monto de inversión es demasiado alto para este marco temporal",
-    "trade_locked": "El trading está bloqueado en esta cuenta"
+    "trade_locked": "El trading está bloqueado en esta cuenta",
+    "mining1": "No has iniciado sesión",
+    "mining2": "Máquina de minería comprada con éxito",
+    "mining3": "Error al comprar la máquina de minería"
   },
   "News": {
     "follow": "Seguir",

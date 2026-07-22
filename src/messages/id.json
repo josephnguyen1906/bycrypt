@@ -460,7 +460,10 @@
     "invalid_timeframe": "Kerangka waktu yang dipilih tidak valid",
     "settings_error": "Gagal memuat pengaturan. Hubungi dukungan.",
     "amount_too_high": "Jumlah investasi terlalu tinggi untuk kerangka waktu ini",
-    "trade_locked": "Trading dikunci pada akun ini"
+    "trade_locked": "Trading dikunci pada akun ini",
+    "mining1": "Anda belum masuk",
+    "mining2": "Berhasil membeli mesin penambangan",
+    "mining3": "Gagal membeli mesin penambangan"
   },
   "News": {
     "follow": "Ikuti",

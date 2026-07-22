@@ -467,7 +467,10 @@
     "invalid_timeframe": "Thời gian được chọn không hợp lệ",
     "settings_error": "Lỗi khi lấy cài đặt. Vui lòng liên hệ hỗ trợ.",
     "amount_too_high": "Số tiền đầu tư quá cao cho khung thời gian này",
-    "trade_locked": "Tài khoản đang bị khóa giao dịch"
+    "trade_locked": "Tài khoản đang bị khóa giao dịch",
+    "mining1": "Bạn chưa đăng nhập",
+    "mining2": "Mua máy đào thành công",
+    "mining3": "Mua máy đào thất bại"
   },
   "News": {
     "follow": "Theo dõi",

@@ -460,7 +460,10 @@
     "invalid_timeframe": "Période sélectionnée invalide",
     "settings_error": "Échec du chargement des paramètres. Veuillez contacter le support.",
     "amount_too_high": "Le montant d'investissement est trop élevé pour cette période",
-    "trade_locked": "Les transactions sont verrouillées sur ce compte"
+    "trade_locked": "Les transactions sont verrouillées sur ce compte",
+    "mining1": "Vous n'êtes pas connecté",
+    "mining2": "Machine de minage achetée avec succès",
+    "mining3": "Échec de l'achat de la machine de minage"
   },
   "News": {
     "follow": "Suivre",
