@@ -15,6 +15,8 @@ import ko from "@/messages/ko.json";
 import th from "@/messages/th.json";
 import gr from "@/messages/gr.json";
 
+const savedLanguage =
+  typeof window !== "undefined" ? window.localStorage.getItem("lang") : null;
 i18n.use(initReactI18next).init({
   resources: {
     vi: { translation: vi },
@@ -30,7 +32,7 @@ i18n.use(initReactI18next).init({
     th: { translation: th },
     gr: { translation: gr },
   },
-  lng: "vi",
+  lng: savedLanguage || "vi",
   fallbackLng: "vi",
   interpolation: {
     escapeValue: false,
