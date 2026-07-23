@@ -1,14 +1,13 @@
 "use client";
 import {
+  getDepositMethod,
   getMyWallet,
-  getWebsiteConfig,
   topUpCoins,
 } from "@/services/User.service";
 import {
   ArrowBackIosNew,
   ContentCopy,
   DescriptionOutlined,
-  FileUploadOutlined,
 } from "@mui/icons-material";
 import {
   Box,
@@ -19,26 +18,43 @@ import {
   Typography,
 } from "@mui/material";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import QRCode from "react-qr-code";
 import { toast } from "react-toastify";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 
+type DepositMethod = {
+  id: number;
+  name?: string;
+  wallet?: string;
+  address?: string;
+  coin?: string;
+  status?: number;
+  qrcode_url?: string;
+};
+
 export default function DepositWithdrawPage() {
   const { t } = useTranslation();
   const [amount, setAmount] = useState("");
-  const [address, setAddress] = useState("");
-  const [coin, setCoin] = useState<string>();
-  const [bank, setbank] = useState(0);
-  const [method, setMethod] = useState(2);
-  const [wallet, setWallet] = useState<any>(null);
+  const [fromAddress, setFromAddress] = useState("");
+  const [coinId, setCoinId] = useState<string>();
+  const [coinTitle, setCoinTitle] = useState("");
   const [depositMin, setDepositMin] = useState(0);
-  const [configs, setConfigs] = useState<any>();
+  const [methods, setMethods] = useState<DepositMethod[]>([]);
+  const [methodId, setMethodId] = useState<number | null>(null);
   const [frontImage, setFrontImage] = useState<File>();
+  const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
   const params = useParams();
   const id = params?.id as string;
+
+  const selectedMethod = useMemo(
+    () => methods.find((m) => m.id === methodId) || null,
+    [methods, methodId],
+  );
+
+  const address = selectedMethod?.address?.trim() || "";
 
   const handleFrontChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -48,40 +64,59 @@ export default function DepositWithdrawPage() {
   };
 
   useEffect(() => {
-    const referral = async () => {
-      const res: any = await getMyWallet();
-      if (res.status === true) {
-        const data = res.data.find((item: any) => item.id == id);
-        setWallet(data);
-        setCoin(data?.id?.toString() || "2");
-        setbank(data?.bank || 0);
-        setAddress(data?.addresss || "");
-        setDepositMin(data?.deposit_min || 0);
-      }
-    };
-    referral();
-  }, []);
-  useEffect(() => {
-    const referral = async () => {
+    const load = async () => {
       try {
-        const config: any = await getWebsiteConfig();
+        const [walletRes, methodRes]: any[] = await Promise.all([
+          getMyWallet(),
+          getDepositMethod(),
+        ]);
 
-        if (config.status === true) {
-          setConfigs(config.data);
+        const coin = walletRes?.status
+          ? walletRes.data?.find((item: any) => String(item.id) === String(id))
+          : null;
+
+        if (!coin) {
+          toast.error(t("Toast.Desposit4"));
+          return;
         }
-      } catch (errors: any) {
-        console.log(errors?.message);
+
+        setCoinId(String(coin.id));
+        setCoinTitle(coin.title || coin.name || "");
+        setDepositMin(Number(coin.deposit_min || 0));
+
+        const allMethods: DepositMethod[] = methodRes?.status
+          ? methodRes.data || []
+          : [];
+        const coinMethods = allMethods.filter(
+          (m) =>
+            String(m.coin || "").toLowerCase() ===
+            String(coin.name || "").toLowerCase(),
+        );
+
+        setMethods(coinMethods);
+        setMethodId(coinMethods[0]?.id ?? null);
+
+        if (coinMethods.length === 0) {
+          toast.warning("Chưa cấu hình ví nạp cho đồng này trong admin.");
+        }
+      } catch (error: any) {
+        toast.error(
+          typeof error?.message === "string"
+            ? error.message
+            : t("Toast.Desposit4"),
+        );
       }
     };
-    referral();
-  }, []);
+    load();
+  }, [id, t]);
 
   const handleSubmit = async () => {
+    if (submitting) return;
     if (!frontImage) {
       toast.warning(t("Toast.Desposit1"));
       return;
     }
-    if (!amount || !method || !coin) {
+    if (!amount || !methodId || !coinId) {
       toast.warning(t("Toast.Desposit2"));
       return;
     }
@@ -89,19 +124,42 @@ export default function DepositWithdrawPage() {
       toast.warning(t("Toast.Desposit3") + depositMin);
       return;
     }
+    if (!address) {
+      toast.warning("Chưa có địa chỉ ví nạp từ admin.");
+      return;
+    }
+
     try {
+      setSubmitting(true);
       const formData = new FormData();
-      formData.append("cid", coin);
       formData.append("amount", amount);
       formData.append("payimg", frontImage);
-      formData.append("method", "2");
+      formData.append("method", String(methodId));
 
-      await topUpCoins(formData);
-      router.push("/deposit/success");
-      setAmount("");
-      setMethod(0);
+      const res = (await topUpCoins(formData)) as unknown as {
+        status?: boolean;
+        message?: string;
+      };
+
+      if (res.status) {
+        router.push("/deposit/success");
+        setAmount("");
+        setFromAddress("");
+        setFrontImage(undefined);
+        return;
+      }
+
+      toast.error(
+        typeof res.message === "string" ? res.message : t("Toast.Desposit4"),
+      );
     } catch (error: any) {
-      toast.error(t("Toast.Desposit4"));
+      toast.error(
+        typeof error?.message === "string"
+          ? error.message
+          : t("Toast.Desposit4"),
+      );
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -121,7 +179,6 @@ export default function DepositWithdrawPage() {
           color: "#fff",
         }}
       >
-        {/* Header */}
         <Box
           sx={{
             height: 60,
@@ -155,22 +212,19 @@ export default function DepositWithdrawPage() {
             pt: 2,
           }}
         >
-          {/* Title */}
           <Typography fontSize={24} fontWeight={500}>
-            {wallet?.title} {t("DepositWithdrawPage.title9")}
+            {coinTitle} {t("DepositWithdrawPage.title9")}
           </Typography>
 
-          {/* QR */}
           <Box
             sx={{
               bgcolor: "#fff",
               p: 2,
             }}
           >
-            <QRCode value={address || ""} size={150} />
+            <QRCode value={address || " "} size={150} />
           </Box>
 
-          {/* Save QR */}
           <Button
             variant="contained"
             sx={{
@@ -187,7 +241,6 @@ export default function DepositWithdrawPage() {
             {t("DepositWithdrawPage.title10")}
           </Button>
 
-          {/* Wallet */}
           <Typography
             sx={{
               mt: 4,
@@ -196,13 +249,16 @@ export default function DepositWithdrawPage() {
               fontSize: 18,
             }}
           >
-            {address}
+            {address || "—"}
           </Typography>
 
           <Button
             variant="outlined"
+            startIcon={<ContentCopy sx={{ fontSize: 16 }} />}
             onClick={() => {
-              navigator.clipboard.writeText(address || "");
+              if (!address) return;
+              navigator.clipboard.writeText(address);
+              toast.success(t("Toast.copy"));
             }}
             sx={{
               width: 170,
@@ -216,7 +272,6 @@ export default function DepositWithdrawPage() {
             {t("DepositWithdrawPage.title11")}
           </Button>
 
-          {/* Sender */}
           <Box width="100%">
             <Typography mb={1} fontSize={14}>
               {t("DepositWithdrawPage.title12")}
@@ -224,6 +279,8 @@ export default function DepositWithdrawPage() {
 
             <TextField
               fullWidth
+              value={fromAddress}
+              onChange={(e) => setFromAddress(e.target.value)}
               placeholder={t("DepositWithdrawPage.title13")}
               InputProps={{
                 endAdornment: (
@@ -236,7 +293,7 @@ export default function DepositWithdrawPage() {
                     }}
                     onClick={async () => {
                       const text = await navigator.clipboard.readText();
-                      setAddress(text);
+                      setFromAddress(text);
                     }}
                   >
                     {t("DepositWithdrawPage.title14")}
@@ -256,7 +313,6 @@ export default function DepositWithdrawPage() {
             />
           </Box>
 
-          {/* Amount */}
           <Box width="100%">
             <Typography mb={1} fontSize={14}>
               {t("DepositWithdrawPage.title15")}
@@ -280,45 +336,33 @@ export default function DepositWithdrawPage() {
             />
           </Box>
 
-          {/* Network */}
           <Box width="100%">
             <Typography mb={2} fontSize={14}>
               {t("DepositWithdrawPage.title17")}
             </Typography>
 
-            <Stack direction="row" spacing={2}>
-              {wallet?.deposit_network == "ERC20" && (
-                <Button
-                  onClick={() => setMethod(1)}
-                  sx={{
-                    width: 120,
-                    height: 50,
-                    border:
-                      method === 1 ? "1px solid #00d000" : "1px solid #666",
-                    color: method === 1 ? "#00d000" : "#fff",
-                  }}
-                >
-                  ERC20
-                </Button>
-              )}
-              {wallet?.deposit_network == "TRC20" && (
-                <Button
-                  onClick={() => setMethod(2)}
-                  sx={{
-                    width: 120,
-                    height: 50,
-                    border:
-                      method === 2 ? "1px solid #00d000" : "1px solid #666",
-                    color: method === 2 ? "#00d000" : "#fff",
-                  }}
-                >
-                  TRC20
-                </Button>
-              )}
+            <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap>
+              {methods.map((m) => {
+                const active = methodId === m.id;
+                return (
+                  <Button
+                    key={m.id}
+                    onClick={() => setMethodId(m.id)}
+                    sx={{
+                      width: 120,
+                      height: 50,
+                      border: active ? "1px solid #00d000" : "1px solid #666",
+                      color: active ? "#00d000" : "#fff",
+                      textTransform: "none",
+                    }}
+                  >
+                    {m.wallet || m.name || `Method ${m.id}`}
+                  </Button>
+                );
+              })}
             </Stack>
           </Box>
 
-          {/* Upload */}
           <Box width="100%">
             <Typography mb={2} fontSize={14}>
               {t("DepositWithdrawPage.title18")}
@@ -397,6 +441,7 @@ export default function DepositWithdrawPage() {
             </Typography>
             <Button
               fullWidth
+              disabled={submitting}
               onClick={handleSubmit}
               variant="contained"
               sx={{
@@ -406,9 +451,15 @@ export default function DepositWithdrawPage() {
                 fontSize: 18,
                 borderRadius: "8px",
                 textTransform: "capitalize",
+                "&.Mui-disabled": {
+                  bgcolor: "#3d5c3d",
+                  color: "rgba(255,255,255,.7)",
+                },
               }}
             >
-              {t("DepositWithdrawPage.title20")}
+              {submitting
+                ? t("DepositWithdrawPage.statusProcessing")
+                : t("DepositWithdrawPage.title20")}
             </Button>
           </Box>
         </Stack>
