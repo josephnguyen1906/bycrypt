@@ -1,5 +1,6 @@
 "use client";
 
+import { IconCoin } from "@/datafake/home";
 import {
   apiExchange,
   apiExchangeQuote,
@@ -16,6 +17,7 @@ import {
   SwapVert,
 } from "@mui/icons-material";
 import {
+  Avatar,
   Box,
   Button,
   CircularProgress,
@@ -25,6 +27,7 @@ import {
   Modal,
   Typography,
 } from "@mui/material";
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
@@ -107,9 +110,7 @@ export default function ConvertPage() {
         );
         setCoins(list);
 
-        const hasSol = list.some(
-          (item) => item.name.toLowerCase() === "sol",
-        );
+        const hasSol = list.some((item) => item.name.toLowerCase() === "sol");
         if (!hasSol) {
           const firstNonUsdt = list.find(
             (item) => item.name.toLowerCase() !== "usdt",
@@ -303,22 +304,10 @@ export default function ConvertPage() {
         cursor: "pointer",
       }}
     >
-      <Box
-        sx={{
-          width: 32,
-          height: 32,
-          mr: 1,
-          borderRadius: "50%",
-          overflow: "hidden",
-        }}
-      >
-        <img
-          src={`/images/coin/${name.toLowerCase()}.png`}
-          alt={name}
-          width={32}
-          height={32}
-        />
-      </Box>
+      <Avatar
+        src={IconCoin[name || "USDT"]}
+        sx={{ width: 25, height: 25, mr: "10px" }}
+      />
       <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
         {coinLabel(name)}
       </Typography>
@@ -547,21 +536,10 @@ export default function ConvertPage() {
                     cursor: "pointer",
                   }}
                 >
-                  <Box
-                    sx={{
-                      width: 32,
-                      height: 32,
-                      borderRadius: "50%",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <img
-                      src={`/images/coin/${coin.name.toLowerCase()}.png`}
-                      alt={name}
-                      width={32}
-                      height={32}
-                    />
-                  </Box>
+                  <Avatar
+                    src={IconCoin[coin?.title || "USDT"]}
+                    sx={{ width: 30, height: 30 }}
+                  />
                   <Box>
                     <Typography fontSize={14} fontWeight={600}>
                       {name}
@@ -675,7 +653,10 @@ export default function ConvertPage() {
       </Drawer>
 
       {/* Confirm modal */}
-      <Modal open={confirmOpen} onClose={() => !submitting && setConfirmOpen(false)}>
+      <Modal
+        open={confirmOpen}
+        onClose={() => !submitting && setConfirmOpen(false)}
+      >
         <Box
           sx={{
             position: "absolute",
@@ -715,10 +696,9 @@ export default function ConvertPage() {
             [
               "Tỷ giá",
               quote
-                ? `1 ${fromCoin} ≈ ${(
-                    Number(quote.amount) > 0
-                      ? Number(quote.received) / Number(quote.amount)
-                      : 0
+                ? `1 ${fromCoin} ≈ ${(Number(quote.amount) > 0
+                    ? Number(quote.received) / Number(quote.amount)
+                    : 0
                   ).toFixed(6)} ${toCoin}`
                 : "—",
             ],

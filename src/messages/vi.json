@@ -43,7 +43,7 @@
   },
   "NavMobile": {
     "menu1": "Trang chủ",
-    "menu2": "Trích dẫn",
+    "menu2": "Thị trường",
     "menu3": "Giao dịch",
     "menu4": "Thông tin",
     "menu5": "Tài sản"
@@ -128,7 +128,7 @@
     "title12": "Tất cả các khoảng nắm giữ",
     "menuTab1": "Nạp tiền",
     "menuTab2": "Rút tiền",
-    "menuTab3": "lịch sử",
+    "menuTab3": "Lịch sử",
     "menuTab4": "Trao đổi",
     "menu1": "Tổng quan",
     "menu2": "Điểm",
@@ -136,7 +136,7 @@
     "menu4": "Tài chính"
   },
   "TradePage": {
-    "title1": "Đi qua",
+    "title1": "Đòn bẩy",
     "title2": "Thị trường",
     "title3": "Tổng cộng",
     "title4": "Có sẵn",
@@ -152,7 +152,7 @@
     "title14": "Vĩnh viễn",
     "title15": "Hợp đồng thứ 2",
     "title16": "Biểu đồ đường K",
-    "title17": "Đi qua",
+    "title17": "Đòn bẩy",
     "title18": "Thời gian",
     "title19": "Tối thiểu",
     "title20": "Móc thời gian",

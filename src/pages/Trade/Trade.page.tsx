@@ -173,15 +173,13 @@ export default function TradePage() {
     }
   }, [tab, user?.id]);
 
-  const fetchHistorty = async (res: any) => {
-    if (res?.data) {
-      const his: any = await getContractjc();
-      if (his.data?.length > 0) {
-        setOderOpen(his.data);
-      }
-      setOrderData(his.data);
-      setOpenConfirm(true);
+  const fetchHistorty = async () => {
+    const his: any = await getContractjc();
+    if (his.data?.length > 0) {
+      setOderOpen(his.data);
     }
+    setOrderData(his.data);
+    setOpenConfirm(true);
   };
   // realCoin menu
   // const referral = async () => {

@@ -236,7 +236,7 @@ export default function HomeMobile({
             >
               {t(`HomePage.menu2`)}
             </Button>
-            <Button
+            {/* <Button
               sx={{
                 background: tab == 2 ? "#00A609" : "none",
                 fontSize: 14,
@@ -247,7 +247,7 @@ export default function HomeMobile({
               onClick={() => setTab(2)}
             >
               {t(`HomePage.menu2`)}
-            </Button>
+            </Button> */}
           </Box>
 
           <CoinTicker key={tab} listCoin={coinList} tab={tab} />

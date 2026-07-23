@@ -65,7 +65,7 @@ const FALLBACK: LocalePhoneCountry[] = [
   {
     id: 6,
     code: "po",
-    name: "Portugal",
+    name: "Português",
     phoneCode: "351",
     img: "https://flagcdn.com/pt.svg",
   },
@@ -86,7 +86,7 @@ const FALLBACK: LocalePhoneCountry[] = [
   {
     id: 9,
     code: "ko",
-    name: "한국인",
+    name: "한국어",
     phoneCode: "82",
     img: "https://flagcdn.com/kr.svg",
   },
@@ -103,6 +103,49 @@ const FALLBACK: LocalePhoneCountry[] = [
     name: "Ελληνικά",
     phoneCode: "30",
     img: "https://flagcdn.com/gr.svg",
+  },
+
+  {
+    id: 12,
+    code: "zh-TW",
+    name: "繁體中文",
+    phoneCode: "886",
+    img: "https://flagcdn.com/tw.svg",
+  },
+  {
+    id: 13,
+    code: "en-AU",
+    name: "English (Australia)",
+    phoneCode: "61",
+    img: "https://flagcdn.com/au.svg",
+  },
+  {
+    id: 14,
+    code: "pl",
+    name: "Polski",
+    phoneCode: "48",
+    img: "https://flagcdn.com/pl.svg",
+  },
+  {
+    id: 15,
+    code: "nl",
+    name: "Nederlands",
+    phoneCode: "31",
+    img: "https://flagcdn.com/nl.svg",
+  },
+  {
+    id: 16,
+    code: "en-SG",
+    name: "English (Singapore)",
+    phoneCode: "65",
+    img: "https://flagcdn.com/sg.svg",
+  },
+  {
+    id: 17,
+    code: "ms",
+    name: "Bahasa Melayu",
+    phoneCode: "60",
+    img: "https://flagcdn.com/my.svg",
   },
 ];
 

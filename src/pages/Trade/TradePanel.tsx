@@ -11,6 +11,7 @@ import {
 import { toast } from "react-toastify";
 import { IUser } from "@/shared/interfaces";
 import OrderConfirmModal from "@/components/popup/OrderConfirmModal";
+import { useUserStore } from "@/stores/useUserStore";
 
 const optionTimes = [
   { time: "60s", profit: "9~9%" },
@@ -26,7 +27,7 @@ export default function TradePanel({
 }: {
   symbol: string;
   user: IUser | null;
-  onSuccess: (a: any) => void;
+  onSuccess: () => void;
 }) {
   const [openConfirm, setOpenConfirm] = useState(false);
   const [tab, setTab] = useState("1");
@@ -94,7 +95,7 @@ export default function TradePanel({
           setOderOpen(his.data[0]);
         }
         setOpenConfirm(true);
-        onSuccess(his.data[0]);
+        onSuccess();
       }
       toast.success(t("Toast.order_success"));
     } catch (error: any) {
@@ -279,7 +280,7 @@ export default function TradePanel({
           </Typography>
 
           <Typography color="#fff" fontWeight={600} fontSize={13}>
-            0 USDT
+            {Number(user?.balance.usdt).toLocaleString()} USDT
           </Typography>
         </Stack>
 
@@ -325,7 +326,7 @@ export default function TradePanel({
           </Typography>
 
           <Typography color="#fff" fontWeight={600} fontSize={13}>
-            0 USDT
+            {Number(user?.balance.usdt).toLocaleString()} USDT
           </Typography>
         </Stack>
 

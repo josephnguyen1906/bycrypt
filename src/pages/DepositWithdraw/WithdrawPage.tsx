@@ -22,7 +22,11 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { useUserStore } from "@/stores/useUserStore";
-import { getFinaceCoin, sellCoins } from "@/services/User.service";
+import {
+  getFinaceCoin,
+  getWebsiteConfig,
+  sellCoins,
+} from "@/services/User.service";
 
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -60,6 +64,7 @@ export default function WithdrawPage() {
   const [selectedCoin, setSelectedCoin] = useState<IListcoin | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const { user, fetchUser } = useUserStore();
+  const [configs, setConfigs] = useState<any>();
 
   const fetchCoin = async () => {
     try {
@@ -100,7 +105,20 @@ export default function WithdrawPage() {
 
     return Math.max(Number(amount) - withdrawFee, 0);
   }, [amount, withdrawFee]);
+  useEffect(() => {
+    const res = async () => {
+      try {
+        const config: any = await getWebsiteConfig();
 
+        if (config.status === true) {
+          setConfigs(config.data);
+        }
+      } catch (errors: any) {
+        console.log(errors?.message);
+      }
+    };
+    res();
+  }, []);
   const handlePasteAddress = async () => {
     try {
       const text = await navigator.clipboard.readText();
@@ -555,7 +573,7 @@ export default function WithdrawPage() {
             {selectedCoin?.name?.toUpperCase() || "USDT"}
           </Typography>
         </Box>
-        <Typography
+        {/* <Typography
           sx={{
             fontSize: 14,
             color: "white",
@@ -598,7 +616,7 @@ export default function WithdrawPage() {
               },
             },
           }}
-        />
+        /> */}
 
         <Typography
           sx={{
@@ -655,7 +673,9 @@ export default function WithdrawPage() {
 
         <Button
           fullWidth
-          onClick={hanldeWithdraw}
+          onClick={() => {
+            window.open(configs?.telegram, "_blank", "noopener,noreferrer");
+          }}
           sx={{
             height: 44,
             bgcolor: "#00B900",
