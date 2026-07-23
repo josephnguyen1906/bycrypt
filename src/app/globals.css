@@ -344,3 +344,14 @@ body > .skiptranslate {
     margin: auto;
   }
 }
+
+/* SaleSmartly: hide launcher outside /chat (avoid display:none on iframes — breaks connect) */
+body[data-bycrypt-ss-hidden="true"] #SSC_WIDGET {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body[data-bycrypt-nav="true"]:not([data-bycrypt-ss-hidden="true"]) #SSC_WIDGET {
+  bottom: 80px !important;
+}

@@ -11,6 +11,7 @@ import "../../i18n";
 import { useTranslation } from "react-i18next";
 import { useUserStore } from "@/stores/useUserStore";
 import NavMobileBottom from "./NavMobileBottom";
+import SaleSmartlyRouteSync from "../SaleSmartlyRouteSync";
 
 const theme = createTheme({
   typography: {
@@ -70,6 +71,7 @@ export default function PrimaryLayoutComponent({
   return (
     <>
       <ThemeProvider theme={theme}>
+        <SaleSmartlyRouteSync />
         <div className="container">
           <main>{children}</main>
           {path !== "/login/" &&

@@ -5,30 +5,47 @@ import { useRouter } from "next/navigation";
 import Script from "next/script";
 import { useTranslation } from "react-i18next";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
+import {
+  closeSaleSmartlyChat,
+  openSaleSmartlyWhenReady,
+  preInitSaleSmartly,
+  resetSaleSmartlyReadyBinding,
+} from "@/utils/saleSmartly";
 
-declare global {
-  interface Window {
-    LiveChatWidget: any;
-  }
-}
+const SALESMARTLY_SCRIPT =
+  "https://plugin-code.salesmartly.com/js/project_783639_810552_1784725341.js";
 
 export default function LiveChatPage() {
   const { t } = useTranslation();
   const router = useRouter();
 
+  useLayoutEffect(() => {
+    preInitSaleSmartly();
+    document.body.dataset.bycryptSsHidden = "false";
+  }, []);
+
   useEffect(() => {
-    // khi vào page -> mở chat
-    const timer = setInterval(() => {
-      if (window.LiveChatWidget) {
-        window.LiveChatWidget.call("maximize");
-        clearInterval(timer);
-      }
-    }, 300);
+    let cancelled = false;
+    let armed = false;
+
+    const armOpen = () => {
+      if (cancelled || armed) return false;
+      if (!openSaleSmartlyWhenReady()) return false;
+      armed = true;
+      return true;
+    };
+
+    const wait = window.setInterval(() => {
+      if (armOpen()) window.clearInterval(wait);
+    }, 200);
 
     return () => {
-      // khi rời page -> ẩn chat
-      window.LiveChatWidget?.call("hide");
+      cancelled = true;
+      window.clearInterval(wait);
+      closeSaleSmartlyChat();
+      resetSaleSmartlyReadyBinding();
+      document.body.dataset.bycryptSsHidden = "true";
     };
   }, []);
 
@@ -51,11 +68,9 @@ export default function LiveChatPage() {
         p={2}
       >
         <IconButton
-          onClick={() => {
-            window.LiveChatWidget?.call("hide");
-            router.back();
-          }}
+          onClick={() => router.back()}
           sx={{ background: "#232932" }}
+          aria-label="back"
         >
           <ArrowBackIosNewIcon
             sx={{ cursor: "pointer", color: "white", fontSize: "14px" }}
@@ -63,50 +78,40 @@ export default function LiveChatPage() {
         </IconButton>
 
         <Typography fontSize={20} fontWeight={600} color="white">
-          {t("MenuMobile.title6")}
+          {t("ChatPage.title")}
         </Typography>
 
-        <IconButton />
+        <IconButton sx={{ visibility: "hidden" }} aria-hidden />
       </Box>
 
-      <Script id="livechat-script" strategy="afterInteractive">
-        {`
-          window.__lc = window.__lc || {};
-          window.__lc.license = 19579656;
-          window.__lc.integration_name = "manual_onboarding";
-          window.__lc.product_name = "livechat";
-
-          (function(n,t,c){
-            function i(n){return e._h?e._h.apply(null,n):e._q.push(n)}
-            var e={_q:[],_h:null,_v:"2.0",
-            on:function(){i(["on",c.call(arguments)])},
-            once:function(){i(["once",c.call(arguments)])},
-            off:function(){i(["off",c.call(arguments)])},
-            call:function(){i(["call",c.call(arguments)])},
-            init:function(){
-              var n=t.createElement("script");
-              n.async=true;
-              n.type="text/javascript";
-              n.src="https://cdn.livechatinc.com/tracking.js";
-              t.head.appendChild(n)
-            }};
-            !n.__lc.asyncInit&&e.init(),
-            n.LiveChatWidget=n.LiveChatWidget||e
-          })(window,document,[].slice);
-        `}
+      <Script id="salesmartly-pre" strategy="beforeInteractive">
+        {`window.__ssc=window.__ssc||{};window.__ssc.license=window.__ssc.license||'g1vfb1b';`}
       </Script>
+
+      <Script
+        id="salesmartly-chat"
+        src={SALESMARTLY_SCRIPT}
+        strategy="afterInteractive"
+        onLoad={() => {
+          resetSaleSmartlyReadyBinding();
+          openSaleSmartlyWhenReady();
+        }}
+      />
 
       <Box
         sx={{
-          height: "100vh",
+          minHeight: "calc(100vh - 80px)",
           background: "#111827",
-          color: "white",
+          color: "#9ca3af",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          px: 2,
+          textAlign: "center",
+          fontSize: 14,
         }}
       >
-        LiveChat Loaded
+        {t("ChatPage.hint")}
       </Box>
     </Box>
   );

@@ -1,3 +1,4 @@
+import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import NotificationBell from "@/components/popup/NotificationBell";
 import { getOrepool, getWebsiteConfig } from "@/services/User.service";
@@ -45,6 +46,7 @@ export default function HomeMobile({
   setting: any;
 }) {
   const { t, i18n } = useTranslation();
+  const router = useRouter();
   const [tab, setTab] = useState(0);
   const [langAnchorEl, setLangAnchorEl] = useState<null | HTMLElement>(null);
   const isLangMenuOpen = Boolean(langAnchorEl);
@@ -148,8 +150,26 @@ export default function HomeMobile({
               {t(`HomePage.title1`)}
             </Typography>
           </Box>
-          <IconButton sx={{ background: "none", border: "none" }}>
-            <ArrowForwardIcon sx={{ color: "white", fontSize: 24 }} />
+          <IconButton
+            onClick={() => router.push("/chat")}
+            aria-label={t("ChatPage.title")}
+            sx={{
+              background: "none",
+              border: "none",
+              width: 44,
+              height: 44,
+              "@keyframes cskhWobble": {
+                "0%, 100%": { transform: "rotate(0deg)" },
+                "25%": { transform: "rotate(-8deg) translateX(-1px)" },
+                "75%": { transform: "rotate(8deg) translateX(1px)" },
+              },
+              animation: "cskhWobble 1.2s ease-in-out infinite",
+              "@media (prefers-reduced-motion: reduce)": {
+                animation: "none",
+              },
+            }}
+          >
+            <SupportAgentIcon sx={{ color: "#08D27A", fontSize: 26 }} />
           </IconButton>
         </Box>
 
