@@ -28,21 +28,25 @@ export default function Deposit() {
           getFinaceCoin(),
         ]);
 
-        if (!methodRes?.status) {
-          setChannels([]);
-          return;
-        }
-
-        const methods: Array<{ coin?: string; status?: number }> =
-          methodRes.data || [];
+        const methods: Array<{ coin?: string; name?: string }> = Array.isArray(
+          methodRes?.data,
+        )
+          ? methodRes.data
+          : Array.isArray(methodRes)
+            ? methodRes
+            : [];
         const coins: Array<{ id: number; name?: string; title?: string }> =
-          coinRes?.status ? coinRes.data || [] : [];
+          Array.isArray(coinRes?.data)
+            ? coinRes.data
+            : Array.isArray(coinRes)
+              ? coinRes
+              : [];
 
         const seen = new Set<string>();
         const next: DepositChannel[] = [];
 
         for (const method of methods) {
-          const symbol = String(method.coin || "")
+          const symbol = String(method.coin || method.name || "")
             .trim()
             .toLowerCase();
           if (!symbol || seen.has(symbol)) continue;
