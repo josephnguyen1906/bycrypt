@@ -3,9 +3,9 @@ import { InternetIcon } from "@/shared/Svgs/Svg.component";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Box, Button, IconButton, Tooltip, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import AccountDrawer from "../subMenu/AccountDrawer";
+import NotificationBell from "../popup/NotificationBell";
 
 export default function HeaderMobile({
   user,
@@ -35,33 +35,36 @@ export default function HeaderMobile({
           <MenuIcon sx={{ color: "white" }} />
         </Button>
       </Box>
-      <Box sx={{ display: "flex", gap: "5px", alignItems: "center" }}>
+      <Box sx={{ display: "flex", gap: "8px", alignItems: "center" }}>
         {user ? (
-          <Button
-            sx={{
-              width: 100,
-              background: "#00A609",
-              color: "#fff",
-              textTransform: "none",
-              justifyContent: "flex-start",
-              px: 1.5,
-              "&:hover": {
-                background: "#009108",
-              },
-            }}
-          >
-            <Typography
-              noWrap
+          <>
+            <NotificationBell />
+            <Button
               sx={{
-                width: "100%",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                fontSize: 14,
+                width: 100,
+                background: "#00A609",
+                color: "#fff",
+                textTransform: "none",
+                justifyContent: "flex-start",
+                px: 1.5,
+                "&:hover": {
+                  background: "#009108",
+                },
               }}
             >
-              {user.username}
-            </Typography>
-          </Button>
+              <Typography
+                noWrap
+                sx={{
+                  width: "100%",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  fontSize: 14,
+                }}
+              >
+                {user.username}
+              </Typography>
+            </Button>
+          </>
         ) : (
           <Button
             sx={{

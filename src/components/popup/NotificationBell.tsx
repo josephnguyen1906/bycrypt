@@ -19,6 +19,7 @@ import {
   getNotification,
   getWithdrawCancelled,
 } from "@/services/User.service";
+import { toast } from "react-toastify";
 
 interface NotificationBellProps {
   notificationCount?: number;
@@ -124,76 +125,115 @@ export default function NotificationBell({
   const { user, fetchUser } = useUserStore();
 
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const seenNoticeIdsRef = useRef<Set<string>>(new Set());
+  const toastBootstrappedRef = useRef(false);
 
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
 
-  const fetchNotifications = useCallback(async () => {
-    if (!user) return;
+  const fetchNotifications = useCallback(
+    async (opts?: { silent?: boolean; toastNew?: boolean }) => {
+      if (!user) return;
 
-    setIsLoading(true);
-    setError(null);
+      const silent = Boolean(opts?.silent);
+      const toastNew = Boolean(opts?.toastNew);
 
-    try {
-      const [withdrawResult, noticeResult] = await Promise.allSettled([
-        getWithdrawCancelled(),
-        getNotification(),
-      ]);
-
-      let withdrawItems: Notification[] = [];
-      let noticeItems: Notification[] = [];
-      let withdrawUnread = 0;
-      let noticeUnread = 0;
-      const errors: string[] = [];
-
-      if (withdrawResult.status === "fulfilled") {
-        const response = withdrawResult.value as any;
-        const list = Array.isArray(response?.data) ? response.data : [];
-        withdrawItems = mapWithdrawNotifications(list);
-        withdrawUnread = list.filter(
-          (item: any) => Number(item.admin_view) === 1,
-        ).length;
-      } else {
-        errors.push("Không thể tải thông báo rút tiền bị hủy");
+      if (!silent) {
+        setIsLoading(true);
+        setError(null);
       }
 
-      if (noticeResult.status === "fulfilled") {
-        const response = noticeResult.value as any;
-        if (response?.status === true) {
-          const list = response?.data?.notices ?? [];
-          noticeItems = mapAdminNotifications(list);
-          noticeUnread = Number(response?.data?.unread_count ?? 0);
+      try {
+        const [withdrawResult, noticeResult] = await Promise.allSettled([
+          getWithdrawCancelled(),
+          getNotification(),
+        ]);
+
+        let withdrawItems: Notification[] = [];
+        let noticeItems: Notification[] = [];
+        let withdrawUnread = 0;
+        let noticeUnread = 0;
+        const errors: string[] = [];
+
+        if (withdrawResult.status === "fulfilled") {
+          const response = withdrawResult.value as any;
+          const list = Array.isArray(response?.data) ? response.data : [];
+          withdrawItems = mapWithdrawNotifications(list);
+          withdrawUnread = list.filter(
+            (item: any) => Number(item.admin_view) === 1,
+          ).length;
         } else {
-          errors.push(response?.message || "Không thể tải thông báo hệ thống");
+          errors.push("Không thể tải thông báo rút tiền bị hủy");
         }
-      } else {
-        errors.push("Không thể tải thông báo hệ thống");
-      }
 
-      const merged = mergeNotifications(withdrawItems, noticeItems);
-      setNotifications(merged);
-      setUnreadCount(withdrawUnread + noticeUnread);
+        if (noticeResult.status === "fulfilled") {
+          const response = noticeResult.value as any;
+          if (response?.status === true) {
+            const list = response?.data?.notices ?? [];
+            noticeItems = mapAdminNotifications(list);
+            noticeUnread = Number(response?.data?.unread_count ?? 0);
 
-      if (merged.length === 0 && errors.length === 2) {
-        setError(errors[0]);
+            if (toastNew) {
+              if (!toastBootstrappedRef.current) {
+                noticeItems.forEach((n) => seenNoticeIdsRef.current.add(n.id));
+                toastBootstrappedRef.current = true;
+              } else {
+                const fresh = noticeItems.filter(
+                  (n) => !n.isRead && !seenNoticeIdsRef.current.has(n.id),
+                );
+                fresh.slice(0, 3).forEach((n) => {
+                  seenNoticeIdsRef.current.add(n.id);
+                  const title = String(n.title || "");
+                  if (/thành công|success/i.test(title)) {
+                    toast.success(title);
+                  } else if (/đang xử lý|processing/i.test(title)) {
+                    toast.info(title);
+                  } else {
+                    toast.info(title);
+                  }
+                });
+              }
+            }
+          } else {
+            errors.push(response?.message || "Không thể tải thông báo hệ thống");
+          }
+        } else {
+          errors.push("Không thể tải thông báo hệ thống");
+        }
+
+        const merged = mergeNotifications(withdrawItems, noticeItems);
+        setNotifications(merged);
+        setUnreadCount(withdrawUnread + noticeUnread);
+
+        if (!silent && merged.length === 0 && errors.length === 2) {
+          setError(errors[0]);
+        }
+      } catch (err: any) {
+        if (!silent) {
+          setError(err?.message || "Không thể tải thông báo");
+        }
+      } finally {
+        if (!silent) {
+          setIsLoading(false);
+        }
       }
-    } catch (err: any) {
-      setError(err?.message || "Không thể tải thông báo");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [user]);
+    },
+    [user],
+  );
 
   useEffect(() => {
-    if (user) {
-      void fetchNotifications();
-    }
+    if (!user) return;
+    void fetchNotifications({ toastNew: true });
+    const timer = window.setInterval(() => {
+      void fetchNotifications({ silent: true, toastNew: true });
+    }, 15000);
+    return () => window.clearInterval(timer);
   }, [user, fetchNotifications]);
 
   useEffect(() => {
     if (isModalOpen && user) {
-      void fetchNotifications();
+      void fetchNotifications({ silent: true });
     }
   }, [isModalOpen, user, fetchNotifications]);
 
@@ -233,8 +273,8 @@ export default function NotificationBell({
       return;
     }
 
+    const noticeId = String(notification.rawData?.id ?? "");
     if (!notification.isRead) {
-      const noticeId = String(notification.rawData?.id ?? "");
       try {
         if (noticeId) {
           await getNotiDetail(noticeId);
@@ -252,8 +292,22 @@ export default function NotificationBell({
       setUnreadCount((prev) => Math.max(prev - 1, 0));
     }
 
+    const body = String(notification.content || "").trim();
+    if (body) {
+      toast.info(
+        <div>
+          <div style={{ fontWeight: 700, marginBottom: 4 }}>
+            {notification.title}
+          </div>
+          <div style={{ fontSize: 13 }}>{body}</div>
+        </div>,
+        { autoClose: 8000 },
+      );
+    } else {
+      toast.info(notification.title);
+    }
+
     setIsModalOpen(false);
-    router.push("/overview");
   };
 
   return (

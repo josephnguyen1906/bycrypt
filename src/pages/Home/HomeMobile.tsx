@@ -1,6 +1,5 @@
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import NotificationBell from "@/components/popup/NotificationBell";
 import { getOrepool, getWebsiteConfig } from "@/services/User.service";
 import { IOrepool, IUser } from "@/shared/interfaces";
 import {
