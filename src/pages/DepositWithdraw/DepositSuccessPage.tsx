@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowBackIosNew, Check } from "@mui/icons-material";
+import { ArrowBackIosNew, HourglassTop } from "@mui/icons-material";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -39,7 +39,6 @@ export default function DepositSuccessPage({ tab }: { tab: number }) {
           flex: 1,
         }}
       >
-        {/* Success Icon */}
         <Box
           sx={{
             position: "relative",
@@ -52,65 +51,34 @@ export default function DepositSuccessPage({ tab }: { tab: number }) {
               width: 120,
               height: 120,
               borderRadius: "50%",
-              bgcolor: "#39C58D",
+              bgcolor: "#FFD84D",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <Check
+            <HourglassTop
               sx={{
                 fontSize: 70,
-                color: "#fff",
+                color: "#0E0F18",
               }}
             />
           </Box>
-
-          {/* Decoration */}
-          <Box
-            sx={{
-              width: 12,
-              height: 12,
-              bgcolor: "#39C58D",
-              position: "absolute",
-              left: -10,
-              top: 15,
-              transform: "rotate(30deg)",
-            }}
-          />
-
-          <Box
-            sx={{
-              width: 16,
-              height: 16,
-              bgcolor: "#39C58D",
-              position: "absolute",
-              right: -18,
-              top: -5,
-              transform: "rotate(25deg)",
-            }}
-          />
-
-          <Box
-            sx={{
-              width: 8,
-              height: 8,
-              bgcolor: "#39C58D",
-              position: "absolute",
-              right: 10,
-              bottom: -2,
-              transform: "rotate(45deg)",
-            }}
-          />
         </Box>
 
-        <Typography fontSize={22} fontWeight={700} mb={6}>
+        <Typography fontSize={22} fontWeight={700} mb={1}>
           {t("DepositWithdrawPage.title27")}
+        </Typography>
+
+        <Typography fontSize={16} color="#FFD84D" fontWeight={600} mb={6}>
+          {t("DepositWithdrawPage.statusProcessing")}
         </Typography>
 
         <Box width="100%">
           <Typography fontSize={18} fontWeight={600}>
-            {t("DepositWithdrawPage.title27")}
+            {tab === 0
+              ? t("AccountPage.menuTab1")
+              : t("AccountPage.menuTab2")}
           </Typography>
 
           <Typography mt={1} color="#8A8FA8" fontSize={15}>
@@ -120,7 +88,7 @@ export default function DepositSuccessPage({ tab }: { tab: number }) {
 
         <Box width="100%" mt={7}>
           <Typography fontSize={18} fontWeight={600}>
-            {t("DepositWithdrawPage.title27")}
+            {t("DepositWithdrawPage.successHintTitle")}
           </Typography>
 
           <Typography mt={1} color="#8A8FA8">

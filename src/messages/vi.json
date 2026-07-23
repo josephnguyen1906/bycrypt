@@ -67,6 +67,10 @@
     "language": "Ngôn ngữ",
     "logout": "Đăng xuất"
   },
+  "ChatPage": {
+    "title": "Chăm sóc khách hàng",
+    "hint": "Đang kết nối chat CSKH…"
+  },
   "HomePage": {
     "title1": "Máy đào",
     "title2": "Thị trường",
@@ -238,7 +242,11 @@
     "label16": "Từ",
     "label17": "Đến",
     "label18": "Tối đa",
-    "label19": "Yêu cầu"
+    "label19": "Yêu cầu",
+    "statusProcessing": "Đang xử lý",
+    "statusSuccess": "Thành công",
+    "statusRejected": "Đã từ chối",
+    "successHintTitle": "Trạng thái"
   },
   "ChangePass": {
     "title1": " Thay đổi mật khẩu quỹ",

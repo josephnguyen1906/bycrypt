@@ -67,6 +67,10 @@
     "language": "Language",
     "logout": "Log Out"
   },
+  "ChatPage": {
+    "title": "Customer Support",
+    "hint": "Connecting to support chat…"
+  },
   "HomePage": {
     "title1": "Mining",
     "title2": "Market",
@@ -238,7 +242,11 @@
     "label16": "From",
     "label17": "To",
     "label18": "Maximum",
-    "label19": "Request"
+    "label19": "Request",
+    "statusProcessing": "Processing",
+    "statusSuccess": "Success",
+    "statusRejected": "Rejected",
+    "successHintTitle": "Status"
   },
   "ChangePass": {
     "title1": "Change Fund Password",

@@ -42,6 +42,18 @@ export default function DepositHistory({ tab }: { tab: number }) {
       listHistoryWithdraw();
     }
   }, [value]);
+
+  const depositWithdrawStatusColor = (status: number) => {
+    if (status === 1) return "#FFD84D";
+    if (status === 2) return "#22C55E";
+    return "#EF4444";
+  };
+
+  const depositWithdrawStatusLabel = (status: number) => {
+    if (status === 1) return t("DepositWithdrawPage.statusProcessing");
+    if (status === 2) return t("DepositWithdrawPage.statusSuccess");
+    return t("DepositWithdrawPage.statusRejected");
+  };
   return (
     <Box
       sx={{
@@ -199,12 +211,7 @@ export default function DepositHistory({ tab }: { tab: number }) {
                             width: 8,
                             height: 8,
                             borderRadius: "50%",
-                            bgcolor:
-                              item.st === 0
-                                ? "#FFD84D"
-                                : item.st === 1
-                                  ? "#25C05A"
-                                  : "#F44336",
+                            bgcolor: depositWithdrawStatusColor(item.status),
                           }}
                         />
 
@@ -214,11 +221,7 @@ export default function DepositHistory({ tab }: { tab: number }) {
                             fontSize: 15,
                           }}
                         >
-                          {item.st === 0
-                            ? "Đang xác nhận"
-                            : item.st === 1
-                              ? "Thành công"
-                              : "Đã từ chối"}
+                          {depositWithdrawStatusLabel(item.status)}
                         </Typography>
                       </Box>
                     </Box>
@@ -351,12 +354,7 @@ export default function DepositHistory({ tab }: { tab: number }) {
                             width: 8,
                             height: 8,
                             borderRadius: "50%",
-                            bgcolor:
-                              item.status === 1
-                                ? "#FFD84D"
-                                : item.status === 2
-                                  ? "#22C55E"
-                                  : "#EF4444",
+                            bgcolor: depositWithdrawStatusColor(item.status),
                           }}
                         />
 
@@ -366,11 +364,7 @@ export default function DepositHistory({ tab }: { tab: number }) {
                             fontSize: 13,
                           }}
                         >
-                          {item.status === 1
-                            ? "Đang xử lý"
-                            : item.status === 2
-                              ? "Thành công"
-                              : "Đã từ chối"}
+                          {depositWithdrawStatusLabel(item.status)}
                         </Typography>
                       </Box>
                     </Box>
