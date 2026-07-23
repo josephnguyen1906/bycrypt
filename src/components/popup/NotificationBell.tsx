@@ -18,6 +18,7 @@ import {
   getNotiDetail,
   getNotification,
   getWithdrawCancelled,
+  seeAllNoti,
 } from "@/services/User.service";
 import { toast } from "react-toastify";
 
@@ -169,10 +170,31 @@ export default function NotificationBell({
 
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const toastedIdsRef = useRef<Set<string>>(loadToastedIds());
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const [markingAll, setMarkingAll] = useState(false);
 
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
+
+  useEffect(() => {
+    if (!isModalOpen) return;
+
+    const onPointerDown = (event: MouseEvent | TouchEvent) => {
+      const root = rootRef.current;
+      const target = event.target as Node | null;
+      if (root && target && !root.contains(target)) {
+        setIsModalOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("touchstart", onPointerDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("touchstart", onPointerDown);
+    };
+  }, [isModalOpen]);
 
   const fetchNotifications = useCallback(
     async (opts?: { silent?: boolean; toastNew?: boolean }) => {
@@ -292,6 +314,49 @@ export default function NotificationBell({
     }, 300);
   };
 
+  const markNoticeRead = async (notification: Notification) => {
+    if (notification.isRead) return;
+
+    if (notification.kind === "notice") {
+      const noticeId = String(notification.rawData?.id ?? "");
+      try {
+        if (noticeId) {
+          await getNotiDetail(noticeId);
+        }
+      } catch {
+        // keep UI update even if mark-read fails
+      }
+    }
+
+    setNotifications((prev) =>
+      prev.map((item) =>
+        item.id === notification.id ? { ...item, isRead: true } : item,
+      ),
+    );
+    setUnreadCount((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleMarkAllRead = async () => {
+    if (!user || unreadCount <= 0 || markingAll) return;
+    setMarkingAll(true);
+    try {
+      await seeAllNoti();
+      setNotifications((prev) =>
+        prev.map((item) => ({ ...item, isRead: true })),
+      );
+      setUnreadCount(0);
+      toast.success("Đã đánh dấu tất cả là đã đọc");
+    } catch (err: any) {
+      toast.error(
+        typeof err?.message === "string"
+          ? err.message
+          : "Không thể đánh dấu đã đọc",
+      );
+    } finally {
+      setMarkingAll(false);
+    }
+  };
+
   const handleDetailClick = async (notification: Notification) => {
     if (notification.kind === "withdraw") {
       localStorage.setItem(
@@ -299,14 +364,7 @@ export default function NotificationBell({
         JSON.stringify(notification.rawData),
       );
 
-      if (!notification.isRead) {
-        setNotifications((prev) =>
-          prev.map((item) =>
-            item.id === notification.id ? { ...item, isRead: true } : item,
-          ),
-        );
-        setUnreadCount((prev) => Math.max(prev - 1, 0));
-      }
+      await markNoticeRead(notification);
 
       setIsModalOpen(false);
       const withdrawId = String(notification.rawData?.id ?? "");
@@ -314,24 +372,7 @@ export default function NotificationBell({
       return;
     }
 
-    const noticeId = String(notification.rawData?.id ?? "");
-    if (!notification.isRead) {
-      try {
-        if (noticeId) {
-          await getNotiDetail(noticeId);
-        }
-      } catch {
-        // Still update UI if mark-read fails silently
-      }
-
-      setNotifications((prev) =>
-        prev.map((item) =>
-          item.id === notification.id ? { ...item, isRead: true } : item,
-        ),
-      );
-
-      setUnreadCount((prev) => Math.max(prev - 1, 0));
-    }
+    await markNoticeRead(notification);
 
     const body = String(notification.content || "").trim();
     if (body) {
@@ -353,6 +394,7 @@ export default function NotificationBell({
 
   return (
     <Box
+      ref={rootRef}
       sx={{ position: "relative" }}
       onMouseEnter={!isMobile ? handleMouseEnter : undefined}
       onMouseLeave={!isMobile ? handleMouseLeave : undefined}
@@ -365,9 +407,7 @@ export default function NotificationBell({
       >
         <Box
           onClick={() => {
-            if (isMobile) {
-              setIsModalOpen((prev) => !prev);
-            }
+            setIsModalOpen((prev) => !prev);
           }}
           sx={{
             width: {
@@ -421,6 +461,16 @@ export default function NotificationBell({
       {isModalOpen && (
         <>
           <Box
+            onClick={() => setIsModalOpen(false)}
+            sx={{
+              position: "fixed",
+              inset: 0,
+              bgcolor: "rgba(0,0,0,.45)",
+              zIndex: 999990,
+            }}
+          />
+
+          <Box
             sx={{
               position: "absolute",
               top: 40,
@@ -431,7 +481,7 @@ export default function NotificationBell({
               borderLeft: "10px solid transparent",
               borderRight: "10px solid transparent",
               borderBottom: "10px solid #1A1B24",
-              zIndex: 1001,
+              zIndex: 999999,
             }}
           />
 
@@ -454,8 +504,8 @@ export default function NotificationBell({
               },
 
               height: {
-                xs: notifications.length > 0 ? 280 : 120,
-                sm: notifications.length > 0 ? 360 : 120,
+                xs: notifications.length > 0 ? 320 : 140,
+                sm: notifications.length > 0 ? 400 : 140,
               },
 
               bgcolor: "#1A1B24",
@@ -469,6 +519,40 @@ export default function NotificationBell({
               flexDirection: "column",
             }}
           >
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                px: 1.5,
+                py: 1.2,
+                borderBottom: "1px solid rgba(255,255,255,.08)",
+                gap: 1,
+              }}
+            >
+              <Typography sx={{ fontSize: 14, fontWeight: 600, color: "#fff" }}>
+                Thông báo
+              </Typography>
+              <Box
+                component="button"
+                type="button"
+                disabled={unreadCount <= 0 || markingAll}
+                onClick={handleMarkAllRead}
+                sx={{
+                  border: "none",
+                  background: "none",
+                  color: unreadCount > 0 ? "#22C55E" : "#6B7280",
+                  fontSize: 12,
+                  fontWeight: 600,
+                  cursor: unreadCount > 0 ? "pointer" : "default",
+                  whiteSpace: "nowrap",
+                  minHeight: 44,
+                  px: 1,
+                }}
+              >
+                {markingAll ? "Đang xử lý..." : "Đã đọc tất cả"}
+              </Box>
+            </Box>
             <Box
               sx={{
                 flex: 1,
@@ -606,26 +690,43 @@ export default function NotificationBell({
                           {notification.content}
                         </Typography>
                       )}
+
+                      {!notification.isRead && (
+                        <Box
+                          component="button"
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            void markNoticeRead(notification);
+                          }}
+                          sx={{
+                            mt: 1,
+                            border: "1px solid rgba(34,197,94,.45)",
+                            bgcolor: "rgba(34,197,94,.12)",
+                            color: "#22C55E",
+                            borderRadius: "8px",
+                            fontSize: 12,
+                            fontWeight: 600,
+                            height: 36,
+                            px: 1.5,
+                            cursor: "pointer",
+                          }}
+                        >
+                          Đánh dấu đã đọc
+                        </Box>
+                      )}
                     </Box>
                   </Box>
                 ))
               )}
             </Box>
             <Box
-              component="button"
-              type="button"
-              onClick={() => {
-                setIsModalOpen(false);
-              }}
               sx={{
                 textAlign: "center",
-                pb: 2,
+                pb: 1.5,
                 pt: 1.2,
                 fontSize: 12,
-                background: "none",
-                border: "none",
                 borderTop: "1px solid rgba(255,255,255,.08)",
-                cursor: "pointer",
                 width: "100%",
                 color: "#8D93A6",
               }}
