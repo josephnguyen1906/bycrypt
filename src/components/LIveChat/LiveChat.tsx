@@ -2,23 +2,22 @@
 
 import { Box, IconButton, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import Script from "next/script";
 import { useTranslation } from "react-i18next";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { getWebsiteConfig } from "@/services/User.service";
 import {
   closeSaleSmartlyChat,
   openSaleSmartlyWhenReady,
   preInitSaleSmartly,
   resetSaleSmartlyReadyBinding,
 } from "@/utils/saleSmartly";
-
-const SALESMARTLY_SCRIPT =
-  "https://plugin-code.salesmartly.com/js/project_783639_810552_1784725341.js";
+import { injectChatScripts, resolveChatScript } from "@/utils/chatScript";
 
 export default function LiveChatPage() {
   const { t } = useTranslation();
   const router = useRouter();
+  const [chatScript, setChatScript] = useState<string | null>(null);
 
   useLayoutEffect(() => {
     preInitSaleSmartly();
@@ -27,7 +26,30 @@ export default function LiveChatPage() {
 
   useEffect(() => {
     let cancelled = false;
+
+    const load = async () => {
+      try {
+        const config: any = await getWebsiteConfig();
+        if (cancelled) return;
+        setChatScript(resolveChatScript(config?.data?.chat_script));
+      } catch {
+        if (!cancelled) setChatScript(resolveChatScript(null));
+      }
+    };
+
+    void load();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!chatScript) return;
+
+    let cancelled = false;
+    let dispose: (() => void) | undefined;
     let armed = false;
+    let wait: number | undefined;
 
     const armOpen = () => {
       if (cancelled || armed) return false;
@@ -36,18 +58,27 @@ export default function LiveChatPage() {
       return true;
     };
 
-    const wait = window.setInterval(() => {
-      if (armOpen()) window.clearInterval(wait);
-    }, 200);
+    void injectChatScripts(chatScript).then((cleanup) => {
+      if (cancelled) {
+        cleanup();
+        return;
+      }
+      dispose = cleanup;
+      resetSaleSmartlyReadyBinding();
+      wait = window.setInterval(() => {
+        if (armOpen() && wait !== undefined) window.clearInterval(wait);
+      }, 200);
+    });
 
     return () => {
       cancelled = true;
-      window.clearInterval(wait);
+      if (wait !== undefined) window.clearInterval(wait);
       closeSaleSmartlyChat();
       resetSaleSmartlyReadyBinding();
+      dispose?.();
       document.body.dataset.bycryptSsHidden = "true";
     };
-  }, []);
+  }, [chatScript]);
 
   return (
     <Box
@@ -83,20 +114,6 @@ export default function LiveChatPage() {
 
         <IconButton sx={{ visibility: "hidden" }} aria-hidden />
       </Box>
-
-      <Script id="salesmartly-pre" strategy="beforeInteractive">
-        {`window.__ssc=window.__ssc||{};window.__ssc.license=window.__ssc.license||'g1vfb1b';`}
-      </Script>
-
-      <Script
-        id="salesmartly-chat"
-        src={SALESMARTLY_SCRIPT}
-        strategy="afterInteractive"
-        onLoad={() => {
-          resetSaleSmartlyReadyBinding();
-          openSaleSmartlyWhenReady();
-        }}
-      />
 
       <Box
         sx={{
