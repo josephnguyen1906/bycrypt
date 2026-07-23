@@ -1,10 +1,10 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Header from "./Header";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import OrderBook from "./OrderBook";
 import TradeForm from "./TradeForm";
-import BottomTabs from "./BottomTabs";
+import BottomTabs from "@/components/Trade/BottomTabs";
 import { useTranslation } from "react-i18next";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import TradePanel from "./TradePanel";
@@ -18,8 +18,9 @@ import { IHistoryOpen } from "@/shared/interfaces";
 import TradingChartPopup from "@/components/coins/TradingChartPopup";
 import { IcoinFinace } from "@/interface/user.interface";
 import CoinMenuMobile from "@/components/coins/CoinMenuMobile";
-import { COINS, MONEYCOIN } from "@/datafake/home";
+import { COINS } from "@/datafake/home";
 import { useRouter } from "next/navigation";
+import { normalizeList } from "@/utils/tradeLists";
 export interface IcoinType {
   symbol: string;
   priceChange: string;
@@ -59,14 +60,12 @@ export default function TradePage() {
   const [coin, setCoin] = useState("btcusdt");
   const [openChart, setOpenChart] = useState(false);
   const ws = useRef<WebSocket | null>(null);
-  const [orderData, setOrderData] = useState<any>(null);
   const [orderOpen, setOderOpen] = useState<IHistoryOpen[]>([]);
-  const [openConfirm, setOpenConfirm] = useState(false);
   const [asks, setAsks] = useState<DepthItem[]>([]);
   const [bids, setBids] = useState<DepthItem[]>([]);
-  const [listCoin, setListCoin] = useState<any[]>([]);
   const [perpPositions, setPerpPositions] = useState<any[]>([]);
   const [perpHistory, setPerpHistory] = useState<any[]>([]);
+  const [listTab, setListTab] = useState(0);
   const [lastPrice, setLastPrice] = useState(0);
   const [priceColor, setPriceColor] = useState("#fff");
   const lastPriceRef = useRef(0);
@@ -132,19 +131,20 @@ export default function TradePage() {
     };
   }, [coin]);
 
-  const historyOpen = async () => {
+  const fetchContractOrders = useCallback(async () => {
     try {
       const his: any = await getContractjc();
-      if (his.status === true) {
-        setOderOpen(his.data);
+      if (his?.status) {
+        setOderOpen(normalizeList(his.data));
       }
     } catch (errors: any) {
       console.log(errors?.message);
     }
-  };
+  }, []);
 
-  const fetchPerpData = async () => {
-    if (!user) {
+  const fetchPerpData = useCallback(async () => {
+    const currentUser = useUserStore.getState().user;
+    if (!currentUser) {
       setPerpPositions([]);
       setPerpHistory([]);
       return;
@@ -154,33 +154,38 @@ export default function TradePage() {
         getPerpPositions(),
         getPerpHistory(20),
       ]);
-      if (posRes?.status === true) {
-        setPerpPositions(posRes.data ?? []);
+      if (posRes?.status) {
+        setPerpPositions(normalizeList(posRes.data));
       }
-      if (histRes?.status === true) {
-        setPerpHistory(histRes.data ?? []);
+      if (histRes?.status) {
+        setPerpHistory(normalizeList(histRes.data));
       }
     } catch (errors: any) {
       console.log(errors?.message);
     }
-  };
+  }, []);
 
+  // Keep both lists warm so switching Vĩnh viễn / Hợp đồng doesn't wipe UI.
   useEffect(() => {
-    if (tab === 0) {
-      fetchPerpData();
-    } else {
-      historyOpen();
+    if (!user?.id) {
+      setPerpPositions([]);
+      setPerpHistory([]);
+      setOderOpen([]);
+      return;
     }
-  }, [tab, user?.id]);
+    void fetchPerpData();
+    void fetchContractOrders();
+  }, [user?.id, fetchPerpData, fetchContractOrders]);
 
-  const fetchHistorty = async () => {
-    const his: any = await getContractjc();
-    if (his.data?.length > 0) {
-      setOderOpen(his.data);
-    }
-    setOrderData(his.data);
-    setOpenConfirm(true);
-  };
+  const handlePerpSuccess = useCallback(async () => {
+    setListTab(0);
+    await fetchPerpData();
+  }, [fetchPerpData]);
+
+  const handleContractSuccess = useCallback(async () => {
+    setListTab(0);
+    await fetchContractOrders();
+  }, [fetchContractOrders]);
   // realCoin menu
   // const referral = async () => {
   //   try {
@@ -240,7 +245,10 @@ export default function TradePage() {
                 bgcolor: "#08D27A",
               },
             }}
-            onClick={() => setTab(0)}
+            onClick={() => {
+              setTab(0);
+              setListTab(0);
+            }}
           >
             {t("TradePage.title14")}
           </Button>
@@ -256,7 +264,10 @@ export default function TradePage() {
               fontWeight: 700,
               textTransform: "none",
             }}
-            onClick={() => setTab(1)}
+            onClick={() => {
+              setTab(1);
+              setListTab(0);
+            }}
           >
             {t("TradePage.title15")}
           </Button>
@@ -282,10 +293,14 @@ export default function TradePage() {
                 setPercent={setPercent}
                 symbol={coin}
                 user={user}
-                onSuccess={fetchPerpData}
+                onSuccess={handlePerpSuccess}
               />
             ) : (
-              <TradePanel symbol={coin} user={user} onSuccess={fetchHistorty} />
+              <TradePanel
+                symbol={coin}
+                user={user}
+                onSuccess={handleContractSuccess}
+              />
             )}
           </Grid>
         </Grid>
@@ -296,11 +311,13 @@ export default function TradePage() {
           }}
         >
           <BottomTabs
-            orderOpen={tab === 0 ? [] : orderOpen}
+            orderOpen={orderOpen}
             perpetualMode={tab === 0}
             perpPositions={perpPositions}
             perpHistory={perpHistory}
             onPerpChanged={fetchPerpData}
+            listTab={listTab}
+            onListTabChange={setListTab}
           />
         </Box>
         <Box

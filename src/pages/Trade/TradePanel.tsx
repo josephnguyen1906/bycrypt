@@ -3,15 +3,10 @@
 import { useEffect, useState } from "react";
 import { Box, Button, Grid, InputBase, Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import {
-  createOrder,
-  getBuySellConfig,
-  getContractjc,
-} from "@/services/User.service";
+import { createOrder, getBuySellConfig } from "@/services/User.service";
 import { toast } from "react-toastify";
 import { IUser } from "@/shared/interfaces";
 import OrderConfirmModal from "@/components/popup/OrderConfirmModal";
-import { useUserStore } from "@/stores/useUserStore";
 
 const optionTimes = [
   { time: "60s", profit: "9~9%" },
@@ -27,7 +22,7 @@ export default function TradePanel({
 }: {
   symbol: string;
   user: IUser | null;
-  onSuccess: () => void;
+  onSuccess: () => void | Promise<void>;
 }) {
   const [openConfirm, setOpenConfirm] = useState(false);
   const [tab, setTab] = useState("1");
@@ -87,17 +82,18 @@ export default function TradePanel({
       formData.append("method", method);
       formData.append("uprate", hyykbl);
 
-      const res = await createOrder(formData);
+      const res: any = await createOrder(formData);
 
-      if (res?.data) {
-        const his: any = await getContractjc();
-        if (his.data?.length > 0) {
-          setOderOpen(his.data[0]);
+      if (res?.status) {
+        if (res.data) {
+          setOderOpen(res.data);
         }
         setOpenConfirm(true);
-        onSuccess();
+        await onSuccess();
+        toast.success(t("Toast.order_success"));
+      } else {
+        toast.error(t("Toast.order_failed"));
       }
-      toast.success(t("Toast.order_success"));
     } catch (error: any) {
       toast.error(t("Toast.order_failed"));
     }

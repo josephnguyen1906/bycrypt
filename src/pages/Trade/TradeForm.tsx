@@ -65,7 +65,7 @@ export default function TradeForm({
   setPercent: (e: number) => void;
   symbol: string;
   user: IUser | null;
-  onSuccess?: () => void;
+  onSuccess?: () => void | Promise<void>;
 }) {
   const { t, i18n } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -172,7 +172,7 @@ export default function TradeForm({
         setAmount("");
         setPercent(0);
         await loadWallet();
-        onSuccess?.();
+        await onSuccess?.();
       } else {
         toast.error(localizeTradeToast(res, t, i18n, "Toast.order_failed"));
       }
