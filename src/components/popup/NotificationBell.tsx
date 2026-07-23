@@ -125,7 +125,10 @@ function loadToastedIds(): Set<string> {
 function persistToastedIds(ids: Set<string>) {
   if (typeof window === "undefined") return;
   try {
-    window.sessionStorage.setItem(TOASTED_KEY, JSON.stringify([...ids]));
+    window.sessionStorage.setItem(
+      TOASTED_KEY,
+      JSON.stringify(Array.from(ids)),
+    );
   } catch {
     // ignore quota
   }
