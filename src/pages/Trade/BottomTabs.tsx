@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Box, Tab, Tabs, Typography, Stack, Chip, Button } from "@mui/material";
+import { Box, Tab, Tabs, Typography, Stack, Button } from "@mui/material";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import { IHistoryOpen } from "@/shared/interfaces";
 import { useRouter } from "next/navigation";
+import { postPerpClose } from "@/services/User.service";
+import { localizeTradeToast } from "@/utils/tradeToast";
 import { timeAgo } from "../historyContact/HistoryContact";
 
 export default function BottomTabs({
@@ -13,18 +16,20 @@ export default function BottomTabs({
   perpetualMode = false,
   perpPositions = [],
   perpHistory = [],
+  onPerpChanged,
 }: {
   orderOpen: IHistoryOpen[];
   perpetualMode?: boolean;
   perpPositions?: any[];
   perpHistory?: any[];
+  onPerpChanged?: () => void;
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [tab, setTab] = useState(0);
   const [historyId, setHisstoryId] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState<{ [key: number]: number }>({});
+  const [closingId, setClosingId] = useState<number | null>(null);
   const router = useRouter();
-  console.log("orderOpen", orderOpen);
 
   useEffect(() => {
     if (!orderOpen) return;
@@ -68,6 +73,26 @@ export default function BottomTabs({
 
   const openOrdersForTab = perpetualMode ? perpHistory : orderOpen;
   const hasOpenOrders = openOrdersForTab && openOrdersForTab.length > 0;
+
+  const handleClosePerp = async (item: any) => {
+    if (!item?.id || closingId != null) return;
+    setClosingId(Number(item.id));
+    try {
+      const res: any = await postPerpClose({ position_id: Number(item.id) });
+      if (res?.status) {
+        toast.success(
+          localizeTradeToast(res, t, i18n, "Toast.close_success"),
+        );
+        onPerpChanged?.();
+      } else {
+        toast.error(localizeTradeToast(res, t, i18n, "Toast.close_failed"));
+      }
+    } catch (err: any) {
+      toast.error(localizeTradeToast(err, t, i18n, "Toast.close_failed"));
+    } finally {
+      setClosingId(null);
+    }
+  };
 
   const renderPerpPosition = (item: any, index: number) => (
     <Box
@@ -117,6 +142,25 @@ export default function BottomTabs({
           </Typography>
         </Box>
       </Stack>
+      <Button
+        fullWidth
+        disabled={closingId === Number(item.id)}
+        onClick={() => handleClosePerp(item)}
+        sx={{
+          mt: 1.5,
+          height: 40,
+          borderRadius: "8px",
+          bgcolor: "#ef4444",
+          color: "#fff",
+          fontSize: 13,
+          fontWeight: 600,
+          textTransform: "none",
+          "&:hover": { bgcolor: "#dc2626" },
+          "&:disabled": { bgcolor: "#7f1d1d", color: "#ddd" },
+        }}
+      >
+        {closingId === Number(item.id) ? "..." : t("TradePage.close_position")}
+      </Button>
     </Box>
   );
 

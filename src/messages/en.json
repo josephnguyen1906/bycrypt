@@ -170,6 +170,7 @@
     "title32": "Last Price / 24h Change",
     "tab1": "Positions",
     "tab2": "Open Orders",
+    "close_position": "Close position",
     "noti1": "You currently have no positions",
     "noti2": "No trading orders yet"
   },

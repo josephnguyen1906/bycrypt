@@ -15,23 +15,44 @@ const APP_LOCALES = new Set([
   "gr",
 ]);
 
+/** Phone-country codes that map onto an existing i18n resource pack. */
+const COUNTRY_TO_I18N: Record<string, string> = {
+  "zh-tw": "en",
+  "en-au": "en",
+  "en-sg": "en",
+  pl: "en",
+  nl: "en",
+  ms: "en",
+};
+
 /** TradingView / chart widgets use slightly different locale codes. */
 function chartLocaleFromApp(code: string): string {
   if (code === "po") return "pt";
   if (code === "gr") return "el";
+  if (code === "zh-tw") return "zh_TW";
   return code;
 }
 
-export function applyAppLocale(code: string): void {
+function resolveI18nCode(code: string): string | null {
   const normalized = code.trim().toLowerCase();
-  if (!APP_LOCALES.has(normalized)) {
+  if (APP_LOCALES.has(normalized)) {
+    return normalized;
+  }
+  return COUNTRY_TO_I18N[normalized] ?? null;
+}
+
+export function applyAppLocale(code: string): void {
+  const countryKey = code.trim();
+  const i18nCode = resolveI18nCode(countryKey);
+  if (!i18nCode) {
     return;
   }
 
-  i18n.changeLanguage(normalized);
+  i18n.changeLanguage(i18nCode);
   if (typeof window !== "undefined") {
-    window.localStorage.setItem("lang", normalized);
-    window.localStorage.setItem("language", chartLocaleFromApp(normalized));
+    // Keep original country code for phone default; i18n uses mapped pack.
+    window.localStorage.setItem("lang", countryKey);
+    window.localStorage.setItem("language", chartLocaleFromApp(i18nCode));
   }
 }
 

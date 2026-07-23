@@ -300,6 +300,7 @@ export default function TradePage() {
             perpetualMode={tab === 0}
             perpPositions={perpPositions}
             perpHistory={perpHistory}
+            onPerpChanged={fetchPerpData}
           />
         </Box>
         <Box
