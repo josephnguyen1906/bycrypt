@@ -92,13 +92,13 @@ export default function DepositSuccessPage({ tab }: { tab: number }) {
           </Typography>
 
           <Typography mt={1} color="#8A8FA8">
-            {t("DepositWithdrawPage.title28")}
+            {t("DepositWithdrawPage.processingCskhHint")}{" "}
             <Typography
               component="span"
+              onClick={() => router.push("/chat")}
               sx={{
                 color: "#1E88FF",
                 cursor: "pointer",
-                pl: "8px",
               }}
             >
               {t("DepositWithdrawPage.title29")}

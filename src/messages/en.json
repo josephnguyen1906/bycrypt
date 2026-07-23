@@ -246,7 +246,8 @@
     "statusProcessing": "Processing",
     "statusSuccess": "Success",
     "statusRejected": "Rejected",
-    "successHintTitle": "Status"
+    "successHintTitle": "Status",
+    "processingCskhHint": "Your request is processing. Please contact customer support for approval."
   },
   "ChangePass": {
     "title1": "Change Fund Password",

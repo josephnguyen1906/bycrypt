@@ -246,7 +246,8 @@
     "statusProcessing": "Đang xử lý",
     "statusSuccess": "Thành công",
     "statusRejected": "Đã từ chối",
-    "successHintTitle": "Trạng thái"
+    "successHintTitle": "Trạng thái",
+    "processingCskhHint": "Lệnh đang xử lý. Vui lòng liên hệ chăm sóc khách hàng để được duyệt."
   },
   "ChangePass": {
     "title1": " Thay đổi mật khẩu quỹ",
