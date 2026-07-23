@@ -67,6 +67,10 @@
     "language": "언어",
     "logout": "로그아웃"
   },
+  "ChatPage": {
+    "title": "Customer Support",
+    "hint": "Connecting to support chat…"
+  },
   "HomePage": {
     "title1": "채굴기",
     "title2": "시장",
@@ -230,7 +234,7 @@
     "label9": "전체",
     "label10": "결제 비밀번호",
     "label11": "결제 비밀번호 입력",
-    "label12": "보유 수량",
+    "label12": "수령 금액",
     "label13": "출금 수수료",
     "label14": "출금 안내",
     "label15": "처리 수수료",

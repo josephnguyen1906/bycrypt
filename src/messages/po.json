@@ -67,6 +67,10 @@
     "language": "Idioma",
     "logout": "Sair"
   },
+  "ChatPage": {
+    "title": "Customer Support",
+    "hint": "Connecting to support chat…"
+  },
   "HomePage": {
     "title1": "Minerador",
     "title2": "Mercado",
@@ -230,7 +234,7 @@
     "label9": "Todos",
     "label10": "Senha de pagamento",
     "label11": "Digite a senha de pagamento",
-    "label12": "Quantidade disponível",
+    "label12": "Valor recebido",
     "label13": "Taxa de saque",
     "label14": "Instruções de saque",
     "label15": "Taxa de processamento",

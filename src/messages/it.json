@@ -67,6 +67,10 @@
     "language": "Lingua",
     "logout": "Esci"
   },
+  "ChatPage": {
+    "title": "Customer Support",
+    "hint": "Connecting to support chat…"
+  },
   "HomePage": {
     "title1": "Mining",
     "title2": "Mercato",
@@ -230,7 +234,7 @@
     "label9": "Tutto",
     "label10": "Password di pagamento",
     "label11": "Inserisci la password di pagamento",
-    "label12": "Quantità disponibile",
+    "label12": "Importo ricevuto",
     "label13": "Commissione di prelievo",
     "label14": "Istruzioni per il prelievo",
     "label15": "Commissione di elaborazione",

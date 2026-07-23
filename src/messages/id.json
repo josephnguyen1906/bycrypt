@@ -67,6 +67,10 @@
     "language": "Bahasa",
     "logout": "Keluar"
   },
+  "ChatPage": {
+    "title": "Customer Support",
+    "hint": "Connecting to support chat…"
+  },
   "HomePage": {
     "title1": "Penambangan",
     "title2": "Pasar",
@@ -230,7 +234,7 @@
     "label9": "Semua",
     "label10": "Kata Sandi Pembayaran",
     "label11": "Masukkan Kata Sandi Pembayaran",
-    "label12": "Jumlah yang Tersedia",
+    "label12": "Jumlah Diterima",
     "label13": "Biaya Penarikan",
     "label14": "Petunjuk Penarikan",
     "label15": "Biaya Pemrosesan",

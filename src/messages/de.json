@@ -67,6 +67,10 @@
     "language": "Sprache",
     "logout": "Abmelden"
   },
+  "ChatPage": {
+    "title": "Customer Support",
+    "hint": "Connecting to support chat…"
+  },
   "HomePage": {
     "title1": "Mining",
     "title2": "Markt",
@@ -230,7 +234,7 @@
     "label9": "Alle",
     "label10": "Zahlungspasswort",
     "label11": "Zahlungspasswort eingeben",
-    "label12": "Verfügbarer Betrag",
+    "label12": "Erhaltener Betrag",
     "label13": "Auszahlungsgebühr",
     "label14": "Auszahlungsanleitung",
     "label15": "Bearbeitungsgebühr",

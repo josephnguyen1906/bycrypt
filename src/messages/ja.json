@@ -67,6 +67,10 @@
     "language": "言語",
     "logout": "ログアウト"
   },
+  "ChatPage": {
+    "title": "Customer Support",
+    "hint": "Connecting to support chat…"
+  },
   "HomePage": {
     "title1": "マイニング",
     "title2": "市場",
@@ -230,7 +234,7 @@
     "label9": "すべて",
     "label10": "支払いパスワード",
     "label11": "支払いパスワードを入力",
-    "label12": "利用可能残高",
+    "label12": "受取金額",
     "label13": "出金手数料",
     "label14": "出金手順",
     "label15": "処理手数料",

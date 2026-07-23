@@ -67,6 +67,10 @@
     "language": "Idioma",
     "logout": "Cerrar sesión"
   },
+  "ChatPage": {
+    "title": "Customer Support",
+    "hint": "Connecting to support chat…"
+  },
   "HomePage": {
     "title1": "Minería",
     "title2": "Mercado",
@@ -230,7 +234,7 @@
     "label9": "Todo",
     "label10": "Contraseña de pago",
     "label11": "Introducir contraseña de pago",
-    "label12": "Cantidad disponible",
+    "label12": "Cantidad recibida",
     "label13": "Comisión de retiro",
     "label14": "Instrucciones de retiro",
     "label15": "Comisión de procesamiento",

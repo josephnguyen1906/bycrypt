@@ -67,6 +67,10 @@
     "language": "Langue",
     "logout": "Se déconnecter"
   },
+  "ChatPage": {
+    "title": "Customer Support",
+    "hint": "Connecting to support chat…"
+  },
   "HomePage": {
     "title1": "Minage",
     "title2": "Marché",
@@ -230,7 +234,7 @@
     "label9": "Tout",
     "label10": "Mot de passe de paiement",
     "label11": "Saisir le mot de passe de paiement",
-    "label12": "Quantité disponible",
+    "label12": "Montant reçu",
     "label13": "Frais de retrait",
     "label14": "Instructions de retrait",
     "label15": "Frais de traitement",
