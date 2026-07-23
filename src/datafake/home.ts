@@ -123,3 +123,12 @@ export const IconCoin: Record<string, string> = {
   KNC: "https://cryptologos.cc/logos/kyber-network-crystal-v2-knc-logo.png?v=040",
   DOGE: "https://cryptologos.cc/logos/dogecoin-doge-logo.png?v=040",
 };
+
+/** Resolve coin logo by symbol from admin (case-insensitive). */
+export function getCoinIcon(symbol?: string | null): string {
+  const key = String(symbol || "").trim().toUpperCase();
+  if (!key) return "/images/usdt-logo.png";
+  if (IconCoin[key]) return IconCoin[key];
+  // Fallback: CoinCap icon CDN by symbol (works for most listed assets).
+  return `https://assets.coincap.io/assets/icons/${key.toLowerCase()}@2x.png`;
+}

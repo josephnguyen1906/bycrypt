@@ -2,60 +2,71 @@
 import { Box, IconButton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import HistoryIcon from "@mui/icons-material/History";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { getFinaceCoin } from "@/services/User.service";
-import { IcoinFinace } from "@/interface/user.interface";
+import { getDepositMethod, getFinaceCoin } from "@/services/User.service";
 import Image from "next/image";
-import { IconCoin } from "@/datafake/home";
+import { getCoinIcon } from "@/datafake/home";
 
-const listDeposit = [
-  {
-    id: 1,
-    link: "https://www.kraken.com/",
-    title: "DepositWithdrawPage.title4",
-    icon: "/images/kraken-f9e29d51.ico",
-  },
-  {
-    id: 2,
-    link: "https://www.binance.com/",
-    title: "DepositWithdrawPage.title5",
-    icon: "/images/binance-icon.png",
-  },
-  {
-    id: 3,
-    link: "https://www.coinbase.com/",
-    title: "DepositWithdrawPage.title6",
-    icon: "/images/coinbase-ae084b4c.png",
-  },
-  {
-    id: 4,
-    link: "https://crypto.com/",
-    title: "DepositWithdrawPage.title7",
-    icon: "/images/crypto-67a5e63a.png",
-  },
-];
+type DepositChannel = {
+  coinId: number;
+  symbol: string;
+  title: string;
+};
+
 export default function Deposit() {
   const router = useRouter();
   const { t } = useTranslation();
-  const [listCoin, setListCoin] = useState<IcoinFinace[]>([]);
-
-  const referral = async () => {
-    try {
-      const listCoin: any = await getFinaceCoin();
-
-      if (listCoin.status === true) {
-        setListCoin(listCoin.data);
-      }
-    } catch (errors: any) {
-      console.log(errors?.message);
-    }
-  };
+  const [channels, setChannels] = useState<DepositChannel[]>([]);
 
   useEffect(() => {
-    referral();
+    const load = async () => {
+      try {
+        const [methodRes, coinRes]: any[] = await Promise.all([
+          getDepositMethod(),
+          getFinaceCoin(),
+        ]);
+
+        if (!methodRes?.status) {
+          setChannels([]);
+          return;
+        }
+
+        const methods: Array<{ coin?: string; status?: number }> =
+          methodRes.data || [];
+        const coins: Array<{ id: number; name?: string; title?: string }> =
+          coinRes?.status ? coinRes.data || [] : [];
+
+        const seen = new Set<string>();
+        const next: DepositChannel[] = [];
+
+        for (const method of methods) {
+          const symbol = String(method.coin || "")
+            .trim()
+            .toLowerCase();
+          if (!symbol || seen.has(symbol)) continue;
+          seen.add(symbol);
+
+          const coin = coins.find(
+            (c) => String(c.name || "").toLowerCase() === symbol,
+          );
+          if (!coin?.id) continue;
+
+          next.push({
+            coinId: coin.id,
+            symbol: symbol.toUpperCase(),
+            title: coin.title || symbol.toUpperCase(),
+          });
+        }
+
+        setChannels(next);
+      } catch (errors: any) {
+        console.log(errors?.message);
+        setChannels([]);
+      }
+    };
+    load();
   }, []);
 
   return (
@@ -79,7 +90,6 @@ export default function Deposit() {
           borderBottom: "1px solid rgba(255,255,255,.05)",
         }}
       >
-        {/* Left */}
         <Box
           sx={{
             width: "100%",
@@ -127,7 +137,6 @@ export default function Deposit() {
                 bgcolor: "none",
               },
             }}
-            // href="/trade-chart"
             onClick={() => router.push("/deposit/history")}
           >
             <HistoryIcon />
@@ -152,95 +161,51 @@ export default function Deposit() {
             flexWrap: "wrap",
             gap: "20px",
             pt: 3,
-            justifyContent: "center",
+            justifyContent: channels.length ? "center" : "flex-start",
           }}
         >
-          {listCoin
-            .filter((item) => item.czstatus == 1)
-            .map((item) => (
-            <Box
-              key={item.id}
-              sx={{
-                padding: "10px",
-                py: 2,
-                border: "2px solid #212C4E",
-                borderRadius: "8px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 120,
-                cursor: "pointer",
-              }}
-              onClick={() => router.push(`/deposit/${item.id}`)}
-            >
-              <Image
-                src={IconCoin[item.title]}
-                width={50}
-                height={50}
-                alt={item.title}
-              />
-              <Typography
-                sx={{
-                  color: "#868c9a",
-                  fontWeight: 400,
-                  fontSize: 13,
-                }}
-              >
-                {t("DepositWithdrawPage.title3")} {item.title}
-              </Typography>
-            </Box>
-          ))}
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "20px",
-            pt: 8,
-          }}
-        >
-          {listDeposit.map((item) => (
-            <Box
-              key={item.id}
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: "10px",
-                borderBottom: "1px solid #393E49",
-                padding: "5px",
-              }}
-              onClick={() => {
-                window.open(item.link, "_blank", "noopener,noreferrer");
-              }}
-            >
+          {channels.length === 0 ? (
+            <Typography sx={{ color: "#868c9a", fontSize: 14, pt: 2 }}>
+              {t("HistoryPage.title2")}
+            </Typography>
+          ) : (
+            channels.map((item) => (
               <Box
+                key={item.coinId}
                 sx={{
+                  padding: "10px",
+                  py: 2,
+                  border: "2px solid #212C4E",
+                  borderRadius: "8px",
                   display: "flex",
-
-                  gap: "10px",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 120,
+                  cursor: "pointer",
                 }}
+                onClick={() => router.push(`/deposit/${item.coinId}`)}
               >
                 <Image
-                  src={item.icon}
-                  width={23}
-                  height={23}
-                  alt={item.title}
-                  style={{ objectFit: "cover" }}
+                  src={getCoinIcon(item.symbol)}
+                  width={50}
+                  height={50}
+                  alt={item.symbol}
+                  unoptimized
                 />
                 <Typography
                   sx={{
                     color: "#868c9a",
                     fontWeight: 400,
                     fontSize: 13,
+                    textAlign: "center",
                   }}
                 >
-                  {t(item.title)}
+                  {t("DepositWithdrawPage.title3")} {item.symbol}
                 </Typography>
               </Box>
-              <ArrowForwardIosIcon sx={{ color: "#868D9A", fontSize: 14 }} />
-            </Box>
-          ))}
+            ))
+          )}
         </Box>
       </Box>
     </Box>
