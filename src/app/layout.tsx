@@ -73,12 +73,14 @@ export default function RootLayout({
       <body className={inter.className}>
         <PrimaryLayoutComponent>{children}</PrimaryLayoutComponent>
         <ToastContainer
-          position="top-right"
-          autoClose={3000}
+          position="top-center"
+          theme="dark"
+          autoClose={5000}
           hideProgressBar={false}
           newestOnTop
           closeOnClick
           pauseOnHover
+          style={{ zIndex: 999999 }}
         />
       </body>
     </html>

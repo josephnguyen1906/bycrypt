@@ -109,6 +109,46 @@ function mergeNotifications(
   );
 }
 
+const TOASTED_KEY = "bycrypt_toasted_notice_ids";
+
+function loadToastedIds(): Set<string> {
+  if (typeof window === "undefined") return new Set();
+  try {
+    const raw = window.sessionStorage.getItem(TOASTED_KEY);
+    const arr = raw ? (JSON.parse(raw) as string[]) : [];
+    return new Set(Array.isArray(arr) ? arr : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function persistToastedIds(ids: Set<string>) {
+  if (typeof window === "undefined") return;
+  try {
+    window.sessionStorage.setItem(TOASTED_KEY, JSON.stringify([...ids]));
+  } catch {
+    // ignore quota
+  }
+}
+
+function showNoticeToast(notification: Notification) {
+  const title = String(notification.title || "");
+  const body = String(notification.content || "").trim();
+  const node = (
+    <div>
+      <div style={{ fontWeight: 700, marginBottom: 4 }}>{title}</div>
+      {body ? <div style={{ fontSize: 13, opacity: 0.9 }}>{body}</div> : null}
+    </div>
+  );
+  if (/thành công|success/i.test(title)) {
+    toast.success(node, { toastId: notification.id });
+  } else if (/đang xử lý|processing/i.test(title)) {
+    toast.info(node, { toastId: notification.id });
+  } else {
+    toast.info(node, { toastId: notification.id });
+  }
+}
+
 export default function NotificationBell({
   notificationCount: initialCount = 0,
 }: NotificationBellProps) {
@@ -125,8 +165,7 @@ export default function NotificationBell({
   const { user, fetchUser } = useUserStore();
 
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const seenNoticeIdsRef = useRef<Set<string>>(new Set());
-  const toastBootstrappedRef = useRef(false);
+  const toastedIdsRef = useRef<Set<string>>(loadToastedIds());
 
   useEffect(() => {
     fetchUser();
@@ -175,24 +214,23 @@ export default function NotificationBell({
             noticeUnread = Number(response?.data?.unread_count ?? 0);
 
             if (toastNew) {
-              if (!toastBootstrappedRef.current) {
-                noticeItems.forEach((n) => seenNoticeIdsRef.current.add(n.id));
-                toastBootstrappedRef.current = true;
-              } else {
-                const fresh = noticeItems.filter(
-                  (n) => !n.isRead && !seenNoticeIdsRef.current.has(n.id),
-                );
-                fresh.slice(0, 3).forEach((n) => {
-                  seenNoticeIdsRef.current.add(n.id);
-                  const title = String(n.title || "");
-                  if (/thành công|success/i.test(title)) {
-                    toast.success(title);
-                  } else if (/đang xử lý|processing/i.test(title)) {
-                    toast.info(title);
-                  } else {
-                    toast.info(title);
-                  }
-                });
+              const fresh = noticeItems
+                .filter(
+                  (n) =>
+                    !n.isRead &&
+                    !toastedIdsRef.current.has(n.id) &&
+                    /(nạp|rút|gửi tiền|deposit|withdraw|thành công|đang xử lý)/i.test(
+                      String(n.title || ""),
+                    ),
+                )
+                .slice(0, 3);
+
+              fresh.forEach((n) => {
+                toastedIdsRef.current.add(n.id);
+                showNoticeToast(n);
+              });
+              if (fresh.length > 0) {
+                persistToastedIds(toastedIdsRef.current);
               }
             }
           } else {
@@ -227,7 +265,7 @@ export default function NotificationBell({
     void fetchNotifications({ toastNew: true });
     const timer = window.setInterval(() => {
       void fetchNotifications({ silent: true, toastNew: true });
-    }, 15000);
+    }, 5000);
     return () => window.clearInterval(timer);
   }, [user, fetchNotifications]);
 
@@ -389,7 +427,7 @@ export default function NotificationBell({
               height: 0,
               borderLeft: "10px solid transparent",
               borderRight: "10px solid transparent",
-              borderBottom: "10px solid #1c402a",
+              borderBottom: "10px solid #1A1B24",
               zIndex: 1001,
             }}
           />
@@ -413,14 +451,16 @@ export default function NotificationBell({
               },
 
               height: {
-                xs: notifications.length > 0 ? 200 : 100,
-                sm: notifications.length > 0 ? 300 : 100,
+                xs: notifications.length > 0 ? 280 : 120,
+                sm: notifications.length > 0 ? 360 : 120,
               },
 
-              bgcolor: "#fff",
-              color: "#000",
+              bgcolor: "#1A1B24",
+              color: "#fff",
+              border: "1px solid rgba(255,255,255,.08)",
               borderRadius: 2,
               zIndex: 999999,
+              boxShadow: "0 12px 40px rgba(0,0,0,.55)",
 
               display: "flex",
               flexDirection: "column",
@@ -431,7 +471,7 @@ export default function NotificationBell({
                 flex: 1,
                 overflowY: "auto",
                 p: {
-                  xs: 1,
+                  xs: 1.5,
                   sm: 2,
                 },
 
@@ -439,21 +479,27 @@ export default function NotificationBell({
                   width: 6,
                 },
                 "&::-webkit-scrollbar-thumb": {
-                  backgroundColor: "#555",
+                  backgroundColor: "#3a3d4d",
                   borderRadius: 10,
                 },
               }}
             >
               {!user ? (
-                <Typography align="center">Vui lòng đăng nhập</Typography>
+                <Typography align="center" color="#8D93A6">
+                  Vui lòng đăng nhập
+                </Typography>
               ) : isLoading ? (
                 <Box display="flex" justifyContent="center">
-                  <CircularProgress size={20} />
+                  <CircularProgress size={20} sx={{ color: "#00A609" }} />
                 </Box>
               ) : error ? (
-                <Typography align="center">{error}</Typography>
+                <Typography align="center" color="#EF4444">
+                  {error}
+                </Typography>
               ) : notifications.length === 0 ? (
-                <Typography align="center">Không có thông báo</Typography>
+                <Typography align="center" color="#8D93A6">
+                  Không có thông báo
+                </Typography>
               ) : (
                 notifications.map((notification) => (
                   <Box
@@ -465,11 +511,16 @@ export default function NotificationBell({
                       cursor: "pointer",
                       mb: {
                         xs: 1,
-                        sm: 2,
+                        sm: 1.5,
                       },
-                      py: {
-                        xs: 1,
-                        sm: 0,
+                      py: 1.2,
+                      px: 1,
+                      borderRadius: 1.5,
+                      bgcolor: notification.isRead
+                        ? "transparent"
+                        : "rgba(0,166,9,.12)",
+                      "&:hover": {
+                        bgcolor: "rgba(255,255,255,.04)",
                       },
                     }}
                   >
@@ -482,14 +533,22 @@ export default function NotificationBell({
                       }}
                     />
 
-                    <Box flex={1}>
+                    <Box flex={1} minWidth={0}>
                       <Typography
                         fontWeight={notification.isRead ? 500 : 700}
-                        color={notification.isRead ? "#666" : "#d32f2f"}
                         sx={{
+                          color: notification.isRead
+                            ? "#8D93A6"
+                            : /thành công|success/i.test(notification.title)
+                              ? "#22C55E"
+                              : /đang xử lý|processing/i.test(
+                                    notification.title,
+                                  )
+                                ? "#FFD84D"
+                                : "#fff",
                           fontSize: {
                             xs: "13px",
-                            sm: "16px",
+                            sm: "15px",
                           },
                           display: "-webkit-box",
                           WebkitLineClamp: {
@@ -510,7 +569,8 @@ export default function NotificationBell({
                             xs: "none",
                             sm: "block",
                           },
-                          fontSize: "13px",
+                          fontSize: "12px",
+                          color: "#6B7280",
                         }}
                       >
                         {formatDate(notification.time)}
@@ -522,16 +582,18 @@ export default function NotificationBell({
                             __html: notification.content,
                           }}
                           sx={{
-                            mt: 1,
+                            mt: 0.8,
                             fontSize: "12px",
+                            color: "#8D93A6",
+                            "& *": { color: "#8D93A6 !important" },
                           }}
                         />
                       ) : (
                         <Typography
                           sx={{
-                            mt: 1,
+                            mt: 0.8,
                             fontSize: "12px",
-                            color: "#444",
+                            color: "#8D93A6",
                             display: "-webkit-box",
                             WebkitLineClamp: 2,
                             WebkitBoxOrient: "vertical",
@@ -551,22 +613,18 @@ export default function NotificationBell({
               type="button"
               onClick={() => {
                 setIsModalOpen(false);
-                router.push("/overview");
               }}
               sx={{
                 textAlign: "center",
                 pb: 2,
-                pt: 1,
-                borderTop: "1px solid #eee",
+                pt: 1.2,
                 fontSize: 12,
                 background: "none",
                 border: "none",
-                borderTopWidth: 1,
-                borderTopStyle: "solid",
-                borderTopColor: "#eee",
+                borderTop: "1px solid rgba(255,255,255,.08)",
                 cursor: "pointer",
                 width: "100%",
-                color: "inherit",
+                color: "#8D93A6",
               }}
             >
               Thông báo hệ thống
