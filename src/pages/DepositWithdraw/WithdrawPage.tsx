@@ -3,8 +3,6 @@
 import {
   KeyboardArrowDown,
   QrCodeScannerOutlined,
-  Visibility,
-  VisibilityOff,
 } from "@mui/icons-material";
 import HistoryIcon from "@mui/icons-material/History";
 import {
@@ -57,11 +55,9 @@ export default function WithdrawPage() {
   const { t } = useTranslation();
   const [amount, setAmount] = useState<number | null>(null);
   const [currency, setCurrency] = useState("TRC20");
-  const [password, setPassword] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
   const [listCoin, setListCoin] = useState<IListcoin[]>([]);
   const [selectedCoin, setSelectedCoin] = useState<IListcoin | null>(null);
-  const [showPassword, setShowPassword] = useState(false);
   const { user, fetchUser } = useUserStore();
   const [submitting, setSubmitting] = useState(false);
 
@@ -158,17 +154,12 @@ export default function WithdrawPage() {
         toast.error(t("Toast.Withdraw7"));
         return;
       }
-      if (!password) {
-        toast.error(t("Toast.Withdraw8"));
-        return;
-      }
 
       setSubmitting(true);
 
       const formdata = new FormData();
       formdata.append("cid", String(selectedCoin.id));
       formdata.append("amount", String(amount));
-      formdata.append("paypassword", String(password));
       formdata.append("address", walletAddress);
 
       const res = (await sellCoins(formdata)) as unknown as {
@@ -179,7 +170,6 @@ export default function WithdrawPage() {
       if (res.status) {
         router.push("/withdraw/success");
         setAmount(null);
-        setPassword("");
         setWalletAddress("");
         fetchUser?.();
       } else {
@@ -573,50 +563,6 @@ export default function WithdrawPage() {
             {selectedCoin?.name?.toUpperCase() || "USDT"}
           </Typography>
         </Box>
-        <Typography
-          sx={{
-            fontSize: 14,
-            color: "white",
-            mt: 2,
-            mb: 1,
-          }}
-        >
-          {t("DepositWithdrawPage.label10")}
-        </Typography>
-
-        <TextField
-          fullWidth
-          type={showPassword ? "text" : "password"}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder={t("DepositWithdrawPage.label11")}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={() => setShowPassword(!showPassword)}
-                  sx={{
-                    color: "#8D93A6",
-                  }}
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              height: 50,
-              bgcolor: "#1A1B24",
-              borderRadius: "12px",
-              color: "#fff",
-              fontSize: 16,
-              "& fieldset": {
-                border: "none",
-              },
-            },
-          }}
-        />
 
         <Typography
           sx={{
