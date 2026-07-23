@@ -54,25 +54,38 @@ export default function WithdrawPage() {
   const router = useRouter();
   const { t } = useTranslation();
   const [amount, setAmount] = useState<number | null>(null);
-  const [currency, setCurrency] = useState("TRC20");
+  const [currency, setCurrency] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
   const [listCoin, setListCoin] = useState<IListcoin[]>([]);
   const [selectedCoin, setSelectedCoin] = useState<IListcoin | null>(null);
   const { user, fetchUser } = useUserStore();
   const [submitting, setSubmitting] = useState(false);
 
+  const withdrawCoins = useMemo(
+    () => listCoin.filter((c) => Number(c.txstatus) === 1),
+    [listCoin],
+  );
+
+  const networks = useMemo(() => {
+    const raw = String(selectedCoin?.czline || "")
+      .split(/[,|/]/)
+      .map((n) => n.trim())
+      .filter(Boolean);
+    return raw.length > 0 ? raw : ["TRC20"];
+  }, [selectedCoin]);
+
   const fetchCoin = async () => {
     try {
       const res = await getFinaceCoin();
 
       if (res.status) {
-        setListCoin(res.data);
-        const usdt = res.data.find(
-          (item: IListcoin) => item.name?.toLowerCase() === "usdt",
+        const coins = (res.data || []) as IListcoin[];
+        setListCoin(coins);
+        const usdt = coins.find(
+          (item) => item.name?.toLowerCase() === "usdt" && Number(item.txstatus) === 1,
         );
-        if (usdt) {
-          setSelectedCoin(usdt);
-        }
+        const first = usdt || coins.find((item) => Number(item.txstatus) === 1) || null;
+        setSelectedCoin(first);
       }
     } catch (error) {
       console.log(error);
@@ -84,17 +97,29 @@ export default function WithdrawPage() {
     fetchUser?.();
   }, [fetchUser]);
 
+  useEffect(() => {
+    if (!networks.length) {
+      setCurrency("");
+      return;
+    }
+    if (!networks.includes(currency)) {
+      setCurrency(networks[0]);
+    }
+  }, [networks, currency]);
+
   const availableBalance = useMemo(() => {
     if (!selectedCoin || !user) return 0;
-
-    return Number(user?.balance.usdt ?? 0);
+    const key = selectedCoin.name?.toLowerCase() || "usdt";
+    const bal = (user as any)?.balance?.[key] ?? (user as any)?.balance?.usdt ?? 0;
+    return Number(bal);
   }, [selectedCoin, user]);
 
   const withdrawFee = useMemo(() => {
-    if (!selectedCoin) return 0;
-
-    return Number(selectedCoin.bbsxf || 0);
-  }, [selectedCoin]);
+    if (!selectedCoin || !amount) return 0;
+    const rate = Number(selectedCoin.bbsxf || 0);
+    // bbsxf is percent rate when < 1 (0.02 = 2%), otherwise treat as flat
+    return rate > 0 && rate < 1 ? Number(amount) * rate : rate;
+  }, [selectedCoin, amount]);
 
   const actualAmount = useMemo(() => {
     if (!amount) return 0;
@@ -161,6 +186,10 @@ export default function WithdrawPage() {
       formdata.append("cid", String(selectedCoin.id));
       formdata.append("amount", String(amount));
       formdata.append("address", walletAddress);
+      if (currency) {
+        formdata.append("wallet", currency);
+        formdata.append("network", currency);
+      }
 
       const res = (await sellCoins(formdata)) as unknown as {
         status?: boolean;
@@ -320,7 +349,7 @@ export default function WithdrawPage() {
           </Typography>
 
           <Select
-            value={""}
+            value={selectedCoin?.id ?? ""}
             onChange={(e) => handleChangeCoin(Number(e.target.value))}
             displayEmpty
             variant="standard"
@@ -340,13 +369,14 @@ export default function WithdrawPage() {
               },
             }}
           >
-            <MenuItem value=""> {t("DepositWithdrawPage.label4")}</MenuItem>
-
-            {/* {listCoin.map((coin) => (
+            <MenuItem value="" disabled>
+              {t("DepositWithdrawPage.label4")}
+            </MenuItem>
+            {withdrawCoins.map((coin) => (
               <MenuItem key={coin.id} value={coin.id}>
                 {coin.name.toUpperCase()}
               </MenuItem>
-            ))} */}
+            ))}
           </Select>
         </Box>
 
@@ -364,12 +394,11 @@ export default function WithdrawPage() {
         <Box
           sx={{
             display: "flex",
-            gap: 5,
+            flexWrap: "wrap",
+            gap: 2,
           }}
         >
-          {(selectedCoin?.czline || "ERC20,TRC20").split(",").map((network) => {
-            const name = network.trim();
-
+          {networks.map((name) => {
             const active = currency === name;
 
             return (
