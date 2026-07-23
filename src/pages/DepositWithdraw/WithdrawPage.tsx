@@ -24,7 +24,6 @@ import { toast } from "react-toastify";
 import { useUserStore } from "@/stores/useUserStore";
 import {
   getFinaceCoin,
-  getWebsiteConfig,
   sellCoins,
 } from "@/services/User.service";
 
@@ -64,7 +63,7 @@ export default function WithdrawPage() {
   const [selectedCoin, setSelectedCoin] = useState<IListcoin | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const { user, fetchUser } = useUserStore();
-  const [configs, setConfigs] = useState<any>();
+  const [submitting, setSubmitting] = useState(false);
 
   const fetchCoin = async () => {
     try {
@@ -86,7 +85,8 @@ export default function WithdrawPage() {
 
   useEffect(() => {
     fetchCoin();
-  }, []);
+    fetchUser?.();
+  }, [fetchUser]);
 
   const availableBalance = useMemo(() => {
     if (!selectedCoin || !user) return 0;
@@ -105,20 +105,6 @@ export default function WithdrawPage() {
 
     return Math.max(Number(amount) - withdrawFee, 0);
   }, [amount, withdrawFee]);
-  useEffect(() => {
-    const res = async () => {
-      try {
-        const config: any = await getWebsiteConfig();
-
-        if (config.status === true) {
-          setConfigs(config.data);
-        }
-      } catch (errors: any) {
-        console.log(errors?.message);
-      }
-    };
-    res();
-  }, []);
   const handlePasteAddress = async () => {
     try {
       const text = await navigator.clipboard.readText();
@@ -142,6 +128,7 @@ export default function WithdrawPage() {
   };
 
   const hanldeWithdraw = async () => {
+    if (submitting) return;
     try {
       if (!selectedCoin) {
         toast.error(t("Toast.Withdraw2"));
@@ -176,13 +163,18 @@ export default function WithdrawPage() {
         return;
       }
 
+      setSubmitting(true);
+
       const formdata = new FormData();
       formdata.append("cid", String(selectedCoin.id));
       formdata.append("amount", String(amount));
       formdata.append("paypassword", String(password));
       formdata.append("address", walletAddress);
 
-      const res = await sellCoins(formdata);
+      const res = (await sellCoins(formdata)) as unknown as {
+        status?: boolean;
+        message?: string;
+      };
 
       if (res.status) {
         router.push("/withdraw/success");
@@ -190,9 +182,17 @@ export default function WithdrawPage() {
         setPassword("");
         setWalletAddress("");
         fetchUser?.();
+      } else {
+        toast.error(
+          typeof res.message === "string" ? res.message : t("Toast.Withdraw9"),
+        );
       }
     } catch (err: any) {
-      toast.error(t("Toast.Withdraw9"));
+      toast.error(
+        typeof err?.message === "string" ? err.message : t("Toast.Withdraw9"),
+      );
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -573,7 +573,7 @@ export default function WithdrawPage() {
             {selectedCoin?.name?.toUpperCase() || "USDT"}
           </Typography>
         </Box>
-        {/* <Typography
+        <Typography
           sx={{
             fontSize: 14,
             color: "white",
@@ -616,7 +616,7 @@ export default function WithdrawPage() {
               },
             },
           }}
-        /> */}
+        />
 
         <Typography
           sx={{
@@ -673,9 +673,8 @@ export default function WithdrawPage() {
 
         <Button
           fullWidth
-          onClick={() => {
-            window.open(configs?.telegram, "_blank", "noopener,noreferrer");
-          }}
+          disabled={submitting}
+          onClick={hanldeWithdraw}
           sx={{
             height: 44,
             bgcolor: "#00B900",
@@ -686,9 +685,13 @@ export default function WithdrawPage() {
             "&:hover": {
               bgcolor: "#00A500",
             },
+            "&.Mui-disabled": {
+              bgcolor: "#3d5c3d",
+              color: "rgba(255,255,255,.7)",
+            },
           }}
         >
-          {t("AccountPage.menuTab2")}
+          {submitting ? t("DepositWithdrawPage.statusProcessing") : t("AccountPage.menuTab2")}
         </Button>
       </Box>
     </Box>

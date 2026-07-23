@@ -6,7 +6,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import HistoryIcon from "@mui/icons-material/History";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { getFinaceCoin, getWebsiteConfig } from "@/services/User.service";
+import { getFinaceCoin } from "@/services/User.service";
 import { IcoinFinace } from "@/interface/user.interface";
 import Image from "next/image";
 import { IconCoin } from "@/datafake/home";
@@ -41,7 +41,6 @@ export default function Deposit() {
   const router = useRouter();
   const { t } = useTranslation();
   const [listCoin, setListCoin] = useState<IcoinFinace[]>([]);
-  const [configs, setConfigs] = useState<any>();
 
   const referral = async () => {
     try {
@@ -56,18 +55,6 @@ export default function Deposit() {
   };
 
   useEffect(() => {
-    const res = async () => {
-      try {
-        const config: any = await getWebsiteConfig();
-
-        if (config.status === true) {
-          setConfigs(config.data);
-        }
-      } catch (errors: any) {
-        console.log(errors?.message);
-      }
-    };
-    res();
     referral();
   }, []);
 
@@ -168,7 +155,9 @@ export default function Deposit() {
             justifyContent: "center",
           }}
         >
-          {listCoin.map((item) => (
+          {listCoin
+            .filter((item) => item.czstatus == 1)
+            .map((item) => (
             <Box
               key={item.id}
               sx={{
@@ -181,10 +170,9 @@ export default function Deposit() {
                 alignItems: "center",
                 justifyContent: "center",
                 width: 120,
+                cursor: "pointer",
               }}
-              onClick={() => {
-                window.open(configs?.telegram, "_blank", "noopener,noreferrer");
-              }}
+              onClick={() => router.push(`/deposit/${item.id}`)}
             >
               <Image
                 src={IconCoin[item.title]}
