@@ -73,15 +73,18 @@ export default function BottomTabs({
     return Math.max(Math.floor((end - now) / 1000), 0);
   };
 
-  const openOrdersForTab = perpetualMode ? perpHistory : orderOpen;
-  const hasOpenOrders = openOrdersForTab && openOrdersForTab.length > 0;
-  // Perp margin locks usdt_d — always surface open perps on "Giữ vị thế",
-  // even when the trade form is on Second Contract (otherwise UI looks empty).
-  const hasPerpPositions = perpPositions.length > 0;
-  const hasContractOpens = orderOpen.length > 0;
-  const hasPositions = perpetualMode
-    ? hasPerpPositions
-    : hasContractOpens || hasPerpPositions;
+  // "Giữ vị thế" = perpetual only. Second Contract only lists open timed orders.
+  const hasPositions = perpetualMode && perpPositions.length > 0;
+  const hasOpenOrders = perpetualMode
+    ? perpHistory.length > 0
+    : orderOpen.length > 0;
+  const listTabIndex = perpetualMode ? tab : 0;
+
+  useEffect(() => {
+    if (!perpetualMode && tab !== 0) {
+      setTab(0);
+    }
+  }, [perpetualMode, tab]);
 
   const handleClosePerp = async (item: any) => {
     if (!item?.id || closingId != null) return;
@@ -306,7 +309,7 @@ export default function BottomTabs({
         }}
       >
         <Tabs
-          value={tab}
+          value={listTabIndex}
           onChange={(_e, value) => setTab(value)}
           variant="fullWidth"
           sx={{
@@ -334,7 +337,7 @@ export default function BottomTabs({
             },
           }}
         >
-          <Tab label={t("TradePage.tab1")} />
+          {perpetualMode ? <Tab label={t("TradePage.tab1")} /> : null}
           <Tab label={t("TradePage.tab2")} />
         </Tabs>
         <Button sx={{ width: 39 }} onClick={() => router.push("/history")}>
@@ -353,33 +356,15 @@ export default function BottomTabs({
           pt: 3,
         }}
       >
-        {tab === 0 && (
+        {perpetualMode && listTabIndex === 0 ? (
           <Stack spacing={2}>
-            {hasPositions ? (
-              <>
-                {!perpetualMode && hasContractOpens
-                  ? orderOpen.map(renderContractOrder)
-                  : null}
-                {hasPerpPositions ? (
-                  <>
-                    {!perpetualMode && hasContractOpens ? (
-                      <Typography
-                        sx={{ color: "#8D93A6", fontSize: 12, fontWeight: 600 }}
-                      >
-                        {t("TradePage.title14")}
-                      </Typography>
-                    ) : null}
-                    {perpPositions.map(renderPerpPosition)}
-                  </>
-                ) : null}
-              </>
-            ) : (
-              emptyState
-            )}
+            {hasPositions
+              ? perpPositions.map(renderPerpPosition)
+              : emptyState}
           </Stack>
-        )}
+        ) : null}
 
-        {tab === 1 && (
+        {(!perpetualMode || listTabIndex === 1) && (
           <Stack spacing={2} sx={{ width: "100%" }}>
             {hasOpenOrders ? (
               perpetualMode ? (
