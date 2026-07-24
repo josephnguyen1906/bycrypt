@@ -116,8 +116,8 @@ export default function WithdrawPage() {
 
   const withdrawFee = useMemo(() => {
     if (!selectedCoin || !amount) return 0;
-    const rate = Number(selectedCoin.bbsxf || 0);
-    // bbsxf is percent rate when < 1 (0.02 = 2%), otherwise treat as flat
+    const rate = Number(selectedCoin.txsxf || 0);
+    // txsxf is percent rate when < 1 (0.02 = 2%, 0.015 = 1.5%), otherwise treat as flat
     return rate > 0 && rate < 1 ? Number(amount) * rate : rate;
   }, [selectedCoin, amount]);
 
