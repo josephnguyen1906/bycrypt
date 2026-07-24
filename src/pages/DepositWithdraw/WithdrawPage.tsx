@@ -116,16 +116,16 @@ export default function WithdrawPage() {
 
   const withdrawFee = useMemo(() => {
     if (!selectedCoin || !amount) return 0;
-    const rate = Number(selectedCoin.txsxf || 0);
-    // txsxf is percent rate when < 1 (0.02 = 2%, 0.00015 = 0.015%), otherwise treat as flat
-    return rate > 0 && rate < 1 ? Number(amount) * rate : rate;
+    const feePercent = Number(selectedCoin.txsxf || 0);
+    // Fee = amount × txsxf%. Admin stores 0.015 for 0.015%.
+    return feePercent > 0 ? (Number(amount) * feePercent) / 100 : 0;
   }, [selectedCoin, amount]);
 
+  // Receive full withdraw amount; fee is charged on top of balance (matches API).
   const actualAmount = useMemo(() => {
     if (!amount) return 0;
-
-    return Math.max(Number(amount) - withdrawFee, 0);
-  }, [amount, withdrawFee]);
+    return Number(amount);
+  }, [amount]);
   const handlePasteAddress = async () => {
     try {
       const text = await navigator.clipboard.readText();
