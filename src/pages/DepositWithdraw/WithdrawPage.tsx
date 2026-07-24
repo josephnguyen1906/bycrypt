@@ -121,11 +121,11 @@ export default function WithdrawPage() {
     return feePercent > 0 ? (Number(amount) * feePercent) / 100 : 0;
   }, [selectedCoin, amount]);
 
-  // Receive full withdraw amount; fee is charged on top of balance (matches API).
+  // Receive = amount − fee (matches API): 1000 − 0.15 = 999.85
   const actualAmount = useMemo(() => {
     if (!amount) return 0;
-    return Number(amount);
-  }, [amount]);
+    return Math.max(Number(amount) - withdrawFee, 0);
+  }, [amount, withdrawFee]);
   const handlePasteAddress = async () => {
     try {
       const text = await navigator.clipboard.readText();
