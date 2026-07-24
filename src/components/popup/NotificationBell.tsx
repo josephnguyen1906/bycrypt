@@ -49,7 +49,15 @@ const shake = keyframes`
 
 const formatDate = (dateString: string): string => {
   try {
-    return new Date(dateString).toLocaleString("vi-VN", {
+    // Server stores naive datetimes in Asia/Ho_Chi_Minh — pin offset then show local TZ.
+    const raw = String(dateString || "").trim();
+    const hasTz = /[zZ]|[+-]\d{2}:?\d{2}$/.test(raw);
+    const iso = hasTz
+      ? raw
+      : raw.includes("T")
+        ? `${raw}+07:00`
+        : `${raw.replace(" ", "T")}+07:00`;
+    return new Date(iso).toLocaleString(undefined, {
       hour: "2-digit",
       minute: "2-digit",
       day: "2-digit",

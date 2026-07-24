@@ -80,7 +80,7 @@ export default function Tab1Page({ user }: { user: IUser | null }) {
           </IconButton>
         </Box>
         <Typography sx={{ color: "#868c9a", fontSize: 16, mt: "-5px" }}>
-          ≈${Number(user?.balance?.usdt).toLocaleString()}
+          ≈${Number(user?.balance?.usdt_total ?? user?.balance?.usdt).toLocaleString()}
         </Typography>
         <Typography sx={{ color: "white", fontSize: 16 }}>
           {t("AccountPage.title1")}
