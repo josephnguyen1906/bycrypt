@@ -5,6 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getOrderResult } from "@/services/User.service";
 import { IHistoryClose } from "@/shared/interfaces";
+import { contractDurationSeconds } from "@/utils/contractDuration";
 import { formatDateTime } from "@/utils/formatDateTime";
 import { useTranslation } from "react-i18next";
 
@@ -30,6 +31,12 @@ export default function OrderConfirmModal({
   const isSettledRef = useRef(false);
   const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  const durationSeconds = contractDurationSeconds(data);
+  const orderAmount = Number(data?.num ?? data?.timer_buynum ?? 0);
+  const expectedProfit = Number.isFinite(orderAmount)
+    ? orderAmount * (1 + Number(profitability || 0) / 100)
+    : NaN;
+
   const getTimeLeft = (selltime: Date) => {
     const end = new Date(selltime).getTime();
     const now = Date.now();
@@ -37,7 +44,9 @@ export default function OrderConfirmModal({
   };
 
   const percent =
-    countdown !== null ? (countdown / (data.time * 60)) * 100 : 100;
+    countdown !== null && durationSeconds > 0
+      ? (countdown / durationSeconds) * 100
+      : 100;
 
   const checkOrder = useCallback(async () => {
     if (!data?.id || isCheckingRef.current || isSettledRef.current) return;
@@ -75,24 +84,14 @@ export default function OrderConfirmModal({
       pollIntervalRef.current = null;
     }
 
-    const resolveSecondsLeft = () => {
-      if (data.selltime) {
-        return getTimeLeft(data.selltime);
-      }
-      const durationMinutes = Number(data.time);
-      if (!Number.isFinite(durationMinutes) || durationMinutes <= 0) return 0;
-      return Math.floor(durationMinutes * 60);
-    };
-
+    const totalSeconds = contractDurationSeconds(data);
     const startedAt = Date.now();
-    const fallbackDurationSeconds = resolveSecondsLeft();
 
     const tick = () => {
       const left = data.selltime
-        ? resolveSecondsLeft()
+        ? getTimeLeft(data.selltime)
         : Math.max(
-            fallbackDurationSeconds -
-              Math.floor((Date.now() - startedAt) / 1000),
+            totalSeconds - Math.floor((Date.now() - startedAt) / 1000),
             0,
           );
       setCountdown(left);
@@ -193,15 +192,19 @@ export default function OrderConfirmModal({
             />
             <InfoRow
               label={t("HistoryPage.title4")}
-              value={Number(data?.num).toLocaleString()}
+              value={
+                Number.isFinite(orderAmount)
+                  ? orderAmount.toLocaleString()
+                  : "-"
+              }
             />
             <InfoRow
               label={t("HistoryPage.price_buy")}
-              value={Number(data?.buyprice).toLocaleString()}
+              value={Number(data?.buyprice ?? data?.timer_price).toLocaleString()}
             />
             <InfoRow
               label={t("TradePage.title18")}
-              value={`${data?.time} phút`}
+              value={`${durationSeconds}s`}
             />
             <InfoRow
               label={t("Toast.title2")}
@@ -210,9 +213,11 @@ export default function OrderConfirmModal({
             />
             <InfoRow
               label={t("Toast.title3")}
-              value={Number(
-                (data?.num * (1 + profitability / 100)).toFixed(2),
-              ).toLocaleString()}
+              value={
+                Number.isFinite(expectedProfit)
+                  ? Number(expectedProfit.toFixed(2)).toLocaleString()
+                  : "-"
+              }
             />
           </>
         ) : (
@@ -245,7 +250,10 @@ export default function OrderConfirmModal({
               label={t("HistoryPage.price_sell")}
               value={Number(dataOrder?.sellprice).toLocaleString()}
             />
-            <InfoRow label={t("TradePage.title18")} value={data?.time} />
+            <InfoRow
+              label={t("TradePage.title18")}
+              value={`${durationSeconds}s`}
+            />
             <InfoRow
               label={t("Toast.title2")}
               value={`${dataOrder?.hybl}%`}
