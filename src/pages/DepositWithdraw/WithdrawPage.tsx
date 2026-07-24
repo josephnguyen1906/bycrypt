@@ -145,7 +145,8 @@ export default function WithdrawPage() {
   };
 
   const handleSelectAll = () => {
-    setAmount(availableBalance);
+    // Match API floor-2dp balance so Max never trips "insufficient".
+    setAmount(Math.floor((availableBalance + 1e-8) * 100) / 100);
   };
 
   const hanldeWithdraw = async () => {
@@ -175,7 +176,7 @@ export default function WithdrawPage() {
         );
         return;
       }
-      if (amount > availableBalance) {
+      if (amount > availableBalance + 1e-8) {
         toast.error(t("Toast.Withdraw7"));
         return;
       }
