@@ -75,9 +75,13 @@ export default function BottomTabs({
 
   const openOrdersForTab = perpetualMode ? perpHistory : orderOpen;
   const hasOpenOrders = openOrdersForTab && openOrdersForTab.length > 0;
+  // Perp margin locks usdt_d — always surface open perps on "Giữ vị thế",
+  // even when the trade form is on Second Contract (otherwise UI looks empty).
+  const hasPerpPositions = perpPositions.length > 0;
+  const hasContractOpens = orderOpen.length > 0;
   const hasPositions = perpetualMode
-    ? perpPositions.length > 0
-    : orderOpen.length > 0;
+    ? hasPerpPositions
+    : hasContractOpens || hasPerpPositions;
 
   const handleClosePerp = async (item: any) => {
     if (!item?.id || closingId != null) return;
@@ -352,11 +356,23 @@ export default function BottomTabs({
         {tab === 0 && (
           <Stack spacing={2}>
             {hasPositions ? (
-              perpetualMode ? (
-                perpPositions.map(renderPerpPosition)
-              ) : (
-                orderOpen.map(renderContractOrder)
-              )
+              <>
+                {!perpetualMode && hasContractOpens
+                  ? orderOpen.map(renderContractOrder)
+                  : null}
+                {hasPerpPositions ? (
+                  <>
+                    {!perpetualMode && hasContractOpens ? (
+                      <Typography
+                        sx={{ color: "#8D93A6", fontSize: 12, fontWeight: 600 }}
+                      >
+                        {t("TradePage.title14")}
+                      </Typography>
+                    ) : null}
+                    {perpPositions.map(renderPerpPosition)}
+                  </>
+                ) : null}
+              </>
             ) : (
               emptyState
             )}
