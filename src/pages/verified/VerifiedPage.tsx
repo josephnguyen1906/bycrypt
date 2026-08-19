@@ -54,25 +54,38 @@ export default function VerifiedPage() {
     }
   };
 
+  const rzstatus = Number(user?.rzstatus ?? 0);
+  const canSubmit = rzstatus !== 1 && rzstatus !== 2;
   const handleSubmit = async () => {
-    if (!frontImage || !backImage || !fullName || !cardNumber) {
-      toast.success(t("Toast.verifide3"));
+    if (!frontImage || !backImage || !fullName?.trim() || !cardNumber?.trim()) {
+      toast.error(t("Toast.verifide3"));
       return;
     }
 
     try {
       const formData = new FormData();
-      formData.append("fullname", fullName);
-      formData.append("cccd", cardNumber);
+      formData.append("fullname", fullName.trim());
+      formData.append("cccd", cardNumber.trim());
       formData.append("cardfm", frontImage);
       formData.append("cardzm", backImage);
 
-      await verifiUser(formData);
+      const res = (await verifiUser(formData)) as {
+        status?: boolean;
+        message?: string;
+      };
+      if (!res?.status) {
+        toast.error(
+          typeof res?.message === "string" ? res.message : t("Toast.verifide2"),
+        );
+        return;
+      }
       toast.success(t("Toast.verifide1"));
-      fetchUser();
-    } catch (error) {
-      console.error("Error submitting verification:", error);
-      toast.error(t("Toast.verifide2"));
+      await fetchUser();
+      router.push("/verification");
+    } catch (error: any) {
+      toast.error(
+        typeof error?.message === "string" ? error.message : t("Toast.verifide2"),
+      );
     }
   };
 
@@ -181,7 +194,7 @@ export default function VerifiedPage() {
             value={fullName ?? ""}
             onChange={(e) => setFullName(e.target.value)}
             placeholder={t("VerifiedPage.label2")}
-            readOnly={Boolean(user?.cccd)}
+            readOnly={!canSubmit}
             sx={{
               width: "100%",
               height: "100%",
@@ -248,7 +261,7 @@ export default function VerifiedPage() {
             value={cardNumber ?? ""}
             onChange={(e) => setCardNumber(e.target.value)}
             placeholder={t("VerifiedPage.label4")}
-            readOnly={Boolean(user?.cccd)}
+            readOnly={!canSubmit}
             sx={{
               width: "100%",
               height: "100%",
@@ -455,7 +468,7 @@ export default function VerifiedPage() {
         </Box>
 
         {/* Button */}
-        {!user?.cccd && (
+        {canSubmit ? (
           <Button
             type="button"
             onClick={handleSubmit}
@@ -477,6 +490,20 @@ export default function VerifiedPage() {
           >
             {t("VerifiedPage.button")}
           </Button>
+        ) : (
+          <Typography
+            sx={{
+              mt: "12px",
+              color: rzstatus === 2 ? "#00B900" : "#F5A623",
+              fontSize: "13px",
+              fontWeight: 600,
+              textAlign: "center",
+            }}
+          >
+            {rzstatus === 2
+              ? t("VerifiedPage.label23")
+              : t("VerifiedPage.label22")}
+          </Typography>
         )}
 
         {/* Note */}

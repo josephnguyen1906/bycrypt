@@ -62,9 +62,7 @@ const sendPaypasswordCode = () => {
 
 const verifiUser = (formData: FormData) => {
   return contentInstance.post("/api/user/verify-account", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
+    timeout: 60000,
   });
 };
 
