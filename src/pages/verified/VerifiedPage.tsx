@@ -69,7 +69,7 @@ export default function VerifiedPage() {
       formData.append("cardfm", frontImage);
       formData.append("cardzm", backImage);
 
-      const res = (await verifiUser(formData)) as {
+      const res = (await verifiUser(formData)) as unknown as {
         status?: boolean;
         message?: string;
       };
